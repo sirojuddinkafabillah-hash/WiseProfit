@@ -6,6 +6,7 @@ import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Fil
 interface InventoryTableProps {
   items: InventoryItem[];
   modalAwal: number;
+  saldoKasSaatIni: number;
   onEditItem: (item: InventoryItem) => void;
   onDeleteItem: (id: string) => void;
   onUpdateSoldQty: (id: string, delta: number) => void;
@@ -18,6 +19,7 @@ interface InventoryTableProps {
 export const InventoryTable: React.FC<InventoryTableProps> = ({
   items,
   modalAwal,
+  saldoKasSaatIni,
   onEditItem,
   onDeleteItem,
   onUpdateSoldQty,
@@ -45,14 +47,9 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   // Calculate Running Cash Balance ("Sisa Kas") per item chronologically according to file sequence
   const runningCashMap = useMemo(() => {
     const map = new Map<string, number>();
-    const sorted = [...items].sort((a, b) => {
-      if (typeof a.noUrut === 'number' && typeof b.noUrut === 'number') {
-        return a.noUrut - b.noUrut;
-      }
-      if (typeof a.noUrut === 'number') return -1;
-      if (typeof b.noUrut === 'number') return 1;
-      return a.createdAt - b.createdAt;
-    });
+    // Urutkan menurut waktu pencatatan pembelian, bukan nomor urut impor.
+    // Penjualan yang tercatat pada tiap barang ikut dihitung dalam saldo berjalan.
+    const sorted = [...items].sort((a, b) => (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0));
     let cash = modalAwal;
     for (const it of sorted) {
       const hargaBeli = Number(it.hargaBeli) || 0;
@@ -478,7 +475,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                   {formatRupiah(tableTotals.totalSetelahUntung)}
                 </td>
                 <td className="py-4 px-4 text-right font-extrabold bg-emerald-950/70 text-emerald-300 border-l border-r border-emerald-500/30">
-                  {formatRupiah(runningCashMap.get(filteredItems[filteredItems.length - 1]?.id) ?? modalAwal)}
+                  {formatRupiah(saldoKasSaatIni)}
                 </td>
                 <td></td>
               </tr>

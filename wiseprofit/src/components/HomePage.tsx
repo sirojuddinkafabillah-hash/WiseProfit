@@ -231,10 +231,10 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const initials = (name.trim() || displayName).slice(0, 1).toUpperCase();
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 animate-in fade-in">
+    <div className="w-full min-w-0 max-w-none space-y-4 animate-in fade-in">
       <section className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-emerald-950/60 p-6 sm:p-8 shadow-xl">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
-        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
+        <div className="relative flex flex-col gap-4">
           <div className="flex shrink-0 flex-col items-center gap-2">
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
             <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-emerald-300/50 bg-emerald-400/15 text-3xl font-bold text-emerald-200 shadow-lg transition hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">
@@ -252,7 +252,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
         </div>
       </section>
 
-      <section className="grid gap-5 lg:grid-cols-2">
+      <section className="grid min-w-0 grid-cols-1 gap-4">
         <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-5 sm:p-6">
           <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-emerald-400/10 p-2.5 text-emerald-300"><UserRound className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Profil Anda</h2><p className="mt-1 text-xs text-slate-400">Nama ini akan digunakan di WiseProfit.</p></div></div>
           <label htmlFor="wiseprofit-profile-name" className="mb-2 block text-sm font-medium text-slate-300">Nama tampilan</label>
@@ -282,7 +282,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna aksen dashboard</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Hijau',color:'#34d399'},{id:'blue',name:'Biru',color:'#60a5fa'},{id:'violet',name:'Ungu',color:'#a78bfa'},{id:'rose',name:'Merah muda',color:'#fb7185'},{id:'amber',name:'Emas',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tabel</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Gelap',sample:'#172033'},{id:'light',name:'Terang',sample:'#e2e8f0'},{id:'blue',name:'Biru',sample:'#172c49'},{id:'green',name:'Hijau',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
           </div>
-          <div className="mt-6 grid gap-4 border-t border-slate-700 pt-5 sm:grid-cols-3">
+          <div className="mt-6 grid grid-cols-1 gap-3 border-t border-slate-700 pt-5">
             <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas aksen<input type="color" value={customAccent} onChange={(e) => setCustomAccent(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
             <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas tabel<input type="color" value={customTable} onChange={(e) => setCustomTable(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
             <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas tulisan<input type="color" value={customText} onChange={(e) => setCustomText(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
@@ -295,13 +295,13 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95 lg:col-span-2">
+        <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 px-4 py-4 sm:px-5">
             <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Notes</h2><p className="mt-1 text-xs text-slate-400">Catatan seperti aplikasi Notes di ponsel, tersusun dalam folder.</p></div></div>
             <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>Catatan baru</button>
           </div>
-          <div className="grid gap-0 md:grid-cols-[190px_minmax(0,1fr)]">
-            <aside className="border-b border-slate-700 p-3 md:border-b-0 md:border-r">
+          <div className="grid min-w-0 grid-cols-1">
+            <aside className="border-b border-slate-700 p-3">
               <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title="Buat folder" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
               {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder="Nama folder" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
               <div className="flex gap-2 overflow-x-auto md:flex-col">

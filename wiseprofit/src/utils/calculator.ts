@@ -109,7 +109,7 @@ export function calculateSummary(
 
   // Persentase Tumbuh / Rugi
   const persenTumbuhRugi = modalAwalUsaha > 0 ? (totalGainTerjual / modalAwalUsaha) * 100 : 0;
-  const statusTumbuhRugi = totalGainTerjual > 0 ? 'tumbuh' : (saldoKasSaatIni < 0 ? 'rugi' : 'impas');
+  const statusTumbuhRugi = totalGainTerjual > 0 ? 'tumbuh' : (totalGainTerjual < 0 ? 'rugi' : 'impas');
 
   const totalKasDiputarBulanDepan = Math.max(0, saldoKasSaatIni - totalSimpananSetelah1Bulan);
   const rataRataMargin = items.length > 0 ? totalMarginAccum / items.length : 0;

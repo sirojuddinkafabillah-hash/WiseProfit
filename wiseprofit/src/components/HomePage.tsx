@@ -59,6 +59,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       try {
         localStorage.setItem(`wp_profile_photo_${user.uid}`, reader.result);
         setLocalPhoto(reader.result);
+        window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
         setNameMessage('Foto profil berhasil diganti di perangkat ini.');
       } catch {
         setNameMessage('Foto belum tersimpan. Coba pilih foto yang lebih kecil.');
@@ -73,6 +74,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     try {
       localStorage.removeItem(`wp_profile_photo_${user.uid}`);
       setLocalPhoto(null);
+      window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
       setNameMessage('Foto profil dihapus.');
     } catch {
       setNameMessage('Foto belum bisa dihapus. Silakan coba lagi.');

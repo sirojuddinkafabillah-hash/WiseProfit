@@ -106,6 +106,25 @@ export default function App() {
     return 'cosmic-nebula';
   });
 
+  type AccentChoice = 'emerald' | 'blue' | 'violet' | 'rose' | 'amber' | 'cyan';
+  type TableChoice = 'slate' | 'light' | 'blue' | 'green';
+  type TextChoice = 'default' | 'bright' | 'soft' | 'warm';
+  const [accentChoice, setAccentChoice] = useState<AccentChoice>(() => {
+    try { const saved = localStorage.getItem('wp_accent_color'); return saved && ['emerald', 'blue', 'violet', 'rose', 'amber', 'cyan'].includes(saved) ? saved as AccentChoice : 'emerald'; } catch { return 'emerald'; }
+  });
+  const [tableChoice, setTableChoice] = useState<TableChoice>(() => {
+    try { const saved = localStorage.getItem('wp_table_color'); return saved && ['slate', 'light', 'blue', 'green'].includes(saved) ? saved as TableChoice : 'slate'; } catch { return 'slate'; }
+  });
+  const [textChoice, setTextChoice] = useState<TextChoice>(() => {
+    try { const saved = localStorage.getItem('wp_text_color'); return saved && ['default', 'bright', 'soft', 'warm'].includes(saved) ? saved as TextChoice : 'default'; } catch { return 'default'; }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.wpAccent = accentChoice;
+    document.documentElement.dataset.wpTable = tableChoice;
+    document.documentElement.dataset.wpText = textChoice;
+    try { localStorage.setItem('wp_accent_color', accentChoice); localStorage.setItem('wp_table_color', tableChoice); localStorage.setItem('wp_text_color', textChoice); } catch (e) { console.error(e); }
+  }, [accentChoice, tableChoice, textChoice]);
+
   const handleThemeChange = (theme: BackgroundTheme) => {
     setBackgroundTheme(theme);
     try {
@@ -682,6 +701,12 @@ export default function App() {
                   user={user}
                   theme={backgroundTheme}
                   onThemeChange={handleThemeChange}
+                  accentChoice={accentChoice}
+                  onAccentChange={setAccentChoice}
+                  tableChoice={tableChoice}
+                  onTableChange={setTableChoice}
+                  textChoice={textChoice}
+                  onTextChange={setTextChoice}
                   onSaveName={handleSaveDisplayName}
                   onLogout={async () => {
                     try {

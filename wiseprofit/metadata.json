@@ -1,0 +1,8 @@
+{
+  "name": "WiseProfit",
+  "description": "WiseProfit — aplikasi pengelolaan dagang, laba, ekuitas, arus kas, dan penarikan uang.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

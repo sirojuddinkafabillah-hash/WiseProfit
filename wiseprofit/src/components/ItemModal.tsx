@@ -64,7 +64,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
   const previewItem: InventoryItem = {
     id: 'preview',
-    namaBarang: namaBarang || 'Barang Baru',
+    namaBarang: namaBarang || 'Nama barang',
     satuanWadah,
     jumlahBarangWadah: Number(jumlahBarangWadah) || 1,
     satuanUnit,
@@ -127,7 +127,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1 flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Tanggal Transaksi</span>
+                <span>Tanggal pembelian</span>
               </label>
               <input
                 type="date"
@@ -216,7 +216,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Harga Beli 1 Wadah (Modal) <span className="text-emerald-400">*</span>
+                Harga beli per kemasan (Modal) <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="number"
@@ -287,7 +287,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
           <div className="bg-slate-950 rounded-xl border border-slate-800 p-4 text-xs space-y-3">
             <div className="flex items-center gap-2 font-bold text-white font-mono text-[11px] uppercase tracking-wider">
               <Calculator className="w-4 h-4 text-emerald-400" />
-              <span>Simulasi Finansial Ritel:</span>
+              <span>Perkiraan keuntungan barang</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
               <div className="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">

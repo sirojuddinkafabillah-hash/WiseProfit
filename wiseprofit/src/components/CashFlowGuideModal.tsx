@@ -16,7 +16,7 @@ export const CashFlowGuideModal: React.FC<CashFlowGuideModalProps> = ({ isOpen, 
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
             <h3 className="text-base font-bold text-white tracking-tight">
-              Panduan Manajemen Arus Kas & Ekuitas Toko
+              Panduan keuangan usaha
             </h3>
           </div>
           <button
@@ -28,17 +28,17 @@ export const CashFlowGuideModal: React.FC<CashFlowGuideModalProps> = ({ isOpen, 
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-5 text-xs text-slate-300 leading-relaxed font-sans">
-          {/* Konsep 1: Total Setelah Untung */}
+          {/* Konsep 1: Total nilai usaha */}
           <div className="bg-slate-950 border border-slate-800 text-white p-4 rounded-xl space-y-2">
             <div className="flex items-center gap-2 font-bold text-sm text-emerald-400 font-mono">
               <Wallet className="w-4 h-4" />
-              <span>1. APA ITU &apos;TOTAL SETELAH UNTUNG&apos;?</span>
+              <span>1. Apa arti total nilai usaha?</span>
             </div>
             <p className="text-slate-300">
-              <strong>Total Setelah Untung</strong> adalah total uang kas hasil penjualan setelah ditambahkan laba bersih riil:
+              <strong>Total nilai usaha</strong> adalah total uang kas hasil penjualan setelah ditambahkan laba bersih riil:
             </p>
             <div className="p-3 bg-slate-900 border border-emerald-500/30 rounded-lg font-mono text-emerald-300 text-xs shadow-inner">
-              Total Setelah Untung = Modal Pokok (HPP) + Total Keuntungan (Gain)
+              Total nilai usaha = Modal Pokok (HPP) + Total Keuntungan (Gain)
             </div>
             <p className="text-slate-400 text-[11px] font-mono">
               Contoh: Jika modal beli Rp 100.000 dan dapat untung Rp 20.000, maka uang masuk di kasir adalah <strong className="text-white">Rp 120.000</strong>.
@@ -49,7 +49,7 @@ export const CashFlowGuideModal: React.FC<CashFlowGuideModalProps> = ({ isOpen, 
           <div className="space-y-2">
             <div className="flex items-center gap-2 font-bold text-white text-sm font-mono">
               <Calendar className="w-4 h-4 text-cyan-400" />
-              <span>2. MENGAPA SIMPANAN BARU DIHITUNG SETELAH UNTUNG 1 BULAN?</span>
+              <span>2. Kapan keuntungan sebaiknya disisihkan?</span>
             </div>
             <p className="text-slate-300">
               Banyak toko ritel mengalami defisit kas karena mengambil laba harian untuk keperluan pribadi secara prematur. Akibatnya ketika distributor datang menagih atau ingin belanja stok baru, uang kasir sudah tidak cukup.
@@ -71,7 +71,7 @@ export const CashFlowGuideModal: React.FC<CashFlowGuideModalProps> = ({ isOpen, 
           <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2.5">
             <div className="flex items-center gap-2 font-bold text-emerald-400 font-mono text-xs uppercase tracking-wide">
               <PiggyBank className="w-4 h-4" />
-              <span>Simulasi Angka Nyata Penjualan 1 Bulan:</span>
+              <span>Contoh perhitungan penjualan bulanan:</span>
             </div>
             <div className="space-y-1 text-slate-200 font-mono text-[11px]">
               <div>• Modal Pokok Terjual: Rp 2.000.000</div>

@@ -54,7 +54,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     setSuccessMessage(null);
 
     if (parsedNominal <= 0) {
-      setErrorMessage('Nominal penarikan kas harus lebih dari Rp 0.');
+      setErrorMessage('Masukkan jumlah penarikan lebih dari Rp0.');
       return;
     }
 
@@ -67,12 +67,12 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     try {
       const ok = await onAddWithdrawal(parsedNominal, tanggalInput, catatanInput.trim() || undefined);
       if (ok) {
-        setSuccessMessage(`Berhasil mencatat penarikan ${formatRupiah(parsedNominal)} ke Cloud.`);
+        setSuccessMessage(`Penarikan berhasil dicatat ${formatRupiah(parsedNominal)} ke Cloud.`);
         setNominalInput('');
         setCatatanInput('');
         setTimeout(() => setSuccessMessage(null), 3000);
       } else {
-        setErrorMessage('Gagal menyimpan penarikan ke Cloud. Periksa koneksi akun.');
+        setErrorMessage('Penarikan belum berhasil disimpan. Periksa koneksi lalu coba lagi.');
       }
     } catch (err) {
       setErrorMessage('Terjadi kesalahan saat menyimpan data penarikan.');
@@ -146,7 +146,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80">
               <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mb-1">
                 <Wallet className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Sisa Kas Kasir Saat Ini:</span>
+                <span>Uang yang tersedia:</span>
               </div>
               <div className="text-xl font-bold text-emerald-400 tabular-nums">
                 {formatRupiah(saldoKasSaatIni)}
@@ -159,7 +159,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80">
               <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mb-1">
                 <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                <span>Total Telah Ditarik:</span>
+                <span>Total uang yang sudah ditarik:</span>
               </div>
               <div className="text-xl font-bold text-rose-400 tabular-nums">
                 {formatRupiah(totalWithdrawn)}
@@ -340,7 +340,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
         {/* Modal Footer */}
         <div className="px-6 py-3.5 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs font-mono text-slate-400">
-          <span>Data otomatis memotong Sisa Kas Kasir</span>
+          <span>Jumlah ini akan mengurangi uang kas yang tersedia.</span>
           <button
             type="button"
             onClick={onClose}

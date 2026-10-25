@@ -704,12 +704,6 @@ export default function App() {
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                         Keuangan usaha Anda
                       </div>
-                      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                        Yuk, lihat perkembangan usaha
-                      </h1>
-                      <p className="max-w-2xl text-sm text-slate-400 leading-relaxed">
-                        Semua yang penting ada di sini: uang masuk dan keluar, keuntungan, stok barang, serta hasil penjualan.
-                      </p>
                     </div>
                     <div className="flex items-center gap-2 self-start sm:self-auto">
                       <span className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300">

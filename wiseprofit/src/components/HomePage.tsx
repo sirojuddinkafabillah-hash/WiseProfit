@@ -31,7 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
 
   useEffect(() => {
     try {
-      setNote(localStorage.getItem(`wiseprofit_notes_${user.uid}`) || '');
+      setNote(localStorage.getItem(`wp_notes_${user.uid}`) || '');
     } catch {
       setNote('');
     }
@@ -52,7 +52,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
 
   const saveNote = () => {
     try {
-      localStorage.setItem(`wiseprofit_notes_${user.uid}`, note);
+      localStorage.setItem(`wp_notes_${user.uid}`, note);
       setNameMessage('Catatan pribadi berhasil disimpan di perangkat ini.');
     } catch {
       setNameMessage('Catatan tidak dapat disimpan di browser ini.');

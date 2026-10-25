@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2 } from 'lucide-react';
 import type { AppUser } from '../context/AuthContext';
 import type { BackgroundTheme } from './CosmicInteractiveBackground';
 
@@ -24,6 +24,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const [isSavingName, setIsSavingName] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [localPhoto, setLocalPhoto] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setName(user.displayName || '');
@@ -32,10 +34,50 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   useEffect(() => {
     try {
       setNote(localStorage.getItem(`wp_notes_${user.uid}`) || '');
+      setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));
     } catch {
       setNote('');
     }
   }, [user.uid]);
+
+  const handlePhotoSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setNameMessage('Pilih file foto dengan format gambar.');
+      event.target.value = '';
+      return;
+    }
+    if (file.size > 1.5 * 1024 * 1024) {
+      setNameMessage('Ukuran foto maksimal 1,5 MB agar bisa tersimpan di browser.');
+      event.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') return;
+      try {
+        localStorage.setItem(`wp_profile_photo_${user.uid}`, reader.result);
+        setLocalPhoto(reader.result);
+        setNameMessage('Foto profil berhasil diganti di perangkat ini.');
+      } catch {
+        setNameMessage('Foto belum tersimpan. Coba pilih foto yang lebih kecil.');
+      }
+    };
+    reader.onerror = () => setNameMessage('Foto tidak bisa dibaca. Silakan pilih foto lain.');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
+
+  const removePhoto = () => {
+    try {
+      localStorage.removeItem(`wp_profile_photo_${user.uid}`);
+      setLocalPhoto(null);
+      setNameMessage('Foto profil dihapus.');
+    } catch {
+      setNameMessage('Foto belum bisa dihapus. Silakan coba lagi.');
+    }
+  };
 
   const saveName = async () => {
     const clean = name.trim();
@@ -76,8 +118,13 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       <section className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-emerald-950/60 p-6 sm:p-8 shadow-xl">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-emerald-300/30 bg-emerald-400/15 text-3xl font-bold text-emerald-200 shadow-lg">
-            {user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full rounded-3xl object-cover" /> : initials}
+          <div className="flex shrink-0 flex-col items-center gap-2">
+            <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
+            <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-emerald-300/50 bg-emerald-400/15 text-3xl font-bold text-emerald-200 shadow-lg transition hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">
+              {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <UserRound className="h-9 w-9" />}
+              <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-white opacity-0 transition group-hover:bg-black/35 group-hover:opacity-100"><Camera className="h-6 w-6" /></span>
+            </button>
+            {localPhoto && <button type="button" onClick={removePhoto} title="Hapus foto profil" aria-label="Hapus foto profil" className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>
           <div className="min-w-0 flex-1">
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200"><CheckCircle2 className="h-3.5 w-3.5" /> Beranda WiseProfit</div>

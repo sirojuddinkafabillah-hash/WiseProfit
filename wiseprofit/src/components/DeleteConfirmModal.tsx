@@ -40,7 +40,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
                 {isAll ? 'Kosongkan Seluruh Tabel?' : 'Hapus Barang Ini?'}
               </h3>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
-                Penyimpanan Cloud Database
+                Tindakan ini tidak bisa dibatalkan
               </p>
             </div>
           </div>
@@ -58,9 +58,9 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             <div className="p-3.5 bg-rose-950/40 border border-rose-500/30 rounded-xl text-xs text-rose-200 leading-relaxed font-sans">
               <div className="flex items-center gap-2 font-bold font-mono text-rose-300 mb-1">
                 <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
-                <span>Peringatan Pengosongan Tabel</span>
+                <span>Perhatian sebelum menghapus</span>
               </div>
-              Seluruh data barang akan dihapus permanen dari Supabase akun Anda. Perhitungan kasir akan dihitung ulang secara otomatis.
+              Semua catatan barang akan dihapus dari akun Anda. Perhitungan keuangan akan diperbarui setelahnya.
             </div>
           ) : item ? (
             <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl space-y-2 text-xs font-mono">

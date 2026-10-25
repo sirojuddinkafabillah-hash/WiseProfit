@@ -17,7 +17,7 @@ export function calculateItem(item: InventoryItem): ItemCalculations {
   // JIKA BELUM TERJUAL (jumlahJualSatuan === 0), SEMUANYA 0!
   const totalPendapatanTerjual = hargaJualSatuan * jumlahJualSatuan;
   const totalModalKembali = hppSatuan * jumlahJualSatuan;
-  const totalGainTerjual = Math.max(0, gainSatuan * jumlahJualSatuan);
+  const totalGainTerjual = gainSatuan * jumlahJualSatuan;
 
   // 4. Margin & Markup
   const marginPersen = hargaJualSatuan > 0 ? (gainSatuan / hargaJualSatuan) * 100 : 0;
@@ -32,7 +32,7 @@ export function calculateItem(item: InventoryItem): ItemCalculations {
   const isModalLunas = totalPendapatanTerjual >= hargaBeli;
 
   // 7. TOTAL SETELAH UNTUNG DARI UNIT YANG SUDAH TERJUAL
-  const totalSetelahUntungTerjual = totalModalKembali + totalGainTerjual;
+  const totalSetelahUntungTerjual = totalPendapatanTerjual;
   const potensiTotalGain = Math.max(0, (hargaJualSatuan * jumlahWadah) - hargaBeli);
   const totalSetelahUntungPenuh = hargaBeli + potensiTotalGain;
 
@@ -102,7 +102,9 @@ export function calculateSummary(
   const sisaModalSebelumJual = modalAwalUsaha - totalPengeluaranBeli;
   // Sisa kas saat ini = Modal Awal - Belanja Barang + Penjualan Barang - Penarikan Kas Toko
   const saldoKasSaatIni = modalAwalUsaha - totalPengeluaranBeli + totalPemasukanJual - totalPenarikanKas;
-  const totalSetelahUntung = modalAwalUsaha + totalGainTerjual;
+  // Ekuitas usaha = kas tersisa + nilai modal stok yang masih dimiliki.
+  // Penarikan pemilik mengurangi ekuitas usaha, karena kas keluar dari usaha.
+  const totalSetelahUntung = saldoKasSaatIni + totalNilaiSisaStok;
 
   // Persentase Tumbuh / Rugi
   const persenTumbuhRugi = modalAwalUsaha > 0 ? (totalGainTerjual / modalAwalUsaha) * 100 : 0;

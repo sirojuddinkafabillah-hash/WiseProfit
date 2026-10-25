@@ -125,6 +125,23 @@ export default function App() {
     try { localStorage.setItem('wp_accent_color', accentChoice); localStorage.setItem('wp_table_color', tableChoice); localStorage.setItem('wp_text_color', textChoice); } catch (e) { console.error(e); }
   }, [accentChoice, tableChoice, textChoice]);
 
+  const [fontChoice, setFontChoice] = useState<string>(() => {
+    try { return localStorage.getItem('wp_font_choice') || 'Inter'; } catch { return 'Inter'; }
+  });
+  const [wallpaper, setWallpaper] = useState<string | null>(() => {
+    try { return localStorage.getItem('wp_dashboard_wallpaper'); } catch { return null; }
+  });
+  useEffect(() => {
+    document.documentElement.style.setProperty('--wp-font-family', fontChoice);
+    try { localStorage.setItem('wp_font_choice', fontChoice); } catch (e) { console.error(e); }
+  }, [fontChoice]);
+  useEffect(() => {
+    try {
+      if (wallpaper) localStorage.setItem('wp_dashboard_wallpaper', wallpaper);
+      else localStorage.removeItem('wp_dashboard_wallpaper');
+    } catch (e) { console.error('Wallpaper could not be saved locally:', e); }
+  }, [wallpaper]);
+
   const handleThemeChange = (theme: BackgroundTheme) => {
     setBackgroundTheme(theme);
     try {
@@ -556,12 +573,12 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-200 font-sans">
+    <div className="relative min-h-screen flex flex-col text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-200 font-sans" style={wallpaper ? { backgroundImage: `linear-gradient(rgba(2, 6, 23, 0.78), rgba(2, 6, 23, 0.88)), url("${wallpaper}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' } : undefined}>
       {/* Dynamic Cursor-Interactive Background */}
-      <CosmicInteractiveBackground
+      {!wallpaper && <CosmicInteractiveBackground
         currentTheme={backgroundTheme}
         onThemeChange={handleThemeChange}
-      />
+      />}
 
       {/* Main Foreground Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -707,6 +724,10 @@ export default function App() {
                   onTableChange={setTableChoice}
                   textChoice={textChoice}
                   onTextChange={setTextChoice}
+                  fontChoice={fontChoice}
+                  onFontChange={setFontChoice}
+                  wallpaper={wallpaper}
+                  onWallpaperChange={setWallpaper}
                   onSaveName={handleSaveDisplayName}
                   onLogout={async () => {
                     try {

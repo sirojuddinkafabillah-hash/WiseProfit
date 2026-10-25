@@ -574,9 +574,9 @@ export default function App() {
               <div className="flex items-start md:items-center gap-2.5">
                 <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 md:mt-0" />
                 <div className="text-left leading-relaxed">
-                  <span className="font-bold text-amber-300">Koneksi Supabase belum tersedia:</span>{' '}
-                  API Supabase belum dapat dijangkau atau tabel belum disiapkan.
-                  <span className="text-emerald-300 ml-1">Periksa koneksi dan jalankan SQL setup Supabase sebelum menyimpan data penting.</span>
+                  <span className="font-bold text-amber-300">Penyimpanan online belum tersambung:</span>{' '}
+                  WiseProfit belum bisa terhubung ke layanan penyimpanan. Data baru mungkin belum tersimpan secara online.
+                  <span className="text-emerald-300 ml-1">Periksa pengaturan koneksi sebelum menyimpan catatan penting.</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
@@ -586,7 +586,7 @@ export default function App() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-600/40 hover:bg-amber-600/60 border border-amber-500/50 rounded-lg text-amber-100 text-xs font-sans font-medium transition-colors"
                 >
-                  Buka SQL Editor Supabase
+                  Buka pengaturan penyimpanan
                 </a>
                 <button
                   type="button"

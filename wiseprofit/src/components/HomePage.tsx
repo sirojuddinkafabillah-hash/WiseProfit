@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2 } from 'lucide-react';
+import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2, Folder, FolderPlus, FileText, Plus, Search, ArrowLeft, Trash } from 'lucide-react';
 import type { AppUser } from '../context/AuthContext';
 import type { BackgroundTheme } from './CosmicInteractiveBackground';
 
@@ -21,6 +21,11 @@ interface HomePageProps {
   onLogout: () => Promise<void>;
 }
 
+type NoteFolder = { id: string; name: string };
+type SavedNote = { id: string; title: string; content: string; folderId: string; updatedAt: number };
+
+const DEFAULT_NOTE_FOLDERS: NoteFolder[] = [{ id: 'personal', name: 'Pribadi' }, { id: 'business', name: 'Usaha' }];
+
 const THEMES: { id: BackgroundTheme; name: string; description: string; preview: string; icon: React.ReactNode }[] = [
   { id: 'cosmic-nebula', name: 'Nebula', description: 'Gelap, tenang, dengan cahaya hijau dan biru', preview: 'from-slate-950 via-indigo-950 to-emerald-950', icon: <Moon className="h-4 w-4" /> },
   { id: 'aurora-emerald', name: 'Aurora Hijau', description: 'Nuansa hijau yang segar', preview: 'from-emerald-950 via-teal-900 to-slate-950', icon: <Sparkles className="h-4 w-4" /> },
@@ -30,7 +35,7 @@ const THEMES: { id: BackgroundTheme; name: string; description: string; preview:
 
 export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
   const [name, setName] = useState(user.displayName || '');
-  const [note, setNote] = useState('');
+  const [noteFolders, setNoteFolders] = useState<NoteFolder[]>(DEFAULT_NOTE_FOLDERS);\n  const [savedNotes, setSavedNotes] = useState<SavedNote[]>([]);\n  const [activeFolderId, setActiveFolderId] = useState('all');\n  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);\n  const [draftTitle, setDraftTitle] = useState('');\n  const [draftContent, setDraftContent] = useState('');\n  const [noteSearch, setNoteSearch] = useState('');\n  const [newFolderName, setNewFolderName] = useState('');\n  const [showFolderInput, setShowFolderInput] = useState(false);
   const [isSavingName, setIsSavingName] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -58,12 +63,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
 
   useEffect(() => {
     try {
-      setNote(localStorage.getItem(`wp_notes_${user.uid}`) || '');
-      setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));
-    } catch {
-      setNote('');
-    }
-  }, [user.uid]);
+      const foldersRaw = localStorage.getItem(`wp_note_folders_${user.uid}`);\n      const notesRaw = localStorage.getItem(`wp_notes_v2_${user.uid}`);\n      const folders = foldersRaw ? JSON.parse(foldersRaw) as NoteFolder[] : DEFAULT_NOTE_FOLDERS;\n      const notes = notesRaw ? JSON.parse(notesRaw) as SavedNote[] : [];\n      const legacyNote = localStorage.getItem(`wp_notes_${user.uid}`) || '';\n      const migratedNotes = notes.length || !legacyNote.trim() ? notes : [{ id: `legacy-${Date.now()}`, title: 'Catatan lama', content: legacyNote, folderId: 'personal', updatedAt: Date.now() }];\n      setNoteFolders(folders.length ? folders : DEFAULT_NOTE_FOLDERS);\n      setSavedNotes(migratedNotes);\n      setActiveFolderId('all');\n      setActiveNoteId(null);\n      setDraftTitle('');\n      setDraftContent('');\n      setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));\n    } catch {\n      setNoteFolders(DEFAULT_NOTE_FOLDERS);\n      setSavedNotes([]);\n      setLocalPhoto(null);\n    }\n  }, [user.uid]);\n\n  useEffect(() => {\n    try {\n      localStorage.setItem(`wp_note_folders_${user.uid}`, JSON.stringify(noteFolders));\n      localStorage.setItem(`wp_notes_v2_${user.uid}`, JSON.stringify(savedNotes));\n    } catch (error) {\n      console.error('Catatan belum dapat disimpan di browser:', error);\n    }\n  }, [user.uid, noteFolders, savedNotes]);
 
   const handleWallpaperSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -131,14 +131,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     setNameMessage(ok ? 'Nama berhasil disimpan.' : 'Nama belum tersimpan. Coba lagi.');
   };
 
-  const saveNote = () => {
-    try {
-      localStorage.setItem(`wp_notes_${user.uid}`, note);
-      setNameMessage('Catatan pribadi berhasil disimpan di perangkat ini.');
-    } catch {
-      setNameMessage('Catatan tidak dapat disimpan di browser ini.');
-    }
-  };
+  const createNote = () => {\n    const folderId = activeFolderId === 'all' ? 'personal' : activeFolderId;\n    const id = `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;\n    const newNote: SavedNote = { id, title: '', content: '', folderId, updatedAt: Date.now() };\n    setSavedNotes((previous) => [newNote, ...previous]);\n    setActiveNoteId(id);\n    setDraftTitle('');\n    setDraftContent('');\n  };\n\n  const openNote = (item: SavedNote) => {\n    setActiveNoteId(item.id);\n    setDraftTitle(item.title);\n    setDraftContent(item.content);\n  };\n\n  const updateCurrentNote = (field: 'title' | 'content', value: string) => {\n    if (field === 'title') setDraftTitle(value); else setDraftContent(value);\n    if (!activeNoteId) return;\n    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, [field]: value, updatedAt: Date.now() } : item));\n  };\n\n  const saveNote = () => {\n    if (!activeNoteId) { setNameMessage('Pilih atau buat catatan terlebih dahulu.'); return; }\n    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, title: draftTitle.trim() || 'Catatan tanpa judul', content: draftContent, updatedAt: Date.now() } : item));\n    setNameMessage('Catatan disimpan di browser/perangkat ini.');\n  };\n\n  const addNoteFolder = () => {\n    const clean = newFolderName.trim();\n    if (!clean) return;\n    const folder = { id: `folder-${Date.now()}`, name: clean.slice(0, 32) };\n    setNoteFolders((previous) => [...previous, folder]);\n    setActiveFolderId(folder.id);\n    setNewFolderName('');\n    setShowFolderInput(false);\n  };\n\n  const deleteCurrentNote = () => {\n    if (!activeNoteId) return;\n    setSavedNotes((previous) => previous.filter((item) => item.id !== activeNoteId));\n    setActiveNoteId(null);\n    setDraftTitle('');\n    setDraftContent('');\n    setNameMessage('Catatan dihapus.');\n  };\n\n  const visibleNotes = savedNotes\n    .filter((item) => activeFolderId === 'all' || item.folderId === activeFolderId)\n    .filter((item) => `${item.title} ${item.content}`.toLowerCase().includes(noteSearch.toLowerCase()))\n    .sort((a, b) => b.updatedAt - a.updatedAt);\n  const activeNote = savedNotes.find((item) => item.id === activeNoteId) || null;
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -217,10 +210,34 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-5 sm:p-6 lg:col-span-2">
-          <div className="mb-4 flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Catatan pribadi</h2><p className="mt-1 text-xs text-slate-400">Tulis pengingat, target, atau ide usaha yang ingin Anda ingat.</p></div></div>
-          <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={5} maxLength={5000} placeholder="Contoh: target penjualan minggu ini, barang yang perlu dibeli, atau ide usaha…" className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm leading-relaxed text-white" />
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-xs text-slate-500">{note.length}/5000 karakter · Disimpan di browser/perangkat ini, khusus akun yang sedang masuk.</p><button type="button" onClick={saveNote} className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-2.5 text-sm font-semibold text-amber-200 hover:bg-amber-400/15"><Save className="h-4 w-4" />Simpan catatan</button></div>
+        <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95 lg:col-span-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 px-4 py-4 sm:px-5">
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Notes</h2><p className="mt-1 text-xs text-slate-400">Catatan seperti aplikasi Notes di ponsel, tersusun dalam folder.</p></div></div>
+            <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>Catatan baru</button>
+          </div>
+          <div className="grid gap-0 md:grid-cols-[190px_minmax(0,1fr)]">
+            <aside className="border-b border-slate-700 p-3 md:border-b-0 md:border-r">
+              <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title="Buat folder" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
+              {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder="Nama folder" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
+              <div className="flex gap-2 overflow-x-auto md:flex-col">
+                <button type="button" onClick={() => {setActiveFolderId('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/>Semua <span className="ml-auto text-xs opacity-70">{savedNotes.length}</span></button>
+                {noteFolders.map((folder) => <button type="button" key={folder.id} onClick={() => {setActiveFolderId(folder.id); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === folder.id ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/><span className="truncate">{folder.name}</span><span className="ml-auto text-xs opacity-70">{savedNotes.filter((n) => n.folderId === folder.id).length}</span></button>)}
+              </div>
+            </aside>
+            <div className="min-w-0">
+              {!activeNoteId ? <>
+                <div className="border-b border-slate-800 p-3"><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={noteSearch} onChange={(e) => setNoteSearch(e.target.value)} placeholder="Cari catatan..." className="w-full rounded-xl border border-slate-700 bg-slate-950 py-2.5 pl-9 pr-3 text-sm text-white"/></div></div>
+                <div className="max-h-[420px] overflow-y-auto p-2">
+                  {visibleNotes.length ? visibleNotes.map((item) => <button key={item.id} type="button" onClick={() => openNote(item)} className="mb-2 block w-full rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left transition hover:border-amber-300/40 hover:bg-slate-900"><div className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0 text-amber-300"/><span className="truncate text-sm font-semibold text-slate-100">{item.title || 'Catatan tanpa judul'}</span></div><p className="mt-1 line-clamp-2 whitespace-pre-wrap text-xs text-slate-400">{item.content || 'Belum ada isi catatan'}</p><p className="mt-2 text-[10px] text-slate-500">{new Date(item.updatedAt).toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'})} · {noteFolders.find((f) => f.id === item.folderId)?.name || 'Folder'}</p></button>) : <div className="p-8 text-center text-sm text-slate-500"><NotebookPen className="mx-auto mb-2 h-7 w-7 opacity-50"/>Belum ada catatan di folder ini.</div>}
+                </div>
+              </> : <div className="p-3 sm:p-4">
+                <div className="mb-3 flex items-center justify-between gap-2"><button type="button" onClick={() => setActiveNoteId(null)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-300/10"><ArrowLeft className="h-3.5 w-3.5"/>Semua catatan</button><button type="button" onClick={deleteCurrentNote} title="Hapus catatan" className="rounded-lg p-2 text-rose-300 hover:bg-rose-500/10"><Trash className="h-4 w-4"/></button></div>
+                <input value={draftTitle} onChange={(e) => updateCurrentNote('title', e.target.value)} maxLength={120} placeholder="Judul catatan" className="mb-3 w-full border-0 border-b border-slate-700 bg-transparent px-1 py-3 text-lg font-bold text-white outline-none placeholder:text-slate-600"/>
+                <textarea value={draftContent} onChange={(e) => updateCurrentNote('content', e.target.value)} maxLength={20000} rows={12} placeholder="Mulai menulis..." className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 text-sm leading-7 text-slate-100 outline-none focus:border-amber-300/40"/>
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><p className="text-xs text-slate-500">Tersimpan otomatis di browser ini · {draftContent.length} karakter</p><button type="button" onClick={saveNote} className="inline-flex items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs font-semibold text-amber-200 hover:bg-amber-300/15"><Save className="h-4 w-4"/>Simpan sekarang</button></div>
+              </div>}
+            </div>
+          </div>
         </div>
       </section>
 

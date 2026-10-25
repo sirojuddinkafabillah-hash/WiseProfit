@@ -35,12 +35,26 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [localPhoto, setLocalPhoto] = useState<string | null>(null);
+  const [customAccent, setCustomAccent] = useState(() => { try { return localStorage.getItem('wp_custom_accent') || '#34d399'; } catch { return '#34d399'; } });
+  const [customTable, setCustomTable] = useState(() => { try { return localStorage.getItem('wp_custom_table') || '#172033'; } catch { return '#172033'; } });
+  const [customText, setCustomText] = useState(() => { try { return localStorage.getItem('wp_custom_text') || '#cbd5e1'; } catch { return '#cbd5e1'; } });
   const photoInputRef = useRef<HTMLInputElement | null>(null);
   const wallpaperInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setName(user.displayName || '');
   }, [user.displayName]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--wp-custom-accent', customAccent);
+    document.documentElement.style.setProperty('--wp-custom-table', customTable);
+    document.documentElement.style.setProperty('--wp-custom-text', customText);
+    try {
+      localStorage.setItem('wp_custom_accent', customAccent);
+      localStorage.setItem('wp_custom_table', customTable);
+      localStorage.setItem('wp_custom_text', customText);
+    } catch (error) { console.error('Tidak dapat menyimpan pilihan warna:', error); }
+  }, [customAccent, customTable, customText]);
 
   useEffect(() => {
     try {
@@ -189,6 +203,11 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tulisan</label><div className="grid grid-cols-2 gap-2">{([{id:'default',name:'Standar',sample:'#cbd5e1'},{id:'bright',name:'Putih terang',sample:'#ffffff'},{id:'soft',name:'Abu lembut',sample:'#94a3b8'},{id:'warm',name:'Krem',sample:'#f5deb3'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTextChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${textChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna aksen dashboard</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Hijau',color:'#34d399'},{id:'blue',name:'Biru',color:'#60a5fa'},{id:'violet',name:'Ungu',color:'#a78bfa'},{id:'rose',name:'Merah muda',color:'#fb7185'},{id:'amber',name:'Emas',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tabel</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Gelap',sample:'#172033'},{id:'light',name:'Terang',sample:'#e2e8f0'},{id:'blue',name:'Biru',sample:'#172c49'},{id:'green',name:'Hijau',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
+          </div>
+          <div className="mt-6 grid gap-4 border-t border-slate-700 pt-5 sm:grid-cols-3">
+            <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas aksen<input type="color" value={customAccent} onChange={(e) => setCustomAccent(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
+            <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas tabel<input type="color" value={customTable} onChange={(e) => setCustomTable(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
+            <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Warna bebas tulisan<input type="color" value={customText} onChange={(e) => setCustomText(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
           </div>
           <div className="mt-6 border-t border-slate-700 pt-5"><label className="mb-2 block text-sm font-semibold text-slate-200">Foto wallpaper dashboard</label>
             <input ref={wallpaperInputRef} type="file" accept="image/*" onChange={handleWallpaperSelected} className="hidden" aria-label="Pilih foto wallpaper"/>

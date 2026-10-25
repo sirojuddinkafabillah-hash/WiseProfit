@@ -28,14 +28,14 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
           className="flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Kembali ke Aplikasi</span>
+          <span>Kembali ke WiseProfit</span>
         </button>
         <button
           onClick={handlePrint}
           className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-neutral-900 hover:bg-neutral-800 rounded-lg shadow-sm cursor-pointer"
         >
           <Printer className="w-4 h-4" />
-          <span>Cetak Dokumen / Simpan PDF</span>
+          <span>Cetak atau Simpan sebagai PDF</span>
         </button>
       </div>
 

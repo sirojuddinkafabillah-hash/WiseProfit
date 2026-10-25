@@ -158,7 +158,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       </div>
 
       {/* 4 Synchronized Luxury Dark Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid min-w-0 grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: SISA KAS SAAT INI (KASIR) */}
         <div className="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/15 rounded-full blur-2xl pointer-events-none" />

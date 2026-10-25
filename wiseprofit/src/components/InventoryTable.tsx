@@ -147,11 +147,11 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
             <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-              Buku Kas & Inventaris Toko
+              Daftar barang dan penjualan
             </h2>
           </div>
           <span className="text-xs font-mono text-slate-400">
-            · {filteredItems.length} barang tercatat
+            · {filteredItems.length} barang ada dalam catatan
           </span>
 
           {/* Month Filter Buttons */}
@@ -215,7 +215,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               title="Kosongkan seluruh data tabel"
             >
               <Trash2 className="w-3.5 h-3.5 text-rose-400" />
-              <span>Hapus Semua Barang</span>
+              <span>Hapus semua barang</span>
             </button>
           )}
         </div>

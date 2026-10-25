@@ -663,10 +663,6 @@ export default function App() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-700/60 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
                     <div>
                       <div className="flex items-center gap-2.5 flex-wrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-mono font-bold tracking-wide">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          NIAGANOVA MATRIX
-                        </span>
                         <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
                           Pencatatan Arus Kas & Sisa Modal
                         </h1>
@@ -784,8 +780,6 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5 font-mono text-[11px]">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-              <span className="text-slate-300 font-semibold tracking-wide">WiseProfit Matrix</span>
-              <span className="text-slate-600">·</span>
               <span>Kalkulator Dagang & Arus Kas Cloud Real-time</span>
             </div>
             <div className="flex items-center gap-2 text-slate-400">

@@ -129,11 +129,11 @@ export const WiseProfitLogo: React.FC<WiseProfitLogoProps> = ({
               <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">WiseProfit</span>
             </span>
             <span className="px-1.5 py-0.5 rounded-md text-[9px] font-mono font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-xs">
-              PRO
+              USAHA
             </span>
           </div>
           <span className={`${current.sub} text-slate-400 font-mono tracking-tight mt-1`}>
-            Pengelolaan Dagang & Arus Kas Digital
+            Catatan usaha jadi lebih mudah
           </span>
         </div>
       )}

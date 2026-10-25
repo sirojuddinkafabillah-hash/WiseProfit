@@ -36,7 +36,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
   return (
     <section className="mb-6 space-y-4">
       {/* Top Banner: Modal Awal & Real-Time Flow Breakdown */}
-      <div className="bg-slate-900/85 backdrop-blur-xl border border-slate-700/60 text-white rounded-2xl p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+      <div className="bg-slate-900 border border-slate-800 text-white rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           {/* Modal Awal Setting */}
           <div className="flex items-center gap-3.5">
@@ -160,7 +160,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       {/* 4 Synchronized Luxury Dark Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: SISA KAS SAAT INI (KASIR) */}
-        <div className="bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-emerald-500/30 border-t-2 border-t-emerald-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/15 rounded-full blur-2xl pointer-events-none" />
           
           <div>

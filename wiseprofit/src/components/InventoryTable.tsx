@@ -104,7 +104,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
     let totalKapasitasUnit = 0;
     let totalGain = 0;
     let totalEquitySisa = 0;
-    let totalSetelahUntung = 0;
+    let totalOmzet = 0;
 
     for (const item of filteredItems) {
       const c = calculateItem(item);
@@ -113,7 +113,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       totalKapasitasUnit += item.jumlahBarangWadah;
       totalGain += c.totalGainTerjual;
       totalEquitySisa += c.nilaiSisaStok;
-      totalSetelahUntung += c.totalSetelahUntungTerjual;
+      totalOmzet += c.totalPendapatanTerjual;
     }
 
     return {
@@ -122,7 +122,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       totalKapasitasUnit,
       totalGain,
       totalEquitySisa,
-      totalSetelahUntung,
+      totalOmzet,
     };
   }, [filteredItems]);
 
@@ -247,7 +247,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                 LABA (GAIN)
               </th>
               <th className="py-3.5 px-3 text-right min-w-[135px] text-amber-300 font-bold">
-                EKUITAS & TOTAL
+                OMZET TERJUAL
               </th>
               <th className="py-3.5 px-4 text-right min-w-[145px] bg-emerald-950/40 text-emerald-300 font-bold border-l border-r border-emerald-500/25">
                 SISA KAS KASIR
@@ -407,15 +407,26 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                             +{formatRupiah(calc.gainSatuan)}/unit ({formatAngka(calc.marginPersen, 0)}%)
                           </div>
                         </div>
+                      ) : calc.totalGainTerjual < 0 ? (
+                        <div>
+                          <div className="text-rose-400 font-bold text-xs">
+                            {formatRupiah(calc.totalGainTerjual)}
+                          </div>
+                          <div className="text-[10px] text-rose-400 mt-0.5">
+                            {formatRupiah(calc.gainSatuan)}/unit ({formatAngka(calc.marginPersen, 0)}%)
+                          </div>
+                        </div>
                       ) : (
                         <div>
-                          <div className="text-slate-500 text-xs">Rp 0</div>
-                          <div className="text-[10px] text-slate-500 mt-0.5">Belum ada laku</div>
+                          <div className="text-slate-300 text-xs">Rp 0</div>
+                          <div className="text-[10px] text-slate-500 mt-0.5">
+                            {Number(item.jumlahBarangDijualSatuan) > 0 ? 'Impas' : 'Belum ada laku'}
+                          </div>
                         </div>
                       )}
                     </td>
 
-                    {/* EKUITAS & TOTAL SETELAH UNTUNG */}
+                    {/* OMZET TERJUAL & NILAI STOK TERSISA */}
                     <td className="py-4 px-3 text-right align-middle font-mono tabular-nums">
                       <div className="font-bold text-amber-300 text-xs">
                         {formatRupiah(calc.totalSetelahUntungTerjual)}
@@ -484,7 +495,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                   +{formatRupiah(tableTotals.totalGain)}
                 </td>
                 <td className="py-4 px-3 text-right font-extrabold text-amber-300">
-                  {formatRupiah(tableTotals.totalSetelahUntung)}
+                  {formatRupiah(tableTotals.totalOmzet)}
                 </td>
                 <td className="py-4 px-4 text-right font-extrabold bg-emerald-950/70 text-emerald-300 border-l border-r border-emerald-500/30">
                   {formatRupiah(saldoKasSaatIni)}

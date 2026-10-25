@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Kasir & Inventori</span>
+                <span>Kasir & Stok</span>
                 {itemsCount > 0 && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                     activePage === 'inventory' ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400'
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <TrendingUp className="w-3.5 h-3.5" />
-                <span>Laporan Penjualan</span>
+                <span>Laporan Usaha</span>
               </button>
 
               <button
@@ -100,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                <span>Penarikan Kas</span>
+                <span>Penarikan Uang</span>
                 {withdrawalsCount > 0 && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                     activePage === 'withdrawals' ? 'bg-slate-950/30 text-white' : 'bg-rose-500/20 text-rose-300'
@@ -135,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
               >
                 <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Panduan Kas</span>
+                <span>Panduan Keuangan</span>
               </button>
               {onOpenWithdrawalModal && (
                 <button
@@ -145,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
                   title="Catat penarikan kas (ambil tunai dari kasir)"
                 >
                   <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Tarik Kas</span>
+                  <span>Tarik Uang</span>
                   {withdrawalsCount > 0 && (
                     <span className="px-1.5 py-0.2 bg-rose-500/20 text-rose-300 rounded-full text-[10px]">
                       {withdrawalsCount}
@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
               >
                 <Printer className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Cetak Nota</span>
+                <span>Cetak Laporan</span>
               </button>
               <button
                 type="button"
@@ -167,7 +167,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 hover:text-white text-slate-200 transition-colors cursor-pointer font-semibold text-[11px]"
               >
                 <Download className="w-3.5 h-3.5 text-slate-400" />
-                <span>Cadangan</span>
+                <span>Simpan & Pulihkan</span>
               </button>
             </nav>
 
@@ -280,7 +280,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-            <span>Tarik Kas</span>
+            <span>Tarik Uang</span>
             {withdrawalsCount > 0 && (
               <span className="text-[10px] opacity-80">({withdrawalsCount})</span>
             )}

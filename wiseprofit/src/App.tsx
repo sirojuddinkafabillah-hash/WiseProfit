@@ -81,7 +81,7 @@ export default function App() {
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
 
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
-  const [activePage, setActivePage] = useState<AppPage>('home');
+  const [activePage, setActivePage] = useState<AppPage>('inventory');\n  const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);\n  const [profilePanelWidth, setProfilePanelWidth] = useState(() => Math.max(320, Math.round(window.innerWidth / 3)));
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
@@ -583,9 +583,7 @@ export default function App() {
       {/* Main Foreground Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top Header with Navigation */}
-        <Header
-          activePage={activePage}
-          onChangePage={setActivePage}
+        <Header\n          activePage={isProfilePanelOpen ? 'home' : activePage}\n          onChangePage={(page) => {\n            if (page === 'home') {\n              if (!user) { setIsAuthModalOpen(true); return; }\n              setIsProfilePanelOpen((open) => !open);\n            } else {\n              setActivePage(page);\n              setIsProfilePanelOpen(false);\n            }\n          }}
           itemsCount={items.length}
           onOpenAddModal={() => {
             if (!user) {
@@ -712,34 +710,6 @@ export default function App() {
             </div>
           ) : (
             <>
-              {/* HOME: profil, tema, catatan pribadi, dan keluar */}
-              {activePage === 'home' && (
-                <HomePage
-                  user={user}
-                  theme={backgroundTheme}
-                  onThemeChange={handleThemeChange}
-                  accentChoice={accentChoice}
-                  onAccentChange={setAccentChoice}
-                  tableChoice={tableChoice}
-                  onTableChange={setTableChoice}
-                  textChoice={textChoice}
-                  onTextChange={setTextChoice}
-                  fontChoice={fontChoice}
-                  onFontChange={setFontChoice}
-                  wallpaper={wallpaper}
-                  onWallpaperChange={setWallpaper}
-                  onSaveName={handleSaveDisplayName}
-                  onLogout={async () => {
-                    try {
-                      await logout();
-                    } catch (error) {
-                      console.error('Logout failed:', error);
-                      setNotification('Belum berhasil keluar. Silakan coba lagi.');
-                    }
-                  }}
-                />
-              )}
-
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
                 <div className="space-y-6">
@@ -849,7 +819,57 @@ export default function App() {
           </div>
         </footer>
 
-        {/* Modals */}
+      {user && isProfilePanelOpen && (
+        <div className="fixed inset-0 z-[60]">
+          <button type="button" aria-label="Tutup panel profil" onClick={() => setIsProfilePanelOpen(false)} className="absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>
+          <aside
+            className="absolute right-0 top-0 flex h-full max-w-full flex-col border-l border-slate-700 bg-slate-950/98 shadow-2xl"
+            style={{ width: window.innerWidth < 640 ? '100vw' : `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` }}
+          >
+            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
+              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">Profil & Catatan</p><p className="text-[11px] text-slate-400">Panel samping WiseProfit</p></div>
+              <div className="flex shrink-0 items-center gap-1">
+                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title="Lebar sepertiga layar" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
+                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title="Perbesar panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Lebar</button>
+                <button type="button" onClick={() => setProfilePanelWidth(320)} title="Perkecil panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Kecil</button>
+                <button type="button" onClick={() => setIsProfilePanelOpen(false)} title="Tutup panel" className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
+              </div>
+            </div>
+            <div
+              role="separator"
+              aria-label="Ubah lebar panel profil"
+              aria-orientation="vertical"
+              onPointerDown={(event) => { if (window.innerWidth >= 640) { event.currentTarget.setPointerCapture(event.pointerId); } }}
+              onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - event.clientX))); }}
+              className="absolute left-0 top-0 z-10 hidden h-full w-1.5 -translate-x-1/2 cursor-col-resize touch-none bg-transparent hover:bg-emerald-400/70 sm:block"
+            />
+            <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+              <HomePage
+                user={user}
+                theme={backgroundTheme}
+                onThemeChange={handleThemeChange}
+                accentChoice={accentChoice}
+                onAccentChange={setAccentChoice}
+                tableChoice={tableChoice}
+                onTableChange={setTableChoice}
+                textChoice={textChoice}
+                onTextChange={setTextChoice}
+                fontChoice={fontChoice}
+                onFontChange={setFontChoice}
+                wallpaper={wallpaper}
+                onWallpaperChange={setWallpaper}
+                onSaveName={handleSaveDisplayName}
+                onLogout={async () => {
+                  try { await logout(); setIsProfilePanelOpen(false); }
+                  catch (error) { console.error('Logout failed:', error); setNotification('Belum berhasil keluar. Silakan coba lagi.'); }
+                }}
+              />
+            </div>
+          </aside>
+        </div>
+      )}
+
+                {/* Modals */}
         <ItemModal
           isOpen={isItemModalOpen}
           onClose={() => {

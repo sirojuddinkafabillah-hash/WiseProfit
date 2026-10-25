@@ -276,7 +276,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                   <tr key={item.id} className="hover:bg-slate-800/35 transition-colors group">
                     {/* NO */}
                     <td className="py-4 px-3 text-center align-middle font-mono font-bold text-slate-400 text-xs">
-                      {item.noUrut !== undefined ? item.noUrut : index + 1}
+                      {index + 1}
                     </td>
 
                     {/* BARANG & WAKTU (HERO COLUMN) */}

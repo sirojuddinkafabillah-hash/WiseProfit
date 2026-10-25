@@ -81,7 +81,9 @@ export default function App() {
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
 
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
-  const [activePage, setActivePage] = useState<AppPage>('inventory');\n  const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);\n  const [profilePanelWidth, setProfilePanelWidth] = useState(() => Math.max(320, Math.round(window.innerWidth / 3)));
+  const [activePage, setActivePage] = useState<AppPage>('inventory');
+  const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);
+  const [profilePanelWidth, setProfilePanelWidth] = useState(() => Math.max(320, Math.round(window.innerWidth / 3)));
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
@@ -583,7 +585,17 @@ export default function App() {
       {/* Main Foreground Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top Header with Navigation */}
-        <Header\n          activePage={isProfilePanelOpen ? 'home' : activePage}\n          onChangePage={(page) => {\n            if (page === 'home') {\n              if (!user) { setIsAuthModalOpen(true); return; }\n              setIsProfilePanelOpen((open) => !open);\n            } else {\n              setActivePage(page);\n              setIsProfilePanelOpen(false);\n            }\n          }}
+        <Header
+          activePage={isProfilePanelOpen ? 'home' : activePage}
+          onChangePage={(page) => {
+            if (page === 'home') {
+              if (!user) { setIsAuthModalOpen(true); return; }
+              setIsProfilePanelOpen((open) => !open);
+            } else {
+              setActivePage(page);
+              setIsProfilePanelOpen(false);
+            }
+          }}
           itemsCount={items.length}
           onOpenAddModal={() => {
             if (!user) {

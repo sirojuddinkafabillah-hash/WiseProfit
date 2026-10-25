@@ -8,7 +8,8 @@
 @layer base {
   html, body {
     font-family: var(--font-sans);
-    background-color: #080d1a;
+    background-color: #0b1120;
+    background-image: radial-gradient(ellipse at 50% -25%, rgba(16, 185, 129, 0.08), transparent 55%);
     color: #f8fafc;
     min-height: 100vh;
     overflow-x: hidden;
@@ -78,5 +79,26 @@
     background: #ffffff !important;
     background-image: none !important;
     color: #000000 !important;
+  }
+}
+
+
+/* WiseProfit workspace refinement: calmer, consistent SaaS surfaces */
+.dashboard-hero {
+  padding: 0.25rem 0 0.5rem;
+}
+.dashboard-hero h1 {
+  letter-spacing: -0.04em;
+}
+button, a, input, select, textarea {
+  transition-duration: 160ms;
+}
+:focus-visible {
+  outline: 2px solid rgba(52, 211, 153, 0.85);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .dashboard-hero {
+    padding-top: 0.25rem;
   }
 }

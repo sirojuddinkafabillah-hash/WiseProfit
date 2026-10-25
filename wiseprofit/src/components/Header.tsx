@@ -47,22 +47,22 @@ export const Header: React.FC<HeaderProps> = ({
   const { user, logout } = useAuth();
 
   return (
-    <header className="no-print sticky top-0 z-40 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors">
+    <header className="no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Bar */}
-        <div className="flex items-center justify-between gap-3 h-[4.5rem]">
+        <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">
           {/* Brand & Logo */}
           <div className="flex items-center gap-4 lg:gap-6">
             <WiseProfitLogo size="md" showText={true} />
 
             {/* Desktop Navigation Tabs */}
-            <nav className="hidden md:flex items-center gap-1 p-1.5 bg-slate-900/90 border border-slate-800/90 rounded-2xl shadow-inner font-sans text-sm">
+            <nav className="hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
               <button
                 type="button"
                 onClick={() => onChangePage('inventory')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
                   activePage === 'inventory'
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/25'
+                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                 }`}
               >
@@ -82,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onChangePage('reports')}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                   activePage === 'reports'
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/25'
+                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                 }`}
               >
@@ -95,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onChangePage('withdrawals')}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                   activePage === 'withdrawals'
-                    ? 'bg-rose-500 text-white shadow-md shadow-rose-500/25'
+                    ? 'bg-rose-400/10 text-rose-300 border border-rose-400/20'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                 }`}
               >
@@ -115,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onChangePage('import')}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                   activePage === 'import'
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/25'
+                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                 }`}
               >

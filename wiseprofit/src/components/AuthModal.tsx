@@ -160,7 +160,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
       } else if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
         setErrorMsg('Email atau kata sandi tidak cocok. Silakan periksa kembali atau buat akun baru.');
       } else if (code === 'auth/email-already-in-use') {
-        setErrorMsg('Email ini sudah terdaftar. Silakan pilih "Masuk Akun".');
+        setErrorMsg('Email ini sudah terdaftar. Silakan pilih "Masuk".');
       } else if (code === 'auth/invalid-email') {
         setErrorMsg('Format alamat email tidak valid.');
       } else if (code === 'auth/weak-password') {
@@ -343,7 +343,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
               <div className="p-3.5 bg-amber-950/40 border border-amber-500/40 rounded-2xl text-xs text-amber-200 font-mono space-y-1.5">
                 <div className="flex items-center gap-2 font-bold text-amber-300">
                   <KeyRound className="w-4 h-4" />
-                  <span>Autentikasi Tambahan Diperlukan</span>
+                  <span>Perlu verifikasi tambahan</span>
                 </div>
                 <p className="text-[11px] text-amber-300/80">
                   {isTotpFactor
@@ -411,7 +411,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     ) : (
                       <>
                         <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
-                        <span>Verifikasi & Masuk Akun</span>
+                        <span>Verifikasi & Masuk</span>
                       </>
                     )}
                   </button>
@@ -474,7 +474,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  <span>Email & Sandi</span>
+                  <span>Email dan kata sandi</span>
                 </button>
               </div>
 
@@ -520,7 +520,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                   <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl text-[11px] text-slate-400 font-mono space-y-1">
                     <div className="flex items-center gap-1.5 text-emerald-400 font-semibold">
                       <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Autentikasi Supabase</span>
+                      <span>Akses akun aman</span>
                     </div>
                     <p>Mendukung verifikasi 2 langkah (MFA) otomatis jika akun Google Anda memiliki perlindungan keamanan ganda.</p>
                   </div>
@@ -586,12 +586,12 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     ) : isRegisterMode ? (
                       <>
                         <UserPlus className="w-4 h-4 stroke-[2.5]" />
-                        <span>Daftar Akun Baru</span>
+                        <span>Buat akun baru</span>
                       </>
                     ) : (
                       <>
                         <LogIn className="w-4 h-4 stroke-[2.5]" />
-                        <span>Masuk Akun</span>
+                        <span>Masuk</span>
                       </>
                     )}
                   </button>
@@ -616,7 +616,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
               {/* Quick Info Footer */}
               <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-slate-400 flex items-center gap-1.5 justify-center">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Login Supabase WiseProfit</span>
+                <span>Masuk ke WiseProfit</span>
               </div>
             </>
           )}

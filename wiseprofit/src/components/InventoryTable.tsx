@@ -215,7 +215,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               title="Kosongkan seluruh data tabel"
             >
               <Trash2 className="w-3.5 h-3.5 text-rose-400" />
-              <span>Hapus Semua</span>
+              <span>Hapus Semua Barang</span>
             </button>
           )}
         </div>
@@ -592,27 +592,27 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       className="w-full accent-emerald-500 cursor-pointer bg-slate-800 rounded-lg"
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
-                      <span>0 (Belum laku)</span>
-                      <span>Habis ({modalQuickSoldItem.jumlahBarangWadah} unit)</span>
+                      <span>Belum ada yang terjual</span>
+                      <span>Stok habis ({modalQuickSoldItem.jumlahBarangWadah} unit)</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
                   <div className="flex justify-between text-slate-400">
-                    <span>Sisa Stok Belum Terjual:</span>
+                    <span>Stok yang Masih Ada:</span>
                     <span className="font-bold text-slate-200">
                       {modalQuickSoldItem.jumlahBarangWadah - (Number(quickSoldInputVal) || 0)} unit
                     </span>
                   </div>
                   <div className="flex justify-between text-slate-400">
-                    <span>Untung Bersih (Gain):</span>
+                    <span>Keuntungan dari yang Terjual:</span>
                     <span className="font-bold text-emerald-400">
                       +{formatRupiah(tempCalc.totalGainTerjual)}
                     </span>
                   </div>
                   <div className="flex justify-between text-slate-400">
-                    <span>Total Setelah Untung:</span>
+                    <span>Nilai Usaha Saat Ini:</span>
                     <span className="font-bold text-amber-300">
                       {formatRupiah(tempCalc.totalSetelahUntungTerjual)}
                     </span>

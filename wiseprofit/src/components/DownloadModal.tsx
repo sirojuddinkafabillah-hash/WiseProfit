@@ -52,7 +52,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
   const handleDownloadExcel = () => {
     try {
       exportToStyledExcel(items, modalAwal);
-      setStatusMessage({ type: 'success', text: 'Data berhasil diekspor ke file Excel (.xlsx) dengan 12 kolom!' });
+      setStatusMessage({ type: 'success', text: 'Data berhasil disimpan sebagai file Excel.' });
     } catch (e: any) {
       setStatusMessage({ type: 'error', text: `Gagal mengekspor ke Excel: ${e?.message || 'Error'}` });
     }
@@ -62,7 +62,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
   const handleDownloadCSV = () => {
     try {
       exportToStandardCSV(items, modalAwal);
-      setStatusMessage({ type: 'success', text: 'Data berhasil diekspor ke format CSV dengan 12 kolom!' });
+      setStatusMessage({ type: 'success', text: 'Data berhasil disimpan sebagai file CSV.' });
     } catch (e: any) {
       setStatusMessage({ type: 'error', text: `Gagal mengekspor ke CSV: ${e?.message || 'Error'}` });
     }
@@ -74,7 +74,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
       exportBackupJSON(items, modalAwal);
       setStatusMessage({ 
         type: 'success', 
-        text: 'File cadangan (.JSON) berhasil diunduh! Simpan file ini di tempat aman (Google Drive / WA).' 
+        text: 'File cadangan berhasil diunduh. Simpan di tempat yang aman.' 
       });
     } catch {
       setStatusMessage({ type: 'error', text: 'Gagal mengunduh file cadangan.' });
@@ -212,7 +212,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
 </head>
 <body>
   <div class="card">
-    <h1>Laporan Toko & Arus Kas Mandiri</h1>
+    <h1>Laporan Usaha</h1>
     <p style="font-size: 12px; color: #64748b;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
     <div class="stats">
       <div class="stat">
@@ -220,11 +220,11 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         <div class="stat-val">Rp ${modalAwal.toLocaleString('id-ID')}</div>
       </div>
       <div class="stat">
-        <div class="stat-label">Sisa Kas Berjalan</div>
+        <div class="stat-label">Uang yang Tersedia</div>
         <div class="stat-val text-emerald">Rp ${summary.saldoKasSaatIni.toLocaleString('id-ID')}</div>
       </div>
       <div class="stat">
-        <div class="stat-label">Total Untung (Gain)</div>
+        <div class="stat-label">Keuntungan Penjualan</div>
         <div class="stat-val text-emerald">Rp ${summary.totalGainTerjual.toLocaleString('id-ID')}</div>
       </div>
       <div class="stat">
@@ -354,7 +354,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     className="px-3.5 py-1.5 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm shadow-emerald-500/20"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isCloudSyncing ? 'animate-spin' : ''}`} />
-                    <span>Sinkronkan Sekarang</span>
+                    <span>Simpan ke akun</span>
                   </button>
                   <button
                     onClick={handleCloudFetchNow}

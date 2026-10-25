@@ -659,46 +659,6 @@ export default function App() {
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
                 <div className="space-y-6">
-                  {/* Title & Quick Actions Strip */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-700/60 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
-                    <div>
-                      <div className="flex items-center gap-2.5 flex-wrap">
-                        <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
-                          Pencatatan Arus Kas & Sisa Modal
-                        </h1>
-                        <span className="text-[11px] font-mono text-slate-400 font-medium">
-                          · {currentRealTime}
-                        </span>
-
-                        {/* Supabase Active / Offline Badge */}
-                        <div 
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg font-mono font-semibold text-[11px] ${
-                            !isOnline || tokenServiceStatus === 'pending_activation'
-                              ? 'bg-amber-950/70 border border-amber-500/40 text-amber-300'
-                              : 'bg-emerald-950/70 border border-emerald-500/30 text-emerald-300'
-                          }`}
-                          title={
-                            !isOnline || tokenServiceStatus === 'pending_activation'
-                              ? 'Mode offline aktif: data tersimpan aman di perangkat lokal dan akan disinkronkan ke Cloud'
-                              : 'Penyimpanan Supabase terenkripsi per akun'
-                          }
-                        >
-                          <Cloud className={`w-3.5 h-3.5 ${!isOnline || tokenServiceStatus === 'pending_activation' ? 'text-amber-400' : 'text-emerald-400'}`} />
-                          <span>Cloud Database:</span>
-                          <span className="text-white font-bold">
-                            {!isOnline || tokenServiceStatus === 'pending_activation' ? 'Mode Offline (Aman Lokal)' : 'Tersinkronisasi'}
-                          </span>
-                          <span className={`w-1.5 h-1.5 rounded-full ${!isOnline || tokenServiceStatus === 'pending_activation' ? 'bg-amber-400' : 'bg-emerald-400 animate-ping'}`} />
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1 font-sans">
-                        Penyimpanan cloud terisolasi untuk akun <strong className="text-slate-200">{user.email || user.displayName}</strong>. Data tersimpan permanen di Supabase.
-                      </p>
-                    </div>
-
-
-                  </div>
-
                   {/* Rolling Cash Balance & Capital Cards Focusing on Sisa Kas */}
                   <SummaryCards
                     summary={summary}

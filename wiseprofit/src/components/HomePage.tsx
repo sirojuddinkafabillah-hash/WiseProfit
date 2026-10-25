@@ -35,7 +35,15 @@ const THEMES: { id: BackgroundTheme; name: string; description: string; preview:
 
 export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
   const [name, setName] = useState(user.displayName || '');
-  const [noteFolders, setNoteFolders] = useState<NoteFolder[]>(DEFAULT_NOTE_FOLDERS);\n  const [savedNotes, setSavedNotes] = useState<SavedNote[]>([]);\n  const [activeFolderId, setActiveFolderId] = useState('all');\n  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);\n  const [draftTitle, setDraftTitle] = useState('');\n  const [draftContent, setDraftContent] = useState('');\n  const [noteSearch, setNoteSearch] = useState('');\n  const [newFolderName, setNewFolderName] = useState('');\n  const [showFolderInput, setShowFolderInput] = useState(false);
+  const [noteFolders, setNoteFolders] = useState<NoteFolder[]>(DEFAULT_NOTE_FOLDERS);
+  const [savedNotes, setSavedNotes] = useState<SavedNote[]>([]);
+  const [activeFolderId, setActiveFolderId] = useState('all');
+  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
+  const [draftTitle, setDraftTitle] = useState('');
+  const [draftContent, setDraftContent] = useState('');
+  const [noteSearch, setNoteSearch] = useState('');
+  const [newFolderName, setNewFolderName] = useState('');
+  const [showFolderInput, setShowFolderInput] = useState(false);
   const [isSavingName, setIsSavingName] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -63,7 +71,34 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
 
   useEffect(() => {
     try {
-      const foldersRaw = localStorage.getItem(`wp_note_folders_${user.uid}`);\n      const notesRaw = localStorage.getItem(`wp_notes_v2_${user.uid}`);\n      const folders = foldersRaw ? JSON.parse(foldersRaw) as NoteFolder[] : DEFAULT_NOTE_FOLDERS;\n      const notes = notesRaw ? JSON.parse(notesRaw) as SavedNote[] : [];\n      const legacyNote = localStorage.getItem(`wp_notes_${user.uid}`) || '';\n      const migratedNotes = notes.length || !legacyNote.trim() ? notes : [{ id: `legacy-${Date.now()}`, title: 'Catatan lama', content: legacyNote, folderId: 'personal', updatedAt: Date.now() }];\n      setNoteFolders(folders.length ? folders : DEFAULT_NOTE_FOLDERS);\n      setSavedNotes(migratedNotes);\n      setActiveFolderId('all');\n      setActiveNoteId(null);\n      setDraftTitle('');\n      setDraftContent('');\n      setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));\n    } catch {\n      setNoteFolders(DEFAULT_NOTE_FOLDERS);\n      setSavedNotes([]);\n      setLocalPhoto(null);\n    }\n  }, [user.uid]);\n\n  useEffect(() => {\n    try {\n      localStorage.setItem(`wp_note_folders_${user.uid}`, JSON.stringify(noteFolders));\n      localStorage.setItem(`wp_notes_v2_${user.uid}`, JSON.stringify(savedNotes));\n    } catch (error) {\n      console.error('Catatan belum dapat disimpan di browser:', error);\n    }\n  }, [user.uid, noteFolders, savedNotes]);
+      const foldersRaw = localStorage.getItem(`wp_note_folders_${user.uid}`);
+      const notesRaw = localStorage.getItem(`wp_notes_v2_${user.uid}`);
+      const folders = foldersRaw ? JSON.parse(foldersRaw) as NoteFolder[] : DEFAULT_NOTE_FOLDERS;
+      const notes = notesRaw ? JSON.parse(notesRaw) as SavedNote[] : [];
+      const legacyNote = localStorage.getItem(`wp_notes_${user.uid}`) || '';
+      const migratedNotes = notes.length || !legacyNote.trim() ? notes : [{ id: `legacy-${Date.now()}`, title: 'Catatan lama', content: legacyNote, folderId: 'personal', updatedAt: Date.now() }];
+      setNoteFolders(folders.length ? folders : DEFAULT_NOTE_FOLDERS);
+      setSavedNotes(migratedNotes);
+      setActiveFolderId('all');
+      setActiveNoteId(null);
+      setDraftTitle('');
+      setDraftContent('');
+      setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));
+    } catch {
+      setNoteFolders(DEFAULT_NOTE_FOLDERS);
+      setSavedNotes([]);
+      setLocalPhoto(null);
+    }
+  }, [user.uid]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`wp_note_folders_${user.uid}`, JSON.stringify(noteFolders));
+      localStorage.setItem(`wp_notes_v2_${user.uid}`, JSON.stringify(savedNotes));
+    } catch (error) {
+      console.error('Catatan belum dapat disimpan di browser:', error);
+    }
+  }, [user.uid, noteFolders, savedNotes]);
 
   const handleWallpaperSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -131,7 +166,57 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     setNameMessage(ok ? 'Nama berhasil disimpan.' : 'Nama belum tersimpan. Coba lagi.');
   };
 
-  const createNote = () => {\n    const folderId = activeFolderId === 'all' ? 'personal' : activeFolderId;\n    const id = `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;\n    const newNote: SavedNote = { id, title: '', content: '', folderId, updatedAt: Date.now() };\n    setSavedNotes((previous) => [newNote, ...previous]);\n    setActiveNoteId(id);\n    setDraftTitle('');\n    setDraftContent('');\n  };\n\n  const openNote = (item: SavedNote) => {\n    setActiveNoteId(item.id);\n    setDraftTitle(item.title);\n    setDraftContent(item.content);\n  };\n\n  const updateCurrentNote = (field: 'title' | 'content', value: string) => {\n    if (field === 'title') setDraftTitle(value); else setDraftContent(value);\n    if (!activeNoteId) return;\n    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, [field]: value, updatedAt: Date.now() } : item));\n  };\n\n  const saveNote = () => {\n    if (!activeNoteId) { setNameMessage('Pilih atau buat catatan terlebih dahulu.'); return; }\n    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, title: draftTitle.trim() || 'Catatan tanpa judul', content: draftContent, updatedAt: Date.now() } : item));\n    setNameMessage('Catatan disimpan di browser/perangkat ini.');\n  };\n\n  const addNoteFolder = () => {\n    const clean = newFolderName.trim();\n    if (!clean) return;\n    const folder = { id: `folder-${Date.now()}`, name: clean.slice(0, 32) };\n    setNoteFolders((previous) => [...previous, folder]);\n    setActiveFolderId(folder.id);\n    setNewFolderName('');\n    setShowFolderInput(false);\n  };\n\n  const deleteCurrentNote = () => {\n    if (!activeNoteId) return;\n    setSavedNotes((previous) => previous.filter((item) => item.id !== activeNoteId));\n    setActiveNoteId(null);\n    setDraftTitle('');\n    setDraftContent('');\n    setNameMessage('Catatan dihapus.');\n  };\n\n  const visibleNotes = savedNotes\n    .filter((item) => activeFolderId === 'all' || item.folderId === activeFolderId)\n    .filter((item) => `${item.title} ${item.content}`.toLowerCase().includes(noteSearch.toLowerCase()))\n    .sort((a, b) => b.updatedAt - a.updatedAt);\n  const activeNote = savedNotes.find((item) => item.id === activeNoteId) || null;
+  const createNote = () => {
+    const folderId = activeFolderId === 'all' ? 'personal' : activeFolderId;
+    const id = `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const newNote: SavedNote = { id, title: '', content: '', folderId, updatedAt: Date.now() };
+    setSavedNotes((previous) => [newNote, ...previous]);
+    setActiveNoteId(id);
+    setDraftTitle('');
+    setDraftContent('');
+  };
+
+  const openNote = (item: SavedNote) => {
+    setActiveNoteId(item.id);
+    setDraftTitle(item.title);
+    setDraftContent(item.content);
+  };
+
+  const updateCurrentNote = (field: 'title' | 'content', value: string) => {
+    if (field === 'title') setDraftTitle(value); else setDraftContent(value);
+    if (!activeNoteId) return;
+    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, [field]: value, updatedAt: Date.now() } : item));
+  };
+
+  const saveNote = () => {
+    if (!activeNoteId) { setNameMessage('Pilih atau buat catatan terlebih dahulu.'); return; }
+    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, title: draftTitle.trim() || 'Catatan tanpa judul', content: draftContent, updatedAt: Date.now() } : item));
+    setNameMessage('Catatan disimpan di browser/perangkat ini.');
+  };
+
+  const addNoteFolder = () => {
+    const clean = newFolderName.trim();
+    if (!clean) return;
+    const folder = { id: `folder-${Date.now()}`, name: clean.slice(0, 32) };
+    setNoteFolders((previous) => [...previous, folder]);
+    setActiveFolderId(folder.id);
+    setNewFolderName('');
+    setShowFolderInput(false);
+  };
+
+  const deleteCurrentNote = () => {
+    if (!activeNoteId) return;
+    setSavedNotes((previous) => previous.filter((item) => item.id !== activeNoteId));
+    setActiveNoteId(null);
+    setDraftTitle('');
+    setDraftContent('');
+    setNameMessage('Catatan dihapus.');
+  };
+
+  const visibleNotes = savedNotes
+    .filter((item) => activeFolderId === 'all' || item.folderId === activeFolderId)
+    .filter((item) => `${item.title} ${item.content}`.toLowerCase().includes(noteSearch.toLowerCase()))
+    .sort((a, b) => b.updatedAt - a.updatedAt);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);

@@ -10,12 +10,12 @@ import {
   ShoppingBag, 
   TrendingUp, 
   UploadCloud,
-  ArrowDownCircle
+  ArrowDownCircle,
+  Home
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { WiseProfitLogo } from './WiseProfitLogo';
 
-export type AppPage = 'inventory' | 'reports' | 'withdrawals' | 'import';
+export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import';
 
 interface HeaderProps {
   activePage: AppPage;
@@ -53,7 +53,15 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">
           {/* Brand & Logo */}
           <div className="flex items-center gap-4 lg:gap-6">
-            <WiseProfitLogo size="md" showText={true} />
+            <button
+              type="button"
+              onClick={() => onChangePage('home')}
+              aria-label="Buka Beranda"
+              className={`flex items-center gap-2.5 rounded-2xl border px-3 py-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-400/40 bg-emerald-400/10 text-emerald-200' : 'border-slate-800 bg-slate-900/70 text-slate-200 hover:border-emerald-400/30 hover:bg-slate-800'}`}
+            >
+              <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${activePage === 'home' ? 'bg-emerald-400 text-slate-950' : 'bg-slate-800 text-emerald-300'}`}><Home className="h-5 w-5" /></span>
+              <span className="hidden sm:flex flex-col items-start leading-tight"><span className="text-sm font-bold">Beranda</span><span className="mt-0.5 text-[10px] text-slate-400">Profil & pengaturan</span></span>
+            </button>
 
             {/* Desktop Navigation Tabs */}
             <nav className="hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
@@ -241,6 +249,14 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Navigation Bar (visible on smaller screens) */}
         <div className="flex md:hidden items-center justify-between gap-1 py-2.5 border-t border-slate-800/80 font-sans text-xs overflow-x-auto">
+          <button
+            type="button"
+            onClick={() => onChangePage('home')}
+            className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold transition-all shrink-0 ${activePage === 'home' ? 'bg-emerald-500 text-slate-950 shadow-sm shadow-emerald-500/30' : 'text-slate-400 hover:text-white bg-slate-900/60'}`}
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>Beranda</span>
+          </button>
           <button
             type="button"
             onClick={() => onChangePage('inventory')}

@@ -7,6 +7,16 @@ interface HomePageProps {
   user: AppUser;
   theme: BackgroundTheme;
   onThemeChange: (theme: BackgroundTheme) => void;
+  accentChoice: string;
+  onAccentChange: (color: string) => void;
+  tableChoice: string;
+  onTableChange: (color: string) => void;
+  textChoice: string;
+  onTextChange: (color: string) => void;
+  fontChoice: string;
+  onFontChange: (font: string) => void;
+  onWallpaperChange: (wallpaper: string | null) => void;
+  wallpaper: string | null;
   onSaveName: (name: string) => Promise<boolean>;
   onLogout: () => Promise<void>;
 }
@@ -18,7 +28,7 @@ const THEMES: { id: BackgroundTheme; name: string; description: string; preview:
   { id: 'light-crystal', name: 'Terang', description: 'Latar cerah dan ringan', preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
 ];
 
-export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, onSaveName, onLogout }) => {
+export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
   const [name, setName] = useState(user.displayName || '');
   const [note, setNote] = useState('');
   const [isSavingName, setIsSavingName] = useState(false);
@@ -26,6 +36,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [localPhoto, setLocalPhoto] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement | null>(null);
+  const wallpaperInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setName(user.displayName || '');
@@ -39,6 +50,18 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       setNote('');
     }
   }, [user.uid]);
+
+  const handleWallpaperSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { setNameMessage('Pilih file gambar untuk wallpaper.'); return; }
+    if (file.size > 3 * 1024 * 1024) { setNameMessage('Ukuran wallpaper maksimal 3 MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => { const result = typeof reader.result === 'string' ? reader.result : null; if (result) { onWallpaperChange(result); setNameMessage('Wallpaper berhasil diterapkan di perangkat ini.'); } };
+    reader.onerror = () => setNameMessage('Foto wallpaper tidak dapat dibaca.');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
 
   const handlePhotoSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -155,6 +178,23 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
                 <p className="mt-1 text-xs leading-relaxed text-slate-400">{item.description}</p>
               </button>
             ))}
+          </div>
+        </div>
+
+
+        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/90 p-5 sm:p-6 lg:col-span-2">
+          <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-violet-400/10 p-2.5 text-violet-300"><Palette className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Personalisasi tampilan</h2><p className="mt-1 text-xs text-slate-400">Atur tema, font, warna tabel, warna tulisan, dan wallpaper sesuka hati.</p></div></div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Jenis font</label><select value={fontChoice} onChange={(e) => onFontChange(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white"><option value="Inter">Inter — Modern</option><option value="Arial">Arial — Sederhana</option><option value="Georgia">Georgia — Klasik</option><option value="Verdana">Verdana — Lebar</option><option value="Trebuchet MS">Trebuchet — Bersih</option><option value="system-ui">Font bawaan perangkat</option><option value="monospace">Monospace — Teknis</option></select></div>
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tulisan</label><div className="grid grid-cols-2 gap-2">{([{id:'default',name:'Standar',sample:'#cbd5e1'},{id:'bright',name:'Putih terang',sample:'#ffffff'},{id:'soft',name:'Abu lembut',sample:'#94a3b8'},{id:'warm',name:'Krem',sample:'#f5deb3'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTextChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${textChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna aksen dashboard</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Hijau',color:'#34d399'},{id:'blue',name:'Biru',color:'#60a5fa'},{id:'violet',name:'Ungu',color:'#a78bfa'},{id:'rose',name:'Merah muda',color:'#fb7185'},{id:'amber',name:'Emas',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tabel</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Gelap',sample:'#172033'},{id:'light',name:'Terang',sample:'#e2e8f0'},{id:'blue',name:'Biru',sample:'#172c49'},{id:'green',name:'Hijau',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
+          </div>
+          <div className="mt-6 border-t border-slate-700 pt-5"><label className="mb-2 block text-sm font-semibold text-slate-200">Foto wallpaper dashboard</label>
+            <input ref={wallpaperInputRef} type="file" accept="image/*" onChange={handleWallpaperSelected} className="hidden" aria-label="Pilih foto wallpaper"/>
+            <div className="flex flex-wrap gap-3"><button type="button" onClick={() => wallpaperInputRef.current?.click()} className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-emerald-300"><Camera className="mr-2 inline h-4 w-4"/>Pilih foto wallpaper</button>{wallpaper && <button type="button" onClick={() => {onWallpaperChange(null); setNameMessage('Wallpaper dihapus.');}} className="rounded-xl border border-rose-400/30 px-4 py-2.5 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"><Trash2 className="mr-2 inline h-4 w-4"/>Hapus wallpaper</button>}</div>
+            {wallpaper && <img src={wallpaper} alt="Pratinjau wallpaper" className="mt-3 h-28 w-full rounded-xl border border-slate-700 object-cover"/>}
+            <p className="mt-2 text-xs text-slate-400">Gambar maksimal 3 MB. Pengaturan ini tersimpan di browser/perangkat ini, tidak mengubah data transaksi.</p>
           </div>
         </div>
 

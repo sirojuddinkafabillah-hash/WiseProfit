@@ -231,8 +231,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const initials = (name.trim() || displayName).slice(0, 1).toUpperCase();
 
   return (
-    <div className="w-full min-w-0 max-w-none space-y-4 animate-in fade-in">
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-emerald-950/60 p-6 sm:p-8 shadow-xl">
+    <div className="w-full min-w-0 max-w-none space-y-3 animate-in fade-in text-sm">
+      <section className="relative overflow-hidden rounded-2xl border border-emerald-400/20 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-emerald-950/60 p-4 shadow-xl">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-4">
           <div className="flex shrink-0 flex-col items-center gap-2">
@@ -245,7 +245,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           </div>
           <div className="min-w-0 flex-1">
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200"><CheckCircle2 className="h-3.5 w-3.5" /> Beranda WiseProfit</div>
-            <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Halo, {displayName}!</h1>
+            <h1 className="break-words text-xl font-bold tracking-tight text-white">Halo, {displayName}!</h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">Atur profil, pilih tampilan yang nyaman, dan simpan catatan pribadi usaha Anda di satu tempat.</p>
             <div className="mt-3 flex items-center gap-2 break-all text-xs text-slate-400"><Mail className="h-3.5 w-3.5 shrink-0" />{user.email || 'Email tidak tersedia'}</div>
           </div>
@@ -253,16 +253,16 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       </section>
 
       <section className="grid min-w-0 grid-cols-1 gap-4">
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-5 sm:p-6">
+        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-3">
           <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-emerald-400/10 p-2.5 text-emerald-300"><UserRound className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Profil Anda</h2><p className="mt-1 text-xs text-slate-400">Nama ini akan digunakan di WiseProfit.</p></div></div>
           <label htmlFor="wiseprofit-profile-name" className="mb-2 block text-sm font-medium text-slate-300">Nama tampilan</label>
-          <div className="flex flex-col gap-2 sm:flex-row"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder="Masukkan nama Anda" className="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white" /><button type="button" onClick={saveName} disabled={isSavingName} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-emerald-300 disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? 'Menyimpan…' : 'Simpan nama'}</button></div>
+          <div className="flex min-w-0 flex-col gap-2"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder="Masukkan nama Anda" className="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white" /><button type="button" onClick={saveName} disabled={isSavingName} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-emerald-300 disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? 'Menyimpan…' : 'Simpan nama'}</button></div>
           <p className="mt-3 text-xs leading-relaxed text-slate-400">Email akun tidak berubah. Anda hanya mengubah nama yang ditampilkan.</p>
         </div>
 
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-5 sm:p-6">
+        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-3">
           <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-sky-400/10 p-2.5 text-sky-300"><Palette className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Tema tampilan</h2><p className="mt-1 text-xs text-slate-400">Pilih warna yang paling nyaman dilihat.</p></div></div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-3">
             {THEMES.map((item) => (
               <button key={item.id} type="button" onClick={() => onThemeChange(item.id)} className={`rounded-xl border p-3 text-left transition-all ${theme === item.id ? 'border-emerald-400 bg-emerald-400/10 ring-1 ring-emerald-400/30' : 'border-slate-700 bg-slate-950/60 hover:border-slate-500'}`}>
                 <div className={`mb-3 h-12 rounded-lg bg-gradient-to-r ${item.preview}`} />
@@ -274,9 +274,9 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
         </div>
 
 
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/90 p-5 sm:p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/90 p-3">
           <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-violet-400/10 p-2.5 text-violet-300"><Palette className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Personalisasi tampilan</h2><p className="mt-1 text-xs text-slate-400">Atur tema, font, warna tabel, warna tulisan, dan wallpaper sesuka hati.</p></div></div>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-4">
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Jenis font</label><select value={fontChoice} onChange={(e) => onFontChange(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white"><option value="Calibri, Carlito, Arial, sans-serif">Calibri — Dokumen resmi</option><option value="Cambria, Georgia, serif">Cambria — Dokumen formal</option><option value="Arial, Helvetica, sans-serif">Arial</option><option value="Helvetica, Arial, sans-serif">Helvetica</option><option value="Swiss, Arial, Helvetica, sans-serif">Swiss — Sans-serif</option><option value="Aptos, Calibri, sans-serif">Aptos — Office modern</option><option value="Times New Roman, Times, serif">Times New Roman</option><option value="Georgia, serif">Georgia — Klasik</option><option value="Verdana, sans-serif">Verdana — Lebar</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Trebuchet MS, sans-serif">Trebuchet MS</option><option value="Garamond, serif">Garamond</option><option value="Inter, Arial, sans-serif">Inter — Modern</option><option value="system-ui, sans-serif">Font bawaan perangkat</option><option value="monospace">Monospace — Teknis</option></select></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna tulisan</label><div className="grid grid-cols-2 gap-2">{([{id:'default',name:'Standar',sample:'#cbd5e1'},{id:'bright',name:'Putih terang',sample:'#ffffff'},{id:'soft',name:'Abu lembut',sample:'#94a3b8'},{id:'warm',name:'Krem',sample:'#f5deb3'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTextChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${textChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Warna aksen dashboard</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Hijau',color:'#34d399'},{id:'blue',name:'Biru',color:'#60a5fa'},{id:'violet',name:'Ungu',color:'#a78bfa'},{id:'rose',name:'Merah muda',color:'#fb7185'},{id:'amber',name:'Emas',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
@@ -296,7 +296,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 px-4 py-4 sm:px-5">
+          <div className="flex flex-col items-stretch gap-3 border-b border-slate-700 px-3 py-3">
             <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Notes</h2><p className="mt-1 text-xs text-slate-400">Catatan seperti aplikasi Notes di ponsel, tersusun dalam folder.</p></div></div>
             <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>Catatan baru</button>
           </div>
@@ -304,7 +304,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
             <aside className="border-b border-slate-700 p-3">
               <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title="Buat folder" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
               {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder="Nama folder" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
-              <div className="flex gap-2 overflow-x-auto md:flex-col">
+              <div className="flex gap-2 overflow-x-auto flex-col">
                 <button type="button" onClick={() => {setActiveFolderId('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/>Semua <span className="ml-auto text-xs opacity-70">{savedNotes.length}</span></button>
                 {noteFolders.map((folder) => <button type="button" key={folder.id} onClick={() => {setActiveFolderId(folder.id); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === folder.id ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/><span className="truncate">{folder.name}</span><span className="ml-auto text-xs opacity-70">{savedNotes.filter((n) => n.folderId === folder.id).length}</span></button>)}
               </div>
@@ -326,7 +326,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 rounded-2xl border border-rose-400/20 bg-rose-950/20 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <section className="flex flex-col gap-3 rounded-2xl border border-rose-400/20 bg-rose-950/20 p-3">
         <div><h2 className="font-bold text-white">Keluar dari WiseProfit</h2><p className="mt-1 text-sm leading-relaxed text-slate-400">Akun akan keluar dan data usaha tidak ditampilkan sampai Anda masuk kembali.</p></div>
         <button type="button" onClick={handleLogout} disabled={isLoggingOut} className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/10 px-5 py-3 text-sm font-bold text-rose-200 hover:bg-rose-500/20 disabled:opacity-60"><LogOut className="h-4 w-4" />{isLoggingOut ? 'Sedang keluar…' : 'Keluar dari akun'}</button>
       </section>

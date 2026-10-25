@@ -680,6 +680,7 @@ export default function App() {
                   <InventoryTable
                     items={items}
                     modalAwal={modalAwal}
+                    saldoKasSaatIni={summary.saldoKasSaatIni}
                     onEditItem={(item) => {
                       setEditingItem(item);
                       setIsItemModalOpen(true);

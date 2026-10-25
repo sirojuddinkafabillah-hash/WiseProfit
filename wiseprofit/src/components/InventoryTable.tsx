@@ -44,12 +44,19 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
     return Array.from(monthSet).sort().reverse();
   }, [items]);
 
-  // Calculate Running Cash Balance ("Sisa Kas") per item chronologically according to file sequence
+  // Saldo tiap baris dihitung dari modal awal, mengikuti urutan transaksi yang sebenarnya:
+  // tanggal transaksi lebih dahulu, lalu nomor urut impor bila tersedia.
   const runningCashMap = useMemo(() => {
     const map = new Map<string, number>();
-    // Urutkan menurut waktu pencatatan pembelian, bukan nomor urut impor.
-    // Penjualan yang tercatat pada tiap barang ikut dihitung dalam saldo berjalan.
-    const sorted = [...items].sort((a, b) => (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0));
+    const sorted = [...items].sort((a, b) => {
+      const dateA = (a.tanggalInput || new Date(a.createdAt).toISOString().slice(0, 10)).slice(0, 10);
+      const dateB = (b.tanggalInput || new Date(b.createdAt).toISOString().slice(0, 10)).slice(0, 10);
+      if (dateA !== dateB) return dateA.localeCompare(dateB);
+      if (typeof a.noUrut === 'number' && typeof b.noUrut === 'number' && a.noUrut !== b.noUrut) {
+        return a.noUrut - b.noUrut;
+      }
+      return (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0);
+    });
     let cash = modalAwal;
     for (const it of sorted) {
       const hargaBeli = Number(it.hargaBeli) || 0;
@@ -76,12 +83,17 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       return true;
     });
 
-    // Default: barang yang paling baru diinput tampil paling atas.
-    // Urutan menggunakan createdAt agar tetap benar walaupun data diimpor atau noUrut tidak berurutan.
+    // Tampilan tabel terbaru di atas; tanggal dan nomor urut dipakai agar impor bertanggal sama tetap konsisten.
     return [...list].sort((a, b) => {
-      const timeA = Number(a.createdAt) || 0;
-      const timeB = Number(b.createdAt) || 0;
-      return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+      const dateA = (a.tanggalInput || new Date(a.createdAt).toISOString().slice(0, 10)).slice(0, 10);
+      const dateB = (b.tanggalInput || new Date(b.createdAt).toISOString().slice(0, 10)).slice(0, 10);
+      let order = dateA.localeCompare(dateB);
+      if (order === 0 && typeof a.noUrut === 'number' && typeof b.noUrut === 'number') {
+        order = a.noUrut - b.noUrut;
+      } else if (order === 0) {
+        order = (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0);
+      }
+      return sortOrder === 'asc' ? order : -order;
     });
   }, [items, selectedMonth, searchQuery, sortOrder]);
 

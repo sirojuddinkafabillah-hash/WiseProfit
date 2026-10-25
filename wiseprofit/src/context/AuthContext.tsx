@@ -132,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw authMessage(error);
     setUser(null);
     try {
-      Object.keys(localStorage).filter((key) => key.startsWith('niaganova_') || key.startsWith('wiseprofit_')).forEach((key) => localStorage.removeItem(key));
+      Object.keys(localStorage).filter((key) => (key.startsWith('niaganova_') && key !== 'niaganova_bg_theme') || (key.startsWith('wiseprofit_') && !key.startsWith('wiseprofit_notes_'))).forEach((key) => localStorage.removeItem(key));
     } catch {}
   };
 

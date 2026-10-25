@@ -15,6 +15,8 @@ import { ReportsEquityPage } from './components/ReportsEquityPage';
 import { ImportDataPage } from './components/ImportDataPage';
 import { WithdrawalPage } from './components/WithdrawalPage';
 import { WithdrawalModal } from './components/WithdrawalModal';
+import { HomePage } from './components/HomePage';
+import { supabase } from './lib/supabase';
 import { CosmicInteractiveBackground, BackgroundTheme } from './components/CosmicInteractiveBackground';
 import { useAuth } from './context/AuthContext';
 import { 
@@ -44,7 +46,7 @@ import {
 } from './services/supabaseSync';
 
 export default function App() {
-  const { user, isOnline, tokenServiceStatus, checkConnection } = useAuth();
+  const { user, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
 
   // App Core State (Tied to authenticated user)
   const [modalAwal, setModalAwal] = useState<number>(50000);
@@ -79,7 +81,7 @@ export default function App() {
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
 
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
-  const [activePage, setActivePage] = useState<AppPage>('inventory');
+  const [activePage, setActivePage] = useState<AppPage>('home');
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
@@ -375,6 +377,24 @@ export default function App() {
     }
   };
 
+  const handleSaveDisplayName = async (name: string): Promise<boolean> => {
+    if (!user) return false;
+    const cleanName = name.trim().slice(0, 60);
+    if (!cleanName) return false;
+    try {
+      const { error } = await supabase.auth.updateUser({ data: { display_name: cleanName, full_name: cleanName, name: cleanName } });
+      if (error) throw error;
+      const saved = await saveUserProfile(user.uid, { email: user.email || undefined, displayName: cleanName, modalAwal, globalSavePercentMonthly });
+      if (!saved) throw new Error('Nama belum berhasil disimpan ke profil online.');
+      setNotification('Nama profil berhasil diperbarui.');
+      return true;
+    } catch (error) {
+      console.error('Failed to update display name:', error);
+      setNotification('Nama belum berhasil disimpan. Periksa koneksi lalu coba lagi.');
+      return false;
+    }
+  };
+
   const handleUpdateModalAwal = async (newModal: number) => {
     setModalAwal(newModal);
     if (!user) return;
@@ -656,6 +676,24 @@ export default function App() {
             </div>
           ) : (
             <>
+              {/* HOME: profil, tema, catatan pribadi, dan keluar */}
+              {activePage === 'home' && (
+                <HomePage
+                  user={user}
+                  theme={backgroundTheme}
+                  onThemeChange={handleThemeChange}
+                  onSaveName={handleSaveDisplayName}
+                  onLogout={async () => {
+                    try {
+                      await logout();
+                    } catch (error) {
+                      console.error('Logout failed:', error);
+                      setNotification('Belum berhasil keluar. Silakan coba lagi.');
+                    }
+                  }}
+                />
+              )}
+
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
                 <div className="space-y-6">

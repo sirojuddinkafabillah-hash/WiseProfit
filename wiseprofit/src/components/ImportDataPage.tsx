@@ -299,7 +299,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const validC = parsed.filter(p => p.isValid).length;
       setResultMessage({
         type: 'success',
-        text: `Berhasil membaca ${parsed.length} baris data (${validC} barang siap disimpan). Silakan periksa pratinjau tabel di bawah lalu klik tombol "Proses Impor" untuk menyimpan.`
+        text: `Berhasil membaca ${parsed.length} baris data (${validC} barang siap disimpan). Silakan periksa pratinjau tabel di bawah lalu klik tombol "Impor Data" untuk menyimpan.`
       });
     }
 
@@ -675,7 +675,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Muat 21 data produk contoh dari gambar (sprite, coco pie, aquviva, kiko, pino, dilan, dll)"
             >
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Coba 21 Data Gambar (1-Klik)</span>
+              <span>Coba contoh data</span>
             </button>
 
             {/* Download Template Excel */}
@@ -702,7 +702,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               onClick={onNavigateToInventory}
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
             >
-              <span>Buka Kasir</span>
+              <span>Kembali ke Kasir</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -731,7 +731,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 onClick={onNavigateToInventory}
                 className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs cursor-pointer shadow-sm transition-all"
               >
-                <span>Buka & Cek Barang di Kasir & Inventori</span>
+                <span>Lihat barang di Kasir & Stok</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             )}
@@ -757,7 +757,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <UploadCloud className="w-4 h-4" />
-                  <span>Unggah File (.xlsx / .csv)</span>
+                  <span>Pilih file Excel atau CSV</span>
                 </button>
 
                 <button
@@ -770,13 +770,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <ClipboardPaste className="w-4 h-4" />
-                  <span>Salin-Tempel Teks Excel</span>
+                  <span>Tempel data dari Excel</span>
                 </button>
               </div>
 
               <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
                 <Database className="w-3.5 h-3.5" />
-                <span>Supabase PostgreSQL</span>
+                <span>Penyimpanan akun</span>
               </span>
             </div>
 
@@ -878,7 +878,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                     className="flex items-center gap-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono rounded-xl text-xs transition-all cursor-pointer shadow-md shadow-cyan-500/20"
                   >
                     <ClipboardPaste className="w-3.5 h-3.5" />
-                    <span>Proses Teks Hasil Paste</span>
+                    <span>Periksa data yang ditempel</span>
                   </button>
                 </div>
               </div>
@@ -889,7 +889,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-start gap-2 text-[11px] font-mono text-slate-400">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <span>
-              12 Kolom yang dibaca otomatis: <strong>No</strong>, <strong>Tanggal Input</strong>, <strong>Nama Barang</strong>, <strong>Jumlah 1 Wadah</strong>, <strong>Harga Beli 1 Wadah</strong>, <strong>Jumlah Terjual Satuan</strong>, <strong>Harga Jual Satuan</strong>, <strong>Gain</strong>, <strong>Modal Pokok Kembali</strong>, <strong>Nilai Sisa Stok</strong>, <strong>TOTAL SETELAH UNTUNG</strong>, dan <strong>SISA KAS</strong>.
+              Data yang bisa dibaca otomatis: <strong>No</strong>, <strong>Tanggal Input</strong>, <strong>Nama Barang</strong>, <strong>Jumlah 1 Wadah</strong>, <strong>Harga Beli 1 Wadah</strong>, <strong>Jumlah Terjual Satuan</strong>, <strong>Harga Jual Satuan</strong>, <strong>Gain</strong>, <strong>Modal Pokok Kembali</strong>, <strong>Nilai Sisa Stok</strong>, <strong>TOTAL SETELAH UNTUNG</strong>, dan <strong>SISA KAS</strong>.
             </span>
           </div>
         </div>
@@ -996,7 +996,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
               ) : (
                 <>
                   <Database className="w-4 h-4" />
-                  <span>Proses Impor {validCount > 0 ? `(${validCount} Barang)` : ''}</span>
+                  <span>Impor Data {validCount > 0 ? `(${validCount} Barang)` : ''}</span>
                 </>
               )}
             </button>
@@ -1012,7 +1012,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 className="w-full py-2 px-3 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Bersihkan Pratinjau File</span>
+                <span>Hapus pratinjau</span>
               </button>
             )}
           </div>
@@ -1029,7 +1029,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
               </div>
               <div>
                 <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                  <span>Pratinjau Tabel Excel ({parsedRows.length} Baris)</span>
+                  <span>Periksa data sebelum disimpan ({parsedRows.length} Baris)</span>
                   <span className="text-[10px] text-cyan-400 font-normal">
                     (Format 12 Kolom Persis Seperti Gambar)
                   </span>
@@ -1063,7 +1063,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 ) : (
                   <>
                     <Database className="w-3.5 h-3.5" />
-                    <span>Simpan & Terapkan ({validCount} Barang)</span>
+                    <span>Simpan Data ({validCount} Barang)</span>
                   </>
                 )}
               </button>
@@ -1197,7 +1197,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Batal & Bersihkan</span>
+                <span>Batal</span>
               </button>
               <button
                 type="button"
@@ -1213,7 +1213,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 ) : (
                   <>
                     <Database className="w-4 h-4" />
-                    <span>Simpan & Terapkan ({validCount} Barang)</span>
+                    <span>Simpan Data ({validCount} Barang)</span>
                   </>
                 )}
               </button>

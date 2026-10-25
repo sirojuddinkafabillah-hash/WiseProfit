@@ -583,7 +583,7 @@ export default function App() {
       />}
 
       {/* Main Foreground Content */}
-      <div className="relative z-10 flex min-h-screen flex-col transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` : 0 }}>
+      <div className="relative z-10 flex min-h-screen min-w-0 flex-col overflow-x-hidden transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` : 0 }}>
         {/* Top Header with Navigation */}
         <Header
           activePage={isProfilePanelOpen ? 'home' : activePage}
@@ -673,7 +673,7 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+        <main className="min-w-0 flex-1 max-w-7xl w-full mx-auto overflow-x-hidden px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
           {!user ? (
             <div className="max-w-2xl mx-auto my-8 sm:my-16 p-6 sm:p-10 bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-slate-700/80 shadow-[0_25px_60px_rgba(0,0,0,0.6)] text-center space-y-6 animate-in fade-in zoom-in-95">
@@ -818,7 +818,7 @@ export default function App() {
         </main>
 
         {/* Footer */}
-        <footer className="no-print mt-auto border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-xl py-5 text-center text-xs text-slate-400">
+        <footer className="no-print mt-auto min-w-0 max-w-full overflow-hidden border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-xl py-5 text-center text-xs text-slate-400">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5 font-mono text-[11px]">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />

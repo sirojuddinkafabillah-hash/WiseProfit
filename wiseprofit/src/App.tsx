@@ -618,28 +618,28 @@ export default function App() {
               <div className="space-y-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  SISTEM TERPROTEKSI SATU PINTU FIREBASE
+                  AKUN ANDA, DATA ANDA
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                  Data Toko Bersifat Privat
+                  Selamat datang kembali di WiseProfit
                 </h2>
                 <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Demi keamanan dan privasi, seluruh data inventori, transaksi kasir, dan laporan keuangan toko disembunyikan saat keluar akun (logout).
+                  Masuk untuk melihat catatan usaha Anda, melanjutkan pencatatan penjualan, dan memantau perkembangan keuangan dengan lebih mudah.
                 </p>
               </div>
 
               <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl text-left font-mono text-xs text-slate-400 space-y-2.5 max-w-lg mx-auto">
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Isolasi Data Pribadi:</strong> Setiap pemilik toko hanya dapat melihat data tokonya sendiri.</span>
+                  <span><strong>Data tetap pribadi:</strong> Hanya Anda yang dapat melihat catatan usaha di akun Anda.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Tersimpan Permanen di Cloud:</strong> Data tersimpan aman di Supabase. Tidak akan hilang meskipun Anda menghapus riwayat browser (history/cache).</span>
+                  <span><strong>Tersimpan secara online:</strong> Catatan tersimpan di akun Anda dan dapat dibuka kembali saat masuk.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Satu Pintu Login Resmi:</strong> Autentikasi menggunakan Supabase Auth (Akun Google atau Email & Sandi).</span>
+                  <span><strong>Akses akun:</strong> Masuk dengan metode yang tersedia di WiseProfit.</span>
                 </div>
               </div>
 
@@ -650,7 +650,7 @@ export default function App() {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.99] text-slate-950 font-bold font-mono text-sm rounded-2xl shadow-xl shadow-emerald-500/20 transition-all cursor-pointer"
                 >
                   <LogIn className="w-5 h-5 stroke-[2.5]" />
-                  <span>Masuk Akun WiseProfit Sekarang</span>
+                  <span>Masuk dan lanjutkan usaha</span>
                 </button>
               </div>
             </div>
@@ -664,19 +664,19 @@ export default function App() {
                     <div className="space-y-2">
                       <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        Workspace / Keuangan
+                        Keuangan usaha Anda
                       </div>
                       <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                        Ringkasan usaha
+                        Yuk, lihat perkembangan usaha
                       </h1>
                       <p className="max-w-2xl text-sm text-slate-400 leading-relaxed">
-                        Pantau arus kas, laba terealisasi, persediaan, dan aktivitas penjualan dari satu dashboard.
+                        Semua yang penting ada di sini: uang masuk dan keluar, keuntungan, stok barang, serta hasil penjualan.
                       </p>
                     </div>
                     <div className="flex items-center gap-2 self-start sm:self-auto">
                       <span className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300">
                         <span className={`h-2 w-2 rounded-full ${isSavingCloud || isLoadingData ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
-                        {isSavingCloud || isLoadingData ? 'Menyinkronkan data' : 'Workspace aktif'}
+                        {isSavingCloud || isLoadingData ? 'Menyinkronkan data' : 'Semua siap digunakan'}
                       </span>
                     </div>
                   </section>

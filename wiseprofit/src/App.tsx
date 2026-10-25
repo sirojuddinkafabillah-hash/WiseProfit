@@ -659,6 +659,27 @@ export default function App() {
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
                 <div className="space-y-6">
+                  {/* Enterprise-style workspace heading */}
+                  <section className="dashboard-hero flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                    <div className="space-y-2">
+                      <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        Workspace / Keuangan
+                      </div>
+                      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                        Ringkasan usaha
+                      </h1>
+                      <p className="max-w-2xl text-sm text-slate-400 leading-relaxed">
+                        Pantau arus kas, laba terealisasi, persediaan, dan aktivitas penjualan dari satu dashboard.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300">
+                        <span className={`h-2 w-2 rounded-full ${isSavingCloud || isLoadingData ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
+                        {isSavingCloud || isLoadingData ? 'Menyinkronkan data' : 'Workspace aktif'}
+                      </span>
+                    </div>
+                  </section>
                   {/* Rolling Cash Balance & Capital Cards Focusing on Sisa Kas */}
                   <SummaryCards
                     summary={summary}

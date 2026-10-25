@@ -192,7 +192,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-500/20"
             >
               <ArrowLeft className="w-4 h-4 stroke-[3]" />
-              <span>Kembali ke Halaman Utama Kasir</span>
+              <span>Kembali ke Kasir</span>
             </button>
           )}
           <span className="hidden sm:inline-block text-xs font-sans text-slate-400">
@@ -208,7 +208,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             title="Unduh laporan lengkap ke file Excel (.xlsx)"
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Ekspor Excel</span>
+            <span className="hidden sm:inline">Unduh Excel</span>
           </button>
           <button
             type="button"
@@ -217,7 +217,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             title="Cetak laporan dalam format nota / A4"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Cetak Laporan</span>
+            <span>Cetak atau simpan PDF</span>
           </button>
         </div>
       </div>
@@ -272,7 +272,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               title="Unduh laporan lengkap ke file Excel (.xlsx)"
             >
               <Download className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Ekspor Excel</span>
+              <span>Unduh Excel</span>
             </button>
 
             <button
@@ -281,7 +281,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               title="Cetak laporan resmi dalam format nota / A4"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Cetak Laporan</span>
+              <span>Cetak atau simpan PDF</span>
             </button>
           </div>
         </div>
@@ -302,7 +302,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(modalAwal)}
           </div>
           <div className="mt-2 text-[11px] font-sans text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800">
-            <span>Kulakan Modal:</span>
+            <span>Belanja stok:</span>
             <span className="text-slate-200 font-semibold">{formatRupiah(summary.totalPengeluaranBeli)}</span>
           </div>
         </div>
@@ -348,7 +348,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(summary.totalNilaiSisaStok)}
           </div>
           <div className="mt-2 text-[11px] font-sans text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800">
-            <span>Modal Pokok Kembali:</span>
+            <span>Modal dari barang terjual:</span>
             <span className="text-slate-200 font-semibold">{formatRupiah(summary.totalModalKembali)}</span>
           </div>
         </div>
@@ -417,11 +417,11 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <div className="flex items-center justify-between text-xs font-sans text-slate-300 pt-1">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-md bg-emerald-500 inline-block" />
-                <span>Kas Tunai di Kasir: <strong>{formatRupiah(summary.saldoKasSaatIni)}</strong> ({percentCash.toFixed(1)}%)</span>
+                <span>Uang tersedia: <strong>{formatRupiah(summary.saldoKasSaatIni)}</strong> ({percentCash.toFixed(1)}%)</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-md bg-purple-500 inline-block" />
-                <span>Nilai Stok di Rak: <strong>{formatRupiah(summary.totalNilaiSisaStok)}</strong> ({percentStock.toFixed(1)}%)</span>
+                <span>Nilai stok tersisa: <strong>{formatRupiah(summary.totalNilaiSisaStok)}</strong> ({percentStock.toFixed(1)}%)</span>
               </div>
             </div>
           </div>
@@ -545,7 +545,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-sans text-slate-400">
-            <span>Status BEP Toko:</span>
+            <span>Kondisi usaha:</span>
             <span className={`font-semibold ${summary.totalPemasukanJual >= summary.totalPengeluaranBeli ? 'text-emerald-400' : 'text-amber-300'}`}>
               {summary.totalPemasukanJual >= summary.totalPengeluaranBeli 
                 ? 'Modal Kulakan Sudah Tertutup Penuh' 
@@ -761,7 +761,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             className="flex items-center gap-2.5 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-2xl shadow-xl shadow-emerald-500/25 transition-all cursor-pointer whitespace-nowrap"
           >
             <ArrowLeft className="w-4 h-4 stroke-[3]" />
-            <span>Kembali ke Halaman Utama Kasir</span>
+            <span>Kembali ke Kasir</span>
           </button>
         </div>
       )}

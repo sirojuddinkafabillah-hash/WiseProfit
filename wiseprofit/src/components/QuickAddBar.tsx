@@ -201,7 +201,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             className="flex items-center justify-center gap-1.5 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 text-xs font-mono font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all cursor-pointer shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Simpan ke Tabel</span>
+            <span>Simpan Barang</span>
           </button>
         </div>
       </form>

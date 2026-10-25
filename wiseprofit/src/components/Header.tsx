@@ -3,7 +3,6 @@ import {
   Plus, 
   Download, 
   Cloud, 
-  LogOut, 
   CheckCircle2, 
   BookOpen, 
   Printer, 
@@ -44,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   withdrawalsCount = 0,
   isSyncingCloud = false,
 }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <header className="no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
@@ -214,14 +213,7 @@ export const Header: React.FC<HeaderProps> = ({
                     )}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => logout()}
-                  title="Keluar dari akun online"
-                  className="p-1 hover:bg-slate-800 rounded-md text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                </button>
+
               </div>
             ) : (
               <button

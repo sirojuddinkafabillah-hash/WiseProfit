@@ -38,10 +38,11 @@ export function calculateItem(item: InventoryItem): ItemCalculations {
 
   // 8. SIMPANAN SETELAH UNTUNG 1 BULAN
   const estimasiUntung1Bulan = totalGainTerjual;
-  const simpananSetelahUntung1Bulan = estimasiUntung1Bulan * (persenSimpanBulanan / 100);
+  // Simpanan tidak boleh negatif saat barang dijual rugi.
+  const simpananSetelahUntung1Bulan = Math.max(0, estimasiUntung1Bulan) * (persenSimpanBulanan / 100);
 
-  // Sisa laba bulanan + modal pokok kembali yang diputar
-  const modalDiputarBulanDepan = totalModalKembali + (estimasiUntung1Bulan * ((100 - persenSimpanBulanan) / 100));
+  // Uang hasil penjualan setelah dikurangi simpanan laba yang positif.
+  const modalDiputarBulanDepan = Math.max(0, totalPendapatanTerjual - simpananSetelahUntung1Bulan);
 
   return {
     hppSatuan,

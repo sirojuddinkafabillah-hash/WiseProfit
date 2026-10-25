@@ -76,11 +76,11 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             <Package className="w-4 h-4" />
           </div>
           <h2 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-            Input Transaksi Barang Baru
+            Catat barang yang baru dibeli
           </h2>
         </div>
         <p className="text-[11px] font-mono text-slate-400">
-          Uang kas kasir otomatis disesuaikan secara real-time saat barang dibeli dan terjual.
+          Catat pembelian di sini. Sisa uang dan keuntungan akan dihitung otomatis saat ada penjualan.
         </p>
       </div>
 
@@ -191,7 +191,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
               </div>
             ) : (
               <span className="text-slate-400 font-mono text-[11px]">
-                Ketik harga beli dan harga jual untuk melihat simulasi HPP dan potensi margin keuntungan otomatis.
+                Masukkan harga beli dan harga jual untuk melihat perkiraan keuntungan sebelum menyimpan.
               </span>
             )}
           </div>

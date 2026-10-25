@@ -242,7 +242,8 @@ td, th {
   --wp-text-main: #cbd5e1;
   --wp-text-strong: #f8fafc;
 }
-body, button, input, select, textarea { font-family: var(--wp-font-family); }
+#root, #root * { font-family: var(--wp-font-family); }
+button, input, select, textarea { font-family: var(--wp-font-family); }
 :root[data-wp-accent="blue"] { --wp-accent: #60a5fa; }
 :root[data-wp-accent="violet"] { --wp-accent: #a78bfa; }
 :root[data-wp-accent="rose"] { --wp-accent: #fb7185; }

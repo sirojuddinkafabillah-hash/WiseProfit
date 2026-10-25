@@ -289,3 +289,9 @@ tbody tr, td { border-color: var(--wp-table-line); color: var(--wp-text-main); }
 :root[data-wp-text="bright"] main { color: #f8fafc; }
 :root[data-wp-text="soft"] main { color: #94a3b8; }
 :root[data-wp-text="warm"] main { color: #f5deb3; }
+
+
+/* User-selected arbitrary colors override preset palettes when customized. */
+:root[style*="--wp-custom-accent"] { --wp-accent: var(--wp-custom-accent); }
+:root[style*="--wp-custom-table"] { --wp-table-bg: var(--wp-custom-table); --wp-table-head: var(--wp-custom-table); }
+:root[style*="--wp-custom-text"] { --wp-text-main: var(--wp-custom-text); --wp-text-strong: var(--wp-custom-text); }

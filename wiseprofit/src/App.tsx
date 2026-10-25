@@ -583,7 +583,7 @@ export default function App() {
       />}
 
       {/* Main Foreground Content */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex min-h-screen flex-col transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` : 0 }}>
         {/* Top Header with Navigation */}
         <Header
           activePage={isProfilePanelOpen ? 'home' : activePage}
@@ -832,10 +832,10 @@ export default function App() {
         </footer>
 
       {user && isProfilePanelOpen && (
-        <div className="fixed inset-0 z-[60]">
-          <button type="button" aria-label="Tutup panel profil" onClick={() => setIsProfilePanelOpen(false)} className="absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>
+        <div className="pointer-events-none fixed inset-0 z-[60]">
+          {window.innerWidth < 640 && <button type="button" aria-label="Tutup panel profil" onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
           <aside
-            className="absolute right-0 top-0 flex h-full max-w-full flex-col border-l border-slate-700 bg-slate-950/98 shadow-2xl"
+            className={`pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200 ${window.innerWidth < 640 ? 'w-screen' : ''}`}
             style={{ width: window.innerWidth < 640 ? '100vw' : `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` }}
           >
             <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
@@ -852,8 +852,8 @@ export default function App() {
               aria-label="Ubah lebar panel profil"
               aria-orientation="vertical"
               onPointerDown={(event) => { if (window.innerWidth >= 640) { event.currentTarget.setPointerCapture(event.pointerId); } }}
-              onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - event.clientX))); }}
-              className="absolute left-0 top-0 z-10 hidden h-full w-1.5 -translate-x-1/2 cursor-col-resize touch-none bg-transparent hover:bg-emerald-400/70 sm:block"
+              onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, event.clientX))); }}
+              className="absolute right-0 top-0 z-10 hidden h-full w-1.5 translate-x-1/2 cursor-col-resize touch-none bg-transparent hover:bg-emerald-400/70 sm:block"
             />
             <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
               <HomePage

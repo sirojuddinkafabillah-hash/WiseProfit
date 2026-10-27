@@ -399,3 +399,73 @@ html, body {
   .wp-auth-header h2 { font-size: 22px !important; }
   .wp-auth-body { padding: 22px !important; }
 }
+
+
+/* Fintech surfaces across dashboard, reports, forms, dialogs and settings */
+#root [class~="bg-slate-950"],
+#root [class~="bg-slate-950/95"],
+#root [class~="bg-slate-950/90"],
+#root [class~="bg-slate-950/80"],
+#root [class~="bg-slate-950/70"],
+#root [class~="bg-slate-900"],
+#root [class~="bg-slate-900/90"],
+#root [class~="bg-slate-900/80"],
+#root [class~="bg-slate-900/70"] {
+  background-color: #ffffff !important;
+}
+#root [class~="bg-slate-800"],
+#root [class~="bg-slate-800/80"],
+#root [class~="bg-slate-800/70"] {
+  background-color: #eef3fa !important;
+}
+#root [class~="text-slate-100"],
+#root [class~="text-slate-200"],
+#root [class~="text-slate-300"],
+#root [class~="text-white"] { color: var(--wp-fintech-ink) !important; }
+#root [class~="text-slate-400"],
+#root [class~="text-slate-500"] { color: var(--wp-fintech-muted) !important; }
+#root [class~="border-slate-700"],
+#root [class~="border-slate-800"],
+#root [class~="border-slate-600"] { border-color: var(--wp-fintech-border) !important; }
+#root [class~="text-emerald-300"],
+#root [class~="text-emerald-400"],
+#root [class~="text-emerald-200"] { color: var(--wp-fintech-violet) !important; }
+#root [class~="bg-emerald-500"],
+#root [class~="bg-emerald-400"] { background-color: var(--wp-fintech-blue) !important; color: #fff !important; }
+#root button[class*="bg-emerald-"],
+#root a[class*="bg-emerald-"] { color: #fff !important; }
+#root [class*="border-emerald-500"],
+#root [class*="border-emerald-400"] { border-color: rgba(23,105,224,.25) !important; }
+#root [class*="shadow-emerald-"] { --tw-shadow-color: rgba(23,105,224,.12) !important; }
+#root table { border-color: var(--wp-fintech-border) !important; }
+#root thead, #root thead tr, #root th {
+  background-color: #edf3fb !important;
+  color: #344563 !important;
+}
+#root tbody tr:nth-child(even) { background-color: #f8faff; }
+#root td { color: #334155; }
+#root input:not([type="checkbox"]):not([type="radio"]),
+#root select, #root textarea {
+  background-color: #f8faff;
+  color: var(--wp-fintech-ink);
+  border-color: #d7e1ef;
+}
+#root [class*="bg-gradient-to-r"][class*="from-emerald-950"],
+#root [class*="bg-gradient-to-br"][class*="from-emerald-950"] {
+  background-image: linear-gradient(135deg,#123b87 0%,#1769e0 60%,#6d45d8 100%) !important;
+}
+#root [class*="bg-rose-950"],
+#root [class*="bg-rose-900"] { background-color: #fff1f2 !important; }
+#root [class*="bg-amber-950"],
+#root [class*="bg-amber-900"] { background-color: #fff7ed !important; }
+#root [class*="bg-cyan-950"],
+#root [class*="bg-blue-950"] { background-color: #eff6ff !important; }
+#root [class*="text-rose-300"],
+#root [class*="text-rose-400"] { color: #c2415d !important; }
+#root [class*="text-amber-300"],
+#root [class*="text-amber-400"] { color: #a16207 !important; }
+#root [class*="text-cyan-300"],
+#root [class*="text-cyan-400"] { color: #1769e0 !important; }
+#root [class*="text-blue-300"],
+#root [class*="text-blue-400"] { color: #1769e0 !important; }
+#root [class*="rounded-3xl"] { box-shadow: 0 10px 32px rgba(20,33,61,.06); }

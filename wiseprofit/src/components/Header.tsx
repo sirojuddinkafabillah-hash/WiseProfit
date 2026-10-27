@@ -82,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Desktop Navigation Tabs */}
-            <nav className="hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
+            <nav className="wp-main-navigation hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
               <button
                 type="button"
                 onClick={() => onChangePage('inventory')}
@@ -152,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Quick Tools & Cloud Auth */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="wp-header-quick-tools flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Quick Helper Tools */}
             <nav className="hidden 2xl:flex items-center gap-1.5 text-xs font-sans font-medium text-slate-300">
               <button

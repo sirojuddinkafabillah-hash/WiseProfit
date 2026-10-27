@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, [user?.uid, user?.photoURL]);
 
   return (
-    <header className="no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
+    <header className="wp-app-header no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Bar */}
         <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">

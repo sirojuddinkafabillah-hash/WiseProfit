@@ -55,7 +55,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
     <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><{mode === 'faq' ? 'CircleHelp' : 'MessageSquareWarning'} className="h-5 w-5" /></div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">{mode === 'faq' ? <CircleHelp className="h-5 w-5" /> : <MessageSquareWarning className="h-5 w-5" />}</div>
           <div>
             <h1 className="text-xl font-bold text-slate-900">{mode === 'faq' ? 'FAQ — Pertanyaan Umum' : 'Keluhan Lain'}</h1>
             <p className="mt-1 text-sm text-slate-600">{mode === 'faq' ? 'Jawaban singkat untuk membantu penggunaan WiseProfit.' : 'Catat masalah atau saran yang ingin disampaikan tentang WiseProfit.'}</p>

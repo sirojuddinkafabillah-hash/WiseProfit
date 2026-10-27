@@ -9,13 +9,15 @@ import {
   ShoppingBag, 
   TrendingUp, 
   UploadCloud,
+  CircleHelp,
+  MessageSquareWarning,
   ArrowDownCircle,
   Home,
   UserRound
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import';
+export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'faq' | 'complaints';
 
 interface HeaderProps {
   activePage: AppPage;
@@ -146,7 +148,13 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <UploadCloud className="w-3.5 h-3.5" />
-                <span>Impor Data</span>
+                <span>Ekspor dan Impor Data</span>
+              </button>
+              <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'faq' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
+                <CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span>
+              </button>
+              <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'complaints' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
+                <MessageSquareWarning className="w-3.5 h-3.5" /><span>Keluhan Lain</span>
               </button>
             </nav>
           </div>
@@ -324,8 +332,10 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <UploadCloud className="w-3.5 h-3.5" />
-            <span>Impor</span>
+            <span>Ekspor/Impor</span>
           </button>
+          <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'faq' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span></button>
+          <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><MessageSquareWarning className="w-3.5 h-3.5" /><span>Keluhan</span></button>
         </div>
       </div>
     </header>

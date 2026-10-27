@@ -917,3 +917,69 @@ html, body {
 #root .dashboard-hero {
   display: none !important;
 }
+
+
+/* Profile panel contrast and legibility */
+#root .wp-profile-hero {
+  background: #4268c9 !important;
+  border-color: #4268c9 !important;
+  color: #ffffff !important;
+}
+#root .wp-profile-hero .wp-profile-title {
+  color: #ffffff !important;
+  font-size: 21px !important;
+  line-height: 1.35 !important;
+}
+#root .wp-profile-hero .wp-profile-description,
+#root .wp-profile-hero .wp-profile-email {
+  color: #ffffff !important;
+  opacity: .96;
+}
+#root .wp-profile-eyebrow {
+  color: #ffffff !important;
+  background: rgba(36,50,75,.22) !important;
+  border-color: rgba(255,255,255,.55) !important;
+}
+#root .wp-profile-avatar {
+  background: rgba(36,50,75,.18) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.75) !important;
+}
+#root .wp-profile-card {
+  background: #ffffff !important;
+  border-color: #e6ebf4 !important;
+  color: #24324b !important;
+  box-shadow: 0 3px 14px rgba(36,50,75,.045) !important;
+}
+#root .wp-profile-card .wp-profile-title,
+#root .wp-profile-label {
+  color: #24324b !important;
+}
+#root .wp-profile-muted {
+  color: #52617a !important;
+  line-height: 1.55 !important;
+}
+#root .wp-profile-icon {
+  background: rgba(66,104,201,.10) !important;
+  color: #4268c9 !important;
+}
+#root .wp-profile-input {
+  min-height: 44px !important;
+  background: #ffffff !important;
+  border-color: #cbd5e5 !important;
+  color: #24324b !important;
+  font-size: 14px !important;
+}
+#root .wp-profile-input::placeholder { color: #68758b !important; }
+#root .wp-profile-input:focus {
+  outline: 2px solid rgba(66,104,201,.25) !important;
+  border-color: #4268c9 !important;
+}
+#root .wp-profile-save {
+  min-height: 44px !important;
+  background: #4268c9 !important;
+  color: #ffffff !important;
+  border-color: #4268c9 !important;
+}
+#root .wp-profile-save:hover { background: #24324b !important; }
+#root .wp-profile-card h2 { font-size: 14px !important; }

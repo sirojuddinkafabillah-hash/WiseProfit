@@ -239,7 +239,6 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
             <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
               {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <UserRound className="h-9 w-9" />}
-              <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-white opacity-0 transition group-hover:bg-black/35 group-hover:opacity-100"><Camera className="h-6 w-6" /></span>
             </button>
             {localPhoto && <button type="button" onClick={removePhoto} title="Hapus foto profil" aria-label="Hapus foto profil" className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>

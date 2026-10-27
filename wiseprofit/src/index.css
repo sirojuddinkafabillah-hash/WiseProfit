@@ -1121,3 +1121,55 @@ html, body {
     font-size: 12px !important;
   }
 }
+
+/* Compact inventory table columns so the item name and delete action stay usable */
+#root .wp-inventory-table {
+  width: 100%;
+  min-width: 1120px;
+  table-layout: fixed;
+}
+#root .wp-inventory-table th,
+#root .wp-inventory-table td {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  box-sizing: border-box;
+}
+#root .wp-inventory-table th:nth-child(1),
+#root .wp-inventory-table td:nth-child(1) { width: 42px; }
+#root .wp-inventory-table th:nth-child(2),
+#root .wp-inventory-table td:nth-child(2) { width: 170px; }
+#root .wp-inventory-table th:nth-child(3),
+#root .wp-inventory-table td:nth-child(3) { width: 90px; }
+#root .wp-inventory-table th:nth-child(4),
+#root .wp-inventory-table td:nth-child(4) { width: 105px; }
+#root .wp-inventory-table th:nth-child(5),
+#root .wp-inventory-table td:nth-child(5) { width: 145px; }
+#root .wp-inventory-table th:nth-child(6),
+#root .wp-inventory-table td:nth-child(6) { width: 100px; }
+#root .wp-inventory-table th:nth-child(7),
+#root .wp-inventory-table td:nth-child(7) { width: 112px; }
+#root .wp-inventory-table th:nth-child(8),
+#root .wp-inventory-table td:nth-child(8) { width: 120px; }
+#root .wp-inventory-table th:nth-child(9),
+#root .wp-inventory-table td:nth-child(9) { width: 130px; }
+#root .wp-inventory-table th:nth-child(10),
+#root .wp-inventory-table td:nth-child(10) {
+  width: 66px;
+  min-width: 66px;
+  text-align: center;
+  white-space: nowrap;
+}
+#root .wp-inventory-table td:nth-child(2) > div {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.35;
+}
+#root .wp-inventory-table td:nth-child(10) button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 32px;
+  padding: 6px !important;
+}
+#root .wp-inventory-table td:nth-child(10) svg { flex-shrink: 0; }

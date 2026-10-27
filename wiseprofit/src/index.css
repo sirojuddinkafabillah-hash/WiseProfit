@@ -295,3 +295,107 @@ tbody tr, td { border-color: var(--wp-table-line); color: var(--wp-text-main); }
 :root[style*="--wp-custom-accent"] { --wp-accent: var(--wp-custom-accent); }
 :root[style*="--wp-custom-table"] { --wp-table-bg: var(--wp-custom-table); --wp-table-head: var(--wp-custom-table); }
 :root[style*="--wp-custom-text"] { --wp-text-main: var(--wp-custom-text); --wp-text-strong: var(--wp-custom-text); }
+
+
+/* WiseProfit Fintech UI — original design inspired by modern digital finance products.
+   Uses a clean paper-white canvas, deep navy typography, PayPal-like blue actions,
+   and Papara-inspired violet accents without copying either brand's logo or assets. */
+:root {
+  --wp-fintech-bg: #f3f6fc;
+  --wp-fintech-surface: #ffffff;
+  --wp-fintech-ink: #14213d;
+  --wp-fintech-muted: #64748b;
+  --wp-fintech-border: #dce5f1;
+  --wp-fintech-blue: #1769e0;
+  --wp-fintech-violet: #6d45d8;
+}
+html, body {
+  background-color: var(--wp-fintech-bg) !important;
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(109,69,216,.07), transparent 32rem),
+    radial-gradient(ellipse at 92% 10%, rgba(23,105,224,.08), transparent 30rem) !important;
+  color: var(--wp-fintech-ink) !important;
+}
+#root { color: var(--wp-fintech-ink); }
+.wp-app-header {
+  background: rgba(255,255,255,.94) !important;
+  border-color: var(--wp-fintech-border) !important;
+  box-shadow: 0 5px 24px rgba(20,33,61,.045);
+  color: var(--wp-fintech-ink) !important;
+}
+.wp-app-header [class*="bg-slate-950"],
+.wp-app-header [class*="bg-slate-900"] {
+  background-color: #f1f5fb !important;
+}
+.wp-app-header [class*="text-slate-100"],
+.wp-app-header [class*="text-slate-200"],
+.wp-app-header [class*="text-slate-300"],
+.wp-app-header [class*="text-white"] { color: var(--wp-fintech-ink) !important; }
+.wp-app-header [class*="border-slate-700"],
+.wp-app-header [class*="border-slate-800"] { border-color: var(--wp-fintech-border) !important; }
+.wp-app-header [class*="bg-emerald-400"],
+.wp-app-header [class*="bg-emerald-500"] {
+  background-color: var(--wp-fintech-blue) !important;
+  color: #fff !important;
+}
+.wp-app-header [class*="text-emerald-"] { color: var(--wp-fintech-violet) !important; }
+.wp-auth-overlay { background: rgba(18,30,55,.52) !important; backdrop-filter: blur(10px); }
+.wp-auth-card {
+  max-width: 920px !important;
+  display: grid;
+  grid-template-columns: minmax(240px,.88fr) minmax(0,1.12fr);
+  background: #fff !important;
+  border: 1px solid rgba(255,255,255,.65) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 32px 90px rgba(15,35,75,.28) !important;
+  color: var(--wp-fintech-ink) !important;
+}
+.wp-auth-header {
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 42px 30px !important;
+  background: linear-gradient(145deg,#123b87 0%,#1769e0 55%,#6d45d8 100%) !important;
+  border: 0 !important;
+  text-align: left !important;
+}
+.wp-auth-header h2 { width: 100%; margin-top: 12px; font-size: 27px !important; line-height: 1.18; letter-spacing: -.04em; }
+.wp-auth-header p { width: 100%; max-width: none !important; margin-top: 12px !important; color: rgba(255,255,255,.82) !important; font-size: 13px !important; line-height: 1.75; }
+.wp-auth-header > div:not([id]) { background: rgba(255,255,255,.14) !important; border-color: rgba(255,255,255,.25) !important; }
+.wp-auth-header svg { color: #fff !important; }
+.wp-auth-body { min-width: 0; padding: 32px !important; background: #fff !important; color: var(--wp-fintech-ink) !important; }
+.wp-auth-card [class*="text-slate-100"],
+.wp-auth-card [class*="text-slate-200"],
+.wp-auth-card [class*="text-slate-300"],
+.wp-auth-card [class*="text-white"] { color: var(--wp-fintech-ink) !important; }
+.wp-auth-card [class*="text-slate-400"],
+.wp-auth-card [class*="text-slate-500"] { color: var(--wp-fintech-muted) !important; }
+.wp-auth-card [class*="bg-slate-950"],
+.wp-auth-card [class*="bg-slate-900"],
+.wp-auth-card [class*="bg-slate-800"] { background-color: #f4f7fc !important; }
+.wp-auth-card [class*="border-slate-700"],
+.wp-auth-card [class*="border-slate-800"] { border-color: var(--wp-fintech-border) !important; }
+.wp-auth-card [class*="bg-emerald-500"],
+.wp-auth-card [class*="bg-emerald-400"] {
+  background-color: var(--wp-fintech-blue) !important;
+  color: #fff !important;
+}
+.wp-auth-card [class*="text-emerald-"] { color: var(--wp-fintech-violet) !important; }
+.wp-auth-card button { border-radius: 13px; }
+.wp-auth-card input {
+  background: #f8faff !important;
+  border-color: #d7e1ef !important;
+  color: var(--wp-fintech-ink) !important;
+}
+.wp-auth-card input::placeholder { color: #8996aa !important; }
+.wp-auth-card [class*="bg-rose-950"],
+.wp-auth-card [class*="bg-amber-950"] { background-color: #fff7ed !important; }
+@media (max-width: 700px) {
+  .wp-auth-card { display: flex; flex-direction: column; max-width: 460px !important; max-height: calc(100dvh - 24px); overflow-y: auto; }
+  .wp-auth-header { padding: 26px 24px !important; text-align: center !important; }
+  .wp-auth-header h2, .wp-auth-header p { text-align: center; }
+  .wp-auth-header h2 { font-size: 22px !important; }
+  .wp-auth-body { padding: 22px !important; }
+}

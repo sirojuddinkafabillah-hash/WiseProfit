@@ -718,3 +718,88 @@ html, body {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Three-color system: white, navy, and blue. Use opacity/tints of these only. */
+:root {
+  --wp-page: #ffffff;
+  --wp-paper: #ffffff;
+  --wp-ink: #24324b;
+  --wp-secondary: #24324b;
+  --wp-subtle: #68758b;
+  --wp-line: #e6ebf4;
+  --wp-line-strong: #d5deed;
+  --wp-blue: #4268c9;
+  --wp-blue-hover: #3559b4;
+  --wp-violet: #4268c9;
+  --wp-green: #4268c9;
+  --wp-fintech-bg: #ffffff;
+  --wp-fintech-surface: #ffffff;
+  --wp-fintech-ink: #24324b;
+  --wp-fintech-muted: #68758b;
+  --wp-fintech-border: #e6ebf4;
+  --wp-fintech-blue: #4268c9;
+  --wp-fintech-violet: #4268c9;
+}
+html, body {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #24324b !important;
+}
+#root { color: #24324b !important; background: #ffffff; }
+#root [class*="text-emerald-"], #root [class*="text-green-"],
+#root [class*="text-cyan-"], #root [class*="text-indigo-"],
+#root [class*="text-violet-"], #root [class*="text-purple-"],
+#root [class*="text-blue-"] { color: #4268c9 !important; }
+#root [class*="text-rose-"], #root [class*="text-red-"],
+#root [class*="text-amber-"], #root [class*="text-orange-"] { color: #24324b !important; }
+#root [class*="bg-emerald-"], #root [class*="bg-green-"],
+#root [class*="bg-cyan-"], #root [class*="bg-indigo-"],
+#root [class*="bg-violet-"], #root [class*="bg-purple-"],
+#root [class*="bg-blue-"] { background-color: rgba(66,104,201,.09) !important; }
+#root button[class*="bg-emerald-"], #root button[class*="bg-green-"],
+#root button[class*="bg-blue-"], #root button[class*="bg-indigo-"],
+#root a[class*="bg-emerald-"], #root a[class*="bg-green-"],
+#root a[class*="bg-blue-"], #root a[class*="bg-indigo-"] {
+  background: #4268c9 !important;
+  color: #ffffff !important;
+  border-color: #4268c9 !important;
+}
+#root [class*="bg-rose-"], #root [class*="bg-red-"],
+#root [class*="bg-amber-"], #root [class*="bg-orange-"] {
+  background-color: rgba(36,50,75,.055) !important;
+}
+#root [class*="border-emerald-"], #root [class*="border-green-"],
+#root [class*="border-rose-"], #root [class*="border-red-"],
+#root [class*="border-amber-"], #root [class*="border-cyan-"],
+#root [class*="border-violet-"], #root [class*="border-purple-"] {
+  border-color: #e6ebf4 !important;
+}
+.wp-auth-header { background: #4268c9 !important; }
+#root .wp-auth-header h2, #root .wp-auth-header [class~="text-white"],
+#root .wp-auth-header button { color: #ffffff !important; }
+#root .wp-auth-header p { color: rgba(255,255,255,.88) !important; }
+#root [class*="bg-gradient-to-"] {
+  background-image: none !important;
+  background-color: #4268c9 !important;
+}
+#root [class*="bg-slate-950"], #root [class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+}
+#root [class*="bg-slate-800"], #root [class*="bg-slate-700"] {
+  background-color: rgba(36,50,75,.055) !important;
+}
+#root thead, #root thead tr, #root th {
+  background-color: rgba(66,104,201,.08) !important;
+  color: #24324b !important;
+}
+#root tbody tr:nth-child(even) { background-color: rgba(36,50,75,.025) !important; }
+#root tbody tr:hover { background-color: rgba(66,104,201,.07) !important; }
+#root .wp-app-header nav button[class*="border-rose"],
+#root .wp-app-header nav button[class*="border-emerald"] {
+  background-color: rgba(66,104,201,.09) !important;
+  color: #4268c9 !important;
+  border-color: #e6ebf4 !important;
+}
+#root footer { background: #ffffff !important; color: #68758b !important; }
+#root footer [class*="text-emerald-"], #root footer [class*="text-slate-"] { color: #68758b !important; }

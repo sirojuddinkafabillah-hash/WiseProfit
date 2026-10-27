@@ -112,34 +112,58 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     event.target.value = '';
   };
 
-  const handlePhotoSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handlePhotoSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
       setNameMessage('Pilih file foto dengan format gambar.');
-      event.target.value = '';
+      input.value = '';
       return;
     }
-    if (file.size > 1.5 * 1024 * 1024) {
-      setNameMessage('Ukuran foto maksimal 1,5 MB agar dapat disimpan di browser. Pilih foto yang lebih kecil.');
-      event.target.value = '';
+    if (file.size > 10 * 1024 * 1024) {
+      setNameMessage('Ukuran foto maksimal 10 MB. Pilih foto yang lebih kecil.');
+      input.value = '';
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result !== 'string') return;
-      try {
-        localStorage.setItem(`wp_profile_photo_${user.uid}`, reader.result);
-        setLocalPhoto(reader.result);
-        window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
-        setNameMessage('Foto profil berhasil diganti di perangkat ini.');
-      } catch {
-        setNameMessage('Foto belum tersimpan. Coba pilih foto yang lebih kecil.');
-      }
-    };
-    reader.onerror = () => setNameMessage('Foto tidak bisa dibaca. Silakan pilih foto lain.');
-    reader.readAsDataURL(file);
-    event.target.value = '';
+    try {
+      const imageUrl = URL.createObjectURL(file);
+      const image = new Image();
+      image.onload = () => {
+        try {
+          const maxDimension = 640;
+          const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const context = canvas.getContext('2d');
+          if (!context) throw new Error('Canvas tidak tersedia');
+          // Putih menjadi latar untuk area transparan pada foto PNG/WebP.
+          context.fillStyle = '#ffffff';
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          const result = canvas.toDataURL('image/jpeg', 0.88);
+          localStorage.setItem(`wp_profile_photo_${user.uid}`, result);
+          setLocalPhoto(result);
+          window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
+          setNameMessage('Foto profil berhasil diganti dan disimpan di perangkat ini.');
+        } catch {
+          setNameMessage('Foto belum tersimpan. Coba pilih foto lain dengan ukuran lebih kecil.');
+        } finally {
+          URL.revokeObjectURL(imageUrl);
+          input.value = '';
+        }
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(imageUrl);
+        input.value = '';
+        setNameMessage('Foto tidak bisa dibaca. Silakan pilih file gambar lain.');
+      };
+      image.src = imageUrl;
+    } catch {
+      input.value = '';
+      setNameMessage('Foto belum dapat diproses. Silakan coba lagi.');
+    }
   };
 
   const removePhoto = () => {
@@ -238,7 +262,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           <div className="flex shrink-0 flex-col items-center gap-2">
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
             <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
-              {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <UserRound className="h-9 w-9" />}
+              {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <span aria-label={`Inisial ${displayName}`} className="wp-profile-initials">{initials}</span>}
             </button>
             <button type="button" onClick={() => { if (photoInputRef.current) { photoInputRef.current.value = ''; photoInputRef.current.click(); } }} className="wp-profile-photo-action inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold">
               <Camera className="h-3.5 w-3.5" /> {localPhoto || user.photoURL ? 'Ganti foto' : 'Tambah foto'}

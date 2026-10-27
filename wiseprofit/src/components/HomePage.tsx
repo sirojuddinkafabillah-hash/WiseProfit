@@ -120,8 +120,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       event.target.value = '';
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setNameMessage('Ukuran foto maksimal 5 MB. Pilih foto yang lebih kecil.');
+    if (file.size > 1.5 * 1024 * 1024) {
+      setNameMessage('Ukuran foto maksimal 1,5 MB agar dapat disimpan di browser. Pilih foto yang lebih kecil.');
       event.target.value = '';
       return;
     }

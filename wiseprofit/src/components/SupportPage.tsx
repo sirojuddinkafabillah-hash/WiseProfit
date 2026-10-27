@@ -4,6 +4,7 @@ import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send, Copy, C
 interface SupportPageProps {
   mode: 'faq' | 'complaints';
   onBackToInventory: () => void;
+  onGoToComplaints: () => void;
 }
 
 const FAQS = [
@@ -15,7 +16,7 @@ const FAQS = [
   { q: 'Apakah data tersimpan di akun cloud?', a: 'Untuk akun yang terhubung, data dapat disinkronkan dengan layanan cloud aplikasi. Pastikan indikator sinkronisasi selesai sebelum menutup aplikasi, dan lakukan ekspor cadangan secara berkala.' },
 ];
 
-export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventory }) => {
+export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventory, onGoToComplaints }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [category, setCategory] = useState('Masalah aplikasi');
   const [subject, setSubject] = useState('');
@@ -74,7 +75,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
               {openFaq === index && <p className="border-t border-slate-100 px-4 py-4 text-sm leading-6 text-slate-600">{faq.a}</p>}
             </div>
           ))}
-          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('wiseprofit-open-complaints'))} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> Punya keluhan lain?</button>
+          <button type="button" onClick={onGoToComplaints} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> Punya keluhan lain?</button>
         </div>
       ) : (
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">

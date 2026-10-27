@@ -469,3 +469,9 @@ html, body {
 #root [class*="text-blue-300"],
 #root [class*="text-blue-400"] { color: #1769e0 !important; }
 #root [class*="rounded-3xl"] { box-shadow: 0 10px 32px rgba(20,33,61,.06); }
+
+/* Keep the sign-in hero high-contrast against its blue/violet gradient */
+#root .wp-auth-header h2,
+#root .wp-auth-header [class~="text-white"] { color: #ffffff !important; }
+#root .wp-auth-header p { color: rgba(255,255,255,.84) !important; }
+#root .wp-auth-header button { color: #ffffff !important; }

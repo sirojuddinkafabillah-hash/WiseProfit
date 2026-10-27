@@ -1047,3 +1047,29 @@ html, body {
   letter-spacing: -.04em;
   text-transform: uppercase;
 }
+
+
+/* Desktop header: keep only brand and the four primary navigation tabs */
+@media (min-width: 768px) {
+  #root .wp-header-quick-tools {
+    display: none !important;
+  }
+  #root .wp-main-navigation {
+    gap: 4px !important;
+    padding: 4px !important;
+    background: #ffffff !important;
+    border: 1px solid #e1e7f1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(36,50,75,.07) !important;
+  }
+  #root .wp-main-navigation > button {
+    min-height: 38px;
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
+  #root .wp-app-header > div > div:first-child {
+    gap: 18px !important;
+  }
+}

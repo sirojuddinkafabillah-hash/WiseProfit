@@ -120,8 +120,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
       event.target.value = '';
       return;
     }
-    if (file.size > 1.5 * 1024 * 1024) {
-      setNameMessage('Ukuran foto maksimal 1,5 MB agar bisa tersimpan di browser.');
+    if (file.size > 5 * 1024 * 1024) {
+      setNameMessage('Ukuran foto maksimal 5 MB. Pilih foto yang lebih kecil.');
       event.target.value = '';
       return;
     }
@@ -239,6 +239,9 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
             <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
               {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <UserRound className="h-9 w-9" />}
+            </button>
+            <button type="button" onClick={() => { if (photoInputRef.current) { photoInputRef.current.value = ''; photoInputRef.current.click(); } }} className="wp-profile-photo-action inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold">
+              <Camera className="h-3.5 w-3.5" /> {localPhoto || user.photoURL ? 'Ganti foto' : 'Tambah foto'}
             </button>
             {localPhoto && <button type="button" onClick={removePhoto} title="Hapus foto profil" aria-label="Hapus foto profil" className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>

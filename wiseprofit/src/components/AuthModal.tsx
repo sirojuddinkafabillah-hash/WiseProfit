@@ -288,13 +288,13 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const maskedPhone = (currentHint as any)?.phoneNumber || 'Nomor Telepon Terdaftar';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in">
+    <div className="wp-auth-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in">
       {/* Compatibility container for legacy MFA UI */}
       <div id="recaptcha-container"></div>
 
-      <div className="relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl border border-slate-700/80 overflow-hidden text-slate-100 animate-in zoom-in-95 duration-150">
+      <div className="wp-auth-card relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl border border-slate-700/80 overflow-hidden text-slate-100 animate-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 p-6 text-white text-center relative border-b border-slate-800">
+        <div className="wp-auth-header bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 p-6 text-white text-center relative border-b border-slate-800">
           <button
             onClick={() => {
               resetMfaState();
@@ -314,16 +314,16 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
           </div>
           
           <h2 className="text-xl font-bold tracking-tight text-white font-sans">
-            {mfaResolver ? 'Verifikasi 2 Langkah (MFA)' : 'Login WiseProfit'}
+            {mfaResolver ? 'Verifikasi 2 Langkah' : 'Masuk ke WiseProfit'}
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto font-mono">
             {mfaResolver 
               ? 'Akun Anda dilindungi autentikasi dua faktor. Masukkan kode untuk menyelesaikan login.'
-              : 'Akses aman data pribadi toko Anda. Setiap akun terisolasi secara privat di Cloud.'}
+              : 'Kelola penjualan, stok, dan arus kas usaha Anda dalam satu ruang yang aman.'}
           </p>
         </div>
 
-        <div className="p-6 space-y-4">
+        <div className="wp-auth-body p-6 space-y-4">
           {errorMsg && (
             <div className="p-3 bg-rose-950/60 border border-rose-500/40 rounded-xl text-xs text-rose-300 flex items-center gap-2 font-mono">
               <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />

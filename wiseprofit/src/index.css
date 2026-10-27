@@ -983,3 +983,16 @@ html, body {
 }
 #root .wp-profile-save:hover { background: #24324b !important; }
 #root .wp-profile-card h2 { font-size: 14px !important; }
+
+
+/* Keep uploaded profile photo visually unchanged */
+#root .wp-profile-avatar {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+#root .wp-profile-avatar img {
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}

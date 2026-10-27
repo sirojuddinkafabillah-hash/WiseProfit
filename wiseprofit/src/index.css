@@ -996,3 +996,19 @@ html, body {
   opacity: 1 !important;
   mix-blend-mode: normal !important;
 }
+
+
+/* Clear, visible profile-photo controls */
+#root .wp-profile-photo-action {
+  min-height: 34px;
+  color: #24324b !important;
+  background: #ffffff !important;
+  border-color: #d6deed !important;
+  cursor: pointer;
+}
+#root .wp-profile-photo-action:hover {
+  color: #4268c9 !important;
+  border-color: #4268c9 !important;
+  background: rgba(66,104,201,.06) !important;
+}
+#root .wp-profile-avatar { cursor: pointer; }

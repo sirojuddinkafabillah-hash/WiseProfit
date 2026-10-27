@@ -154,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Quick Tools & Cloud Auth */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Quick Helper Tools */}
-            <nav className="hidden xl:flex items-center gap-1.5 text-xs font-sans font-medium text-slate-300">
+            <nav className="hidden 2xl:flex items-center gap-1.5 text-xs font-sans font-medium text-slate-300">
               <button
                 type="button"
                 onClick={onOpenGuide}

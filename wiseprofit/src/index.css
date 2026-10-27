@@ -1073,3 +1073,51 @@ html, body {
     gap: 18px !important;
   }
 }
+
+
+/* Desktop header layout: compact main navigation, status at far right only */
+@media (min-width: 768px) {
+  #root .wp-header-quick-tools {
+    display: flex !important;
+    margin-left: auto !important;
+    gap: 0 !important;
+  }
+  #root .wp-header-quick-tools > nav,
+  #root .wp-header-quick-tools > button {
+    display: none !important;
+  }
+  #root .wp-header-quick-tools > div {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  #root .wp-header-quick-tools > div > div > img,
+  #root .wp-header-quick-tools > div > div > div:first-child {
+    display: none !important;
+  }
+  #root .wp-header-quick-tools span.hidden.lg\:inline-block {
+    display: none !important;
+  }
+  #root .wp-header-quick-tools > div > div > span:last-child {
+    display: inline-flex !important;
+    padding: 7px 10px !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
+    color: #24324b !important;
+    background: #f8fafc !important;
+    border: 1px solid #dce4f0 !important;
+  }
+  #root .wp-main-navigation {
+    max-width: calc(100vw - 150px);
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: #ffffff !important;
+  }
+  #root .wp-main-navigation::-webkit-scrollbar { display: none; }
+  #root .wp-main-navigation > button {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 12px !important;
+  }
+}

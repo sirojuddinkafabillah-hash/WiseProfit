@@ -911,3 +911,9 @@ html, body {
     font-size: 12px !important;
   }
 }
+
+
+/* Hide the dashboard intro heading and subtitle as requested */
+#root .dashboard-hero {
+  display: none !important;
+}

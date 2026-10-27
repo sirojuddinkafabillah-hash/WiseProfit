@@ -232,32 +232,32 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
 
   return (
     <div className="w-full min-w-0 max-w-none space-y-3 animate-in fade-in text-sm">
-      <section className="relative overflow-hidden rounded-2xl border border-emerald-400/20 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-emerald-950/60 p-4 shadow-xl">
+      <section className="wp-profile-hero relative overflow-hidden rounded-2xl border p-4 shadow-sm">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-4">
           <div className="flex shrink-0 flex-col items-center gap-2">
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Pilih foto profil" />
-            <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-emerald-300/50 bg-emerald-400/15 text-3xl font-bold text-emerald-200 shadow-lg transition hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">
+            <button type="button" onClick={() => photoInputRef.current?.click()} title="Ganti foto profil" aria-label="Ganti foto profil" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
               {localPhoto ? <img src={localPhoto} alt="Foto profil" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Foto profil" className="h-full w-full object-cover" /> : <UserRound className="h-9 w-9" />}
               <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-white opacity-0 transition group-hover:bg-black/35 group-hover:opacity-100"><Camera className="h-6 w-6" /></span>
             </button>
             {localPhoto && <button type="button" onClick={removePhoto} title="Hapus foto profil" aria-label="Hapus foto profil" className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200"><CheckCircle2 className="h-3.5 w-3.5" /> Beranda WiseProfit</div>
-            <h1 className="break-words text-xl font-bold tracking-tight text-white">Halo, {displayName}!</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">Atur profil, pilih tampilan yang nyaman, dan simpan catatan pribadi usaha Anda di satu tempat.</p>
-            <div className="mt-3 flex items-center gap-2 break-all text-xs text-slate-400"><Mail className="h-3.5 w-3.5 shrink-0" />{user.email || 'Email tidak tersedia'}</div>
+            <div className="wp-profile-eyebrow mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold"><CheckCircle2 className="h-3.5 w-3.5" /> Beranda WiseProfit</div>
+            <h1 className="wp-profile-title break-words text-xl font-bold tracking-tight">Halo, {displayName}!</h1>
+            <p className="wp-profile-description mt-2 max-w-2xl text-sm leading-relaxed">Atur profil, pilih tampilan yang nyaman, dan simpan catatan pribadi usaha Anda di satu tempat.</p>
+            <div className="wp-profile-email mt-3 flex items-center gap-2 break-all text-xs"><Mail className="h-3.5 w-3.5 shrink-0" />{user.email || 'Email tidak tersedia'}</div>
           </div>
         </div>
       </section>
 
       <section className="grid min-w-0 grid-cols-1 gap-4">
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-3">
-          <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-emerald-400/10 p-2.5 text-emerald-300"><UserRound className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Profil Anda</h2><p className="mt-1 text-xs text-slate-400">Nama ini akan digunakan di WiseProfit.</p></div></div>
-          <label htmlFor="wiseprofit-profile-name" className="mb-2 block text-sm font-medium text-slate-300">Nama tampilan</label>
-          <div className="flex min-w-0 flex-col gap-2"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder="Masukkan nama Anda" className="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white" /><button type="button" onClick={saveName} disabled={isSavingName} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-emerald-300 disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? 'Menyimpan…' : 'Simpan nama'}</button></div>
-          <p className="mt-3 text-xs leading-relaxed text-slate-400">Email akun tidak berubah. Anda hanya mengubah nama yang ditampilkan.</p>
+        <div className="wp-profile-card rounded-2xl border p-4">
+          <div className="mb-5 flex items-center gap-3"><div className="wp-profile-icon rounded-xl p-2.5"><UserRound className="h-5 w-5" /></div><div><h2 className="wp-profile-title font-bold">Profil Anda</h2><p className="wp-profile-muted mt-1 text-xs">Nama ini akan digunakan di WiseProfit.</p></div></div>
+          <label htmlFor="wiseprofit-profile-name" className="wp-profile-label mb-2 block text-sm font-semibold">Nama tampilan</label>
+          <div className="flex min-w-0 flex-col gap-2"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder="Masukkan nama Anda" className="wp-profile-input min-w-0 flex-1 rounded-xl border px-3 py-3 text-sm" /><button type="button" onClick={saveName} disabled={isSavingName} className="wp-profile-save inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-bold disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? 'Menyimpan…' : 'Simpan nama'}</button></div>
+          <p className="wp-profile-muted mt-3 text-xs leading-relaxed">Email akun tidak berubah. Anda hanya mengubah nama yang ditampilkan.</p>
         </div>
 
         <div className="rounded-2xl border border-slate-700/70 bg-slate-900/85 p-3">

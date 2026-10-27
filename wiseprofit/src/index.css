@@ -803,3 +803,111 @@ html, body {
 }
 #root footer { background: #ffffff !important; color: #68758b !important; }
 #root footer [class*="text-emerald-"], #root footer [class*="text-slate-"] { color: #68758b !important; }
+
+
+/* Table readability fix: compact controls, calmer dividers, and contained horizontal scrolling */
+#root main table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(66,104,201,.35) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+#root main table thead,
+#root main table tbody {
+  white-space: normal;
+}
+#root main table th {
+  padding: 12px 14px !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  letter-spacing: .035em !important;
+  vertical-align: bottom;
+}
+#root main table td {
+  padding: 12px 14px !important;
+  line-height: 1.45 !important;
+  border-bottom-color: #edf0f6 !important;
+}
+#root main table tbody tr:nth-child(even) {
+  background-color: rgba(36,50,75,.018) !important;
+}
+#root main table tbody tr:hover {
+  background-color: rgba(66,104,201,.055) !important;
+}
+#root main table td input[type="number"] {
+  min-height: 34px !important;
+  height: 34px;
+  width: 48px;
+  padding: 5px 6px !important;
+  border-radius: 9px !important;
+  text-align: center;
+  font-size: 13px !important;
+}
+#root main table td button {
+  min-height: 30px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  font-size: 11px;
+  box-shadow: none !important;
+  transform: none !important;
+}
+#root main table td button:hover {
+  transform: none !important;
+  filter: none !important;
+}
+#root main table td button[title*="Tambah 1 unit"],
+#root main table td button[title*="Kurangi 1 unit"] {
+  min-width: 28px;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border: 1px solid #e6ebf4 !important;
+  background: #ffffff !important;
+  color: #24324b !important;
+}
+#root main table td button[title*="Buka dialog input terjual"] {
+  background: rgba(66,104,201,.08) !important;
+  border: 1px solid rgba(66,104,201,.16) !important;
+  color: #4268c9 !important;
+}
+#root main table td button[title*="Edit barang"],
+#root main table td button[title*="Hapus"] {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 5px;
+  background: #ffffff !important;
+  border: 1px solid #e6ebf4 !important;
+  color: #24324b !important;
+}
+#root main table td .text-xs,
+#root main table td .text-\[10px\],
+#root main table td .text-\[11px\] {
+  line-height: 1.45 !important;
+}
+#root main table td:first-child,
+#root main table th:first-child {
+  padding-left: 14px !important;
+}
+#root main table td:last-child,
+#root main table th:last-child {
+  padding-right: 14px !important;
+}
+@media (max-width: 768px) {
+  #root main table {
+    border-radius: 10px;
+  }
+  #root main table th {
+    padding: 10px 12px !important;
+    font-size: 10.5px !important;
+  }
+  #root main table td {
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+}

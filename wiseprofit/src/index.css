@@ -475,3 +475,47 @@ html, body {
 #root .wp-auth-header [class~="text-white"] { color: #ffffff !important; }
 #root .wp-auth-header p { color: rgba(255,255,255,.84) !important; }
 #root .wp-auth-header button { color: #ffffff !important; }
+
+
+/* WiseProfit calm unified palette: soft blue-gray canvas, white surfaces, restrained blue-violet accents */
+:root {
+  --wp-fintech-bg: #f5f7fc;
+  --wp-fintech-surface: #ffffff;
+  --wp-fintech-ink: #24324b;
+  --wp-fintech-muted: #748097;
+  --wp-fintech-border: #e4e9f2;
+  --wp-fintech-blue: #4268c9;
+  --wp-fintech-violet: #7867bd;
+}
+html, body {
+  background-color: #f5f7fc !important;
+  background-image: radial-gradient(ellipse at 10% 0%, rgba(120,103,189,.045), transparent 34rem), radial-gradient(ellipse at 92% 8%, rgba(66,104,201,.05), transparent 32rem) !important;
+  color: #24324b !important;
+}
+#root { color: #24324b; }
+#root [class~="bg-slate-950"], #root [class~="bg-slate-950/95"], #root [class~="bg-slate-950/90"], #root [class~="bg-slate-950/80"], #root [class~="bg-slate-950/70"],
+#root [class~="bg-slate-900"], #root [class~="bg-slate-900/95"], #root [class~="bg-slate-900/90"], #root [class~="bg-slate-900/80"], #root [class~="bg-slate-900/70"] { background-color: #ffffff !important; }
+#root [class~="bg-slate-800"], #root [class~="bg-slate-800/90"], #root [class~="bg-slate-800/80"], #root [class~="bg-slate-800/70"], #root [class~="bg-slate-700/50"] { background-color: #f0f3f9 !important; }
+#root [class~="text-slate-100"], #root [class~="text-slate-200"], #root [class~="text-slate-300"] { color: #34425b !important; }
+#root [class~="text-slate-400"], #root [class~="text-slate-500"] { color: #748097 !important; }
+#root [class~="border-slate-700"], #root [class~="border-slate-800"], #root [class~="border-slate-600"], #root [class~="border-slate-500"] { border-color: #e4e9f2 !important; }
+#root [class~="text-emerald-200"], #root [class~="text-emerald-300"], #root [class~="text-emerald-400"] { color: #6478bd !important; }
+#root [class~="bg-emerald-500"], #root [class~="bg-emerald-400"] { background-color: #4268c9 !important; color: #ffffff !important; }
+#root button[class*="bg-emerald-"], #root a[class*="bg-emerald-"] { color: #ffffff !important; }
+#root [class*="border-emerald-500"], #root [class*="border-emerald-400"] { border-color: #d8e0f4 !important; }
+#root table { background: #ffffff !important; border-color: #e4e9f2 !important; }
+#root thead, #root thead tr, #root th { background-color: #f0f3f9 !important; color: #52617a !important; }
+#root tbody tr:nth-child(even) { background-color: #fafbfe !important; }
+#root tbody tr:hover { background-color: #f1f4fb !important; }
+#root td { color: #43516a; }
+#root input:not([type="checkbox"]):not([type="radio"]), #root select, #root textarea { background-color: #fbfcff !important; color: #24324b !important; border-color: #dfe5ef !important; box-shadow: none; }
+#root input:focus, #root select:focus, #root textarea:focus { border-color: #a8b8e5 !important; box-shadow: 0 0 0 3px rgba(66,104,201,.09) !important; }
+#root [class*="rounded-3xl"], #root [class*="rounded-2xl"] { box-shadow: 0 5px 20px rgba(35,50,75,.045); }
+.wp-app-header { background: rgba(255,255,255,.96) !important; border-color: #e4e9f2 !important; box-shadow: 0 3px 16px rgba(35,50,75,.035) !important; }
+.wp-auth-card { box-shadow: 0 24px 70px rgba(35,50,75,.16) !important; border-color: #edf0f7 !important; }
+.wp-auth-header { background: linear-gradient(145deg,#3457a5 0%,#4268c9 58%,#7867bd 100%) !important; }
+#root .wp-auth-header h2, #root .wp-auth-header [class~="text-white"], #root .wp-auth-header button { color: #ffffff !important; }
+#root .wp-auth-header p { color: rgba(255,255,255,.86) !important; }
+#root button { transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
+#root button:focus-visible, #root a:focus-visible { outline-color: #8da4e1 !important; }
+::selection { background: rgba(120,103,189,.18); color: #24324b; }

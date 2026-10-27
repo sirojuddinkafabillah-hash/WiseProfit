@@ -519,3 +519,202 @@ html, body {
 #root button { transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
 #root button:focus-visible, #root a:focus-visible { outline-color: #8da4e1 !important; }
 ::selection { background: rgba(120,103,189,.18); color: #24324b; }
+
+
+/* WiseProfit UI refinement — typography, separators, tables, controls and micro-details */
+:root {
+  --wp-page: #f5f7fc;
+  --wp-paper: #ffffff;
+  --wp-ink: #26344d;
+  --wp-secondary: #596982;
+  --wp-subtle: #7b879b;
+  --wp-line: #e2e8f2;
+  --wp-line-strong: #d4deec;
+  --wp-blue: #4268c9;
+  --wp-blue-hover: #3559b4;
+  --wp-violet: #7867bd;
+  --wp-green: #168565;
+  --wp-red: #c34e61;
+}
+#root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--wp-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+#root main { color: var(--wp-ink); }
+#root h1, #root h2, #root h3, #root h4 {
+  color: #26344d;
+  letter-spacing: -.025em;
+  text-wrap: pretty;
+}
+#root h1 { line-height: 1.2; }
+#root h2 { line-height: 1.3; }
+#root p { line-height: 1.55; }
+#root label {
+  color: #53627a;
+  font-weight: 600;
+  letter-spacing: .005em;
+}
+#root [class*="text-[10px]"] { font-size: 11px !important; line-height: 1.45; }
+#root [class*="text-[11px]"] { font-size: 11.5px !important; line-height: 1.5; }
+#root [class*="text-[9px]"] { font-size: 10px !important; line-height: 1.4; }
+#root [class*="uppercase"][class*="tracking-"] {
+  letter-spacing: .09em;
+  font-weight: 700;
+}
+#root hr, #root [role="separator"] {
+  border-color: var(--wp-line) !important;
+}
+#root [class*="border-t"], #root [class*="border-b"], #root [class*="border-l"], #root [class*="border-r"] {
+  border-color: var(--wp-line) !important;
+}
+#root [class*="rounded-3xl"], #root [class*="rounded-2xl"] {
+  border-color: var(--wp-line) !important;
+}
+#root [class*="shadow-2xl"], #root [class*="shadow-xl"] {
+  --tw-shadow-color: rgba(38,52,77,.08) !important;
+}
+#root [class*="shadow-lg"], #root [class*="shadow-md"] {
+  --tw-shadow-color: rgba(38,52,77,.055) !important;
+}
+/* Consistent white panels with a fine outline instead of heavy/dark surfaces */
+#root [class~="bg-slate-950"], #root [class~="bg-slate-950/98"], #root [class~="bg-slate-950/95"], #root [class~="bg-slate-950/90"], #root [class~="bg-slate-950/80"],
+#root [class~="bg-slate-900"], #root [class~="bg-slate-900/95"], #root [class~="bg-slate-900/90"], #root [class~="bg-slate-900/80"],
+#root [class~="bg-slate-800"] {
+  color: var(--wp-ink);
+}
+#root [class~="bg-slate-800"] { background-color: #f0f3f9 !important; }
+#root [class~="bg-slate-700/50"] { background-color: #f4f6fb !important; }
+/* Buttons: clear hierarchy, calm corners and visible keyboard focus */
+#root button, #root [role="button"] {
+  border-radius: 11px;
+  font-weight: 600;
+  letter-spacing: -.005em;
+}
+#root button:focus-visible, #root a:focus-visible, #root input:focus-visible, #root select:focus-visible, #root textarea:focus-visible {
+  outline: 3px solid rgba(66,104,201,.22) !important;
+  outline-offset: 2px;
+}
+#root button[class*="bg-emerald-"], #root button[class*="bg-blue-"], #root button[class*="bg-indigo-"] {
+  box-shadow: 0 3px 9px rgba(66,104,201,.12);
+}
+#root button[class*="bg-emerald-"]:hover, #root button[class*="bg-blue-"]:hover, #root button[class*="bg-indigo-"]:hover {
+  filter: brightness(.97);
+  transform: translateY(-1px);
+}
+#root button[class*="border-slate-"], #root button[class*="bg-slate-"] {
+  border-color: var(--wp-line-strong) !important;
+}
+#root button[class*="text-rose-"] { color: #b84a5c !important; }
+#root button[class*="bg-rose-"] { border-color: #f1d7dc !important; }
+/* Form controls: legible labels, restrained outlines, consistent height */
+#root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+#root select, #root textarea {
+  border: 1px solid #dce4f0 !important;
+  border-radius: 10px !important;
+  min-height: 40px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 13px;
+  line-height: 1.45;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+#root textarea { min-height: 88px; }
+#root input::placeholder, #root textarea::placeholder {
+  color: #929db0 !important;
+  opacity: 1;
+}
+#root input:disabled, #root select:disabled, #root textarea:disabled {
+  background-color: #f0f3f8 !important;
+  color: #8a96a9 !important;
+  cursor: not-allowed;
+}
+#root input[type="checkbox"], #root input[type="radio"] { accent-color: var(--wp-blue); }
+#root input[type="number"], #root td[class*="text-right"], #root th[class*="text-right"] {
+  font-variant-numeric: tabular-nums;
+}
+/* Tables: clear header band, gentle row striping, predictable reading rhythm */
+#root table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border: 1px solid var(--wp-line) !important;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff !important;
+}
+#root thead th, #root th {
+  padding: 12px 13px !important;
+  font-size: 10.5px !important;
+  line-height: 1.45;
+  font-weight: 750 !important;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-bottom: 1px solid #dfe6f1 !important;
+}
+#root tbody td {
+  padding: 11px 13px !important;
+  font-size: 12.5px;
+  line-height: 1.5;
+  border-bottom: 1px solid #edf0f6 !important;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+#root tbody tr:last-child td { border-bottom: 0 !important; }
+#root tbody tr:nth-child(odd) { background-color: #ffffff !important; }
+#root tbody tr:nth-child(even) { background-color: #fafbfe !important; }
+#root tbody tr:hover { background-color: #f1f5ff !important; }
+#root td:first-child, #root th:first-child { padding-left: 16px !important; }
+#root td:last-child, #root th:last-child { padding-right: 16px !important; }
+/* Keep statuses and tiny badges readable without competing with main content */
+#root [class*="rounded-full"][class*="text-[10px]"],
+#root [class*="rounded-full"][class*="text-[11px]"] {
+  letter-spacing: .01em;
+  font-weight: 650;
+}
+#root [class*="bg-emerald-500/"], #root [class*="bg-green-500/"] {
+  border-color: #cfeadd;
+}
+#root [class*="bg-rose-500/"], #root [class*="bg-red-500/"] {
+  border-color: #f0d8de;
+}
+/* Header/navigation: light separators, stronger active state, no muddy dark blocks */
+.wp-app-header {
+  border-bottom: 1px solid var(--wp-line) !important;
+  backdrop-filter: blur(16px);
+}
+.wp-app-header nav button { min-height: 36px; }
+.wp-app-header nav button:hover { background-color: #f2f5fb !important; }
+.wp-app-header nav button[class*="border-emerald"] {
+  background-color: #edf2ff !important;
+  color: #3458b4 !important;
+  border-color: #dce5ff !important;
+}
+.wp-app-header nav button[class*="border-rose"] {
+  background-color: #fff2f4 !important;
+  color: #b84a5c !important;
+  border-color: #f3dce1 !important;
+}
+/* Main workspace heading and card spacing */
+#root .dashboard-hero { padding-bottom: 15px; border-bottom: 1px solid #e5eaf3; }
+#root main .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 22px; }
+#root footer { background: #fff !important; border-color: var(--wp-line) !important; color: #7b879b !important; }
+#root footer [class*="text-emerald-"] { color: #536fae !important; }
+#root footer [class*="text-slate-"] { color: #7b879b !important; }
+/* Small screens: prevent controls and dense tables from feeling cramped */
+@media (max-width: 768px) {
+  #root h1 { font-size: clamp(21px, 5vw, 28px); }
+  #root h2 { font-size: clamp(17px, 4vw, 22px); }
+  #root table { min-width: 620px; }
+  #root thead th { padding: 10px 11px !important; }
+  #root tbody td { padding: 10px 11px !important; }
+  #root .dashboard-hero { padding-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #root button, #root [role="button"], #root input, #root select, #root textarea {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

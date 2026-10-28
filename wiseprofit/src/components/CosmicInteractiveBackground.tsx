@@ -202,7 +202,7 @@ export const CosmicInteractiveBackground: React.FC<CosmicBackgroundProps> = ({
           twinklePhase: Math.random() * Math.PI * 2,
           depth,
           isCrossFlare: Math.random() < 0.08,
-          color: Math.random() < 0.35 ? '#6ee7b7' : Math.random() < 0.7 ? '#93c5fd' : '#fef08a',
+          color: Math.random() < 0.55 ? '#60a5fa' : Math.random() < 0.82 ? '#93c5fd' : '#67e8f9',
         });
       }
 

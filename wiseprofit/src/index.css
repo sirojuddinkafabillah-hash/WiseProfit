@@ -1582,3 +1582,109 @@ html, body {
   opacity: 1 !important;
   filter: none !important;
 }
+
+
+/* Blue account-login panel with high-contrast fields and actions */
+#root .wp-auth-card > .wp-auth-body {
+  background: #4268c9 !important;
+  background-color: #4268c9 !important;
+  color: #ffffff !important;
+  padding: 38px 36px !important;
+}
+#root .wp-auth-card > .wp-auth-body h3 {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+#root .wp-auth-card > .wp-auth-body > div:first-child > p:first-child {
+  color: #e2eaff !important;
+}
+#root .wp-auth-card > .wp-auth-body > div:first-child > p:last-child {
+  color: #e5ecff !important;
+}
+#root .wp-auth-card > .wp-auth-body form label {
+  color: #ffffff !important;
+}
+#root .wp-auth-card > .wp-auth-body input {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #17233b !important;
+  border: 1px solid #d9e3fb !important;
+  caret-color: #24324b !important;
+  box-shadow: none !important;
+}
+#root .wp-auth-card > .wp-auth-body input::placeholder {
+  color: #7c879b !important;
+  opacity: 1 !important;
+}
+#root .wp-auth-card > .wp-auth-body input:focus {
+  border-color: #b8ceff !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.24) !important;
+  background: #ffffff !important;
+}
+#root .wp-auth-card > .wp-auth-body form .relative > svg {
+  color: #64748b !important;
+}
+#root .wp-auth-card > .wp-auth-body form button[aria-label*="kata sandi"] {
+  color: #64748b !important;
+}
+#root .wp-auth-card > .wp-auth-body form button[aria-label*="kata sandi"]:hover {
+  color: #24324b !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="button"]:not([aria-label*="kata sandi"]) {
+  /* secondary actions retain their own semantic colors */
+}
+#root .wp-auth-card > .wp-auth-body button.mb-5 {
+  background: #ffffff !important;
+  color: #24324b !important;
+  border: 1px solid #dce5f8 !important;
+  box-shadow: none !important;
+}
+#root .wp-auth-card > .wp-auth-body button.mb-5:hover {
+  background: #f1f5ff !important;
+  border-color: #c4d3f4 !important;
+}
+#root .wp-auth-card > .wp-auth-body .text-slate-400 {
+  color: #e1e9ff !important;
+}
+#root .wp-auth-card > .wp-auth-body .bg-slate-200 {
+  background: rgba(255,255,255,.35) !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="submit"] {
+  background: #ffffff !important;
+  color: #3155ad !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 5px 14px rgba(24,42,95,.16) !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="submit"]:hover {
+  background: #edf2ff !important;
+  color: #243f8a !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="submit"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(255,255,255,.3) !important;
+}
+#root .wp-auth-card > .wp-auth-body button:not([type="submit"]):not(.mb-5) {
+  text-underline-offset: 3px;
+}
+#root .wp-auth-card > .wp-auth-body .text-blue-700,
+#root .wp-auth-card > .wp-auth-body .text-blue-800,
+#root .wp-auth-card > .wp-auth-body .hover\\:text-blue-900:hover {
+  color: #ffffff !important;
+}
+#root .wp-auth-card > .wp-auth-body .bg-blue-50 {
+  background: #eaf2ff !important;
+  color: #24324b !important;
+}
+#root .wp-auth-card > .wp-auth-body .border-blue-200 {
+  border-color: #c8d8ff !important;
+}
+#root .wp-auth-card > .wp-auth-body [role="alert"] {
+  background: #fff1f2 !important;
+  color: #9f1239 !important;
+  border-color: #fecdd3 !important;
+}
+@media (max-width: 700px) {
+  #root .wp-auth-card > .wp-auth-body {
+    padding: 26px 24px !important;
+  }
+}

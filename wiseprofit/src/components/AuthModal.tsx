@@ -125,12 +125,9 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
           <p className="w-full text-sm leading-7 text-white/80">
             Catat stok, pantau penjualan, dan kelola arus kas dalam satu tempat. Masuk dengan akun WiseProfit Anda secara aman.
           </p>
-          <div className="mt-6 w-full rounded-2xl border border-white/20 bg-white/10 p-4 text-left">
-            <div className="flex items-center gap-2 text-sm font-semibold text-white">
-              <CheckCircle2 className="h-4 w-4 shrink-0" />
-              Data usaha mengikuti akun Anda
-            </div>
-            <p className="mt-1 text-xs leading-5 text-white/75">Autentikasi menggunakan Supabase Auth. Bukan sekadar formulir tampilan.</p>
+          <div className="mt-6 flex items-center gap-2 text-sm font-medium text-white/85">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-200" />
+            Praktis untuk mengelola usaha Anda
           </div>
           <div className="mt-5 flex items-center gap-2 text-xs text-white/70">
             <span className="h-2 w-2 rounded-full bg-white/90" />

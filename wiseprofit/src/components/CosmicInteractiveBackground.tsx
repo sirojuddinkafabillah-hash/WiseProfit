@@ -790,7 +790,7 @@ export const CosmicInteractiveBackground: React.FC<CosmicBackgroundProps> = ({
       </div>
 
       {/* Floating Theme & Background Control Pill (Bottom Right) */}
-      <div className="no-print fixed bottom-4 right-4 z-50 flex items-center gap-2">
+      <div className="no-print fixed bottom-4 right-4 z-[60] flex items-center gap-2">
         {showControls && (
           <div className="flex items-center gap-1.5 p-1.5 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-bottom-2 text-xs">
             <span className="px-2 text-[11px] font-semibold text-slate-400">

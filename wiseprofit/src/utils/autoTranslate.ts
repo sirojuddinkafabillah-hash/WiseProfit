@@ -254,25 +254,124 @@ function translateElement(element: Element, english: boolean) {
   if (map.size) originalAttributes.set(element, map);
 }
 
+
+const aiCache = new Map<string, string>();
+const aiPending = new Map<string, Array<(value: string) => void>>();
+let aiTimer: ReturnType<typeof setTimeout> | undefined;
+
+function looksLikeIndonesianUi(text: string) {
+  const value = text.trim();
+  if (!value || value.length < 3 || value.length > 220) return false;
+  if (/^[\\d\\W_]+$/.test(value) || /^[A-Z0-9_./:@-]+$/.test(value)) return false;
+  if (/\\b(?:Rp|IDR)\\s?[\\d.,]+/i.test(value) && value.length < 35) return false;
+  return /\\b(?:dan|yang|untuk|dengan|barang|data|pilih|masukkan|simpan|hapus|tanggal|jumlah|harga|kas|modal|penjualan|pembelian|keuntungan|stok|laporan|belum|berhasil|gagal|silakan|keluar|masuk|ubah|tambah|catatan|akun|pengaturan|sisa|total|terjual|ditarik|tersimpan|memuat|sedang|periksa|kembali|lanjutkan|konfirmasi|batalkan|semua|tidak|bisa|ingin|anda|kamu|apakah|pilih|terlebih|dahulu|wajib|opsional)\\b/i.test(value);
+}
+
+function requestAiTranslation(source: string, apply: (value: string) => void) {
+  const cached = aiCache.get(source);
+  if (cached) { apply(cached); return; }
+  const callbacks = aiPending.get(source) ?? [];
+  callbacks.push(apply);
+  aiPending.set(source, callbacks);
+  if (aiTimer) return;
+  aiTimer = setTimeout(async () => {
+    aiTimer = undefined;
+    const batch = Array.from(aiPending.keys()).slice(0, 40);
+    const batchCallbacks = batch.map(key => [key, aiPending.get(key) ?? []] as const);
+    batch.forEach(key => aiPending.delete(key));
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texts: batch }),
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (!Array.isArray(data.translations)) return;
+      data.translations.forEach((translated: unknown, index: number) => {
+        const original = batch[index];
+        if (typeof translated !== 'string' || !translated.trim()) return;
+        const value = translated.trim();
+        aiCache.set(original, value);
+        try { localStorage.setItem('wp_ai_translation:' + original, value); } catch {}
+        batchCallbacks[index]?.[1].forEach(callback => callback(value));
+      });
+    } catch {
+      // Local dictionary remains available if AI or network is unavailable.
+    }
+    if (aiPending.size && !aiTimer) {
+      aiTimer = setTimeout(() => {
+        aiTimer = undefined;
+        const next = Array.from(aiPending.keys()).slice(0, 40);
+        next.forEach(key => {
+          const callbacks = aiPending.get(key) ?? [];
+          aiPending.delete(key);
+          requestAiTranslation(key, value => callbacks.forEach(callback => callback(value)));
+        });
+      }, 100);
+    }
+  }, 250);
+}
+
+function cachedAiTranslation(source: string) {
+  if (aiCache.has(source)) return aiCache.get(source);
+  try {
+    const value = localStorage.getItem('wp_ai_translation:' + source);
+    if (value) { aiCache.set(source, value); return value; }
+  } catch {}
+  return undefined;
+}
+
 export function installAutoTranslation(language: 'id' | 'en') {
   const root = document.getElementById('root');
   if (!root) return () => {};
-  const process = (node: Node) => {
-    if (node.nodeType === Node.TEXT_NODE) translateText(node as Text, language === 'en');
+  let active = language === 'en';
+  const translateNode = (node: Node) => {
+    if (!active) return;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const textNode = node as Text;
+      const current = textNode.nodeValue ?? '';
+      const clean = current.trim();
+      const known = ID_TO_EN[clean];
+      if (known) { translateText(textNode, true); return; }
+      let parent = textNode.parentElement;
+      // Never translate input values, product/customer data in table rows, or editable text.
+      if (!parent || parent.closest('input,textarea,select,[contenteditable="true"],tbody,[data-no-ai-translate]')) return;
+      if (!looksLikeIndonesianUi(clean)) return;
+      const cached = cachedAiTranslation(clean);
+      if (cached) {
+        if (textNode.isConnected && textNode.nodeValue?.trim() === clean) {
+          if (originalText.get(textNode) === undefined) originalText.set(textNode, current);
+          textNode.nodeValue = current.replace(clean, cached);
+        }
+        return;
+      }
+      requestAiTranslation(clean, translated => {
+        if (!active || !textNode.isConnected || textNode.nodeValue?.trim() !== clean) return;
+        if (translated === clean) return;
+        if (originalText.get(textNode) === undefined) originalText.set(textNode, current);
+        textNode.nodeValue = current.replace(clean, translated);
+      });
+      return;
+    }
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = node as Element;
-      translateElement(el, language === 'en');
-      el.childNodes.forEach(process);
+      translateElement(el, true);
+      el.childNodes.forEach(translateNode);
     }
   };
-  process(root);
-  const observer = new MutationObserver((records) => {
+  if (active) root.childNodes.forEach(translateNode);
+  const observer = new MutationObserver(records => {
+    if (!active) return;
     for (const record of records) {
-      if (record.type === 'characterData') process(record.target);
-      record.addedNodes.forEach(process);
-      if (record.type === 'attributes' && record.target instanceof Element) translateElement(record.target, language === 'en');
+      if (record.type === 'characterData') translateNode(record.target);
+      record.addedNodes.forEach(translateNode);
+      if (record.type === 'attributes' && record.target instanceof Element) translateElement(record.target, true);
     }
   });
   observer.observe(root, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS });
-  return () => observer.disconnect();
+  return () => {
+    active = false;
+    observer.disconnect();
+  };
 }

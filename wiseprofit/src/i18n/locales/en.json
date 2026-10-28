@@ -116,5 +116,16 @@
   "table.decreaseSold": "Decrease sold quantity by 1",
   "table.increaseSold": "Increase sold quantity by 1",
   "table.setSold": "Open sold quantity dialog",
-  "table.cash": "Cash"
+  "table.cash": "Cash",
+  "modal.editTitle": "Edit item",
+  "modal.addTitle": "Complete item entry form",
+  "modal.subtitle": "Manage transaction number, entry date, purchase cost, and selling price",
+  "modal.purchaseDate": "Purchase date",
+  "modal.itemName": "Item name",
+  "modal.itemPlaceholder": "E.g. 5kg rice, 2L cooking oil, case of coffee",
+  "modal.container": "Wholesale packaging",
+  "modal.choose": "Choose",
+  "modal.containerQuantity": "Units per package",
+  "modal.retailUnit": "Retail unit sold",
+  "modal.buyPrice": "Purchase price per package (cost)"
 }

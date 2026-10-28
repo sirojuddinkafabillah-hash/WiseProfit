@@ -1852,3 +1852,21 @@ html, body {
     margin: auto !important;
   }
 }
+
+
+/* Login screen: remove the authenticated dashboard completely from view.
+   Keep the cosmic canvas running behind the auth card; do not show dashboard menus,
+   tables, landing panels, or buttons through the login overlay. */
+#root > div:has(.wp-auth-overlay) > .relative.z-10 > :not(.wp-auth-overlay) {
+  display: none !important;
+}
+#root > div:has(.wp-auth-overlay) > .relative.z-10 {
+  min-height: 0 !important;
+  height: 0 !important;
+  overflow: visible !important;
+}
+.wp-auth-overlay {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

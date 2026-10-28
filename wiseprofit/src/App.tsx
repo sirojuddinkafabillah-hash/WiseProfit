@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { InventoryItem, Withdrawal } from './types/inventory';
 import { calculateSummary } from './utils/calculator';
-import { installAutoTranslation } from './utils/autoTranslate';
+import { getInitialLanguage, formatTime } from './i18n/translations';
 import { Header, AppPage } from './components/Header';
 import { SummaryCards } from './components/SummaryCards';
 import { QuickAddBar } from './components/QuickAddBar';
@@ -71,7 +71,7 @@ export default function App() {
 
   // Real-time ticking clock
   const [currentRealTime, setCurrentRealTime] = useState<string>(() => {
-    return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return formatTime(new Date(), language);
   });
 
   useEffect(() => {

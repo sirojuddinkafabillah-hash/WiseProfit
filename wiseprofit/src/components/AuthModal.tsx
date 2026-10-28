@@ -12,7 +12,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
-  const { signInWithEmail, signUpWithEmail, resetPassword } = useAuth();
+  const { signInWithEmail, signUpWithEmail, resetPassword, signInWithGoogle } = useAuth();
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [isResetMode, setIsResetMode] = useState(false);
   const [email, setEmail] = useState('');
@@ -96,6 +96,25 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    clearMessages();
+    setIsLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (error: any) {
+      const message = String(error?.message || '');
+      if (/mengarahkan ke halaman login google/i.test(message)) return;
+      if (/provider.*not enabled|unsupported provider/i.test(message)) {
+        setErrorMsg('Login Google belum diaktifkan di pengaturan autentikasi Supabase.');
+      } else if (/redirect_uri|redirect url|callback/i.test(message)) {
+        setErrorMsg('Alamat pengalihan Google belum sesuai. Periksa konfigurasi URL di Supabase dan Google Cloud.');
+      } else {
+        setErrorMsg(message || 'Login dengan Google belum berhasil. Silakan coba lagi.');
+      }
+      setIsLoading(false);
+    }
+  };
+
   const switchMode = (register: boolean) => {
     setIsRegisterMode(register);
     setIsResetMode(false);
@@ -156,6 +175,32 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
             <div role="status" className="mb-4 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{successMsg}</span>
+            </div>
+          )}
+
+          {!isResetMode && (
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+              className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoading ? <Loader2 className="h-5 w-5 animate-spin text-slate-500" /> : (
+                <svg aria-hidden="true" viewBox="0 0 48 48" className="h-5 w-5">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 3.06 13.22l7.98 6.19C12.72 13.72 17.91 9.5 24 9.5z" transform="translate(0 4)"/>
+                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.98 46.98 31.95 46.98 24.55z"/>
+                  <path fill="#FBBC05" d="M10.53 28.59a14.4 14.4 0 0 1 0-9.18l-7.98-6.19a23.9 23.9 0 0 0 0 21.56l7.98-6.19z" transform="translate(0 0)"/>
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.18 2.3-6.09 0-11.28-4.22-13.15-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" transform="translate(0 -4)"/>
+                </svg>
+              )}
+              <span>Lanjutkan dengan Google</span>
+            </button>
+          )}
+          {!isResetMode && (
+            <div className="mb-5 flex items-center gap-3 text-xs text-slate-400">
+              <span className="h-px flex-1 bg-slate-200" />
+              <span>atau masuk dengan email</span>
+              <span className="h-px flex-1 bg-slate-200" />
             </div>
           )}
 

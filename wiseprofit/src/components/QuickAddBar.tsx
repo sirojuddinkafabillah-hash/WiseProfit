@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka } from '../utils/calculator';
 import { Plus, Calendar, Package, Tag, ArrowRight, Sparkles } from 'lucide-react';
@@ -76,20 +77,20 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             <Package className="w-4 h-4" />
           </div>
           <h2 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-            Catat barang yang baru dibeli
+            {t('quick.title')}
           </h2>
         </div>
         <p className="text-[11px] font-mono text-slate-400">
-          Catat pembelian di sini. Sisa uang dan keuntungan akan dihitung otomatis saat ada penjualan.
+          {t('quick.description')}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-12 gap-3.5">
-          {/* Tanggal Input */}
+          {/* {t('quick.inputDate')} */}
           <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
             <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              Tanggal Input
+              {t('quick.inputDate')}
             </label>
             <input
               type="date"
@@ -100,17 +101,17 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             />
           </div>
 
-          {/* Nama Barang */}
+          {/* {t('quick.itemName')} */}
           <div className="sm:col-span-1 md:col-span-4 lg:col-span-4">
             <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              Nama Barang
+              {t('quick.itemName')}
             </label>
             <input
               type="text"
               required
               value={namaBarang}
               onChange={(e) => setNamaBarang(e.target.value)}
-              placeholder="Misal: Air Mineral 600ml / Kopi Sachet 1 Dus"
+              placeholder={t('quick.itemPlaceholder')}
               className="w-full px-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 font-sans transition-colors"
             />
           </div>
@@ -118,7 +119,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
           {/* Isi Wadah */}
           <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
             <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              Isi (Unit/Pcs)
+              {t('quick.quantity')}
             </label>
             <input
               type="number"
@@ -126,15 +127,15 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
               required
               value={jumlahWadah}
               onChange={(e) => setJumlahWadah(e.target.value === '' ? '' : Number(e.target.value))}
-              placeholder="Contoh: 24"
+              placeholder={t('quick.quantityPlaceholder')}
               className="w-full px-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
             />
           </div>
 
-          {/* Harga Beli Wadah */}
+          {/* {t('quick.buyPrice')} */}
           <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
             <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              Harga Beli Wadah
+              {t('quick.buyPrice')}
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xs">Rp</span>
@@ -145,16 +146,16 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
                 required
                 value={hargaBeli}
                 onChange={(e) => setHargaBeli(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder="108.000"
+                placeholder={t('quick.buyPlaceholder')}
                 className="w-full pl-9 pr-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
               />
             </div>
           </div>
 
-          {/* Harga Jual Satuan */}
+          {/* {t('quick.sellPrice')} */}
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-2">
             <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              Harga Jual Satuan
+              {t('quick.sellPrice')}
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xs">Rp</span>
@@ -165,7 +166,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
                 required
                 value={hargaJual}
                 onChange={(e) => setHargaJual(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder="6.000"
+                placeholder={t('quick.sellPlaceholder')}
                 className="w-full pl-9 pr-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
               />
             </div>
@@ -178,20 +179,20 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             {previewCalc ? (
               <div className="flex items-center gap-3 text-[11px] bg-slate-950/90 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl flex-wrap shadow-inner">
                 <span>
-                  HPP Pokok: <strong className="text-white">{formatRupiah(previewCalc.hppSatuan)}</strong>/unit
+                  {t('quick.costPerUnit')} <strong className="text-white">{formatRupiah(previewCalc.hppSatuan)}</strong>/unit
                 </span>
                 <span className="text-slate-700">|</span>
                 <span>
-                  Untung Satuan: <strong className="text-emerald-400 font-bold">+{formatRupiah(previewCalc.gainSatuan)}</strong> ({formatAngka(previewCalc.marginPersen, 1)}%)
+                  {t('quick.profitPerUnit')} <strong className="text-emerald-400 font-bold">+{formatRupiah(previewCalc.gainSatuan)}</strong> ({formatAngka(previewCalc.marginPersen, 1)}%)
                 </span>
                 <span className="text-slate-700">|</span>
                 <span>
-                  Potensi Laba Penuh: <strong className="text-amber-300 font-bold">+{formatRupiah(previewCalc.potensiTotalGain)}</strong>
+                  {t('quick.fullProfitPotential')} <strong className="text-amber-300 font-bold">+{formatRupiah(previewCalc.potensiTotalGain)}</strong>
                 </span>
               </div>
             ) : (
               <span className="text-slate-400 font-mono text-[11px]">
-                Masukkan harga beli dan harga jual untuk melihat perkiraan keuntungan sebelum menyimpan.
+                {t('quick.previewHint')}
               </span>
             )}
           </div>
@@ -201,7 +202,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
             className="flex items-center justify-center gap-1.5 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 text-xs font-mono font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all cursor-pointer shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Simpan Barang</span>
+            <span>{t('quick.save')}</span>
           </button>
         </div>
       </form>

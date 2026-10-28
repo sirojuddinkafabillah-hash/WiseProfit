@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { t } from '../i18n/translations';
 import { GlobalSummary } from '../types/inventory';
 import { formatRupiah, formatAngka } from '../utils/calculator';
 import { Wallet, Edit3, Check, TrendingUp, ArrowDownRight, ArrowUpRight, Percent, ShieldCheck, Clock, Coins } from 'lucide-react';
@@ -46,7 +47,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-sans font-bold text-slate-400  tracking-widest">
-                  Modal awal usaha
+                  {t('summary.startingCapital')}
                 </span>
                 {!isEditingModal && (
                   <button
@@ -55,7 +56,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                       setIsEditingModal(true);
                     }}
                     className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-                    title="Ubah Modal Awal Usaha"
+                    title={t('summary.startingCapital')}
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                   </button>
@@ -97,7 +98,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div>
               <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
                 <ArrowDownRight className="w-3.5 h-3.5 text-rose-400" />
-                <span>Belanja stok:</span>
+                <span>{t('summary.stockPurchases')}</span>
               </div>
               <div className="text-base font-bold text-rose-400 tabular-nums">
                 -{formatRupiah(summary.totalPengeluaranBeli)}
@@ -107,7 +108,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div>
               <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
                 <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Uang dari penjualan:</span>
+                <span>{t('summary.salesIncome')}</span>
               </div>
               <div className="text-base font-bold text-emerald-400 tabular-nums">
                 +{formatRupiah(summary.totalPemasukanJual)}
@@ -118,7 +119,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
               <div>
                 <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
                   <ArrowDownRight className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Uang yang ditarik:</span>
+                  <span>{t('summary.cashWithdrawn')}</span>
                 </div>
                 <div className="text-base font-bold text-rose-400 tabular-nums">
                   -{formatRupiah(summary.totalPenarikanKas)}
@@ -129,7 +130,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div className="hidden sm:block text-slate-400 text-[11px] border-l border-slate-800 pl-4">
               <div className="flex items-center gap-1 text-slate-500 mb-0.5">
                 <Clock className="w-3 h-3 text-slate-400" />
-                <span>Waktu sekarang:</span>
+                <span>{t('summary.currentTime')}</span>
               </div>
               <span className="text-white font-sans font-semibold text-xs">{currentRealTime}</span>
             </div>
@@ -139,20 +140,20 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         {/* Dynamic Cashflow Mathematical Balance Line */}
         <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 text-slate-300 font-sans text-[11px] flex-wrap">
-            <span className="text-slate-400">Perjalanan uang usaha:</span>
-            <span className="text-slate-200">Modal Awal ({formatRupiah(modalAwal)})</span>
-            <span className="text-rose-400 font-bold">- Belanja ({formatRupiah(summary.totalPengeluaranBeli)})</span>
-            <span className="text-emerald-400 font-bold">+ Penjualan ({formatRupiah(summary.totalPemasukanJual)})</span>
+            <span className="text-slate-400">{t('summary.cashJourney')}</span>
+            <span className="text-slate-200">{t('summary.startingCapitalShort')} ({formatRupiah(modalAwal)})</span>
+            <span className="text-rose-400 font-bold">- {t('summary.purchases')} ({formatRupiah(summary.totalPengeluaranBeli)})</span>
+            <span className="text-emerald-400 font-bold">+ {t('summary.sales')} ({formatRupiah(summary.totalPemasukanJual)})</span>
             {summary.totalPenarikanKas > 0 && (
-              <span className="text-rose-400 font-bold">- Penarikan Kas ({formatRupiah(summary.totalPenarikanKas)})</span>
+              <span className="text-rose-400 font-bold">- {t('summary.cashWithdrawal')} ({formatRupiah(summary.totalPenarikanKas)})</span>
             )}
             <span className="text-slate-500">=</span>
             <span className="text-emerald-300 font-bold font-sans bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-              Sisa Kas {formatRupiah(summary.saldoKasSaatIni)}
+              {t('summary.remainingCash')} {formatRupiah(summary.saldoKasSaatIni)}
             </span>
           </div>
           <div className="text-slate-400 font-sans text-[11px] shrink-0">
-            Catatan untuk: <span className="text-slate-200 font-semibold">{bulanFilter === 'all' ? 'Semua tanggal' : `Bulan ${bulanFilter}`}</span>
+            {t('summary.notesFor')} <span className="text-slate-200 font-semibold">{bulanFilter === 'all' ? t('summary.allDates') : `${t('summary.month')} ${bulanFilter}`}</span>
           </div>
         </div>
       </div>
@@ -167,7 +168,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div className="flex items-center justify-between text-xs font-semibold text-slate-300 mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-emerald-300">
                 <Wallet className="w-4 h-4 text-emerald-400" />
-                <span>Uang Tersedia</span>
+                <span>{t('summary.availableMoney')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {onOpenWithdrawalModal && (
@@ -178,11 +179,11 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                     title="Catat penarikan kas/uang kasir"
                   >
                     <ArrowDownRight className="w-3.5 h-3.5 text-rose-400" />
-                    <span>Tarik Kas</span>
+                    <span>{t('summary.withdrawCash')}</span>
                   </button>
                 )}
                 <span className="text-[11px] font-sans text-emerald-400 font-semibold bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                  Siap dipakai
+                  {t('summary.readyToUse')}
                 </span>
               </div>
             </div>
@@ -192,15 +193,15 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             </div>
 
             <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              Uang belanja yang tersisa ({formatRupiah(summary.sisaModalSebelumJual)}) + penjualan ({formatRupiah(summary.totalPemasukanJual)})
-              {summary.totalPenarikanKas > 0 ? ` - penarikan kas (${formatRupiah(summary.totalPenarikanKas)})` : ''}.
+              {t('summary.spendableStockMoney')} ({formatRupiah(summary.sisaModalSebelumJual)}) + penjualan ({formatRupiah(summary.totalPemasukanJual)})
+              {summary.totalPenarikanKas > 0 ? ` - ${t('summary.withdrawal')} (${formatRupiah(summary.totalPenarikanKas)})` : ''}.
             </p>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] font-sans text-emerald-400 font-medium flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Bisa dipakai untuk belanja stok</span>
+              <span>{t('summary.canBuyStock')}</span>
             </div>
             {summary.totalPenarikanKas > 0 && onOpenWithdrawalModal && (
               <button
@@ -208,7 +209,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                 onClick={onOpenWithdrawalModal}
                 className="text-slate-400 hover:text-rose-300 text-[10px] underline cursor-pointer"
               >
-                Lihat Penarikan
+                {t('summary.viewWithdrawals')}
               </button>
             )}
           </div>
@@ -222,10 +223,10 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div className="flex items-center justify-between text-xs font-semibold mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-emerald-400">
                 <TrendingUp className="w-4 h-4" />
-                <span>Keuntungan Penjualan</span>
+                <span>{t('summary.salesProfit')}</span>
               </div>
               <span className="text-[11px] font-sans text-emerald-400 font-semibold bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                Untung terealisasi
+                {t('summary.realizedProfit')}
               </span>
             </div>
 
@@ -234,12 +235,12 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             </div>
 
             <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              Inilah keuntungan yang benar-benar sudah diperoleh dari barang yang terjual.
+              {t('summary.realizedProfitDescription')}
             </p>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-sans">
-            <span className="text-slate-400">Rata-rata keuntungan:</span>
+            <span className="text-slate-400">{t('summary.averageProfit')}</span>
             <span className="font-bold text-emerald-400">{formatAngka(summary.rataRataMargin, 1)}%</span>
           </div>
         </div>
@@ -250,12 +251,12 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div className="flex items-center justify-between text-xs font-semibold mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-slate-300">
                 <Percent className="w-4 h-4 text-cyan-400" />
-                <span>Perubahan Modal</span>
+                <span>{t('summary.capitalChange')}</span>
               </div>
               <span className={`text-[11px] font-sans font-semibold px-2 py-0.5 rounded-md ${
                 isTumbuh ? 'text-emerald-300 bg-emerald-950/70 border border-emerald-500/30' : isRugi ? 'text-rose-300 bg-rose-950/70 border border-rose-500/30' : 'text-slate-300 bg-slate-800'
               }`}>
-                {isTumbuh ? 'Tumbuh' : isRugi ? 'Perlu diperhatikan' : 'Belum berubah'}
+                {isTumbuh ? t('summary.growing') : isRugi ? t('summary.attentionNeeded') : t('summary.unchanged')}
               </span>
             </div>
 
@@ -267,15 +268,15 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
 
             <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
               {isTumbuh
-                ? `Laba riil bertambah +${formatRupiah(summary.totalGainTerjual)} dari modal awal.`
+                ? `${t('summary.realProfitGrowth')} +${formatRupiah(summary.totalGainTerjual)} ${t('summary.fromStartingCapital')}`
                 : isRugi
-                ? 'Arus kas di bawah modal awal. Jual sisa stok untuk mengembalikan modal.'
-                : 'Belum ada barang yang terjual.'}
+                ? t('summary.cashBelowCapital')
+                : t('summary.noSalesYet')}
             </p>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-sans">
-            <span className="text-slate-400">Nilai stok tersisa:</span>
+            <span className="text-slate-400">{t('summary.remainingStockValue')}</span>
             <span className="font-bold text-cyan-300">{formatRupiah(summary.totalNilaiSisaStok)}</span>
           </div>
         </div>
@@ -288,10 +289,10 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <div className="flex items-center justify-between text-xs font-semibold mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-amber-300">
                 <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span>Total Kekayaan Usaha</span>
+                <span>{t('summary.businessEquity')}</span>
               </div>
               <span className="text-[11px] font-sans text-amber-400 font-semibold bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                Kas + stok
+                {t('summary.cashPlusStock')}
               </span>
             </div>
 
@@ -300,17 +301,17 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             </div>
 
             <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              Perkiraan nilai usaha saat ini, dihitung dari uang yang tersedia dan nilai stok yang masih ada.
+              {t('summary.equityDescription')}
             </p>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-[11px] font-sans">
             <div>
-              <span className="text-slate-500 block text-[10px]">Modal Awal:</span>
+              <span className="text-slate-500 block text-[10px]">{t('summary.startingCapitalShort')}:</span>
               <span className="font-semibold text-slate-300">{formatRupiah(modalAwal)}</span>
             </div>
             <div className="text-right">
-              <span className="text-emerald-400 block text-[10px]">+ Untung terealisasi:</span>
+              <span className="text-emerald-400 block text-[10px]">+ {t('summary.realizedProfit')}:</span>
               <span className="font-bold text-emerald-400">+{formatRupiah(summary.totalGainTerjual)}</span>
             </div>
           </div>

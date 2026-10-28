@@ -205,6 +205,8 @@ const ID_TO_EN: Record<string, string> = {
   'Isi judul':'Enter a title','Detail keluhan':'Feedback details',
 };
 
+const SORTED_TRANSLATION_PHRASES = Object.keys(ID_TO_EN).sort((a, b) => b.length - a.length);
+
 const originalText = new WeakMap<Text, string>();
 const originalAttributes = new WeakMap<Element, Map<string, string>>();
 const ATTRS = ['placeholder', 'title', 'aria-label'];
@@ -223,7 +225,7 @@ function translateText(node: Text, english: boolean) {
   let translated = ID_TO_EN[clean];
   if (!translated) {
     translated = clean;
-    const phrases = Object.keys(ID_TO_EN).sort((a, b) => b.length - a.length);
+    const phrases = SORTED_TRANSLATION_PHRASES;
     for (const phrase of phrases) {
       if (translated.includes(phrase)) translated = translated.split(phrase).join(ID_TO_EN[phrase]);
     }

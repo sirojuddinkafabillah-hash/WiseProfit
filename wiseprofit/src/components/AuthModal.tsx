@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
-  Mail, Lock, ShieldCheck, CheckCircle2, AlertCircle, Loader2,
+  Mail, Lock, CheckCircle2, AlertCircle, Loader2,
   ArrowRight, UserPlus, LogIn, Eye, EyeOff, KeyRound, Package, ShoppingCart, WalletCards
 } from 'lucide-react';
 
@@ -127,11 +127,28 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
       <div className="wp-auth-card relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-150">
         <section className="wp-auth-header relative">
           <div className="wp-auth-brand flex items-center gap-3">
-            <div className="wp-auth-brand-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-              <ShieldCheck className="h-5 w-5" />
+            <div className="wp-auth-brand-icon flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl" aria-label="Logo WiseProfit">
+              <svg viewBox="0 0 48 48" className="h-10 w-10" role="img" aria-hidden="true">
+                <defs>
+                  <linearGradient id="wp-logo-blue" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#3978ff" />
+                    <stop offset="100%" stopColor="#1745bd" />
+                  </linearGradient>
+                  <linearGradient id="wp-logo-light" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#dce8ff" />
+                  </linearGradient>
+                </defs>
+                <path d="M24 3.5 42 13.2v21.6L24 45 6 34.8V13.2Z" fill="url(#wp-logo-blue)" />
+                <path d="M12 18.2 24 11.4l7.2 4.1-12.1 7Z" fill="#a9c7ff" />
+                <path d="M12 21.3 18.5 25v10.2L12 31.5Z" fill="url(#wp-logo-light)" />
+                <path d="M21.2 25.4 27.7 21.6v14.2l-6.5 3.8Z" fill="url(#wp-logo-light)" />
+                <path d="M30.4 16.8 36.5 13.3v18.1l-6.1 3.5Z" fill="#ffffff" />
+                <path d="M18.5 25 24 28.2l12.5-7.3v6.5L24 34.7l-5.5-3.2Z" fill="#8db4ff" />
+              </svg>
             </div>
             <div>
-              <p className="wp-auth-brand-name text-lg font-bold tracking-tight">WiseProfit</p>
+              <p className="wp-auth-brand-name text-lg font-bold tracking-tight"><span className="wp-brand-wise">Wise</span><span className="wp-brand-profit">Profit</span></p>
               <p className="wp-auth-brand-subtitle text-xs">Business Management</p>
             </div>
           </div>

@@ -127,5 +127,21 @@
   "modal.choose": "Choose",
   "modal.containerQuantity": "Units per package",
   "modal.retailUnit": "Retail unit sold",
-  "modal.buyPrice": "Purchase price per package (cost)"
+  "modal.buyPrice": "Purchase price per package (cost)",
+  "table.perOne": "per 1",
+  "table.containerFallback": "Container",
+  "table.typeSold": "Enter sold quantity",
+  "table.breakEven": "Break-even",
+  "table.notSoldYet": "No sales yet",
+  "table.unitsSold": "units sold",
+  "table.soldUnitsInput": "Enter sold units",
+  "table.containerCapacity": "Container capacity",
+  "table.soldUnitsAlready": "Units already sold",
+  "table.noneSoldYet": "Nothing sold yet",
+  "table.stockDepleted": "Out of stock",
+  "table.stockRemainingLabel": "Remaining stock:",
+  "table.profitFromSold": "Profit from sold items:",
+  "table.currentBusinessValue": "Current business value:",
+  "table.cancel": "Cancel",
+  "table.applyChanges": "Apply changes"
 }

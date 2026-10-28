@@ -1528,3 +1528,57 @@ html, body {
   #root .wp-auth-card > .wp-auth-header .wp-auth-brand { margin-bottom: 28px !important; }
   #root .wp-auth-card > .wp-auth-header .wp-auth-features { gap: 14px !important; margin-top: 22px !important; }
 }
+
+
+/* Typography and logo/icon visibility fix for the auth welcome panel */
+#root .wp-auth-card > .wp-auth-header .wp-auth-brand-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #eaf0ff !important;
+  color: #4268c9 !important;
+  border: 1px solid #dce6ff !important;
+  border-radius: 12px !important;
+  opacity: 1 !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-brand-icon svg {
+  color: #4268c9 !important;
+  stroke: #4268c9 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-brand-name,
+#root .wp-auth-card > .wp-auth-header .wp-auth-title,
+#root .wp-auth-card > .wp-auth-header .wp-auth-feature-title {
+  color: #24324b !important;
+  -webkit-text-fill-color: #24324b !important;
+  -webkit-text-stroke: 0 transparent !important;
+  text-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-title {
+  font-family: inherit !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.18 !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-brand-subtitle,
+#root .wp-auth-card > .wp-auth-header .wp-auth-eyebrow,
+#root .wp-auth-card > .wp-auth-header .wp-auth-description,
+#root .wp-auth-card > .wp-auth-header .wp-auth-feature-copy {
+  -webkit-text-stroke: 0 transparent !important;
+  text-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-feature-icon {
+  color: #4268c9 !important;
+  opacity: 1 !important;
+}
+#root .wp-auth-card > .wp-auth-header .wp-auth-feature-icon svg {
+  color: #4268c9 !important;
+  stroke: #4268c9 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}

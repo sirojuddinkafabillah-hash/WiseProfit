@@ -626,14 +626,14 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                     onClick={() => setModalQuickSoldItem(null)}
                     className="px-4 py-2 text-xs font-mono font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
                   >
-                    Batal
+                    {t('table.cancel')}
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveQuickSoldModal}
                     className="px-4 py-2 text-xs font-mono font-bold text-slate-950 bg-emerald-500 hover:bg-emerald-400 rounded-xl shadow-md transition-colors cursor-pointer"
                   >
-                    Terapkan Perubahan
+                    {t('table.applyChanges')}
                   </button>
                 </div>
               </div>

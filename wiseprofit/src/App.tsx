@@ -49,10 +49,7 @@ import {
 
 export default function App() {
   const { user, loading: isAuthLoading, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
-  const [language, setLanguage] = useState<'id' | 'en'>(() => {
-    try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; } catch { return 'id'; }
-  });
-  useEffect(() => installAutoTranslation(language), [language]);
+  const [language, setLanguage] = useState<'id' | 'en'>(getInitialLanguage);
 
   useEffect(() => {
     document.documentElement.lang = language;

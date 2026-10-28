@@ -143,16 +143,16 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
     wsStoreFormat['!cols'] = [
       { wch: 6 },   // No
       { wch: 14 },  // Tanggal Input
-      { wch: 22 },  // Nama Barang
+      { wch: 22 },  // Item Name
       { wch: 16 },  // Jumlah 1 Wadah
-      { wch: 18 },  // Harga Beli 1 Wadah
-      { wch: 22 },  // Jumlah Terjual Satuan
+      { wch: 18 },  // Purchase Price 1 Wadah
+      { wch: 22 },  // Units Sold
       { wch: 18 },  // Selling Price Satuan
       { wch: 24 },  // Gain (Untung Terealisasi)
       { wch: 20 },  // Cost Recovered
       { wch: 22 },  // Remaining Stock Value (Equity)
-      { wch: 38 },  // TOTAL SETELAH UNTUNG (Uang Masuk Kas)
-      { wch: 16 },  // SISA KAS
+      { wch: 38 },  // TOTAL SETELAH UNTUNG (Cash Inflow)
+      { wch: 16 },  // CASH BALANCE
     ];
 
     const range = XLSX.utils.decode_range(wsStoreFormat['!ref'] || 'A1:L1');
@@ -162,7 +162,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
     const summarySheetData = [
       { 'Equity & Financial Metric': 'Initial Business Capital', 'Value (IDR)': modalAwal },
       { 'Equity & Financial Metric': 'Total Stock Purchase Expenses', 'Value (IDR)': summary.totalPengeluaranBeli },
-      { 'Equity & Financial Metric': 'Total Revenue Masuk Kas', 'Value (IDR)': summary.totalPemasukanJual },
+      { 'Equity & Financial Metric': 'Total Sales Revenue Received', 'Value (IDR)': summary.totalPemasukanJual },
       { 'Equity & Financial Metric': 'Cost Recovered', 'Value (IDR)': summary.totalModalKembali },
       { 'Equity & Financial Metric': 'Total Realized Net Profit (Gain)', 'Value (IDR)': summary.totalGainTerjual },
       { 'Equity & Financial Metric': 'Remaining Inventory Equity Value', 'Value (IDR)': summary.totalNilaiSisaStok },
@@ -176,7 +176,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
     XLSX.utils.book_append_sheet(wb, wsStoreFormat, 'Cashier_Report_Store_Format');
     XLSX.utils.book_append_sheet(wb, wsSummary, 'Equity_Summary');
 
-    const fileName = `Sales_Equity_Report_${selectedMonth === 'all' ? 'Semua_Periode' : selectedMonth}.xlsx`;
+    const fileName = `Sales_Equity_Report_${selectedMonth === 'all' ? 'All_Periods' : selectedMonth}.xlsx`;
     XLSX.writeFile(wb, fileName);
   };
 
@@ -278,7 +278,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <button
               onClick={onPrintReport}
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-sans font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
-              title="Cetak laporan resmi dalam format nota / A4"
+              title="Print the official report in receipt / A4 format"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print or Save PDF</span>
@@ -307,7 +307,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           </div>
         </div>
 
-        {/* 2. Remaining Kas Berjalan di Kasir */}
+        {/* 2. Current Cash Balance */}
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
@@ -335,7 +335,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           </div>
         </div>
 
-        {/* 3. Nilai Ekuitas Remaining Stok (Aset Items) */}
+        {/* 3. Remaining Inventory Equity Value */}
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
@@ -353,7 +353,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           </div>
         </div>
 
-        {/* 4. Total Ekuitas Usaha (Net Business Value) */}
+        {/* 4. Total Business Equity (Net Business Value) */}
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
@@ -410,7 +410,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               <div
                 style={{ width: `${percentStock}%` }}
                 className="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-r-lg transition-all duration-500 relative group"
-                title={`Ekuitas Stok: ${percentStock.toFixed(1)}%`}
+                title={`Inventory Equity: ${percentStock.toFixed(1)}%`}
               />
             </div>
 
@@ -463,7 +463,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               <span className="text-white text-sm">{formatRupiah(summary.totalSimpananSetelah1Bulan)}</span>
             </div>
             <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
-              Disisihkan dari total untung bersih untuk memperbesar modal cadangan atau dana darurat toko. Remaining kas siap diputar kembali untuk kulakan: <strong className="text-white font-sans">{formatRupiah(summary.totalKasDiputarBulanDepan)}</strong>.
+              Set aside from total net profit to increase reserves or emergency funds. Cash available to reinvest in stock: <strong className="text-white font-sans">{formatRupiah(summary.totalKasDiputarBulanDepan)}</strong>.
             </p>
           </div>
         </div>
@@ -508,7 +508,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 ))
               ) : (
                 <div className="text-xs text-slate-500 font-sans py-2 text-center bg-slate-950/50 rounded-xl">
-                  Belum ada unit items yang sold
+                  No items have been sold yet
                 </div>
               )}
             </div>
@@ -549,7 +549,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <span className={`font-semibold ${summary.totalPemasukanJual >= summary.totalPengeluaranBeli ? 'text-emerald-400' : 'text-amber-300'}`}>
               {summary.totalPemasukanJual >= summary.totalPengeluaranBeli 
                 ? 'Purchase Cost Sudah Tertutup Penuh' 
-                : `Kurang ${formatRupiah(summary.totalPengeluaranBeli - summary.totalPemasukanJual)} untuk balik modal kulakan`}
+                : `Short by ${formatRupiah(summary.totalPengeluaranBeli - summary.totalPemasukanJual)} to recover stock purchase costs`}
             </span>
           </div>
         </div>
@@ -568,7 +568,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 Detailed Sales & Inventory Equity
               </h2>
               <p className="text-[11px] font-sans text-slate-400">
-                Menampilkan omset uang masuk kas, modal balik, keuntungan bersih, dan sisa aset stok
+                Showing sales revenue received, recovered costs, net profit, and remaining inventory assets
               </p>
             </div>
           </div>
@@ -596,7 +596,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               >
                 <option value="gain" className="bg-slate-900 text-white">Sort: Highest Profit</option>
                 <option value="terjual" className="bg-slate-900 text-white">Sort: Most Units Sold</option>
-                <option value="omset" className="bg-slate-900 text-white">Urut: Revenue Terbesar</option>
+                <option value="omset" className="bg-slate-900 text-white">Sort: Highest Revenue</option>
                 <option value="nilaiStok" className="bg-slate-900 text-white">Sort: Remaining Inventory Value</option>
                 <option value="terbaru" className="bg-slate-900 text-white">Sort: Newest Date</option>
               </select>
@@ -704,7 +704,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               ) : (
                 <tr>
                   <td colSpan={9} className="py-8 text-center text-slate-500 font-sans text-xs">
-                    {searchTerm ? 'Tidak ada items yang cocok dengan kata kunci pencarian.' : 'Belum ada data items di periode ini.'}
+                    {searchTerm ? 'No items match your search.' : 'No item data for this period.'}
                   </td>
                 </tr>
               )}
@@ -752,7 +752,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               Finished Reviewing the Sales Report?
             </div>
             <div className="text-xs text-slate-400 mt-0.5 font-sans">
-              Kembali ke antarmuka kasir dan pencatatan transaksi items inventori.
+              Return to the cashier interface and inventory transaction records.
             </div>
           </div>
           <button

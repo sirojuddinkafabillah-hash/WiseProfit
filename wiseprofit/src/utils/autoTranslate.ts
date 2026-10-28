@@ -262,9 +262,9 @@ let aiTimer: ReturnType<typeof setTimeout> | undefined;
 function looksLikeIndonesianUi(text: string) {
   const value = text.trim();
   if (!value || value.length < 3 || value.length > 220) return false;
-  if (/^[\\d\\W_]+$/.test(value) || /^[A-Z0-9_./:@-]+$/.test(value)) return false;
-  if (/\\b(?:Rp|IDR)\\s?[\\d.,]+/i.test(value) && value.length < 35) return false;
-  return /\\b(?:dan|yang|untuk|dengan|barang|data|pilih|masukkan|simpan|hapus|tanggal|jumlah|harga|kas|modal|penjualan|pembelian|keuntungan|stok|laporan|belum|berhasil|gagal|silakan|keluar|masuk|ubah|tambah|catatan|akun|pengaturan|sisa|total|terjual|ditarik|tersimpan|memuat|sedang|periksa|kembali|lanjutkan|konfirmasi|batalkan|semua|tidak|bisa|ingin|anda|kamu|apakah|pilih|terlebih|dahulu|wajib|opsional)\\b/i.test(value);
+  if (/^[\d\W_]+$/.test(value) || /^[A-Z0-9_./:@-]+$/.test(value)) return false;
+  if (/\b(?:Rp|IDR)\s?[\d.,]+/i.test(value) && value.length < 35) return false;
+  return /\b(?:dan|yang|untuk|dengan|barang|data|pilih|masukkan|simpan|hapus|tanggal|jumlah|harga|kas|modal|penjualan|pembelian|keuntungan|stok|laporan|belum|berhasil|gagal|silakan|keluar|masuk|ubah|tambah|catatan|akun|pengaturan|sisa|total|terjual|ditarik|tersimpan|memuat|sedang|periksa|kembali|lanjutkan|konfirmasi|batalkan|semua|tidak|bisa|ingin|anda|kamu|apakah|pilih|terlebih|dahulu|wajib|opsional)\b/i.test(value);
 }
 
 function requestAiTranslation(source: string, apply: (value: string) => void) {

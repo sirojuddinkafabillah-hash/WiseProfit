@@ -31,6 +31,8 @@ interface HeaderProps {
   onOpenWithdrawalModal?: () => void;
   withdrawalsCount?: number;
   isSyncingCloud?: boolean;
+  language: 'id' | 'en';
+  onLanguageChange: (language: 'id' | 'en') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -45,6 +47,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenWithdrawalModal,
   withdrawalsCount = 0,
   isSyncingCloud = false,
+  language,
+  onLanguageChange,
 }) => {
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
@@ -65,6 +69,8 @@ export const Header: React.FC<HeaderProps> = ({
       window.removeEventListener('wiseprofit-profile-photo-updated', loadProfilePhoto);
     };
   }, [user?.uid, user?.photoURL]);
+
+  const t = (id: string, en: string) => language === 'en' ? en : id;
 
   return (
     <header className="wp-app-header no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
@@ -95,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Kasir & Stok</span>
+                <span>{t('Kasir & Stok','Cashier & Stock')}</span>
                 {itemsCount > 0 && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                     activePage === 'inventory' ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400'
@@ -115,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <TrendingUp className="w-3.5 h-3.5" />
-                <span>Laporan Usaha</span>
+                <span>{t('Laporan Usaha','Business Reports')}</span>
               </button>
 
               <button
@@ -128,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                <span>Penarikan Uang</span>
+                <span>{t('Penarikan Uang','Withdrawals')}</span>
                 {withdrawalsCount > 0 && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                     activePage === 'withdrawals' ? 'bg-slate-950/30 text-white' : 'bg-rose-500/20 text-rose-300'
@@ -148,18 +154,26 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <UploadCloud className="w-3.5 h-3.5" />
-                <span>Ekspor dan Impor Data</span>
+                <span>{t('Ekspor dan Impor Data','Data Import & Export')}</span>
               </button>
               <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'faq' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
                 <CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span>
               </button>
               <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'complaints' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
-                <MessageSquareWarning className="w-3.5 h-3.5" /><span>Keluhan Lain</span>
+                <MessageSquareWarning className="w-3.5 h-3.5" /><span>{t('Keluhan Lain','Other Feedback')}</span>
               </button>
             </nav>
           </div>
 
           {/* Quick Tools & Cloud Auth */}
+          <div className="flex items-center gap-1.5 rounded-full border border-blue-200 bg-white p-1 shadow-sm" role="group" aria-label="Pilih bahasa / Choose language">
+            <span className="hidden sm:inline px-1 text-[10px] font-semibold text-slate-500">{t('Bahasa','Language')}</span>
+            <div className="relative flex items-center rounded-full bg-slate-100 p-0.5" aria-label="Language">
+              <span aria-hidden="true" className={`absolute inset-y-0.5 w-[34px] rounded-full bg-blue-600 shadow-sm transition-transform duration-200 ${language === 'en' ? 'translate-x-[34px]' : 'translate-x-0'}`} />
+              <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'id' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>ID</button>
+              <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'en' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>EN</button>
+            </div>
+          </div>
           <div className="wp-header-quick-tools flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Quick Helper Tools */}
             <nav className="hidden 2xl:flex items-center gap-1.5 text-xs font-sans font-medium text-slate-300">
@@ -169,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
               >
                 <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Panduan Keuangan</span>
+                <span>{t('Panduan Keuangan','Finance Guide')}</span>
               </button>
               {onOpenWithdrawalModal && (
                 <button
@@ -179,7 +193,7 @@ export const Header: React.FC<HeaderProps> = ({
                   title="Catat penarikan kas (ambil tunai dari kasir)"
                 >
                   <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Tarik Uang</span>
+                  <span>{t('Tarik Uang','Withdraw Cash')}</span>
                   {withdrawalsCount > 0 && (
                     <span className="px-1.5 py-0.2 bg-rose-500/20 text-rose-300 rounded-full text-[10px]">
                       {withdrawalsCount}
@@ -193,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
               >
                 <Printer className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Cetak Laporan</span>
+                <span>{t('Cetak Laporan','Print Report')}</span>
               </button>
               <button
                 type="button"
@@ -201,7 +215,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 hover:text-white text-slate-200 transition-colors cursor-pointer font-semibold text-[11px]"
               >
                 <Download className="w-3.5 h-3.5 text-slate-400" />
-                <span>Simpan & Pulihkan</span>
+                <span>{t('Simpan & Pulihkan','Backup & Restore')}</span>
               </button>
             </nav>
 
@@ -250,7 +264,7 @@ export const Header: React.FC<HeaderProps> = ({
                 title="Masuk dengan email"
               >
                 <Cloud className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Masuk</span>
+                <span className="hidden sm:inline">{t('Masuk','Sign in')}</span>
               </button>
             )}
 
@@ -261,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-sans text-xs font-semibold border border-slate-700 transition-colors cursor-pointer shadow-xs"
             >
               <Plus className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden sm:inline">Tambah</span>
+              <span className="hidden sm:inline">{t('Tambah','Add')}</span>
             </button>
           </div>
         </div>
@@ -287,7 +301,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Kasir</span>
+            <span>{t('Kasir','Cashier')}</span>
             {itemsCount > 0 && (
               <span className="text-[10px] opacity-80">({itemsCount})</span>
             )}
@@ -303,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>Laporan</span>
+            <span>{t('Laporan','Reports')}</span>
           </button>
 
           <button
@@ -316,7 +330,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-            <span>Tarik Uang</span>
+            <span>{t('Tarik Uang','Withdraw Cash')}</span>
             {withdrawalsCount > 0 && (
               <span className="text-[10px] opacity-80">({withdrawalsCount})</span>
             )}
@@ -332,7 +346,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <UploadCloud className="w-3.5 h-3.5" />
-            <span>Ekspor/Impor</span>
+            <span>{t('Ekspor/Impor','Import/Export')}</span>
           </button>
           <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'faq' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span></button>
           <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><MessageSquareWarning className="w-3.5 h-3.5" /><span>Keluhan</span></button>

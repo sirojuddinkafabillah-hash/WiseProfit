@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka } from '../utils/calculator';
 import { X, Calculator, Calendar } from 'lucide-react';
@@ -108,10 +109,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
         <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
           <div>
             <h3 className="text-base font-bold text-white tracking-tight">
-              {editingItem ? 'Edit Data Barang' : 'Form Lengkap Tambah Barang'}
+              {editingItem ? t('modal.editTitle') : t('modal.addTitle')}
             </h3>
             <p className="text-xs text-slate-400 mt-0.5 font-mono">
-              Kelola nomor transaksi, tanggal input, modal beli, dan harga jual
+              {t('modal.subtitle')}
             </p>
           </div>
           <button
@@ -127,7 +128,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1 flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Tanggal pembelian</span>
+                <span>{t('modal.purchaseDate')}</span>
               </label>
               <input
                 type="date"
@@ -140,14 +141,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Nama Barang <span className="text-emerald-400">*</span>
+                {t('modal.itemName')} <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={namaBarang}
                 onChange={(e) => setNamaBarang(e.target.value)}
-                placeholder="Contoh: Beras 5kg, Minyak Goreng 2L, Kopi Dus"
+                placeholder={t('modal.itemPlaceholder')}
                 className="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-500 text-white placeholder:text-slate-500"
               />
             </div>
@@ -156,7 +157,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Wadah Pembelian (Grosir)
+                {t('modal.container')}
               </label>
               <div className="flex gap-2">
                 <input
@@ -170,7 +171,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                   value=""
                   className="px-2.5 py-2 text-xs bg-slate-800 border border-slate-700 rounded-xl text-slate-200"
                 >
-                  <option value="">Pilih</option>
+                  <option value="">{t('modal.choose')}</option>
                   {COMMON_CONTAINERS.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
@@ -178,7 +179,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Jumlah Isi 1 Wadah <span className="text-emerald-400">*</span>
+                {t('modal.containerQuantity')} <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="number"
@@ -194,7 +195,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Satuan Eceran Dijual
+                {t('modal.retailUnit')}
               </label>
               <div className="flex gap-2">
                 <input
@@ -208,7 +209,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                   value=""
                   className="px-2.5 py-2 text-xs bg-slate-800 border border-slate-700 rounded-xl text-slate-200"
                 >
-                  <option value="">Pilih</option>
+                  <option value="">{t('modal.choose')}</option>
                   {COMMON_UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
@@ -216,7 +217,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-300 mb-1">
-                Harga beli per kemasan (Modal) <span className="text-emerald-400">*</span>
+                {t('modal.buyPrice')} <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="number"

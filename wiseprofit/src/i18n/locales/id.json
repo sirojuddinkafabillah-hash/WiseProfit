@@ -116,5 +116,16 @@
   "table.decreaseSold": "Kurangi 1 unit terjual",
   "table.increaseSold": "Tambah 1 unit terjual",
   "table.setSold": "Buka dialog input terjual",
-  "table.cash": "Kasir"
+  "table.cash": "Kasir",
+  "modal.editTitle": "Edit Data Barang",
+  "modal.addTitle": "Form Lengkap Tambah Barang",
+  "modal.subtitle": "Kelola nomor transaksi, tanggal input, modal beli, dan harga jual",
+  "modal.purchaseDate": "Tanggal pembelian",
+  "modal.itemName": "Nama Barang",
+  "modal.itemPlaceholder": "Contoh: Beras 5kg, Minyak Goreng 2L, Kopi Dus",
+  "modal.container": "Wadah Pembelian (Grosir)",
+  "modal.choose": "Pilih",
+  "modal.containerQuantity": "Jumlah Isi 1 Wadah",
+  "modal.retailUnit": "Satuan Eceran Dijual",
+  "modal.buyPrice": "Harga beli per kemasan (Modal)"
 }

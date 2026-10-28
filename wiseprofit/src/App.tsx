@@ -47,7 +47,7 @@ import {
 } from './services/supabaseSync';
 
 export default function App() {
-  const { user, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
+  const { user, loading: isAuthLoading, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
 
   // App Core State (Tied to authenticated user)
   const [modalAwal, setModalAwal] = useState<number>(50000);
@@ -77,6 +77,12 @@ export default function App() {
   const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Tampilkan formulir masuk setelah status sesi selesai diperiksa.
+  useEffect(() => {
+    if (!isAuthLoading && !user) setIsAuthModalOpen(true);
+    if (user) setIsAuthModalOpen(false);
+  }, [isAuthLoading, user]);
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>('all');

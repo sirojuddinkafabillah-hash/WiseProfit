@@ -1896,3 +1896,50 @@ html, body {
 #root .wp-auth-brand-name .wp-brand-profit {
   color: #2864d7 !important;
 }
+
+
+/* Reference-inspired finish: vivid blue gradient, cyan edge glow, and animated cosmic ambience */
+#root .wp-auth-card > .wp-auth-body {
+  background: linear-gradient(135deg, #2463e9 0%, #1749c8 42%, #0d3bb5 72%, #1688f5 100%) !important;
+  position: relative !important;
+  isolation: isolate !important;
+}
+#root .wp-auth-card > .wp-auth-body::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(88, 205, 255, .34), transparent 42%),
+    radial-gradient(ellipse at 0% 100%, rgba(27, 113, 255, .3), transparent 45%) !important;
+}
+#root .wp-auth-card {
+  border: 1px solid rgba(107, 198, 255, .95) !important;
+  box-shadow: 0 0 0 1px rgba(48, 130, 255, .25), 0 0 28px rgba(30, 132, 255, .24), 0 24px 64px rgba(0, 0, 0, .42) !important;
+}
+#root .wp-auth-brand-name .wp-brand-profit {
+  background: linear-gradient(100deg, #2471ff 0%, #168cff 45%, #37b9ff 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #2471ff !important;
+  display: inline-block !important;
+  text-shadow: 0 0 18px rgba(37, 117, 255, .10) !important;
+}
+#root .wp-auth-brand-icon {
+  background: linear-gradient(145deg, #f5f9ff 0%, #d5e5ff 55%, #b8d2ff 100%) !important;
+  box-shadow: 0 0 0 3px rgba(49, 115, 255, .08), 0 8px 22px rgba(37, 99, 235, .20) !important;
+}
+.wp-auth-overlay .wp-auth-card > .wp-auth-header {
+  background: linear-gradient(145deg, #ffffff 0%, #f5f8ff 65%, #edf4ff 100%) !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #root .wp-auth-card {
+    animation: wp-cosmic-card-glow 7s ease-in-out infinite alternate;
+  }
+  @keyframes wp-cosmic-card-glow {
+    from { box-shadow: 0 0 0 1px rgba(48,130,255,.18), 0 0 22px rgba(30,132,255,.16), 0 24px 64px rgba(0,0,0,.42); }
+    to { box-shadow: 0 0 0 1px rgba(70,190,255,.32), 0 0 34px rgba(30,160,255,.28), 0 24px 64px rgba(0,0,0,.42); }
+  }
+}

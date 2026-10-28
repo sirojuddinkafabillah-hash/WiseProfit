@@ -372,7 +372,7 @@ export function installAutoTranslation(language: 'id' | 'en') {
       if (record.type === 'attributes' && record.target instanceof Element) translateElement(record.target, true);
     }
   });
-  observer.observe(root, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS });
+  observer.observe(root, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS, characterData: false });
   return () => {
     active = false;
     observer.disconnect();

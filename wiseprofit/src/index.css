@@ -2010,3 +2010,16 @@ html, body {
     animation: none !important;
   }
 }
+
+
+/* Restore blue gradient on Profit wordmark after panel theme updates */
+#root .wp-auth-brand-name .wp-brand-profit,
+#root .wp-auth-brand-name span.wp-brand-profit {
+  background: linear-gradient(100deg, #2471ff 0%, #168cff 48%, #37b9ff 100%) !important;
+  background-image: linear-gradient(100deg, #2471ff 0%, #168cff 48%, #37b9ff 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #2471ff !important;
+  opacity: 1 !important;
+}

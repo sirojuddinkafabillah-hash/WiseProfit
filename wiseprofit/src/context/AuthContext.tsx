@@ -59,25 +59,62 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [tokenServiceStatus, setTokenServiceStatus] = useState<TokenServiceStatus>('unknown');
 
   const checkConnection = async (): Promise<boolean> => {
-    const connected = await testSupabaseConnection();
-    setIsOnline(connected);
-    setTokenServiceStatus(connected ? 'active' : 'unknown');
-    return connected;
+    try {
+      const connected = await Promise.race([
+        testSupabaseConnection(),
+        new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 8000)),
+      ]);
+      setIsOnline(connected);
+      setTokenServiceStatus(connected ? 'active' : 'unknown');
+      return connected;
+    } catch (error) {
+      console.warn('[WiseProfit Auth] Connection check failed:', error);
+      setIsOnline(false);
+      setTokenServiceStatus('unknown');
+      return false;
+    }
   };
 
   useEffect(() => {
-    checkConnection();
-    supabase.auth.getSession().then(({ data, error }) => {
-      if (error) console.warn('[WiseProfit Auth] Session:', error.message);
-      setUser(mapUser(data.session?.user || null));
-      setLoading(false);
-    });
+    let mounted = true;
+    // Auth initialization must never block the interface indefinitely if Supabase is unreachable.
+    void checkConnection();
+    const sessionTimeout = window.setTimeout(() => {
+      if (mounted) {
+        console.warn('[WiseProfit Auth] Session check timed out; showing sign-in screen.');
+        setUser(null);
+        setLoading(false);
+      }
+    }, 8000);
+
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (!mounted) return;
+        if (error) console.warn('[WiseProfit Auth] Session:', error.message);
+        window.clearTimeout(sessionTimeout);
+        setUser(mapUser(data.session?.user || null));
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (!mounted) return;
+        window.clearTimeout(sessionTimeout);
+        console.error('[WiseProfit Auth] Could not restore session:', error);
+        setUser(null);
+        setLoading(false);
+      });
+
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      window.clearTimeout(sessionTimeout);
       setUser(mapUser(session?.user || null));
       setLoading(false);
       setTokenServiceStatus(session ? 'active' : 'unknown');
     });
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      window.clearTimeout(sessionTimeout);
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   const signInWithGoogle = async (): Promise<AppUser> => {
@@ -86,7 +123,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       options: { redirectTo: window.location.origin },
     });
     if (error) throw authMessage(error);
-    // OAuth redirects away; return a lightweight value only for the existing UI contract.
     const current = mapUser((await supabase.auth.getUser()).data.user);
     if (current) return current;
     if (data.url) window.location.assign(data.url);

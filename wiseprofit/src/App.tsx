@@ -731,10 +731,10 @@ export default function App() {
                 </p>
                 <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex items-start gap-3">
-                    <Lock className="mt-0.5 h-5 w-5 shrink-0 text-[#4268C9]" />
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#4268C9]" />
                     <div>
-                      <p className="text-sm font-semibold text-[#24324B]">Login yang terhubung</p>
-                      <p className="mt-1 text-xs leading-5 text-slate-500">Verifikasi akun dilakukan oleh Supabase Auth, bukan login tampilan atau data contoh.</p>
+                      <p className="text-sm font-semibold text-[#24324B]">Kelola usaha dengan lebih mudah</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-500">Akses pencatatan stok, penjualan, dan keuangan dalam satu dashboard.</p>
                     </div>
                   </div>
                 </div>

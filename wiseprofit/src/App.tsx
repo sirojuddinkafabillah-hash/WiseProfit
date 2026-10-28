@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { InventoryItem, Withdrawal } from './types/inventory';
 import { calculateSummary } from './utils/calculator';
+import { installAutoTranslation } from './utils/autoTranslate';
 import { Header, AppPage } from './components/Header';
 import { SummaryCards } from './components/SummaryCards';
 import { QuickAddBar } from './components/QuickAddBar';
@@ -51,7 +52,7 @@ export default function App() {
   const [language, setLanguage] = useState<'id' | 'en'>(() => {
     try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; } catch { return 'id'; }
   });
-  // Automatic DOM translation is temporarily disabled to prevent browser freezes.
+  useEffect(() => installAutoTranslation(language), [language]);
 
   useEffect(() => {
     document.documentElement.lang = language;

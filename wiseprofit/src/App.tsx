@@ -207,7 +207,7 @@ export default function App() {
         setItems(cloudItems);
         setIsLoadingData(false);
         if (cloudItems.length > 0) {
-          setNotification(`Data toko akun (${cloudItems.length} barang) aktif & tersinkronisasi di Cloud.`);
+          setNotification(`Account store data (${cloudItems.length} items active and synced to the cloud.`);
         }
       },
       async (err) => {
@@ -284,7 +284,7 @@ export default function App() {
     setIsSavingCloud(true);
     try {
       await saveInventoryItemToCloud(user.uid, item);
-      setNotification(`Barang "${item.namaBarang}" berhasil disimpan.`);
+      setNotification(`Item "${item.namaBarang}" saved successfully.`);
     } catch (err) {
       console.error('Failed to save item:', err);
     } finally {
@@ -318,7 +318,7 @@ export default function App() {
       setIsSavingCloud(true);
       try {
         await saveInventoryItemToCloud(user.uid, updated);
-        setNotification(`Perubahan "${itemData.namaBarang}" berhasil disimpan.`);
+        setNotification(`Changes to "${itemData.namaBarang}" saved successfully.`);
       } catch (e) {
         console.error('Failed to update item:', e);
       } finally {
@@ -352,7 +352,7 @@ export default function App() {
     setIsSavingCloud(true);
     try {
       await deleteInventoryItemFromCloud(user.uid, id);
-      setNotification(`Barang "${namaBarang}" berhasil dihapus.`);
+      setNotification(`Item "${namaBarang}" berhasil dihapus.`);
     } catch (err) {
       console.error('Failed to delete item:', err);
     } finally {
@@ -380,7 +380,7 @@ export default function App() {
       if (ok) {
         setNotification('Seluruh data barang Anda berhasil dikosongkan.');
       } else {
-        setNotification('Gagal mengosongkan seluruh data di Cloud. Silakan coba kembali.');
+        setNotification('Could not clear all cloud data. Please try again.');
       }
     } catch (err) {
       console.error('Failed to clear items:', err);
@@ -437,12 +437,12 @@ export default function App() {
       const { error } = await supabase.auth.updateUser({ data: { display_name: cleanName, full_name: cleanName, name: cleanName } });
       if (error) throw error;
       const saved = await saveUserProfile(user.uid, { email: user.email || undefined, displayName: cleanName, modalAwal, globalSavePercentMonthly });
-      if (!saved) throw new Error('Nama belum berhasil disimpan ke profil online.');
-      setNotification('Nama profil berhasil diperbarui.');
+      if (!saved) throw new Error('Could not save the name to your online profile.');
+      setNotification('Profile name updated successfully.');
       return true;
     } catch (error) {
       console.error('Failed to update display name:', error);
-      setNotification('Nama belum berhasil disimpan. Periksa koneksi lalu coba lagi.');
+      setNotification('Nama belum saved successfully. Periksa koneksi lalu coba lagi.');
       return false;
     }
   };
@@ -452,7 +452,7 @@ export default function App() {
     if (!user) return;
     try {
       await saveUserProfile(user.uid, { email: user.email || undefined, displayName: user.displayName || undefined, modalAwal: newModal });
-      setNotification(`Modal awal usaha Rp ${newModal.toLocaleString('id-ID')} tersimpan di Cloud.`);
+      setNotification(`Initial business capital IDR ${newModal.toLocaleString('id-ID')} saved to the cloud.`);
     } catch (e) {
       console.error('Failed to update modalAwal:', e);
     }
@@ -480,7 +480,7 @@ export default function App() {
       const ok = await saveWithdrawalToCloud(user.uid, newWithdrawal);
       if (ok) {
         setWithdrawals((prev) => [newWithdrawal, ...prev.filter((w) => w.id !== newWithdrawal.id)]);
-        setNotification(`Penarikan kas Rp ${nominal.toLocaleString('id-ID')} berhasil disimpan ke Cloud.`);
+        setNotification(`Cash withdrawal IDR ${nominal.toLocaleString('id-ID')} saved to the cloud.`);
         return true;
       }
       return false;
@@ -500,7 +500,7 @@ export default function App() {
       const ok = await deleteWithdrawalFromCloud(user.uid, id);
       if (ok) {
         setWithdrawals((prev) => prev.filter((w) => w.id !== id));
-        setNotification('Riwayat penarikan berhasil dihapus.');
+        setNotification('Withdrawal history deleted successfully.');
         return true;
       }
       return false;
@@ -526,7 +526,7 @@ export default function App() {
     setIsSavingCloud(true);
     try {
       await batchUploadToCloud(user.uid, user.email || '', finalModal, restoredItems);
-      setNotification(`Data toko (${restoredItems.length} barang) berhasil dipulihkan ke Cloud akun Anda!`);
+      setNotification(`Data toko (${restoredItems.length} barang) restored to your account's cloud storage!`);
     } catch (e) {
       console.error('Failed to restore data:', e);
     } finally {
@@ -578,7 +578,7 @@ export default function App() {
     setIsSavingCloud(true);
     try {
       await batchUploadToCloud(user.uid, user.email || '', finalModal, updatedList);
-      setNotification(`Berhasil mengimpor ${importedItems.length} barang! Tersimpan permanen di Supabase akun Anda.`);
+      setNotification(`Successfully imported ${importedItems.length} items! Permanently saved to your Supabase account.`);
     } catch (err) {
       console.error('Cloud import save error:', err);
     } finally {
@@ -656,9 +656,9 @@ export default function App() {
               <div className="flex items-start md:items-center gap-2.5">
                 <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 md:mt-0" />
                 <div className="text-left leading-relaxed">
-                  <span className="font-bold text-amber-300">Penyimpanan online belum tersambung:</span>{' '}
-                  WiseProfit belum bisa terhubung ke layanan penyimpanan. Data baru mungkin belum tersimpan secara online.
-                  <span className="text-emerald-300 ml-1">Periksa pengaturan koneksi sebelum menyimpan catatan penting.</span>
+                  <span className="font-bold text-amber-300">Online storage is not connected:</span>{' '}
+                  WiseProfit cannot connect to the storage service. New data may not be saved online.
+                  <span className="text-emerald-300 ml-1">Check connection settings before saving important information.</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
@@ -668,14 +668,14 @@ export default function App() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-600/40 hover:bg-amber-600/60 border border-amber-500/50 rounded-lg text-amber-100 text-xs font-sans font-medium transition-colors"
                 >
-                  Buka pengaturan penyimpanan
+                  Open storage settings
                 </a>
                 <button
                   type="button"
                   onClick={async () => {
                     const ok = await checkConnection();
                     if (ok) {
-                      setNotification('Koneksi Supabase berhasil tersambung penuh!');
+                      setNotification('Supabase connected successfully!');
                     }
                   }}
                   className="inline-flex items-center gap-1 px-3 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg text-slate-200 text-xs font-sans font-medium transition-colors cursor-pointer"
@@ -711,17 +711,17 @@ export default function App() {
                     Ruang usaha digital Anda
                   </span>
                   <h2 className="mt-5 max-w-md text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-                    Semua catatan usaha, lebih tertata.
+                    All your business notes, organized.
                   </h2>
                   <p className="mt-4 max-w-md text-sm leading-7 text-white/75">
-                    Pantau stok, penjualan, keuntungan, dan arus kas dari satu tempat yang terhubung ke akun Anda.
+                    Track inventory, sales, profit, and cash flow in one place connected to your account.
                   </p>
                 </div>
                 <div className="relative mt-10 space-y-4">
                   {[
-                    'Catatan usaha terhubung ke akun Anda',
+                    'Business records connected to your account',
                     'Ringkasan penjualan dan arus kas',
-                    'Akses data setelah masuk dengan akun yang benar'
+                    'Access data after signing in to the correct account'
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3 text-sm text-white/85">
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-200" />
@@ -731,19 +731,19 @@ export default function App() {
                 </div>
               </div>
               <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#4268C9]">Selamat datang</span>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#4268C9]">Welcome</span>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#24324B] sm:text-4xl">
-                  Masuk ke WiseProfit
+                  Sign in to WiseProfit
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-slate-600">
-                  Lanjutkan mengelola bisnis Anda. Masuk menggunakan email dan kata sandi yang terdaftar, atau buat akun baru jika belum memiliki akun.
+                  Continue managing your business. Sign in with your registered email and password, or create a new account if you don't have one.
                 </p>
                 <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#4268C9]" />
                     <div>
                       <p className="text-sm font-semibold text-[#24324B]">Kelola usaha dengan lebih mudah</p>
-                      <p className="mt-1 text-xs leading-5 text-slate-500">Akses pencatatan stok, penjualan, dan keuangan dalam satu dashboard.</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-500">Manage inventory, sales, and finances in one dashboard.</p>
                     </div>
                   </div>
                 </div>
@@ -753,7 +753,7 @@ export default function App() {
                   className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4268C9] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/15 transition hover:bg-[#3457A5] focus:outline-none focus:ring-4 focus:ring-blue-100"
                 >
                   <LogIn className="h-5 w-5" />
-                  Masuk atau buat akun
+                  Sign in or create an account
                 </button>
                 <p className="mt-4 text-center text-xs text-slate-400">Putih · Navy · Biru</p>
               </div>
@@ -872,30 +872,30 @@ export default function App() {
             </div>
             <div className="flex items-center gap-2 text-slate-400">
               <Cloud className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Penyimpanan: <strong className="text-emerald-400">Supabase PostgreSQL</strong> (RLS per akun)</span>
+              <span>Storage: <strong className="text-emerald-400">Supabase PostgreSQL</strong> (row-level security per account)</span>
             </div>
           </div>
         </footer>
 
       {user && isProfilePanelOpen && (
         <div className="pointer-events-none fixed inset-0 z-[60]">
-          {window.innerWidth < 640 && <button type="button" aria-label="Tutup panel profil" onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
+          {window.innerWidth < 640 && <button type="button" aria-label="Close profile panel" onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
           <aside
             className={`pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200 ${window.innerWidth < 640 ? 'w-screen' : ''}`}
             style={{ width: window.innerWidth < 640 ? '100vw' : `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` }}
           >
             <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
-              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">Profil & Catatan</p><p className="text-[11px] text-slate-400">Panel samping WiseProfit</p></div>
+              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">Profile & Notes</p><p className="text-[11px] text-slate-400">WiseProfit side panel</p></div>
               <div className="flex shrink-0 items-center gap-1">
-                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title="Lebar sepertiga layar" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
-                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title="Perbesar panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Lebar</button>
-                <button type="button" onClick={() => setProfilePanelWidth(320)} title="Perkecil panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Kecil</button>
-                <button type="button" onClick={() => setIsProfilePanelOpen(false)} title="Tutup panel" className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
+                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title="One-third screen width" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
+                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title="Expand panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Wide</button>
+                <button type="button" onClick={() => setProfilePanelWidth(320)} title="Shrink panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Small</button>
+                <button type="button" onClick={() => setIsProfilePanelOpen(false)} title="Close panel" className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
               </div>
             </div>
             <div
               role="separator"
-              aria-label="Ubah lebar panel profil"
+              aria-label="Resize profile panel"
               aria-orientation="vertical"
               onPointerDown={(event) => { if (window.innerWidth >= 640) { event.currentTarget.setPointerCapture(event.pointerId); } }}
               onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, event.clientX))); }}
@@ -919,7 +919,7 @@ export default function App() {
                 onSaveName={handleSaveDisplayName}
                 onLogout={async () => {
                   try { await logout(); setIsProfilePanelOpen(false); }
-                  catch (error) { console.error('Logout failed:', error); setNotification('Belum berhasil keluar. Silakan coba lagi.'); }
+                  catch (error) { console.error('Logout failed:', error); setNotification('Could not sign out. Please try again.'); }
                 }}
               />
             </div>

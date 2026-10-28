@@ -107,40 +107,27 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
     <div className="wp-auth-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in">
       <div className="wp-auth-card relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-150">
         <section className="wp-auth-header relative">
-          <div className="mb-7 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/15 shadow-lg shadow-blue-950/20">
-              <ShieldCheck className="h-6 w-6 text-white" />
+          <div className="mb-8 flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10">
+              <ShieldCheck className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-lg font-bold tracking-tight text-white">WiseProfit</p>
-              <p className="text-xs font-medium text-blue-100/80">Kelola usaha dengan lebih mudah</p>
+              <p className="text-xs text-white/70">Kelola usaha dengan lebih mudah</p>
             </div>
           </div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-blue-50">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-300 shadow-[0_0_10px_rgba(147,197,253,0.9)]" />
-            {isResetMode ? 'Pemulihan akun' : isRegisterMode ? 'Mulai langkah baru' : 'Selamat datang'}
-          </span>
-          <h2 className="mt-5 max-w-sm text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+          <p className="mb-3 text-xs font-semibold tracking-wide text-white/65">
+            {isResetMode ? 'PEMULIHAN AKUN' : isRegisterMode ? 'MULAI DARI SINI' : 'SELAMAT DATANG'}
+          </p>
+          <h2 className="max-w-sm text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
             {isResetMode ? 'Akses akun Anda kembali.' : isRegisterMode ? 'Mulai kelola usaha lebih rapi.' : 'Usaha maju, catatan pun rapi.'}
           </h2>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-blue-50/80">
-            Catat stok, pantau penjualan, dan kendalikan arus kas dalam satu ruang kerja yang praktis.
+          <p className="mt-4 max-w-sm text-sm leading-6 text-white/75">
+            Catat stok, pantau penjualan, dan kelola keuangan usaha dalam satu tempat.
           </p>
-          <div className="mt-7 grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-white/15 bg-white/[0.08] p-3.5 backdrop-blur-sm">
-              <CheckCircle2 className="mb-2 h-4 w-4 text-blue-200" />
-              <p className="text-xs font-semibold text-white">Stok & penjualan</p>
-              <p className="mt-1 text-[11px] leading-4 text-blue-100/65">Lebih terorganisir</p>
-            </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.08] p-3.5 backdrop-blur-sm">
-              <ShieldCheck className="mb-2 h-4 w-4 text-blue-200" />
-              <p className="text-xs font-semibold text-white">Kas & keuntungan</p>
-              <p className="mt-1 text-[11px] leading-4 text-blue-100/65">Mudah dipantau</p>
-            </div>
-          </div>
-          <div className="mt-6 flex items-center gap-2 text-xs font-medium text-white/65">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-300" />
-            Satu tempat untuk mengelola usaha Anda
+          <div className="mt-6 flex items-center gap-2 text-sm text-white/85">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-white/80" />
+            <span>Stok, penjualan, dan arus kas lebih tertata</span>
           </div>
         </section>
 

@@ -1688,3 +1688,55 @@ html, body {
     padding: 26px 24px !important;
   }
 }
+
+
+/* Refine login card proportions and soften the blue panel shadow */
+#root .wp-auth-card {
+  max-width: 860px !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 14px 38px rgba(35, 55, 100, 0.12) !important;
+  border: 1px solid rgba(217, 227, 247, 0.85) !important;
+}
+#root .wp-auth-card > .wp-auth-body {
+  padding: 32px 30px !important;
+  background: #4268c9 !important;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,.08) !important;
+}
+#root .wp-auth-card > .wp-auth-body h3 {
+  font-size: 23px !important;
+}
+#root .wp-auth-card > .wp-auth-body input {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  border-radius: 10px !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="submit"],
+#root .wp-auth-card > .wp-auth-body button.mb-5 {
+  border-radius: 10px !important;
+}
+#root .wp-auth-card > .wp-auth-body button[type="submit"] {
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  box-shadow: 0 3px 9px rgba(28, 45, 92, .12) !important;
+}
+#root .wp-auth-card > .wp-auth-body button.mb-5 {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+#root .wp-auth-card > .wp-auth-header {
+  padding: 34px 30px !important;
+}
+@media (max-width: 700px) {
+  #root .wp-auth-card {
+    max-width: 410px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 26px rgba(35, 55, 100, .10) !important;
+  }
+  #root .wp-auth-card > .wp-auth-body {
+    padding: 24px 22px !important;
+  }
+  #root .wp-auth-card > .wp-auth-header {
+    padding: 23px 22px 24px !important;
+  }
+}

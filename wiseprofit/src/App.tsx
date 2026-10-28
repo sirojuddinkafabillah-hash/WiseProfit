@@ -20,7 +20,6 @@ import { SupportPage } from './components/SupportPage';
 import { supabase } from './lib/supabase';
 import { CosmicInteractiveBackground, BackgroundTheme } from './components/CosmicInteractiveBackground';
 import { useAuth } from './context/AuthContext';
-import { installAutoTranslation } from './utils/autoTranslate';
 import { 
   Cloud, 
   CheckCircle2, 
@@ -52,7 +51,7 @@ export default function App() {
   const [language, setLanguage] = useState<'id' | 'en'>(() => {
     try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; } catch { return 'id'; }
   });
-  useEffect(() => installAutoTranslation(language), [language]);
+  // Auto-translation is temporarily disabled to test whether DOM mutation processing causes the UI to freeze.
 
   useEffect(() => {
     document.documentElement.lang = language;

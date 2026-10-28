@@ -123,7 +123,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   };
 
   return (
-    <div className="wp-auth-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in">
+    <div className="wp-auth-overlay fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in">
       <div className="wp-auth-card relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-150">
         <section className="wp-auth-header relative">
           <div className="wp-auth-brand flex items-center gap-3">

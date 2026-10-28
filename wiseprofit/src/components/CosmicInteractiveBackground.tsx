@@ -73,10 +73,10 @@ const THEME_CONFIGS: Record<BackgroundTheme, {
     name: 'Cosmic Nebula',
     gradientBg: 'from-[#070b14] via-[#0b1329] to-[#05111a]',
     canvasBg: '#080d1a',
-    ambientGlow1: 'rgba(16, 185, 129, 0.12)', // emerald glow
-    ambientGlow2: 'rgba(99, 102, 241, 0.14)', // indigo nebula
-    dotColor: 'rgba(147, 197, 253, 0.6)',
-    lineColor: 'rgba(96, 165, 250, 0.12)',
+    ambientGlow1: 'rgba(37, 99, 235, 0.28)', // sapphire blue glow
+    ambientGlow2: 'rgba(59, 130, 246, 0.24)', // vivid blue nebula
+    dotColor: 'rgba(147, 197, 253, 0.82)',
+    lineColor: 'rgba(59, 130, 246, 0.24)',
     isDark: true,
   },
   'aurora-emerald': {

@@ -85,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={t("header.profile", language)}
               className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700 hover:border-emerald-300'}`}
             >
-              {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profil" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
+              {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
             </button>
 
             {/* Desktop Navigation Tabs */}
@@ -284,11 +284,11 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => onChangePage('home')}
-            aria-label="Buka profil dan beranda"
-            title="Profil"
+            aria-label="Open profile and home"
+            title="Profile"
             className={`flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 transition-all ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700'}`}
           >
-            {profilePhoto ? <img src={profilePhoto} alt="Profil" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profil" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
+            {profilePhoto ? <img src={profilePhoto} alt="Profile" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
           </button>
           <button
             type="button"

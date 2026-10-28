@@ -12,6 +12,9 @@ export const translations = {
     'header.importExport': 'Ekspor dan Impor Data',
     'header.importExportShort': 'Ekspor/Impor',
     'header.faq': 'FAQ',
+    'header.chooseLanguage': 'Pilih bahasa',
+    'header.avatar': 'Avatar',
+    'header.account': 'Akun',
     'header.otherFeedback': 'Keluhan Lain',
     'header.financeGuide': 'Panduan Keuangan',
     'header.printReport': 'Cetak Laporan',
@@ -40,6 +43,9 @@ export const translations = {
     'header.importExport': 'Data Import & Export',
     'header.importExportShort': 'Import/Export',
     'header.faq': 'FAQ',
+    'header.chooseLanguage': 'Choose language',
+    'header.avatar': 'Avatar',
+    'header.account': 'Account',
     'header.otherFeedback': 'Other Feedback',
     'header.financeGuide': 'Finance Guide',
     'header.printReport': 'Print Report',
@@ -61,7 +67,7 @@ export const translations = {
 
 export type TranslationKey = keyof typeof translations.id;
 
-export function t(key: TranslationKey, language: Language): string {
+export function t(key: TranslationKey, language: Language = getInitialLanguage()): string {
   return translations[language][key] || translations.id[key] || key;
 }
 

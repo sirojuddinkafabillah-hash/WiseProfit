@@ -327,8 +327,8 @@ export function installAutoTranslation(language: 'id' | 'en') {
   if (!root) return () => {};
   let active = language === 'en';
   const translateNode = (node: Node) => {
-    if (!active) return;
     if (node.nodeType === Node.TEXT_NODE) {
+      if (!active) { translateText(node as Text, false); return; }
       const textNode = node as Text;
       const current = textNode.nodeValue ?? '';
       const clean = current.trim();
@@ -356,11 +356,12 @@ export function installAutoTranslation(language: 'id' | 'en') {
     }
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = node as Element;
+      if (!active) { translateElement(el, false); el.childNodes.forEach(translateNode); return; }
       translateElement(el, true);
       el.childNodes.forEach(translateNode);
     }
   };
-  if (active) root.childNodes.forEach(translateNode);
+  root.childNodes.forEach(translateNode);
   const observer = new MutationObserver(records => {
     if (!active) return;
     for (const record of records) {

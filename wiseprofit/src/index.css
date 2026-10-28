@@ -1974,3 +1974,39 @@ html, body {
     radial-gradient(ellipse at 92% 4%, rgba(153, 190, 255, .22), transparent 44%),
     radial-gradient(ellipse at 0% 100%, rgba(35, 73, 173, .18), transparent 48%) !important;
 }
+
+
+/* Stronger visible blue gradient for the login panel */
+#root .wp-auth-card > .wp-auth-body {
+  background: linear-gradient(118deg,
+    #6d8fe8 0%,
+    #5278d5 18%,
+    #4268c9 40%,
+    #3158b8 63%,
+    #2449a5 82%,
+    #397ee5 100%) !important;
+  background-size: 180% 180% !important;
+  animation: wp-login-blue-gradient 12s ease-in-out infinite alternate !important;
+  position: relative !important;
+  isolation: isolate !important;
+}
+#root .wp-auth-card > .wp-auth-body::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(199, 219, 255, .30), transparent 36%),
+    radial-gradient(ellipse at 100% 18%, rgba(105, 175, 255, .28), transparent 38%),
+    radial-gradient(ellipse at 48% 100%, rgba(20, 48, 133, .24), transparent 54%) !important;
+}
+@keyframes wp-login-blue-gradient {
+  0% { background-position: 0% 35%; }
+  100% { background-position: 100% 65%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #root .wp-auth-card > .wp-auth-body {
+    animation: none !important;
+  }
+}

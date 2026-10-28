@@ -1173,3 +1173,80 @@ html, body {
   padding: 6px !important;
 }
 #root .wp-inventory-table td:nth-child(10) svg { flex-shrink: 0; }
+
+
+/* Login welcome panel: simple, aligned and restrained */
+.wp-auth-card {
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr) !important;
+}
+.wp-auth-header {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: 34px 30px !important;
+  gap: 0 !important;
+  background: #24324b !important;
+  text-align: left !important;
+}
+.wp-auth-header h2,
+.wp-auth-header p {
+  text-align: left !important;
+}
+.wp-auth-header h2 {
+  margin-top: 0 !important;
+  color: #ffffff !important;
+}
+.wp-auth-header p {
+  margin-top: 0 !important;
+}
+.wp-auth-header > div {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.wp-auth-header > div:first-child {
+  margin-bottom: 28px !important;
+}
+.wp-auth-header > div:first-child > div:first-child {
+  background: rgba(255,255,255,.10) !important;
+}
+.wp-auth-header > div:last-child {
+  margin-top: 22px !important;
+}
+.wp-auth-header [class*="rounded-full"] {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+.wp-auth-header [class*="shadow-"] {
+  box-shadow: none !important;
+}
+@media (max-width: 700px) {
+  .wp-auth-card {
+    max-width: 440px !important;
+    max-height: calc(100dvh - 24px) !important;
+    overflow-y: auto !important;
+    border-radius: 20px !important;
+  }
+  .wp-auth-header {
+    padding: 22px 22px 24px !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  .wp-auth-header > div:first-child {
+    margin-bottom: 20px !important;
+  }
+  .wp-auth-header h2 {
+    font-size: 25px !important;
+    line-height: 1.2 !important;
+  }
+  .wp-auth-header p {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+  .wp-auth-header > div:last-child {
+    margin-top: 16px !important;
+  }
+  .wp-auth-body {
+    padding: 22px !important;
+  }
+}

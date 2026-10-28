@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka, formatTanggalSederhana } from '../utils/calculator';
 import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
@@ -147,11 +148,11 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
             <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-              Daftar barang dan penjualan
+              {t('table.title')}
             </h2>
           </div>
           <span className="text-xs font-mono text-slate-400">
-            · {filteredItems.length} barang ada dalam catatan
+            · {filteredItems.length} {t('table.itemsCount')}
           </span>
 
           {/* Month Filter Buttons */}
@@ -164,7 +165,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                   : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
-              Semua Periode
+              {t('table.allPeriods')}
             </button>
             {availableMonths.map((ym) => {
               const [year, month] = ym.split('-');
@@ -194,7 +195,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari nama barang atau catatan..."
+              placeholder={t('table.searchPlaceholder')}
               className="w-full pl-9 pr-8 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 font-mono transition-all"
             />
             {searchQuery && (
@@ -212,10 +213,10 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               type="button"
               onClick={onClearAll}
               className="flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-medium text-slate-300 hover:text-rose-300 bg-rose-950/20 hover:bg-rose-950/50 border border-rose-900/40 hover:border-rose-500/50 rounded-xl cursor-pointer transition-all whitespace-nowrap active:scale-95"
-              title="Kosongkan seluruh data tabel"
+              title={t('table.clearAllTitle')}
             >
               <Trash2 className="w-3.5 h-3.5 text-rose-400" />
-              <span>Hapus semua barang</span>
+              <span>{t('table.clearAll')}</span>
             </button>
           )}
         </div>
@@ -229,30 +230,30 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               <th 
                 className="py-3.5 px-3 text-center w-14 text-slate-400 font-mono text-[10px] tracking-wider select-none uppercase cursor-pointer hover:text-emerald-300 transition-colors"
                 onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}
-                title={`Urutan: ${sortOrder === 'desc' ? 'Terbaru → Terlama' : 'Terlama → Terbaru'}. Klik untuk membalik urutan.`}
+                title={`Urutan: ${sortOrder === 'desc' ? t('table.sortNewest') : t('table.sortOldest')} ${t('table.sortHint')}`}
               >
                 <div className="flex items-center justify-center gap-1">
                   <span>#</span>
                   <ArrowUpDown className="w-3 h-3 text-emerald-400" />
                 </div>
               </th>
-              <th className="py-3.5 px-4 min-w-[200px]">BARANG & WAKTU</th>
-              <th className="py-3.5 px-3 text-center min-w-[100px]">KEMASAN</th>
-              <th className="py-3.5 px-3 text-right min-w-[115px]">MODAL BELI</th>
+              <th className="py-3.5 px-4 min-w-[200px]">{t('table.itemTime')}</th>
+              <th className="py-3.5 px-3 text-center min-w-[100px]">{t('table.package')}</th>
+              <th className="py-3.5 px-3 text-right min-w-[115px]">{t('table.buyCapital')}</th>
               <th className="py-3.5 px-3 text-center min-w-[170px] bg-slate-950 text-emerald-300 font-bold border-l border-r border-slate-800">
-                PENJUALAN (TERJUAL)
+                {t('table.sold')}
               </th>
-              <th className="py-3.5 px-3 text-right min-w-[105px]">HARGA JUAL</th>
+              <th className="py-3.5 px-3 text-right min-w-[105px]">{t('table.sellPrice')}</th>
               <th className="py-3.5 px-3 text-right min-w-[125px] text-emerald-400 font-bold">
-                LABA (GAIN)
+                {t('table.profit')}
               </th>
               <th className="py-3.5 px-3 text-right min-w-[135px] text-amber-300 font-bold">
-                OMZET TERJUAL
+                {t('table.revenue')}
               </th>
               <th className="py-3.5 px-4 text-right min-w-[145px] bg-emerald-950/40 text-emerald-300 font-bold border-l border-r border-emerald-500/25">
-                SISA KAS KASIR
+                {t('table.remainingCash')}
               </th>
-              <th className="py-3.5 px-3 text-center min-w-[70px] text-slate-500">AKSI</th>
+              <th className="py-3.5 px-3 text-center min-w-[70px] text-slate-500">{t('table.actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60 font-mono text-slate-200">
@@ -264,10 +265,10 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       <Package className="w-6 h-6 stroke-1" />
                     </div>
                     <p className="text-sm font-semibold text-slate-200">
-                      {searchQuery || selectedMonth !== 'all' ? 'Tidak ada barang yang cocok dengan filter.' : 'Belum Ada Transaksi Barang'}
+                      {searchQuery || selectedMonth !== 'all' ? t('table.noMatches') : t('table.noTransactions')}
                     </p>
                     <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                      Masukkan data barang melalui formulir di atas untuk memulai pencatatan kas kasir, estimasi laba, dan pemantauan perputaran stok.
+                      {t('table.emptyHint')}
                     </p>
                   </div>
                 </td>
@@ -288,7 +289,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       {index + 1}
                     </td>
 
-                    {/* BARANG & WAKTU (HERO COLUMN) */}
+                    {/* {t('table.itemTime')} (HERO COLUMN) */}
                     <td className="py-4 px-4 align-middle">
                       <div className="font-semibold text-slate-100 text-sm tracking-tight group-hover:text-emerald-300 transition-colors font-sans">
                         {item.namaBarang}
@@ -308,7 +309,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       </div>
                     </td>
 
-                    {/* KEMASAN & ISI */}
+                    {/* {t('table.package')} & ISI */}
                     <td className="py-4 px-3 text-center align-middle font-mono">
                       <div className="font-semibold text-slate-200 text-xs">
                         {item.jumlahBarangWadah} <span className="text-slate-400 text-[11px]">{item.satuanUnit || 'pcs'}</span>
@@ -318,7 +319,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       </div>
                     </td>
 
-                    {/* MODAL BELI */}
+                    {/* {t('table.buyCapital')} */}
                     <td className="py-4 px-3 text-right align-middle font-mono tabular-nums">
                       <div className="font-semibold text-slate-100 text-xs">{formatRupiah(item.hargaBeli)}</div>
                       <div className="text-[10px] text-slate-400 mt-0.5">
@@ -386,7 +387,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       </div>
                     </td>
 
-                    {/* HARGA JUAL */}
+                    {/* {t('table.sellPrice')} */}
                     <td className="py-4 px-3 text-right align-middle font-mono tabular-nums">
                       <div className="font-semibold text-slate-100 text-xs">
                         {formatRupiah(item.hargaJualSatuan)}
@@ -426,7 +427,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       )}
                     </td>
 
-                    {/* OMZET TERJUAL & NILAI STOK TERSISA */}
+                    {/* {t('table.revenue')} & NILAI STOK TERSISA */}
                     <td className="py-4 px-3 text-right align-middle font-mono tabular-nums">
                       <div className="font-bold text-amber-300 text-xs">
                         {formatRupiah(calc.totalSetelahUntungTerjual)}
@@ -436,7 +437,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       </div>
                     </td>
 
-                    {/* SISA KAS KASIR (STATUS GLOW PILL) */}
+                    {/* {t('table.remainingCash')} (STATUS GLOW PILL) */}
                     <td className="py-4 px-4 text-right align-middle font-mono tabular-nums bg-emerald-950/20 border-l border-r border-emerald-500/15">
                       <div className="inline-block">
                         <span className={`inline-flex items-center px-3 py-1 rounded-xl text-xs font-extrabold shadow-sm ${

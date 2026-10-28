@@ -1820,3 +1820,23 @@ html, body {
     gap: 10px !important;
   }
 }
+
+
+/* Keep the cosmic canvas and cursor response visible around the login card */
+.wp-auth-overlay {
+  background: rgba(5, 10, 24, 0.30) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+}
+.wp-auth-overlay .wp-auth-card {
+  position: relative !important;
+  z-index: 2 !important;
+  box-shadow: 0 20px 52px rgba(0, 0, 0, .28), 0 5px 16px rgba(18, 35, 78, .14) !important;
+}
+@media (max-width: 640px) {
+  .wp-auth-overlay {
+    padding: 12px !important;
+    overflow-y: auto !important;
+    align-items: center !important;
+  }
+}

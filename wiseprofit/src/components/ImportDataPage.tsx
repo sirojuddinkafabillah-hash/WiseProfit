@@ -150,7 +150,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       }
     }
 
-    // 3. Fallback to positional index (e.g. column 2 for Nama Barang, column 4 for Harga Beli)
+    // 3. Fallback to positional index (e.g. column 2 for Nama Items, column 4 for Purchase Price)
     if (fallbackPositionalIndex !== undefined) {
       // Check if __col_X exists
       const colKey = `__col_${fallbackPositionalIndex}`;
@@ -186,59 +186,59 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const parsedNo = typeof rawNo === 'number' ? rawNo : parseInt(String(rawNo || '').trim(), 10);
       const noUrut = !isNaN(parsedNo) && parsedNo > 0 ? parsedNo : (idx + 1);
 
-      // 1. Nama Barang (Index 2 in 12-column layout)
-      let namaBarang = String(findValue(row, [
-        'Nama Barang', 'nama barang', 'nama_barang', 'nama', 'barang', 'item', 'produk', 'nama produk', 
+      // 1. Nama Items (Index 2 in 12-column layout)
+      let namaItems = String(findValue(row, [
+        'Nama Items', 'nama barang', 'nama_barang', 'nama', 'barang', 'item', 'produk', 'nama produk', 
         'deskripsi', 'description', 'uraian', 'product', 'nama_produk', 'kode/nama', 'title'
       ], 2) || '').trim();
 
-      // If namaBarang looks like a number and row has no headers, check index 1 or 2
-      if (!namaBarang && row['__col_2']) {
-        namaBarang = String(row['__col_2']).trim();
+      // If namaItems looks like a number and row has no headers, check index 1 or 2
+      if (!namaItems && row['__col_2']) {
+        namaItems = String(row['__col_2']).trim();
       }
 
-      // 2. Satuan Wadah (default 'Dus')
-      const satuanWadah = String(findValue(row, [
-        'Satuan Wadah', 'satuan wadah', 'satuan_wadah', 'wadah', 'kemasan', 'satuan beli', 'packaging', 
+      // 2. Satuan Container (default 'Dus')
+      const satuanContainer = String(findValue(row, [
+        'Satuan Container', 'satuan wadah', 'satuan_wadah', 'wadah', 'kemasan', 'satuan beli', 'packaging', 
         'pack', 'dus', 'karton', 'satuan', 'unit wadah', 'satuan_beli'
       ]) || 'Dus').trim();
 
-      // 3. Jumlah 1 Wadah (Index 3 in 12-column layout)
-      let jumlahBarangWadah = parseIndonesianNumber(findValue(row, [
-        'Jumlah 1 Wadah', 'jumlah 1 wadah', 'isi wadah', 'isi', 'jumlah barang wadah', 'qty wadah', 'isi 1 wadah', 
+      // 3. Units per Container (Index 3 in 12-column layout)
+      let jumlahItemsContainer = parseIndonesianNumber(findValue(row, [
+        'Units per Container', 'jumlah 1 wadah', 'isi wadah', 'isi', 'jumlah barang wadah', 'qty wadah', 'isi 1 wadah', 
         'jumlah', 'qty', 'kuantitas', 'kapasitas', 'isi per wadah', 'pcs per dus', 'isi dus', 
         'isi karton', 'banyaknya', 'isi_wadah', 'jumlah_barang_wadah', 'isi/kemasan', 'pcs/dus'
       ], 3));
-      if (jumlahBarangWadah <= 0) jumlahBarangWadah = 1;
+      if (jumlahItemsContainer <= 0) jumlahItemsContainer = 1;
 
       // 4. Satuan Unit
       const satuanUnit = String(findValue(row, [
         'Satuan Unit', 'satuan unit', 'satuan_unit', 'unit', 'satuan kecil', 'satuan jual', 'satuan_ecer', 'satuan_eceran', 'pcs'
       ]) || 'pcs').trim();
 
-      // 5. Harga Beli 1 Wadah (Index 4 in 12-column layout)
+      // 5. Purchase Price per Container (Index 4 in 12-column layout)
       let hargaBeli = parseIndonesianNumber(findValue(row, [
-        'Harga Beli 1 Wadah', 'harga beli 1 wadah', 'harga beli', 'harga_beli', 'modal wadah', 'modal', 'beli', 
+        'Purchase Price per Container', 'harga beli 1 wadah', 'harga beli', 'harga_beli', 'modal wadah', 'modal', 'beli', 
         'buy price', 'cost', 'hpp', 'harga pokok', 'harga kulakan', 'harga modal', 'harga grosir', 
         'kulakan', 'total modal', 'modal beli', 'harga beli wadah', 'harga_beli_wadah'
       ], 4));
 
-      // 6. Harga Jual Satuan (Index 6 in 12-column layout)
+      // 6. Selling Price per Unit (Index 6 in 12-column layout)
       let hargaJualSatuan = parseIndonesianNumber(findValue(row, [
-        'Harga Jual Satuan', 'harga jual satuan', 'harga jual', 'harga_jual', 'harga_jual_satuan', 'jual', 
+        'Selling Price per Unit', 'harga jual satuan', 'harga jual', 'harga_jual', 'harga_jual_satuan', 'jual', 
         'harga ecer', 'harga eceran', 'sell price', 'price', 'tarif', 'harga jual eceran', 
         'pricelist', 'harga_eceran', 'harga_jual_unit'
       ], 6));
 
-      // 7. Jumlah Terjual Satuan (Index 5 in 12-column layout)
-      const jumlahBarangDijualSatuan = parseIndonesianNumber(findValue(row, [
-        'Jumlah Terjual Satuan', 'jumlah terjual satuan', 'jumlah terjual', 'terjual', 'jumlah_terjual', 
+      // 7. Units Sold (Index 5 in 12-column layout)
+      const jumlahItemsDijualSatuan = parseIndonesianNumber(findValue(row, [
+        'Units Sold', 'jumlah terjual satuan', 'jumlah terjual', 'terjual', 'jumlah_terjual', 
         'unit terjual', 'laku', 'sold', 'qty jual', 'sudah laku', 'terjual satuan', 'penjualan', 'qty terjual', 'terjual (unit)'
       ], 5)) || 0;
 
-      // 8. Tanggal Input (Index 1 in 12-column layout)
+      // 8. Entry Date (Index 1 in 12-column layout)
       const rawTanggal = findValue(row, [
-        'Tanggal Input', 'tanggal input', 'tanggal', 'tgl', 'date', 'created_at', 'waktu', 'tanggal masuk', 'tanggal beli'
+        'Entry Date', 'tanggal input', 'tanggal', 'tgl', 'date', 'created_at', 'waktu', 'tanggal masuk', 'tanggal beli'
       ], 1);
       const tanggalInput = formatExcelSerialDate(rawTanggal);
 
@@ -249,18 +249,18 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
 
       // Smart fallback: If hargaJualSatuan is empty but hargaBeli is filled, auto-calculate +25% markup
       if (hargaJualSatuan <= 0 && hargaBeli > 0) {
-        const modalPerUnit = hargaBeli / Math.max(1, jumlahBarangWadah);
+        const modalPerUnit = hargaBeli / Math.max(1, jumlahItemsContainer);
         hargaJualSatuan = Math.ceil((modalPerUnit * 1.25) / 500) * 500;
       }
 
       // If hargaBeli is empty but hargaJualSatuan is filled, estimate 80% cost
       if (hargaBeli <= 0 && hargaJualSatuan > 0) {
-        hargaBeli = Math.round(hargaJualSatuan * jumlahBarangWadah * 0.8);
+        hargaBeli = Math.round(hargaJualSatuan * jumlahItemsContainer * 0.8);
       }
 
       let error: string | undefined = undefined;
-      if (!namaBarang) {
-        error = 'Nama barang tidak boleh kosong';
+      if (!namaItems) {
+        error = 'Item name cannot be empty';
       } else if (hargaBeli <= 0 && hargaJualSatuan <= 0) {
         error = 'Harap isi harga beli atau harga jual';
       }
@@ -268,12 +268,12 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const item: InventoryItem = {
         id: `import_${now}_${idx}_${Math.random().toString(36).substring(2, 6)}`,
         noUrut,
-        namaBarang: namaBarang || `Barang Baris ${noUrut}`,
-        satuanWadah: satuanWadah || 'Dus',
-        jumlahBarangWadah: Math.max(1, jumlahBarangWadah),
+        namaItems: namaItems || `Items Baris ${noUrut}`,
+        satuanContainer: satuanContainer || 'Dus',
+        jumlahItemsContainer: Math.max(1, jumlahItemsContainer),
         satuanUnit: satuanUnit || 'pcs',
         hargaBeli: Math.max(0, hargaBeli),
-        jumlahBarangDijualSatuan: Math.max(0, jumlahBarangDijualSatuan),
+        jumlahItemsDijualSatuan: Math.max(0, jumlahItemsDijualSatuan),
         hargaJualSatuan: Math.max(0, hargaJualSatuan),
         perputaranBulan: 1,
         persentaseLabaDisimpanBulanan: 50,
@@ -293,13 +293,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
     if (parsed.length === 0) {
       setResultMessage({
         type: 'error',
-        text: 'Tidak ada baris data yang terbaca. Pastikan tabel memiliki baris data barang.'
+        text: 'No data rows were detected. Make sure the table contains item rows.'
       });
     } else {
       const validC = parsed.filter(p => p.isValid).length;
       setResultMessage({
         type: 'success',
-        text: `Berhasil membaca ${parsed.length} baris data (${validC} barang siap disimpan). Silakan periksa pratinjau tabel di bawah lalu klik tombol "Impor Data" untuk menyimpan.`
+        text: `Successfully read ${parsed.length} data rows (${validC} items ready to save). Review the table preview below, then click "Import Data" to save.`
       });
     }
 
@@ -310,7 +310,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   const parseDelimitedText = (text: string, sourceName: string) => {
     const lines = text.trim().split(/\r?\n/).filter(line => line.trim().length > 0);
     if (lines.length === 0) {
-      setResultMessage({ type: 'error', text: 'Teks tidak memiliki baris data.' });
+      setResultMessage({ type: 'error', text: 'The text contains no data rows.' });
       return;
     }
 
@@ -390,7 +390,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       setResultMessage({ type: 'error', text: 'Kotak teks masih kosong. Salin tabel dari Excel atau Google Sheets lalu tempel di sini.' });
       return;
     }
-    parseDelimitedText(pastedText, `Tempel Teks (${pastedText.split(/\r?\n/).length} Baris)`);
+    parseDelimitedText(pastedText, `Tempel Teks (${pastedText.split(/\r?\n/).length} rows)`);
   };
 
   // Handle file reading
@@ -410,7 +410,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             }
             processRawData(content.items, file.name);
           } else {
-            setResultMessage({ type: 'error', text: 'Format JSON harus berupa array barang atau objek dengan properti "items".' });
+            setResultMessage({ type: 'error', text: 'JSON must be an item array or an object with an "items" property.' });
           }
         } catch {
           setResultMessage({ type: 'error', text: 'File JSON rusak atau tidak valid.' });
@@ -505,14 +505,14 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               processRawData(fallbackJson, file.name);
               return;
             }
-            setResultMessage({ type: 'error', text: 'Tidak ada baris data barang yang terdeteksi di lembar kerja Excel.' });
+            setResultMessage({ type: 'error', text: 'No item data rows were detected in the Excel worksheet.' });
             return;
           }
 
           processRawData(extractedRows, file.name);
         } catch (err) {
           console.error('Error parsing spreadsheet:', err);
-          setResultMessage({ type: 'error', text: 'Gagal membaca file Excel. Pastikan format tabel memiliki baris header.' });
+          setResultMessage({ type: 'error', text: 'Could not read the Excel file. Make sure the table has a header row.' });
         }
       };
       reader.readAsArrayBuffer(file);
@@ -552,7 +552,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const target = { ...updated[idx].item, [field]: value };
       
       let error: string | undefined = undefined;
-      if (!target.namaBarang) error = 'Nama barang tidak boleh kosong';
+      if (!target.namaItems) error = 'Item name cannot be empty';
       else if (target.hargaBeli <= 0 && target.hargaJualSatuan <= 0) error = 'Harap isi harga beli atau jual';
 
       updated[idx] = {
@@ -568,7 +568,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   const handleExecuteImport = async () => {
     const validItems = parsedRows.filter(r => r.isValid).map(r => r.item);
     if (validItems.length === 0) {
-      setResultMessage({ type: 'error', text: 'Tidak ada data barang yang valid untuk diimpor. Mohon periksa baris bertanda merah.' });
+      setResultMessage({ type: 'error', text: 'No valid item data to import. Please check the rows marked in red.' });
       return;
     }
 
@@ -588,7 +588,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       if (res.success) {
         setResultMessage({
           type: 'success',
-          text: `Berhasil mengimpor ${validItems.length} barang ke Cloud database! Tersimpan permanen untuk akun Anda.`
+          text: `Successfully imported ${validItems.length} items to the cloud database! They are saved to your account.`
         });
         onImportSuccess(validItems, modalAwalParam, importMode);
       } else {
@@ -596,7 +596,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
         onImportSuccess(validItems, modalAwalParam, importMode);
         setResultMessage({
           type: 'success',
-          text: `Data ${validItems.length} barang telah berhasil diterapkan ke Kasir & Inventori!`
+          text: `Data ${validItems.length} items successfully applied to Cashier & Inventory!`
         });
       }
     } catch (err: any) {
@@ -604,7 +604,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       onImportSuccess(validItems, modalAwalParam, importMode);
       setResultMessage({
         type: 'success',
-        text: `Data ${validItems.length} barang berhasil diterapkan ke Kasir & Inventori!`
+        text: `Data ${validItems.length} items successfully applied to Cashier & Inventory!`
       });
     } finally {
       setIsProcessing(false);
@@ -614,13 +614,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   // Export current inventory in database using the exact 12-column format
   const handleExportCurrentInventory = () => {
     if (!currentItems || currentItems.length === 0) {
-      setResultMessage({ type: 'error', text: 'Belum ada data barang di toko untuk diekspor.' });
+      setResultMessage({ type: 'error', text: 'There are no store items to export.' });
       return;
     }
     exportToStyledExcel(currentItems, currentModalAwal);
     setResultMessage({
       type: 'success',
-      text: `Berhasil mengekspor ${currentItems.length} data barang ke file Excel (.xlsx) dengan 12 kolom sesuai format gambar!`
+      text: `Successfully exported ${currentItems.length} items to an Excel file (.xlsx) with 12 columns matching the template format!`
     });
   };
 
@@ -642,14 +642,14 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                  Pusat Impor & Ekspor Data Kasir Toko
+                  Store Cashier Data Import & Export Center
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#1f4e78] text-cyan-200 border border-cyan-500/40">
-                  Format 12 Kolom Excel
+                  12-Column Excel Format
                 </span>
               </div>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
-                Dukungan format tabel persis gambar: No, Tanggal, Nama, Wadah, Beli, Terjual, Jual, Gain, Modal Kembali, Sisa Stok, Total Omset, Sisa Kas
+                Dukungan format tabel persis gambar: No, Tanggal, Nama, Container, Beli, Terjual, Jual, Gain, Modal Kembali, Sisa Stok, Total Omset, Sisa Kas
               </p>
             </div>
           </div>
@@ -664,7 +664,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 title="Ekspor seluruh data barang toko saat ini ke file Excel dengan 12 kolom persis seperti gambar"
               >
                 <Download className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Ekspor Excel Format Ini ({currentItems.length} Barang)</span>
+                <span>Export Excel in This Format ({currentItems.length} Items)</span>
               </button>
             )}
 
@@ -675,7 +675,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Muat 21 data produk contoh dari gambar (sprite, coco pie, aquviva, kiko, pino, dilan, dll)"
             >
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Coba contoh data</span>
+              <span>Try sample data</span>
             </button>
 
             {/* Download Template Excel */}
@@ -685,7 +685,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Unduh file template Excel (.xlsx) dengan 12 kolom persis seperti gambar"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Unduh Template Excel</span>
+              <span>Download Excel Template</span>
             </button>
 
             {/* Download Template CSV */}
@@ -695,14 +695,14 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Unduh file template CSV dengan 12 kolom persis seperti gambar"
             >
               <FileText className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Unduh Template CSV</span>
+              <span>Download CSV Template</span>
             </button>
 
             <button
               onClick={onNavigateToInventory}
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
             >
-              <span>Kembali ke Kasir</span>
+              <span>Back to Cashier</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -723,7 +723,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
           )}
           <div className="flex-1">
             <div className="font-bold text-white mb-0.5">
-              {resultMessage.type === 'success' ? 'Berhasil!' : 'Perhatian'}
+              {resultMessage.type === 'success' ? 'Success!' : 'Notice'}
             </div>
             <div>{resultMessage.text}</div>
             {resultMessage.type === 'success' && (
@@ -731,7 +731,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 onClick={onNavigateToInventory}
                 className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs cursor-pointer shadow-sm transition-all"
               >
-                <span>Lihat barang di Kasir & Stok</span>
+                <span>View items in Cashier & Stock</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             )}
@@ -757,7 +757,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <UploadCloud className="w-4 h-4" />
-                  <span>Pilih file Excel atau CSV</span>
+                  <span>Choose an Excel or CSV file</span>
                 </button>
 
                 <button
@@ -770,13 +770,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <ClipboardPaste className="w-4 h-4" />
-                  <span>Tempel data dari Excel</span>
+                  <span>Paste data from Excel</span>
                 </button>
               </div>
 
               <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
                 <Database className="w-3.5 h-3.5" />
-                <span>Penyimpanan akun</span>
+                <span>Account storage</span>
               </span>
             </div>
 
@@ -823,7 +823,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                       <span>{selectedFileName}</span>
                     </div>
                     <p className="text-xs text-slate-400 mt-1 font-mono">
-                      {parsedRows.length} baris data terbaca ({validCount} valid, {invalidCount} tidak valid)
+                      {parsedRows.length} data rows detected ({validCount} valid, {invalidCount} invalid)
                     </p>
                     <p className="text-[11px] text-cyan-400 mt-2 font-mono underline">
                       Klik untuk memilih file lain
@@ -832,10 +832,10 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 ) : (
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight">
-                      Tarik file Excel format tabel ke sini, atau klik untuk memilih
+                      Drag an Excel spreadsheet here, or click to browse
                     </div>
                     <p className="text-xs text-slate-400 mt-1 font-mono">
-                      Mendukung format file persis gambar (.xlsx, .xls, .csv) atau JSON
+                      Supports spreadsheet formats (.xlsx, .xls, .csv) or JSON
                     </p>
                     <div className="mt-3 flex items-center justify-center gap-2">
                       <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
@@ -859,8 +859,8 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 <textarea
                   value={pastedText}
                   onChange={(e) => setPastedText(e.target.value)}
-                  placeholder={`Tempel baris tabel langsung dari Excel (Ctrl+V):
-No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terjual Satuan\tHarga Jual Satuan
+                  placeholder={`Paste table rows directly from Excel (Ctrl+V):
+No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tUnits Sold\tSelling Price per Unit
 1\t2026-10-16\tsprite\t12\t32000\t0\t3500
 2\t2026-10-16\tcoco pie\t12\t20700\t0\t2000
 3\t2026-10-16\taquviva\t48\t38000\t0\t1000`}
@@ -870,7 +870,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
 
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <p className="text-[11px] font-mono text-slate-400">
-                    Tips: Di Excel/Google Sheets, pilih baris lalu tekan <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Ctrl+C</kbd>, lalu <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Ctrl+V</kbd> di sini.
+                    Tip: In Excel/Google Sheets, select the rows and press <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Ctrl+C</kbd>, lalu <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Ctrl+V</kbd> di sini.
                   </p>
                   <button
                     type="button"
@@ -878,7 +878,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                     className="flex items-center gap-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono rounded-xl text-xs transition-all cursor-pointer shadow-md shadow-cyan-500/20"
                   >
                     <ClipboardPaste className="w-3.5 h-3.5" />
-                    <span>Periksa data yang ditempel</span>
+                    <span>Review pasted data</span>
                   </button>
                 </div>
               </div>
@@ -889,7 +889,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-start gap-2 text-[11px] font-mono text-slate-400">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <span>
-              Data yang bisa dibaca otomatis: <strong>No</strong>, <strong>Tanggal Input</strong>, <strong>Nama Barang</strong>, <strong>Jumlah 1 Wadah</strong>, <strong>Harga Beli 1 Wadah</strong>, <strong>Jumlah Terjual Satuan</strong>, <strong>Harga Jual Satuan</strong>, <strong>Gain</strong>, <strong>Modal Pokok Kembali</strong>, <strong>Nilai Sisa Stok</strong>, <strong>TOTAL SETELAH UNTUNG</strong>, dan <strong>SISA KAS</strong>.
+              Automatically recognized fields: <strong>No</strong>, <strong>Entry Date</strong>, <strong>Nama Items</strong>, <strong>Units per Container</strong>, <strong>Purchase Price per Container</strong>, <strong>Units Sold</strong>, <strong>Selling Price per Unit</strong>, <strong>Gain</strong>, <strong>Cost Recovered</strong>, <strong>Remaining Inventory Value</strong>, <strong>TOTAL AFTER PROFIT</strong>, dan <strong>CASH BALANCE</strong>.
             </span>
           </div>
         </div>
@@ -902,14 +902,14 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 <Database className="w-4 h-4" />
               </div>
               <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-                Pengaturan Penyimpanan
+                Storage Settings
               </h2>
             </div>
 
             {/* Mode: Append vs Replace */}
             <div className="space-y-2">
               <label className="block text-xs font-mono font-semibold text-slate-300">
-                Metode Impor ke Database:
+                Database Import Method:
               </label>
 
               <div className="space-y-2">
@@ -928,10 +928,10 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                   />
                   <div>
                     <div className="text-xs font-bold font-mono text-emerald-300">
-                      Gabungkan (Append)
+                      Append
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-                      Menambahkan data baru tanpa menghapus {currentItemsCount} barang yang sudah ada di Supabase.
+                      Append new data without deleting {currentItemsCount} existing items in Supabase.
                     </div>
                   </div>
                 </label>
@@ -951,10 +951,10 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                   />
                   <div>
                     <div className="text-xs font-bold font-mono text-rose-300">
-                      Ganti Seluruh Data (Replace)
+                      Replace All Data
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-                      Mengosongkan database terlebih dahulu, lalu memasukkan hanya barang dari file impor ini.
+                      Clear the database first, then import only the items from this file.
                     </div>
                   </div>
                 </label>
@@ -964,7 +964,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
             {/* Modal Awal Setting */}
             <div className="space-y-1.5 pt-2 border-t border-slate-800">
               <label className="block text-xs font-mono font-semibold text-slate-300">
-                Modal Awal Usaha (Rp):
+                Initial Business Capital (IDR):
               </label>
               <input
                 type="number"
@@ -976,7 +976,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 className="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500"
               />
               <p className="text-[10px] font-mono text-slate-400">
-                Nilai modal kasir awal yang digunakan untuk menghitung kolom SISA KAS berjalan.
+                Initial cashier capital used to calculate the running CASH BALANCE column.
               </p>
             </div>
           </div>
@@ -996,7 +996,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
               ) : (
                 <>
                   <Database className="w-4 h-4" />
-                  <span>Impor Data {validCount > 0 ? `(${validCount} Barang)` : ''}</span>
+                  <span>Import Data {validCount > 0 ? `(${validCount} Items)` : ''}</span>
                 </>
               )}
             </button>
@@ -1012,7 +1012,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 className="w-full py-2 px-3 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Hapus pratinjau</span>
+                <span>Clear preview</span>
               </button>
             )}
           </div>
@@ -1029,20 +1029,20 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
               </div>
               <div>
                 <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                  <span>Periksa data sebelum disimpan ({parsedRows.length} Baris)</span>
+                  <span>Review data before saving ({parsedRows.length} rows)</span>
                   <span className="text-[10px] text-cyan-400 font-normal">
                     (Format 12 Kolom Persis Seperti Gambar)
                   </span>
                 </h2>
                 <p className="text-[11px] font-mono text-slate-400">
-                  Dapat diedit langsung sebelum disimpan ke Supabase
+                  Can be edited directly before saving to Supabase
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
               <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                ✓ {validCount} Siap Diimpor
+                ✓ {validCount} Ready to Import
               </span>
               {invalidCount > 0 && (
                 <span className="px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
@@ -1063,7 +1063,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 ) : (
                   <>
                     <Database className="w-3.5 h-3.5" />
-                    <span>Simpan Data ({validCount} Barang)</span>
+                    <span>Save Data ({validCount} Items)</span>
                   </>
                 )}
               </button>
@@ -1075,17 +1075,17 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
               <thead className="sticky top-0 z-10 shadow-md">
                 <tr className="bg-[#1f4e78] text-white font-mono text-[10px] font-bold uppercase tracking-wider border-b border-cyan-800/80">
                   <th className="py-3 px-2 text-center w-10 border-r border-[#2a6496]">No</th>
-                  <th className="py-3 px-3 min-w-[100px] border-r border-[#2a6496]">Tanggal Input</th>
-                  <th className="py-3 px-3 min-w-[140px] border-r border-[#2a6496]">Nama Barang</th>
-                  <th className="py-3 px-3 text-right min-w-[100px] border-r border-[#2a6496]">Jumlah 1 Wadah</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Harga Beli 1 Wadah</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Jumlah Terjual Satuan</th>
-                  <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">Harga Jual Satuan</th>
+                  <th className="py-3 px-3 min-w-[100px] border-r border-[#2a6496]">Entry Date</th>
+                  <th className="py-3 px-3 min-w-[140px] border-r border-[#2a6496]">Nama Items</th>
+                  <th className="py-3 px-3 text-right min-w-[100px] border-r border-[#2a6496]">Units per Container</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Purchase Price per Container</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Units Sold</th>
+                  <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">Selling Price per Unit</th>
                   <th className="py-3 px-3 text-right min-w-[130px] border-r border-[#2a6496] text-emerald-200">Gain (Untung Terealisasi)</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Modal Pokok Kembali</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Nilai Sisa Stok (Equity)</th>
-                  <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">TOTAL SETELAH UNTUNG (Uang Masuk Kas)</th>
-                  <th className="py-3 px-3 text-right min-w-[110px] text-amber-200">SISA KAS</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Cost Recovered</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Remaining Inventory Value (Equity)</th>
+                  <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">TOTAL AFTER PROFIT (Uang Masuk Kas)</th>
+                  <th className="py-3 px-3 text-right min-w-[110px] text-amber-200">CASH BALANCE</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/80 font-mono text-[11px]">
@@ -1115,8 +1115,8 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                       <td className="py-2 px-3 font-sans font-bold text-white border-r border-slate-800">
                         <input
                           type="text"
-                          value={item.namaBarang}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'namaBarang', e.target.value)}
+                          value={item.namaItems}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'namaItems', e.target.value)}
                           className="w-full px-2 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white font-sans text-xs focus:border-cyan-500 focus:outline-none"
                         />
                       </td>
@@ -1124,8 +1124,8 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                         <input
                           type="number"
                           min="1"
-                          value={item.jumlahBarangWadah}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahBarangWadah', Math.max(1, Number(e.target.value)))}
+                          value={item.jumlahItemsContainer}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahItemsContainer', Math.max(1, Number(e.target.value)))}
                           className="w-16 px-1.5 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white text-xs text-right focus:border-cyan-500 focus:outline-none"
                         />
                       </td>
@@ -1143,8 +1143,8 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                         <input
                           type="number"
                           min="0"
-                          value={item.jumlahBarangDijualSatuan}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahBarangDijualSatuan', Math.max(0, Number(e.target.value)))}
+                          value={item.jumlahItemsDijualSatuan}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahItemsDijualSatuan', Math.max(0, Number(e.target.value)))}
                           className="w-16 px-1.5 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white text-xs text-right focus:border-cyan-500 focus:outline-none"
                         />
                       </td>
@@ -1183,7 +1183,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
           {/* Bottom Table Action Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-800">
             <div className="text-xs font-mono text-slate-400">
-              Total <strong className="text-white">{parsedRows.length}</strong> baris data (<strong className="text-emerald-400">{validCount} valid</strong>)
+              Total <strong className="text-white">{parsedRows.length}</strong> data rows (<strong className="text-emerald-400">{validCount} valid</strong>)
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -1197,7 +1197,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Batal</span>
+                <span>Cancel</span>
               </button>
               <button
                 type="button"
@@ -1213,7 +1213,7 @@ No\tTanggal Input\tNama Barang\tJumlah 1 Wadah\tHarga Beli 1 Wadah\tJumlah Terju
                 ) : (
                   <>
                     <Database className="w-4 h-4" />
-                    <span>Simpan Data ({validCount} Barang)</span>
+                    <span>Save Data ({validCount} Items)</span>
                   </>
                 )}
               </button>

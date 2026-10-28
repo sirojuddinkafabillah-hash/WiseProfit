@@ -1,63 +1,72 @@
-// Vercel serverless endpoint for translating UI labels with DeepL.
-// Keep the API key on the server; never expose it to browser code.
+// Vercel serverless endpoint for Gemini-powered Indonesian-to-English UI translation.
+// GEMINI_API_KEY stays on the server and is never exposed to browser code.
 export default async function handler(req: any, res: any) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const apiKey = process.env.DEEPL_API_KEY;
-  if (!apiKey) {
-    return res.status(503).json({
-      error: 'DeepL translation is not configured. Add DEEPL_API_KEY to Vercel environment variables.'
-    });
-  }
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return res.status(503).json({ error: 'Translation is not configured: GEMINI_API_KEY is missing.' });
 
   const texts = req.body?.texts;
   if (!Array.isArray(texts) || texts.length > 40 ||
       texts.some((x: unknown) => typeof x !== 'string' || x.length > 300)) {
-    return res.status(400).json({ error: 'Invalid translation request' });
+    return res.status(400).json({ error: 'texts must be an array of at most 40 strings, each no longer than 300 characters.' });
   }
   if (texts.length === 0) return res.status(200).json({ translations: [] });
 
-  // Set DEEPL_API_URL to https://api.deepl.com/v2/translate for DeepL API Pro.
-  const endpoint = process.env.DEEPL_API_URL || 'https://api-free.deepl.com/v2/translate';
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const prompt = [
+    'Translate each UI string from Indonesian to natural, concise English.',
+    'Return ONLY a valid JSON array of strings, exactly the same number and order as the input.',
+    'Preserve all numbers, dates, currency amounts and formatting exactly.',
+    'Never translate or alter product names, personal names, brand names, email addresses, IDs, codes, URLs, or account data.',
+    'Do not add explanations or markdown.',
+    'Input JSON array:',
+    JSON.stringify(texts)
+  ].join('\n');
 
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Authorization': `DeepL-Auth-Key ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: texts,
-        source_lang: 'ID',
-        target_lang: 'EN',
-        preserve_formatting: true
-      })
-    });
-
-    if (!response.ok) {
-      const providerText = (await response.text()).slice(0, 300);
-      console.error('DeepL translation API error', response.status, providerText);
-      return res.status(502).json({
-        error: 'DeepL API request failed',
-        providerStatus: response.status
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
+        })
       });
-    }
 
-    const payload = await response.json();
-    const translated = payload?.translations;
-    if (!Array.isArray(translated) || translated.length !== texts.length ||
-        translated.some((item: any) => typeof item?.text !== 'string')) {
-      console.error('DeepL returned an invalid translation response');
-      return res.status(502).json({ error: 'Invalid translation response from DeepL' });
-    }
+      if (!response.ok) {
+        const message = (await response.text()).slice(0, 1000);
+        console.error('Gemini translation API error', { status: response.status, message });
+        if (attempt === 0 && (response.status === 429 || response.status === 503)) continue;
+        return res.status(502).json({ error: 'Translation provider request failed', providerStatus: response.status });
+      }
 
-    return res.status(200).json({
-      translations: translated.map((item: any, i: number) => item.text.slice(0, 600) || texts[i])
-    });
-  } catch (error: any) {
-    console.error('DeepL translation exception', String(error?.message || error).slice(0, 300));
-    return res.status(502).json({ error: 'Translation failed' });
+      const payload = await response.json();
+      const raw = payload?.candidates?.[0]?.content?.parts?.map((part: any) => part?.text || '').join('').trim();
+      let translations: unknown;
+      try {
+        translations = JSON.parse(raw);
+      } catch {
+        console.error('Gemini translation response parse error', { status: 502, message: String(raw || '').slice(0, 800) });
+        return res.status(502).json({ error: 'Invalid translation response' });
+      }
+
+      if (!Array.isArray(translations) || translations.length !== texts.length ||
+          translations.some((value: unknown) => typeof value !== 'string')) {
+        console.error('Gemini translation response validation error', { status: 502, message: `Expected ${texts.length} strings in response.` });
+        return res.status(502).json({ error: 'Invalid translation response' });
+      }
+
+      return res.status(200).json({
+        translations: translations.map((value: string, index: number) => value.trim() || texts[index])
+      });
+    } catch (error: any) {
+      console.error('Gemini translation exception', { status: 502, message: String(error?.message || error).slice(0, 1000) });
+      return res.status(502).json({ error: 'Translation request failed' });
+    }
   }
+  return res.status(502).json({ error: 'Translation provider unavailable' });
 }

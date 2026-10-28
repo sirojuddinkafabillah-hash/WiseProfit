@@ -1328,3 +1328,122 @@ html, body {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
+
+/* Approved Fintech Minimalist login welcome panel */
+.wp-auth-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important;
+  max-width: 940px !important;
+  background: #ffffff !important;
+}
+.wp-auth-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 42px 36px !important;
+  background: #f8fafd !important;
+  color: #24324b !important;
+  text-align: left !important;
+}
+.wp-auth-header .wp-auth-brand { margin-bottom: 52px !important; }
+.wp-auth-header .wp-auth-brand-icon {
+  background: #eaf0ff !important;
+  color: #4268c9 !important;
+  border: 1px solid #dce6ff !important;
+}
+.wp-auth-header .wp-auth-brand-name {
+  margin: 0 !important;
+  color: #24324b !important;
+  font-size: 19px !important;
+}
+.wp-auth-header .wp-auth-brand-subtitle {
+  margin: 2px 0 0 !important;
+  color: #68758b !important;
+  font-size: 11px !important;
+  letter-spacing: .025em !important;
+}
+.wp-auth-header .wp-auth-intro { width: 100%; }
+.wp-auth-header .wp-auth-eyebrow {
+  margin: 0 0 12px !important;
+  color: #4268c9 !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+}
+.wp-auth-header .wp-auth-title {
+  margin: 0 !important;
+  color: #24324b !important;
+  font-size: clamp(27px, 3vw, 35px) !important;
+  font-weight: 750 !important;
+  line-height: 1.17 !important;
+  letter-spacing: -.045em !important;
+}
+.wp-auth-header .wp-auth-description {
+  margin-top: 17px !important;
+  color: #68758b !important;
+  font-size: 13px !important;
+  line-height: 1.8 !important;
+}
+.wp-auth-header .wp-auth-features {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  width: 100% !important;
+  margin-top: 36px !important;
+}
+.wp-auth-header .wp-auth-feature {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 13px !important;
+  width: 100% !important;
+  background: transparent !important;
+}
+.wp-auth-header .wp-auth-feature-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  flex: 0 0 38px !important;
+  border-radius: 11px !important;
+  background: #edf2ff !important;
+  color: #4268c9 !important;
+}
+.wp-auth-header .wp-auth-feature-title {
+  margin: 0 0 3px !important;
+  color: #24324b !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+.wp-auth-header .wp-auth-feature-copy {
+  margin: 0 !important;
+  color: #68758b !important;
+  font-size: 11px !important;
+  line-height: 1.6 !important;
+}
+.wp-auth-body { background: #ffffff !important; }
+@media (max-width: 700px) {
+  .wp-auth-card {
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 440px !important;
+  }
+  .wp-auth-header {
+    padding: 25px 24px 26px !important;
+  }
+  .wp-auth-header .wp-auth-brand { margin-bottom: 28px !important; }
+  .wp-auth-header .wp-auth-title { font-size: 27px !important; }
+  .wp-auth-header .wp-auth-description { margin-top: 12px !important; }
+  .wp-auth-header .wp-auth-features {
+    gap: 13px !important;
+    margin-top: 22px !important;
+  }
+  .wp-auth-header .wp-auth-feature-icon {
+    width: 34px !important;
+    height: 34px !important;
+    flex-basis: 34px !important;
+  }
+  .wp-auth-body { padding: 24px !important; }
+}

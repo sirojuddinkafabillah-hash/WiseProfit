@@ -127,5 +127,21 @@
   "modal.choose": "Pilih",
   "modal.containerQuantity": "Jumlah Isi 1 Wadah",
   "modal.retailUnit": "Satuan Eceran Dijual",
-  "modal.buyPrice": "Harga beli per kemasan (Modal)"
+  "modal.buyPrice": "Harga beli per kemasan (Modal)",
+  "table.perOne": "per 1",
+  "table.containerFallback": "Wadah",
+  "table.typeSold": "Ketik jumlah terjual",
+  "table.breakEven": "Impas",
+  "table.notSoldYet": "Belum ada yang laku",
+  "table.unitsSold": "unit terjual",
+  "table.soldUnitsInput": "Input Unit Terjual",
+  "table.containerCapacity": "Kapasitas wadah",
+  "table.soldUnitsAlready": "Jumlah unit yang sudah terjual",
+  "table.noneSoldYet": "Belum ada yang terjual",
+  "table.stockDepleted": "Stok habis",
+  "table.stockRemainingLabel": "Stok yang masih ada:",
+  "table.profitFromSold": "Keuntungan dari yang terjual:",
+  "table.currentBusinessValue": "Nilai usaha saat ini:",
+  "table.cancel": "Batal",
+  "table.applyChanges": "Terapkan Perubahan"
 }

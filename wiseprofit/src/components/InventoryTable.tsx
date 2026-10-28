@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { t } from '../i18n/translations';
+import { t, getInitialLanguage } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka, formatTanggalSederhana } from '../utils/calculator';
 import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
@@ -169,7 +169,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
             </button>
             {availableMonths.map((ym) => {
               const [year, month] = ym.split('-');
-              const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
+              const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString(getInitialLanguage() === 'en' ? 'en-US' : 'id-ID', { month: 'short', year: 'numeric' });
               return (
                 <button
                   key={ym}
@@ -277,7 +277,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               filteredItems.map((item, index) => {
                 const calc = calculateItem(item);
                 const tanggalTampil = formatTanggalSederhana(item.tanggalInput || item.createdAt);
-                const jamTampil = item.waktuInput ? item.waktuInput.slice(0, 5) : new Date(item.createdAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                const jamTampil = item.waktuInput ? item.waktuInput.slice(0, 5) : new Date(item.createdAt).toLocaleTimeString(getInitialLanguage() === 'en' ? 'en-US' : 'id-ID', { hour: '2-digit', minute: '2-digit' });
                 const rowSisaKas = runningCashMap.get(item.id) ?? modalAwal;
                 const sisaUnit = item.jumlahBarangWadah - item.jumlahBarangDijualSatuan;
                 const soldPercent = Math.min(100, Math.round((item.jumlahBarangDijualSatuan / Math.max(1, item.jumlahBarangWadah)) * 100));
@@ -315,7 +315,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         {item.jumlahBarangWadah} <span className="text-slate-400 text-[11px]">{item.satuanUnit || 'pcs'}</span>
                       </div>
                       <div className="text-[10px] text-slate-400 mt-0.5">
-                        per 1 {item.satuanWadah || 'Wadah'}
+                        {t('table.perOne')} {item.satuanWadah || t('table.containerFallback')}
                       </div>
                     </td>
 
@@ -334,7 +334,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                           <button
                             onClick={() => onUpdateSoldQty(item.id, -1)}
                             disabled={item.jumlahBarangDijualSatuan <= 0}
-                            title="Kurangi 1 unit terjual"
+                            title={t('table.decreaseSold')}
                             className="w-5 h-5 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                           >
                             <Minus className="w-3 h-3" />
@@ -350,13 +350,13 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                               onSetSoldQty(item.id, val);
                             }}
                             className="w-12 text-center font-mono font-bold text-xs bg-slate-950 text-white border border-slate-700/70 rounded-md py-0.5 focus:outline-none focus:border-emerald-500"
-                            title="Ketik angka terjual"
+                            title={t('table.typeSold')}
                           />
 
                           <button
                             onClick={() => onUpdateSoldQty(item.id, 1)}
                             disabled={item.jumlahBarangDijualSatuan >= item.jumlahBarangWadah}
-                            title="Tambah 1 unit terjual"
+                            title={t('table.increaseSold')}
                             className="w-5 h-5 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                           >
                             <Plus className="w-3 h-3" />
@@ -365,7 +365,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                           <button
                             onClick={() => handleOpenQuickSoldModal(item)}
                             className="ml-0.5 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-                            title="Buka dialog input terjual"
+                            title={t('table.setSold')}
                           >
                             Set
                           </button>
@@ -380,8 +380,8 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                             />
                           </div>
                           <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                            <span>{soldPercent}% laku</span>
-                            <span>Sisa <strong className="text-slate-200">{sisaUnit}</strong></span>
+                            <span>{soldPercent}% {t('table.soldPercent')}</span>
+                            <span>{t('table.remaining')} <strong className="text-slate-200">{sisaUnit}</strong></span>
                           </div>
                         </div>
                       </div>
@@ -421,7 +421,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         <div>
                           <div className="text-slate-300 text-xs">Rp 0</div>
                           <div className="text-[10px] text-slate-500 mt-0.5">
-                            {Number(item.jumlahBarangDijualSatuan) > 0 ? 'Impas' : 'Belum ada laku'}
+                            {Number(item.jumlahBarangDijualSatuan) > 0 ? t('table.breakEven') : t('table.notSoldYet')}
                           </div>
                         </div>
                       )}
@@ -433,7 +433,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         {formatRupiah(calc.totalSetelahUntungTerjual)}
                       </div>
                       <div className="text-[10px] text-cyan-300/80 mt-0.5">
-                        Sisa Stok: {formatRupiah(calc.nilaiSisaStok)}
+                        {t('table.stockRemaining')} {formatRupiah(calc.nilaiSisaStok)}
                       </div>
                     </td>
 
@@ -455,7 +455,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       <div className="flex items-center justify-center gap-1.5">
                         <button
                           onClick={() => onEditItem(item)}
-                          title="Edit barang"
+                          title={t('table.editItem')}
                           className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -481,13 +481,13 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
             <tfoot>
               <tr className="border-t-2 border-slate-700 bg-slate-950 text-slate-200 font-mono text-xs">
                 <td colSpan={3} className="py-4 px-4 text-left font-bold uppercase tracking-wider text-slate-300">
-                  Total Ringkasan ({filteredItems.length} Barang):
+                  {t('table.totalSummary')} ({filteredItems.length} {t('table.items')}):
                 </td>
                 <td className="py-4 px-3 text-right font-bold text-slate-100">
                   {formatRupiah(tableTotals.totalBeli)}
                 </td>
                 <td className="py-4 px-3 text-center font-bold text-slate-200">
-                  {tableTotals.totalTerjualUnit} / {tableTotals.totalKapasitasUnit} <span className="text-slate-400 text-[10px]">unit terjual</span>
+                  {tableTotals.totalTerjualUnit} / {tableTotals.totalKapasitasUnit} <span className="text-slate-400 text-[10px]">{t('table.unitsSold')}</span>
                 </td>
                 <td className="py-4 px-3 text-right text-slate-500 font-normal">
                   -
@@ -532,10 +532,10 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-base font-bold text-white tracking-tight">
-                    Input Unit Terjual: {modalQuickSoldItem.namaBarang}
+                    {t('table.soldUnitsInput')}: {modalQuickSoldItem.namaBarang}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 font-mono">
-                    Kapasitas wadah: <strong className="text-emerald-400">{modalQuickSoldItem.jumlahBarangWadah} unit</strong>
+                    {t('table.containerCapacity')}: <strong className="text-emerald-400">{modalQuickSoldItem.jumlahBarangWadah} unit</strong>
                   </p>
                 </div>
                 <button
@@ -550,7 +550,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               <div className="mt-5 space-y-4">
                 <div>
                   <label className="block text-xs font-mono font-semibold text-slate-300 mb-2">
-                    Jumlah Unit yang Sudah Terjual:
+                    {t('table.soldUnitsAlready')}:
                   </label>
                   
                   <div className="flex items-center gap-2">
@@ -593,27 +593,27 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       className="w-full accent-emerald-500 cursor-pointer bg-slate-800 rounded-lg"
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
-                      <span>Belum ada yang terjual</span>
-                      <span>Stok habis ({modalQuickSoldItem.jumlahBarangWadah} unit)</span>
+                      <span>{t('table.noneSoldYet')}</span>
+                      <span>{t('table.stockDepleted')} ({modalQuickSoldItem.jumlahBarangWadah} {t('table.unit')})</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
                   <div className="flex justify-between text-slate-400">
-                    <span>Stok yang Masih Ada:</span>
+                    <span>{t('table.stockRemainingLabel')}</span>
                     <span className="font-bold text-slate-200">
                       {modalQuickSoldItem.jumlahBarangWadah - (Number(quickSoldInputVal) || 0)} unit
                     </span>
                   </div>
                   <div className="flex justify-between text-slate-400">
-                    <span>Keuntungan dari yang Terjual:</span>
+                    <span>{t('table.profitFromSold')}</span>
                     <span className="font-bold text-emerald-400">
                       +{formatRupiah(tempCalc.totalGainTerjual)}
                     </span>
                   </div>
                   <div className="flex justify-between text-slate-400">
-                    <span>Nilai Usaha Saat Ini:</span>
+                    <span>{t('table.currentBusinessValue')}</span>
                     <span className="font-bold text-amber-300">
                       {formatRupiah(tempCalc.totalSetelahUntungTerjual)}
                     </span>

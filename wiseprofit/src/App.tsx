@@ -677,50 +677,72 @@ export default function App() {
         <main className="min-w-0 flex-1 max-w-7xl w-full mx-auto overflow-x-hidden px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
           {!user ? (
-            <div className="max-w-2xl mx-auto my-8 sm:my-16 p-6 sm:p-10 bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-slate-700/80 shadow-[0_25px_60px_rgba(0,0,0,0.6)] text-center space-y-6 animate-in fade-in zoom-in-95">
-              <div className="inline-flex p-4 bg-emerald-500/15 border border-emerald-500/30 rounded-2xl shadow-inner">
-                <ShieldCheck className="w-12 h-12 text-emerald-400" />
+            <section className="mx-auto my-8 grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(36,50,75,0.12)] sm:my-14 lg:grid-cols-[1.05fr_0.95fr]">
+              <div className="relative flex flex-col justify-between overflow-hidden bg-[#24324B] p-7 text-white sm:p-10 lg:p-12">
+                <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#4268C9]/40 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[#4268C9]/30 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-10 inline-flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#24324B] shadow-lg">
+                      <ShieldCheck className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold tracking-tight text-white">WiseProfit</p>
+                      <p className="text-xs text-white/65">Kelola usaha dengan lebih jelas</p>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90">
+                    <span className="h-2 w-2 rounded-full bg-blue-300" />
+                    Ruang usaha digital Anda
+                  </span>
+                  <h2 className="mt-5 max-w-md text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+                    Semua catatan usaha, lebih tertata.
+                  </h2>
+                  <p className="mt-4 max-w-md text-sm leading-7 text-white/75">
+                    Pantau stok, penjualan, keuntungan, dan arus kas dari satu tempat yang terhubung ke akun Anda.
+                  </p>
+                </div>
+                <div className="relative mt-10 space-y-4">
+                  {[
+                    'Catatan usaha terhubung ke akun Anda',
+                    'Ringkasan penjualan dan arus kas',
+                    'Akses data setelah masuk dengan akun yang benar'
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm text-white/85">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-200" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  AKUN ANDA, DATA ANDA
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                  Selamat datang kembali di WiseProfit
+              <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#4268C9]">Selamat datang</span>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#24324B] sm:text-4xl">
+                  Masuk ke WiseProfit
                 </h2>
-                <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Masuk untuk melihat catatan usaha Anda, melanjutkan pencatatan penjualan, dan memantau perkembangan keuangan dengan lebih mudah.
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  Lanjutkan mengelola bisnis Anda. Masuk menggunakan email dan kata sandi yang terdaftar, atau buat akun baru jika belum memiliki akun.
                 </p>
-              </div>
-
-              <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl text-left font-mono text-xs text-slate-400 space-y-2.5 max-w-lg mx-auto">
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Data tetap pribadi:</strong> Hanya Anda yang dapat melihat catatan usaha di akun Anda.</span>
+                <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex items-start gap-3">
+                    <Lock className="mt-0.5 h-5 w-5 shrink-0 text-[#4268C9]" />
+                    <div>
+                      <p className="text-sm font-semibold text-[#24324B]">Login yang terhubung</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-500">Verifikasi akun dilakukan oleh Supabase Auth, bukan login tampilan atau data contoh.</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Tersimpan secara online:</strong> Catatan tersimpan di akun Anda dan dapat dibuka kembali saat masuk.</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Akses akun:</strong> Masuk dengan metode yang tersedia di WiseProfit.</span>
-                </div>
-              </div>
-
-              <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.99] text-slate-950 font-bold font-mono text-sm rounded-2xl shadow-xl shadow-emerald-500/20 transition-all cursor-pointer"
+                  className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4268C9] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/15 transition hover:bg-[#3457A5] focus:outline-none focus:ring-4 focus:ring-blue-100"
                 >
-                  <LogIn className="w-5 h-5 stroke-[2.5]" />
-                  <span>Masuk dan lanjutkan usaha</span>
+                  <LogIn className="h-5 w-5" />
+                  Masuk atau buat akun
                 </button>
+                <p className="mt-4 text-center text-xs text-slate-400">Putih · Navy · Biru</p>
               </div>
-            </div>
+            </section>
           ) : (
             <>
               {/* PAGE 1: KASIR & INVENTORI */}

@@ -48,6 +48,13 @@ import {
 
 export default function App() {
   const { user, loading: isAuthLoading, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
+  const [language, setLanguage] = useState<'id' | 'en'>(() => {
+    try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; } catch { return 'id'; }
+  });
+  useEffect(() => {
+    document.documentElement.lang = language;
+    try { localStorage.setItem('wp_language', language); } catch (e) { console.error('Language preference could not be saved:', e); }
+  }, [language]);
 
   // App Core State (Tied to authenticated user)
   const [modalAwal, setModalAwal] = useState<number>(50000);
@@ -594,6 +601,8 @@ export default function App() {
         {/* Top Header with Navigation */}
         <Header
           activePage={isProfilePanelOpen ? 'home' : activePage}
+          language={language}
+          onLanguageChange={setLanguage}
           onChangePage={(page) => {
             if (page === 'home') {
               if (!user) { setIsAuthModalOpen(true); return; }

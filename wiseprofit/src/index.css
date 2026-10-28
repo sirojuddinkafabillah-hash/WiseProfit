@@ -1956,3 +1956,21 @@ html, body {
   opacity: 1 !important;
   text-shadow: none !important;
 }
+
+
+/* Restore the original login blue tone with a restrained gradient */
+#root .wp-auth-card > .wp-auth-body {
+  background: linear-gradient(135deg, #5278d5 0%, #4268c9 48%, #355bb8 100%) !important;
+  position: relative !important;
+  isolation: isolate !important;
+}
+#root .wp-auth-card > .wp-auth-body::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(ellipse at 92% 4%, rgba(153, 190, 255, .22), transparent 44%),
+    radial-gradient(ellipse at 0% 100%, rgba(35, 73, 173, .18), transparent 48%) !important;
+}

@@ -19,7 +19,6 @@ import { HomePage } from './components/HomePage';
 import { SupportPage } from './components/SupportPage';
 import { supabase } from './lib/supabase';
 import { CosmicInteractiveBackground, BackgroundTheme } from './components/CosmicInteractiveBackground';
-import { installAutoTranslation } from './utils/autoTranslate';
 import { useAuth } from './context/AuthContext';
 import { 
   Cloud, 
@@ -52,8 +51,7 @@ export default function App() {
   const [language, setLanguage] = useState<'id' | 'en'>(() => {
     try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; } catch { return 'id'; }
   });
-  // Translate visible UI labels when English is selected; clean up the observer when language changes.
-  useEffect(() => installAutoTranslation(language), [language]);
+  // Automatic DOM translation is temporarily disabled to prevent browser freezes.
 
   useEffect(() => {
     document.documentElement.lang = language;

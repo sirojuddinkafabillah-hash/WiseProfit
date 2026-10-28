@@ -85,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={t("header.profile", language)}
               className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700 hover:border-emerald-300'}`}
             >
-              {profilePhoto ? <img src={profilePhoto} alt="Profil" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profil" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
+              {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profil" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
             </button>
 
             {/* Desktop Navigation Tabs */}
@@ -165,9 +165,9 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Quick Tools & Cloud Auth */}
-          <div className="flex items-center gap-1.5 rounded-full border border-blue-200 bg-white p-1 shadow-sm" role="group" aria-label="Pilih bahasa / Choose language">
+          <div className="flex items-center gap-1.5 rounded-full border border-blue-200 bg-white p-1 shadow-sm" role="group" aria-label={t("header.chooseLanguage", language)}>
             <span className="hidden sm:inline px-1 text-[10px] font-semibold text-slate-500">{t('language.label', language)}</span>
-            <div className="relative flex items-center rounded-full bg-slate-100 p-0.5" aria-label="Language">
+            <div className="relative flex items-center rounded-full bg-slate-100 p-0.5" aria-label={t("header.chooseLanguage", language)}>
               <span aria-hidden="true" className={`absolute inset-y-0.5 w-[34px] rounded-full bg-blue-600 shadow-sm transition-transform duration-200 ${language === 'en' ? 'translate-x-[34px]' : 'translate-x-0'}`} />
               <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'id' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>ID</button>
               <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'en' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>EN</button>
@@ -225,7 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {user.photoURL ? (
                     <img
                       src={user.photoURL}
-                      alt="Avatar"
+                      alt={t("header.avatar", language)}
                       className="w-5 h-5 rounded-full ring-1 ring-emerald-500"
                     />
                   ) : (
@@ -234,7 +234,7 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
                   )}
                   <span className="hidden lg:inline-block max-w-[120px] truncate text-[11px] text-slate-200">
-                    {user.email || user.displayName || 'Akun'}
+                    {user.email || user.displayName || t('header.account', language)}
                   </span>
                   <span
                     className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold ${

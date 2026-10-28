@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
   Mail, Lock, ShieldCheck, CheckCircle2, AlertCircle, Loader2,
-  ArrowRight, UserPlus, LogIn, Eye, EyeOff, KeyRound
+  ArrowRight, UserPlus, LogIn, Eye, EyeOff, KeyRound, Package, ShoppingCart, WalletCards
 } from 'lucide-react';
 
 interface AuthModalProps {
@@ -126,27 +126,41 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
     <div className="wp-auth-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in">
       <div className="wp-auth-card relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-150">
         <section className="wp-auth-header relative">
-          <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10">
-              <ShieldCheck className="h-5 w-5 text-white" />
+          <div className="wp-auth-brand flex items-center gap-3">
+            <div className="wp-auth-brand-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+              <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-lg font-bold tracking-tight text-white">WiseProfit</p>
-              <p className="text-xs text-white/70">Kelola usaha dengan lebih mudah</p>
+              <p className="wp-auth-brand-name text-lg font-bold tracking-tight">WiseProfit</p>
+              <p className="wp-auth-brand-subtitle text-xs">Business Management</p>
             </div>
           </div>
-          <p className="mb-3 text-xs font-semibold tracking-wide text-white/65">
-            {isResetMode ? 'PEMULIHAN AKUN' : isRegisterMode ? 'MULAI DARI SINI' : 'SELAMAT DATANG'}
-          </p>
-          <h2 className="max-w-sm text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-            {isResetMode ? 'Akses akun Anda kembali.' : isRegisterMode ? 'Mulai kelola usaha lebih rapi.' : 'Usaha maju, catatan pun rapi.'}
-          </h2>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-white/75">
-            Catat stok, pantau penjualan, dan kelola keuangan usaha dalam satu tempat.
-          </p>
-          <div className="mt-6 flex items-center gap-2 text-sm text-white/85">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-white/80" />
-            <span>Stok, penjualan, dan arus kas lebih tertata</span>
+
+          <div className="wp-auth-intro">
+            <p className="wp-auth-eyebrow mb-3 text-xs font-semibold tracking-wide">
+              {isResetMode ? 'PEMULIHAN AKUN' : isRegisterMode ? 'MANAJEMEN USAHA' : 'MANAJEMEN USAHA'}
+            </p>
+            <h2 className="wp-auth-title max-w-sm text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+              {isResetMode ? 'Akses akun Anda kembali.' : isRegisterMode ? 'Mulai kelola usaha lebih rapi.' : 'Semua catatan usaha, dalam satu tempat.'}
+            </h2>
+            <p className="wp-auth-description mt-4 max-w-sm text-sm leading-6">
+              Kelola stok, catat penjualan, dan pantau keuntungan usaha dalam satu tempat.
+            </p>
+          </div>
+
+          <div className="wp-auth-features">
+            <div className="wp-auth-feature">
+              <span className="wp-auth-feature-icon"><Package className="h-5 w-5" /></span>
+              <div><p className="wp-auth-feature-title">Stok lebih teratur</p><p className="wp-auth-feature-copy">Pantau barang dan persediaan usaha.</p></div>
+            </div>
+            <div className="wp-auth-feature">
+              <span className="wp-auth-feature-icon"><ShoppingCart className="h-5 w-5" /></span>
+              <div><p className="wp-auth-feature-title">Penjualan terpantau</p><p className="wp-auth-feature-copy">Lihat catatan transaksi dengan lebih mudah.</p></div>
+            </div>
+            <div className="wp-auth-feature">
+              <span className="wp-auth-feature-icon"><WalletCards className="h-5 w-5" /></span>
+              <div><p className="wp-auth-feature-title">Keuangan lebih jelas</p><p className="wp-auth-feature-copy">Pantau keuntungan dan arus kas usaha.</p></div>
+            </div>
           </div>
         </section>
 

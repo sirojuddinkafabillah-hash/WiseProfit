@@ -192,6 +192,17 @@ const ID_TO_EN: Record<string, string> = {
   'Terjadi kesalahan saat memuat data.':'An error occurred while loading data.',
   'Data sedang disinkronkan.':'Data is syncing.',
   'Perubahan belum disimpan':'Unsaved changes','Yakin ingin membatalkan?':'Are you sure you want to cancel?',
+
+  'Atur Efek Latar Interaktif & Warna':'Configure Interactive Background Effects & Colors',
+  'Efek Kosmik & Kursor':'Cosmic Effects & Cursor','Buka profil dan beranda':'Open profile and home',
+  'Buka profil':'Open profile','Keluhan':'Feedback','Isi judul dan detail keluhan terlebih dahulu.':'Please enter the feedback title and details first.',
+  'Panel samping WiseProfit':'WiseProfit Side Panel','Lebar sepertiga layar':'One-third Screen Width',
+  'Perbesar panel':'Expand Panel','Perkecil panel':'Shrink Panel','Tutup panel':'Close Panel',
+  'Ubah lebar panel profil':'Resize Profile Panel','Kecil':'Small','Lebar':'Wide',
+  'Efek latar':'Background Effects','Warna':'Color','Kursor':'Cursor',
+  'Data toko akun':'Account store data','aktif & tersinkronisasi di Cloud.':'active and synced to the cloud.',
+  'Belum berhasil disimpan.':'Could not be saved.','Silakan coba kembali.':'Please try again.',
+  'Isi judul':'Enter a title','Detail keluhan':'Feedback details',
 };
 
 const originalText = new WeakMap<Text, string>();

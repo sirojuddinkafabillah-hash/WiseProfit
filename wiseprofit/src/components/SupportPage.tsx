@@ -8,17 +8,17 @@ interface SupportPageProps {
 }
 
 const FAQS = [
-  { q: 'Bagaimana cara menambahkan barang?', a: 'Buka menu Kasir & Stok, lalu gunakan formulir pencatatan barang untuk memasukkan nama, jumlah, harga beli, dan harga jual. Periksa kembali angka sebelum menyimpan.' },
-  { q: 'Bagaimana keuntungan penjualan dihitung?', a: 'Keuntungan dihitung dari selisih harga jual dan biaya per unit, dikalikan jumlah barang yang terjual. Pastikan harga beli dan harga jual yang dicatat sudah benar.' },
-  { q: 'Bagaimana cara mencatat penarikan uang?', a: 'Buka menu Penarikan Uang, masukkan nominal, tanggal, dan catatan. Pastikan nominal tidak melebihi kas tersedia sebelum menyimpan.' },
-  { q: 'Bagaimana cara ekspor atau impor data?', a: 'Buka menu Ekspor dan Impor Data. Untuk impor, pilih berkas yang didukung dan periksa pratinjau sebelum menerapkan data. Untuk ekspor, gunakan pilihan berkas Excel, CSV, atau cadangan yang tersedia.' },
-  { q: 'Bagaimana cara mengganti foto profil?', a: 'Buka panel profil dengan mengeklik foto profil, lalu pilih Ganti foto. Pilih berkas gambar yang sesuai batas ukuran yang ditampilkan aplikasi.' },
-  { q: 'Apakah data tersimpan di akun cloud?', a: 'Untuk akun yang terhubung, data dapat disinkronkan dengan layanan cloud aplikasi. Pastikan indikator sinkronisasi selesai sebelum menutup aplikasi, dan lakukan ekspor cadangan secara berkala.' },
+  { q: 'How do I add an item?', a: 'Open Cashier & Stock, then use the item form to enter the name, quantity, purchase price, and selling price. Double-check the numbers before saving.' },
+  { q: 'How is sales profit calculated?', a: 'Profit is calculated by multiplying the difference between selling price and unit cost by the number of units sold. Make sure the recorded purchase and selling prices are correct.' },
+  { q: 'How do I record a cash withdrawal?', a: 'Open Withdrawals, enter the amount, date, and note. Make sure the amount does not exceed available cash before saving.' },
+  { q: 'How do I export or import data?', a: 'Open Import/Export. To import, choose a supported file and review the preview before applying the data. To export, choose an available Excel, CSV, or backup option.' },
+  { q: 'How do I change my profile photo?', a: 'Open the profile panel by clicking your profile photo, then select Change photo. Choose an image that meets the size limit shown in the app.' },
+  { q: 'Is my data saved to my cloud account?', a: 'For connected accounts, data can sync with the app's cloud service. Make sure syncing is complete before closing the app, and export backups regularly.' },
 ];
 
 export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventory, onGoToComplaints }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [category, setCategory] = useState('Masalah aplikasi');
+  const [category, setCategory] = useState('App issue');
   const [subject, setSubject] = useState('');
   const [detail, setDetail] = useState('');
   const [message, setMessage] = useState('');
@@ -36,9 +36,9 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
       const current = JSON.parse(localStorage.getItem(key) || '[]');
       current.push({ id: Date.now(), category, subject: subject.trim(), detail: detail.trim(), createdAt: new Date().toISOString() });
       localStorage.setItem(key, JSON.stringify(current));
-      setMessage('Keluhan tersimpan di browser ini. Keluhan belum terkirim ke admin.');
+      setMessage('Feedback saved in this browser. It has not been sent to an administrator.');
     } catch {
-      setMessage('Keluhan tidak dapat disimpan di browser. Salin teks keluhan agar tidak hilang.');
+      setMessage('Feedback could not be saved in this browser. Copy the text to avoid losing it.');
     }
   };
 
@@ -46,9 +46,9 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
     try {
       await navigator.clipboard.writeText(complaintText);
       setCopied(true);
-      setMessage('Teks keluhan berhasil disalin. Anda dapat mengirimkannya melalui kanal bantuan resmi.');
+      setMessage('Feedback copied. You can send it through the official support channel.');
     } catch {
-      setMessage('Penyalinan otomatis tidak tersedia di browser ini. Pilih dan salin teks keluhan secara manual.');
+      setMessage('Automatic copying is unavailable in this browser. Select and copy the feedback text manually.');
     }
   };
 
@@ -62,7 +62,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
             <p className="mt-1 text-sm text-slate-600">{mode === 'faq' ? 'Jawaban singkat untuk membantu penggunaan WiseProfit.' : 'Catat masalah atau saran yang ingin disampaikan tentang WiseProfit.'}</p>
           </div>
         </div>
-        <button type="button" onClick={onBackToInventory} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"><ArrowLeft className="h-4 w-4" /> Kembali ke Kasir</button>
+        <button type="button" onClick={onBackToInventory} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"><ArrowLeft className="h-4 w-4" /> Back to Cashier</button>
       </div>
 
       {mode === 'faq' ? (
@@ -79,22 +79,22 @@ export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventor
         </div>
       ) : (
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <div className="mb-5 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">Isi keluhan atau saran dengan jelas. Untuk saat ini, formulir menyimpan catatan di browser perangkat ini; belum mengirimkannya ke admin secara otomatis.</div>
+          <div className="mb-5 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">Describe your issue or suggestion clearly. For now, this form saves feedback in this browser and does not automatically send it to an administrator.</div>
           <div className="grid gap-4">
             <label className="grid gap-2 text-sm font-semibold text-slate-800">Kategori
               <select value={category} onChange={e => setCategory(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal text-slate-800">
-                <option>Masalah aplikasi</option><option>Data atau sinkronisasi</option><option>Perhitungan keuangan</option><option>Ekspor atau impor data</option><option>Saran fitur</option><option>Lainnya</option>
+                <option>App issue</option><option>Data or synchronization</option><option>Financial calculations</option><option>Data export or import</option><option>Feature suggestion</option><option>Other</option>
               </select>
             </label>
             <label className="grid gap-2 text-sm font-semibold text-slate-800">Judul keluhan
-              <input value={subject} onChange={e => setSubject(e.target.value)} maxLength={120} placeholder="Contoh: Data tidak tersimpan" className="rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal text-slate-800 placeholder:text-slate-400" />
+              <input value={subject} onChange={e => setSubject(e.target.value)} maxLength={120} placeholder="Example: Data is not saving" className="rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal text-slate-800 placeholder:text-slate-400" />
             </label>
             <label className="grid gap-2 text-sm font-semibold text-slate-800">Detail keluhan atau saran
               <textarea value={detail} onChange={e => setDetail(e.target.value)} rows={5} maxLength={3000} placeholder="Jelaskan langkah yang dilakukan dan masalah yang muncul..." className="resize-y rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal leading-6 text-slate-800 placeholder:text-slate-400" />
             </label>
             {message && <p role="status" className="text-sm text-slate-700">{message}</p>}
             <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={handleSave} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> Simpan keluhan</button>
+              <button type="button" onClick={handleSave} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> Save feedback</button>
               <button type="button" onClick={handleCopy} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><Copy className="h-4 w-4" /> {copied ? 'Tersalin' : 'Salin teks keluhan'}</button>
             </div>
             {copied && <p className="flex items-center gap-2 text-sm text-green-700"><CheckCircle2 className="h-4 w-4" /> Teks keluhan siap ditempel ke kanal bantuan.</p>}

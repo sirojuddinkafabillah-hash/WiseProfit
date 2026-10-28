@@ -73,10 +73,10 @@ export default function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentRealTime(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      setCurrentRealTime(formatTime(new Date(), language));
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [language]);
 
   // UI Modals
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);

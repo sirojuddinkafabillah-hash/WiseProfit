@@ -155,7 +155,7 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
               onChange={(event) => { setCatatan(event.target.value); setError(''); setSuccess(''); }}
               placeholder={isId ? 'Contoh: kebutuhan pribadi, biaya operasional, atau pengambilan pemilik' : 'Example: personal needs, operating costs, or owner withdrawal'}
               className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400 placeholder:text-slate-600" />
-            <p className="text-right text-xs text-slate-500">{catatan.length}/500 karakter</p>
+            <p className="text-right text-xs text-slate-500">{catatan.length}/500 {isId ? 'karakter' : 'characters'}</p>
           </div>
 
           <label className="flex items-start gap-3 p-3 rounded-xl border border-slate-700 bg-slate-950/60 cursor-pointer">
@@ -245,7 +245,7 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
                             if (!deleted) setError(isId ? 'Riwayat gagal dihapus. Periksa koneksi lalu coba lagi.' : 'Could not delete the history. Check your connection and try again.');
                             else setSuccess(isId ? 'Riwayat penarikan berhasil dihapus.' : 'Withdrawal history deleted.');
                           }}
-                          title="Hapus riwayat penarikan"
+                          title={isId ? 'Hapus riwayat penarikan' : 'Delete withdrawal record'}
                           className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4" />

@@ -24,13 +24,13 @@ interface HomePageProps {
 type NoteFolder = { id: string; name: string };
 type SavedNote = { id: string; title: string; content: string; folderId: string; updatedAt: number };
 
-const DEFAULT_NOTE_FOLDERS: NoteFolder[] = [{ id: 'personal', name: 'Pribadi' }, { id: 'business', name: 'Usaha' }];
+const DEFAULT_NOTE_FOLDERS: NoteFolder[] = [{ id: 'personal', name: 'Personal' }, { id: 'business', name: 'Business' }];
 
 const THEMES: { id: BackgroundTheme; name: string; description: string; preview: string; icon: React.ReactNode }[] = [
-  { id: 'cosmic-nebula', name: 'Nebula', description: 'Dark, tenang, dengan cahaya hijau dan biru', preview: 'from-slate-950 via-indigo-950 to-emerald-950', icon: <Moon className="h-4 w-4" /> },
-  { id: 'aurora-emerald', name: 'Aurora Green', description: 'Nuansa hijau yang segar', preview: 'from-emerald-950 via-teal-900 to-slate-950', icon: <Sparkles className="h-4 w-4" /> },
-  { id: 'cyber-sapphire', name: 'Blue Sapphire', description: 'Blue sejuk dan modern', preview: 'from-blue-950 via-sky-900 to-indigo-950', icon: <Monitor className="h-4 w-4" /> },
-  { id: 'light-crystal', name: 'Light', description: 'Latar cerah dan ringan', preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
+  { id: 'cosmic-nebula', name: 'Nebula', description: 'Dark theme with green and blue glow', preview: 'from-slate-950 via-indigo-950 to-emerald-950', icon: <Moon className="h-4 w-4" /> },
+  { id: 'aurora-emerald', name: 'Aurora Green', description: 'Fresh green tones', preview: 'from-emerald-950 via-teal-900 to-slate-950', icon: <Sparkles className="h-4 w-4" /> },
+  { id: 'cyber-sapphire', name: 'Blue Sapphire', description: 'Cool, modern blue tones', preview: 'from-blue-950 via-sky-900 to-indigo-950', icon: <Monitor className="h-4 w-4" /> },
+  { id: 'light-crystal', name: 'Light', description: 'Bright, lightweight background', preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
 ];
 
 export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
@@ -104,7 +104,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) { setNameMessage('Choose an image file for the wallpaper.'); return; }
-    if (file.size > 3 * 1024 * 1024) { setNameMessage('Ukuran wallpaper maksimal 3 MB.'); return; }
+    if (file.size > 3 * 1024 * 1024) { setNameMessage('Wallpaper must be 3 MB or smaller.'); return; }
     const reader = new FileReader();
     reader.onload = () => { const result = typeof reader.result === 'string' ? reader.result : null; if (result) { onWallpaperChange(result); setNameMessage('Wallpaper applied on this device.'); } };
     reader.onerror = () => setNameMessage('Wallpaper image could not be read.');
@@ -137,8 +137,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
           canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
           const context = canvas.getContext('2d');
-          if (!context) throw new Error('Canvas tidak tersedia');
-          // Putih menjadi latar untuk area transparan pada foto PNG/WebP.
+          if (!context) throw new Error('Canvas is unavailable');
+          // Use white as the background for transparent areas in PNG/WebP photos.
           context.fillStyle = '#ffffff';
           context.fillRect(0, 0, canvas.width, canvas.height);
           context.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -180,7 +180,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
   const saveName = async () => {
     const clean = name.trim();
     if (!clean) {
-      setNameMessage('Nama tidak boleh kosong.');
+      setNameMessage('Name cannot be empty.');
       return;
     }
     setIsSavingName(true);
@@ -251,7 +251,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
     }
   };
 
-  const displayName = user.displayName || user.email?.split('@')[0] || 'Pengguna WiseProfit';
+  const displayName = user.displayName || user.email?.split('@')[0] || 'WiseProfit User';
   const initials = (name.trim() || displayName).slice(0, 1).toUpperCase();
 
   return (
@@ -303,7 +303,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
         <div className="rounded-2xl border border-slate-700/70 bg-slate-900/90 p-3">
           <div className="mb-5 flex items-center gap-3"><div className="rounded-xl bg-violet-400/10 p-2.5 text-violet-300"><Palette className="h-5 w-5" /></div><div><h2 className="font-bold text-white">Customize Appearance</h2><p className="mt-1 text-xs text-slate-400">Customize the theme, font, table colors, text colors, and wallpaper.</p></div></div>
           <div className="grid min-w-0 grid-cols-1 gap-4">
-            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Jenis font</label><select value={fontChoice} onChange={(e) => onFontChange(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white"><option value="Calibri, Carlito, Arial, sans-serif">Calibri — Dokumen resmi</option><option value="Cambria, Georgia, serif">Cambria — Dokumen formal</option><option value="Arial, Helvetica, sans-serif">Arial</option><option value="Helvetica, Arial, sans-serif">Helvetica</option><option value="Swiss, Arial, Helvetica, sans-serif">Swiss — Sans-serif</option><option value="Aptos, Calibri, sans-serif">Aptos — Office modern</option><option value="Times New Roman, Times, serif">Times New Roman</option><option value="Georgia, serif">Georgia — Klasik</option><option value="Verdana, sans-serif">Verdana — Lebar</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Trebuchet MS, sans-serif">Trebuchet MS</option><option value="Garamond, serif">Garamond</option><option value="Inter, Arial, sans-serif">Inter — Modern</option><option value="system-ui, sans-serif">Font bawaan perangkat</option><option value="monospace">Monospace — Teknis</option></select></div>
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">Font family</label><select value={fontChoice} onChange={(e) => onFontChange(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white"><option value="Calibri, Carlito, Arial, sans-serif">Calibri — Professional documents</option><option value="Cambria, Georgia, serif">Cambria — Formal documents</option><option value="Arial, Helvetica, sans-serif">Arial</option><option value="Helvetica, Arial, sans-serif">Helvetica</option><option value="Swiss, Arial, Helvetica, sans-serif">Swiss — Sans-serif</option><option value="Aptos, Calibri, sans-serif">Aptos — Modern Office</option><option value="Times New Roman, Times, serif">Times New Roman</option><option value="Georgia, serif">Georgia — Classic</option><option value="Verdana, sans-serif">Verdana — Wide</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Trebuchet MS, sans-serif">Trebuchet MS</option><option value="Garamond, serif">Garamond</option><option value="Inter, Arial, sans-serif">Inter — Modern</option><option value="system-ui, sans-serif">System default</option><option value="monospace">Monospace — Technical</option></select></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Text color</label><div className="grid grid-cols-2 gap-2">{([{id:'default',name:'Default',sample:'#cbd5e1'},{id:'bright',name:'Bright white',sample:'#ffffff'},{id:'soft',name:'Soft gray',sample:'#94a3b8'},{id:'warm',name:'Cream',sample:'#f5deb3'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTextChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${textChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Dashboard accent color</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Green',color:'#34d399'},{id:'blue',name:'Blue',color:'#60a5fa'},{id:'violet',name:'Purple',color:'#a78bfa'},{id:'rose',name:'Pink',color:'#fb7185'},{id:'amber',name:'Gold',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">Table color</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Dark',sample:'#172033'},{id:'light',name:'Light',sample:'#e2e8f0'},{id:'blue',name:'Blue',sample:'#172c49'},{id:'green',name:'Green',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
@@ -315,7 +315,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           </div>
           <div className="mt-6 border-t border-slate-700 pt-5"><label className="mb-2 block text-sm font-semibold text-slate-200">Dashboard wallpaper</label>
             <input ref={wallpaperInputRef} type="file" accept="image/*" onChange={handleWallpaperSelected} className="hidden" aria-label="Choose wallpaper"/>
-            <div className="flex flex-wrap gap-3"><button type="button" onClick={() => wallpaperInputRef.current?.click()} className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-emerald-300"><Camera className="mr-2 inline h-4 w-4"/>Choose wallpaper</button>{wallpaper && <button type="button" onClick={() => {onWallpaperChange(null); setNameMessage('Wallpaper dihapus.');}} className="rounded-xl border border-rose-400/30 px-4 py-2.5 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"><Trash2 className="mr-2 inline h-4 w-4"/>Remove wallpaper</button>}</div>
+            <div className="flex flex-wrap gap-3"><button type="button" onClick={() => wallpaperInputRef.current?.click()} className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-emerald-300"><Camera className="mr-2 inline h-4 w-4"/>Choose wallpaper</button>{wallpaper && <button type="button" onClick={() => {onWallpaperChange(null); setNameMessage('Wallpaper removed.');}} className="rounded-xl border border-rose-400/30 px-4 py-2.5 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"><Trash2 className="mr-2 inline h-4 w-4"/>Remove wallpaper</button>}</div>
             {wallpaper && <img src={wallpaper} alt="Wallpaper preview" className="mt-3 h-28 w-full rounded-xl border border-slate-700 object-cover"/>}
             <p className="mt-2 text-xs text-slate-400">Images must be 3 MB or smaller. This setting is saved in this browser/device and does not affect transaction data.</p>
           </div>
@@ -328,10 +328,10 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           </div>
           <div className="grid min-w-0 grid-cols-1">
             <aside className="border-b border-slate-700 p-3">
-              <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title="Buat folder" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
-              {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder="Nama folder" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
+              <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title="Create folder" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
+              {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder="Folder name" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
               <div className="flex gap-2 overflow-x-auto flex-col">
-                <button type="button" onClick={() => {setActiveFolderId('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/>Semua <span className="ml-auto text-xs opacity-70">{savedNotes.length}</span></button>
+                <button type="button" onClick={() => {setActiveFolderId('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/>All notes <span className="ml-auto text-xs opacity-70">{savedNotes.length}</span></button>
                 {noteFolders.map((folder) => <button type="button" key={folder.id} onClick={() => {setActiveFolderId(folder.id); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === folder.id ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/><span className="truncate">{folder.name}</span><span className="ml-auto text-xs opacity-70">{savedNotes.filter((n) => n.folderId === folder.id).length}</span></button>)}
               </div>
             </aside>
@@ -339,13 +339,13 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
               {!activeNoteId ? <>
                 <div className="border-b border-slate-800 p-3"><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={noteSearch} onChange={(e) => setNoteSearch(e.target.value)} placeholder="Search notes..." className="w-full rounded-xl border border-slate-700 bg-slate-950 py-2.5 pl-9 pr-3 text-sm text-white"/></div></div>
                 <div className="max-h-[420px] overflow-y-auto p-2">
-                  {visibleNotes.length ? visibleNotes.map((item) => <button key={item.id} type="button" onClick={() => openNote(item)} className="mb-2 block w-full rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left transition hover:border-amber-300/40 hover:bg-slate-900"><div className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0 text-amber-300"/><span className="truncate text-sm font-semibold text-slate-100">{item.title || 'Untitled note'}</span></div><p className="mt-1 line-clamp-2 whitespace-pre-wrap text-xs text-slate-400">{item.content || 'No note content yet'}</p><p className="mt-2 text-[10px] text-slate-500">{new Date(item.updatedAt).toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'})} · {noteFolders.find((f) => f.id === item.folderId)?.name || 'Folder'}</p></button>) : <div className="p-8 text-center text-sm text-slate-500"><NotebookPen className="mx-auto mb-2 h-7 w-7 opacity-50"/>No notes in this folder yet.</div>}
+                  {visibleNotes.length ? visibleNotes.map((item) => <button key={item.id} type="button" onClick={() => openNote(item)} className="mb-2 block w-full rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left transition hover:border-amber-300/40 hover:bg-slate-900"><div className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0 text-amber-300"/><span className="truncate text-sm font-semibold text-slate-100">{item.title || 'Untitled note'}</span></div><p className="mt-1 line-clamp-2 whitespace-pre-wrap text-xs text-slate-400">{item.content || 'No note content yet'}</p><p className="mt-2 text-[10px] text-slate-500">{new Date(item.updatedAt).toLocaleString('en-US', {dateStyle:'medium',timeStyle:'short'})} · {noteFolders.find((f) => f.id === item.folderId)?.name || 'Folder'}</p></button>) : <div className="p-8 text-center text-sm text-slate-500"><NotebookPen className="mx-auto mb-2 h-7 w-7 opacity-50"/>No notes in this folder yet.</div>}
                 </div>
               </> : <div className="p-3 sm:p-4">
                 <div className="mb-3 flex items-center justify-between gap-2"><button type="button" onClick={() => setActiveNoteId(null)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-300/10"><ArrowLeft className="h-3.5 w-3.5"/>All notes</button><button type="button" onClick={deleteCurrentNote} title="Delete note" className="rounded-lg p-2 text-rose-300 hover:bg-rose-500/10"><Trash className="h-4 w-4"/></button></div>
                 <input value={draftTitle} onChange={(e) => updateCurrentNote('title', e.target.value)} maxLength={120} placeholder="Note title" className="mb-3 w-full border-0 border-b border-slate-700 bg-transparent px-1 py-3 text-lg font-bold text-white outline-none placeholder:text-slate-600"/>
-                <textarea value={draftContent} onChange={(e) => updateCurrentNote('content', e.target.value)} maxLength={20000} rows={12} placeholder="Mulai menulis..." className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 text-sm leading-7 text-slate-100 outline-none focus:border-amber-300/40"/>
-                <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><p className="text-xs text-slate-500">Auto-saved in this browser · {draftContent.length} karakter</p><button type="button" onClick={saveNote} className="inline-flex items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs font-semibold text-amber-200 hover:bg-amber-300/15"><Save className="h-4 w-4"/>Save now</button></div>
+                <textarea value={draftContent} onChange={(e) => updateCurrentNote('content', e.target.value)} maxLength={20000} rows={12} placeholder="Start writing..." className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 text-sm leading-7 text-slate-100 outline-none focus:border-amber-300/40"/>
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><p className="text-xs text-slate-500">Auto-saved in this browser · {draftContent.length} characters</p><button type="button" onClick={saveNote} className="inline-flex items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs font-semibold text-amber-200 hover:bg-amber-300/15"><Save className="h-4 w-4"/>Save now</button></div>
               </div>}
             </div>
           </div>

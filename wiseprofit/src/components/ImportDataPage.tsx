@@ -576,13 +576,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
     }
 
     if (!user) {
-      setResultMessage({ type: 'error', text: 'Silakan masuk ke akun WiseProfit sebelum mengimpor data agar data tersimpan dengan benar.' });
+      setResultMessage({ type: 'error', text: t('Silakan masuk ke akun WiseProfit sebelum mengimpor data agar data tersimpan dengan benar.', 'Sign in to WiseProfit before importing so your data is saved correctly.') });
       return;
     }
 
     if (importMode === 'replace' && currentItemsCount > 0) {
       const confirmed = window.confirm(
-        'Mode Ganti Semua akan menghapus data barang lama di akun ini dan menggantinya dengan data impor. Pastikan Anda sudah mengunduh cadangan. Lanjutkan?'
+        t('Mode Ganti Semua akan menghapus data barang lama di akun ini dan menggantinya dengan data impor. Pastikan Anda sudah mengunduh cadangan. Lanjutkan?', 'Replace All mode will delete the existing items in this account and replace them with imported data. Make sure you have downloaded a backup. Continue?')
       );
       if (!confirmed) return;
     }
@@ -603,7 +603,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       await onImportSuccess(validItems, modalAwalParam, importMode);
       setResultMessage({
         type: 'success',
-        text: `Berhasil mengimpor ${validItems.length} barang dan menyimpan data ke akun cloud Anda.`
+        text: t(`Berhasil mengimpor ${validItems.length} barang dan menyimpan data ke akun cloud Anda.`, `Successfully imported ${validItems.length} items and saved them to your cloud account.`)
       });
     } catch (err: any) {
       setResultMessage({
@@ -694,7 +694,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             <button
               onClick={downloadUserImageTemplateExcel}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer shadow-xs"
-              title="Unduh file template Excel (.xlsx) dengan 12 kolom persis seperti gambar"
+              title={t('Unduh file template Excel (.xlsx) dengan 12 kolom persis seperti gambar', 'Download the Excel template (.xlsx) with the exact 12-column layout')}
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
               <span>{t('Unduh Template Excel', 'Download Excel Template')}</span>
@@ -704,7 +704,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             <button
               onClick={downloadUserImageTemplateCSV}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer shadow-xs"
-              title="Unduh file template CSV dengan 12 kolom persis seperti gambar"
+              title={t('Unduh file template CSV dengan 12 kolom persis seperti gambar', 'Download the CSV template with the exact 12-column layout')}
             >
               <FileText className="w-3.5 h-3.5 text-cyan-400" />
               <span>{t('Unduh Template CSV', 'Download CSV Template')}</span>

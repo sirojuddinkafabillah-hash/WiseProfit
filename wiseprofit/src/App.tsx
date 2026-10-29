@@ -872,7 +872,7 @@ export default function App() {
               )}
 
               {activePage === 'faq' && (
-                <SupportPage language={language} mode="faq" onBackToInventory={() => setActivePage('inventory')} />
+                <SupportPage language={language} mode="faq" />
               )}
 
               {activePage === 'support-admin' && <SupportAdminPage language={language} onBack={() => setActivePage('inventory')} />}

@@ -20,8 +20,7 @@ import {
   SlidersHorizontal,
   DollarSign,
   Layers,
-  ArrowDownRight,
-  ArrowLeft
+  ArrowDownRight
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { USER_IMAGE_HEADERS, buildExcelExportRows } from '../utils/excelExporter';
@@ -46,7 +45,6 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
   selectedMonth,
   onSelectMonth,
   onPrintReport,
-  onBackToInventory,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'gain' | 'terjual' | 'omset' | 'nilaiStok' | 'terbaru'>('gain');

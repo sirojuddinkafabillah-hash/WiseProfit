@@ -9,7 +9,8 @@ import {
   CircleHelp,
   ShieldCheck,
   ArrowDownCircle,
-  UserRound
+  UserRound,
+  ArrowLeft
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -68,6 +69,14 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Bar */}
         <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">
+          {activePage !== 'inventory' && activePage !== 'home' && (
+            <button type="button" onClick={() => onChangePage('inventory')}
+              aria-label={language === 'id' ? 'Kembali ke beranda utama' : 'Back to main home'}
+              title={language === 'id' ? 'Kembali ke beranda utama' : 'Back to main home'}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800 hover:border-blue-400 transition-colors">
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+          )}
           {/* Brand & Logo */}
           <div className="flex items-center gap-4 lg:gap-6">
             <div className="flex w-11 shrink-0 flex-col items-center gap-1">
@@ -93,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Desktop Navigation Tabs */}
-            <nav className="wp-main-navigation hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
+            {(activePage === 'inventory' || activePage === 'home') && <nav className="wp-main-navigation hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
               <button
                 type="button"
                 onClick={() => onChangePage('inventory')}
@@ -163,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span>
               </button>
 
-            </nav>
+            </nav>}
           </div>
 
           {/* Quick Tools & Cloud Auth */}
@@ -238,7 +247,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Mobile Navigation Bar (visible on smaller screens) */}
-        <div className="flex md:hidden items-center justify-between gap-1 py-2.5 border-t border-slate-800/80 font-sans text-xs overflow-x-auto">
+        {(activePage === 'inventory' || activePage === 'home') && <div className="flex md:hidden items-center justify-between gap-1 py-2.5 border-t border-slate-800/80 font-sans text-xs overflow-x-auto">
           <div className="flex shrink-0 flex-col items-center gap-1">
             <button
               type="button"
@@ -318,7 +327,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span>{t('header.importExportShort', language)}</span>
           </button>
           <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-700 text-white' : 'text-slate-400 bg-slate-900/60'}`}><CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span></button>
-        </div>
+        </div>}
       </div>
     </header>
   );

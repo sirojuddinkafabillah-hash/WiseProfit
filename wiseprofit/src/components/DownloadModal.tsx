@@ -22,6 +22,7 @@ import {
 import { exportToStyledExcel, exportToStandardCSV } from '../utils/excelExporter';
 
 interface DownloadModalProps {
+  language: 'id' | 'en';
   isOpen: boolean;
   onClose: () => void;
   items: InventoryItem[];
@@ -32,6 +33,7 @@ interface DownloadModalProps {
 }
 
 export const DownloadModal: React.FC<DownloadModalProps> = ({
+  language,
   isOpen,
   onClose,
   items,
@@ -41,6 +43,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
   onOpenAuthModal,
 }) => {
   const { user } = useAuth();
+  const isId = language === 'id';
+  const t = (id: string, en: string) => isId ? id : en;
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
   const [isServerLoading, setIsServerLoading] = useState(false);
   const [isCloudSyncing, setIsCloudSyncing] = useState(false);
@@ -52,7 +56,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
   const handleDownloadExcel = () => {
     try {
       exportToStyledExcel(items, modalAwal);
-      setStatusMessage({ type: 'success', text: 'Data berhasil disimpan sebagai file Excel.' });
+      setStatusMessage({ type: 'success', text: t('Data berhasil disimpan sebagai file Excel.', 'Data exported to Excel successfully.') });
     } catch (e: any) {
       setStatusMessage({ type: 'error', text: `Gagal mengekspor ke Excel: ${e?.message || 'Error'}` });
     }
@@ -62,7 +66,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
   const handleDownloadCSV = () => {
     try {
       exportToStandardCSV(items, modalAwal);
-      setStatusMessage({ type: 'success', text: 'Data berhasil disimpan sebagai file CSV.' });
+      setStatusMessage({ type: 'success', text: t('Data berhasil disimpan sebagai file CSV.', 'Data exported to CSV successfully.') });
     } catch (e: any) {
       setStatusMessage({ type: 'error', text: `Gagal mengekspor ke CSV: ${e?.message || 'Error'}` });
     }
@@ -74,10 +78,10 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
       exportBackupJSON(items, modalAwal);
       setStatusMessage({ 
         type: 'success', 
-        text: 'File cadangan berhasil diunduh. Simpan di tempat yang aman.' 
+        text: t('File cadangan berhasil diunduh. Simpan di tempat yang aman.', 'Backup downloaded. Keep it somewhere safe.') 
       });
     } catch {
-      setStatusMessage({ type: 'error', text: 'Gagal mengunduh file cadangan.' });
+      setStatusMessage({ type: 'error', text: t('Gagal mengunduh file cadangan.', 'Failed to download the backup file.') });
     }
   };
 
@@ -87,7 +91,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
     if (!file) return;
 
     if (file.size > 20 * 1024 * 1024) {
-      setStatusMessage({ type: 'error', text: 'File cadangan terlalu besar. Ukuran maksimum yang didukung adalah 20 MB.' });
+      setStatusMessage({ type: 'error', text: t('File cadangan terlalu besar. Ukuran maksimum yang didukung adalah 20 MB.', 'Backup file is too large. The maximum supported size is 20 MB.') });
       e.target.value = '';
       return;
     }
@@ -97,13 +101,13 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
       try {
         const content = event.target?.result;
         if (typeof content !== 'string' || !content.trim()) {
-          throw new Error('File kosong atau tidak dapat dibaca.');
+          throw new Error(t('File kosong atau tidak dapat dibaca.', 'The file is empty or cannot be read.'));
         }
         const parsed = parseBackupJSON(content);
         if (!parsed.items.length) {
           setStatusMessage({
             type: 'error',
-            text: 'Cadangan tidak berisi data barang yang valid. Data saat ini tidak diubah.'
+            text: t('Cadangan tidak berisi data barang yang valid. Data saat ini tidak diubah.', 'The backup contains no valid inventory items. Current data has not been changed.')
           });
           return;
         }
@@ -111,19 +115,19 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         onRestoreData(parsed.items, parsed.modalAwal);
         setStatusMessage({
           type: 'success',
-          text: `Berhasil memproses cadangan berisi ${parsed.items.length} barang dan modal Rp ${parsed.modalAwal.toLocaleString('id-ID')}. Sinkronisasi akun berjalan melalui aplikasi.`
+          text: t(`Berhasil memproses cadangan berisi ${parsed.items.length} barang dan modal Rp ${parsed.modalAwal.toLocaleString('id-ID')}. Sinkronisasi akun berjalan melalui aplikasi.`, `Restored a backup containing ${parsed.items.length} items and starting capital Rp ${parsed.modalAwal.toLocaleString('en-US')}. Account sync is handled by the app.`)
         });
       } catch (error) {
         setStatusMessage({
           type: 'error',
-          text: `File cadangan tidak valid atau rusak: ${error instanceof Error ? error.message : 'Format JSON tidak sesuai'}`
+          text: t(`File cadangan tidak valid atau rusak: ${error instanceof Error ? error.message : 'Format JSON tidak sesuai'}`, `Backup file is invalid or corrupted: ${error instanceof Error ? error.message : 'Invalid JSON format'}`)
         });
       } finally {
         if (fileInputRef.current) fileInputRef.current.value = '';
       }
     };
     reader.onerror = () => {
-      setStatusMessage({ type: 'error', text: 'File tidak dapat dibaca. Coba pilih file JSON lain.' });
+      setStatusMessage({ type: 'error', text: t('File tidak dapat dibaca. Coba pilih file JSON lain.', 'The file could not be read. Try another JSON file.') });
       if (fileInputRef.current) fileInputRef.current.value = '';
     };
     reader.readAsText(file);
@@ -139,18 +143,18 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         onRestoreData(serverData.items, serverData.modalAwal || modalAwal);
         setStatusMessage({
           type: 'success',
-          text: `Berhasil memulihkan ${serverData.items.length} barang dari salinan server lokal!`
+          text: t(`Berhasil memulihkan ${serverData.items.length} barang dari salinan server lokal!`, `Restored ${serverData.items.length} items from the local server backup!`)
         });
       } else {
         setStatusMessage({
           type: 'info',
-          text: 'Belum ada data cadangan di server lokal.'
+          text: t('Belum ada data cadangan di server lokal.', 'No backup is available on the local server yet.')
         });
       }
     } catch {
       setStatusMessage({
         type: 'error',
-        text: 'Gagal menghubungi server lokal.'
+        text: t('Gagal menghubungi server lokal.', 'Could not connect to the local server.')
       });
     } finally {
       setIsServerLoading(false);
@@ -166,12 +170,12 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
       await batchUploadToCloud(user.uid, user.email || '', modalAwal, items);
       setStatusMessage({
         type: 'success',
-        text: `Semua ${items.length} barang berhasil dicadangkan ke Cloud Supabase!`
+        text: t(`Semua ${items.length} barang berhasil dicadangkan ke Cloud Supabase!`, `All ${items.length} items were backed up to Supabase Cloud!`)
       });
     } catch (err) {
       setStatusMessage({
         type: 'error',
-        text: 'Gagal sinkronisasi ke cloud: ' + (err instanceof Error ? err.message : String(err))
+        text: t('Gagal sinkronisasi ke cloud: ', 'Cloud sync failed: ') + (err instanceof Error ? err.message : String(err))
       });
     } finally {
       setIsCloudSyncing(false);
@@ -192,18 +196,18 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         onRestoreData(cloudItems, profile?.modalAwal ?? modalAwal);
         setStatusMessage({
           type: 'success',
-          text: `Berhasil memuat ${cloudItems.length} barang dari akun cloud Anda!`
+          text: t(`Berhasil memuat ${cloudItems.length} barang dari akun cloud Anda!`, `Loaded ${cloudItems.length} items from your cloud account!`)
         });
       } else {
         setStatusMessage({
           type: 'info',
-          text: 'Belum ada data tersimpan di akun cloud Anda.'
+          text: t('Belum ada data tersimpan di akun cloud Anda.', 'No data has been saved to your cloud account yet.')
         });
       }
     } catch (err) {
       setStatusMessage({
         type: 'error',
-        text: 'Gagal mengambil data dari cloud: ' + (err instanceof Error ? err.message : String(err))
+        text: t('Gagal mengambil data dari cloud: ', 'Failed to fetch data from cloud: ') + (err instanceof Error ? err.message : String(err))
       });
     } finally {
       setIsCloudSyncing(false);
@@ -293,7 +297,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setStatusMessage({ type: 'success', text: 'Aplikasi web offline (.html) berhasil diunduh!' });
+    setStatusMessage({ type: 'success', text: t('Aplikasi web offline (.html) berhasil diunduh!', 'Offline web app (.html) downloaded successfully!') });
   };
 
   return (
@@ -306,8 +310,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white tracking-tight">Pusat Cadangan, Cloud & Ekspor Data</h3>
-              <p className="text-[11px] text-slate-400 font-mono">Amankan pembukuan toko di server online atau file fisik</p>
+              <h3 className="text-sm font-bold text-white tracking-tight">{t('Pusat Cadangan, Cloud & Ekspor Data', 'Backup, Cloud & Data Export Center')}</h3>
+              <p className="text-[11px] text-slate-400 font-mono">{t('Amankan pembukuan toko di server online atau file fisik', 'Keep your store records safe online or in a local file')}</p>
             </div>
           </div>
           <button
@@ -350,7 +354,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
               <div className="flex items-center gap-2">
                 <Cloud className="w-5 h-5 text-emerald-400" />
                 <span className="font-bold text-xs text-white">
-                  {user ? 'Penyimpanan Cloud Online (Aktif)' : 'Simpan Online ke Server (Rekomendasi)'}
+                  {user ? t('Penyimpanan Cloud Online (Aktif)', 'Cloud Storage Online (Active)') : t('Simpan Online ke Server (Rekomendasi)', 'Save Online to Server (Recommended)')}
                 </span>
               </div>
               {user ? (
@@ -376,7 +380,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     className="px-3.5 py-1.5 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm shadow-emerald-500/20"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isCloudSyncing ? 'animate-spin' : ''}`} />
-                    <span>Simpan ke akun</span>
+                    <span>{t('Simpan ke akun', 'Save to account')}</span>
                   </button>
                   <button
                     onClick={handleCloudFetchNow}
@@ -384,7 +388,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                     className="px-3.5 py-1.5 text-xs font-semibold bg-slate-800 border border-slate-700 hover:bg-slate-700 text-white rounded-xl flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <Download className="w-3.5 h-3.5" />
-                    <span>Tarik Data Cloud</span>
+                    <span>{t('Tarik Data Cloud', 'Fetch Cloud Data')}</span>
                   </button>
                 </div>
               </div>
@@ -401,7 +405,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   className="mt-3 px-4 py-2 text-xs font-mono font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl shadow-md shadow-emerald-500/20 flex items-center gap-1.5 cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5" />
-                  <span>Masuk dengan Email / Google</span>
+                  <span>{t('Masuk dengan Email / Google', 'Sign in with Email / Google')}</span>
                 </button>
               </div>
             )}
@@ -423,8 +427,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <Download className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-mono font-bold text-blue-200">Unduh Cadangan (.JSON)</div>
-                  <div className="text-[10px] font-mono text-blue-300/70 mt-0.5">Simpan ke HP/Laptop atau kirim ke WA/Drive</div>
+                  <div className="text-xs font-mono font-bold text-blue-200">{t('Unduh Cadangan (.JSON)', 'Download Backup (.JSON)')}</div>
+                  <div className="text-[10px] font-mono text-blue-300/70 mt-0.5">{t('Simpan ke HP/Laptop atau kirim ke WA/Drive', 'Save to your phone/computer or send via WhatsApp/Drive')}</div>
                 </div>
               </button>
 
@@ -441,8 +445,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <Upload className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-mono font-bold text-emerald-200">Pulihkan File Cadangan</div>
-                  <div className="text-[10px] font-mono text-emerald-300/70 mt-0.5">Pilih file .json cadangan Anda yang pernah diunduh</div>
+                  <div className="text-xs font-mono font-bold text-emerald-200">{t('Pulihkan File Cadangan', 'Restore Backup File')}</div>
+                  <div className="text-[10px] font-mono text-emerald-300/70 mt-0.5">{t('Pilih file .json cadangan Anda yang pernah diunduh', 'Select a previously downloaded .json backup file')}</div>
                 </div>
               </label>
             </div>
@@ -455,10 +459,10 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
             >
               <div className="flex items-center gap-2">
                 <Server className="w-4 h-4 text-slate-400" />
-                <span className="font-semibold">Pulihkan dari Salinan Server Lokal</span>
+                <span className="font-semibold">{t('Pulihkan dari Salinan Server Lokal', 'Restore from Local Server Backup')}</span>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                {isServerLoading ? 'Memeriksa...' : 'Cek Salinan'}
+                {isServerLoading ? t('Memeriksa...', 'Checking...') : t('Cek Salinan', 'Check Backup')}
               </span>
             </button>
           </div>
@@ -479,8 +483,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <Table className="w-4 h-4 text-cyan-300" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-mono font-bold text-white">Excel (.xlsx) Format Toko</div>
-                  <div className="text-[10px] font-mono text-cyan-200/80">12 Kolom Persis Gambar</div>
+                  <div className="text-xs font-mono font-bold text-white">{t('Excel (.xlsx) Format Toko', 'Excel (.xlsx) Store Format')}</div>
+                  <div className="text-[10px] font-mono text-cyan-200/80">{t('12 Kolom Persis Gambar', 'Exact 12-Column Layout')}</div>
                 </div>
               </button>
 
@@ -493,8 +497,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <FileSpreadsheet className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-mono font-bold text-slate-100">Format CSV (Excel)</div>
-                  <div className="text-[10px] font-mono text-slate-400">12 Kolom Standar</div>
+                  <div className="text-xs font-mono font-bold text-slate-100">{t('Format CSV (Excel)', 'CSV Format (Excel)')}</div>
+                  <div className="text-[10px] font-mono text-slate-400">{t('12 Kolom Standar', '12 Standard Columns')}</div>
                 </div>
               </button>
 
@@ -507,8 +511,8 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
                   <Laptop className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-mono font-bold text-slate-100">Web Mandiri (.html)</div>
-                  <div className="text-[10px] font-mono text-slate-400">Buka tanpa internet</div>
+                  <div className="text-xs font-mono font-bold text-slate-100">{t('Web Mandiri (.html)', 'Standalone Web App (.html)')}</div>
+                  <div className="text-[10px] font-mono text-slate-400">{t('Buka tanpa internet', 'Open without internet')}</div>
                 </div>
               </button>
             </div>
@@ -519,7 +523,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
         <div className="px-5 py-3 border-t border-slate-800 bg-slate-950/60 flex justify-between items-center text-[11px] text-slate-400 font-mono">
           <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
             <ShieldCheck className="w-4 h-4" />
-            <span>Tersambung ke Cloud Database Supabase</span>
+            <span>{t('Tersambung ke Cloud Database Supabase', 'Connected to Supabase Cloud Database')}</span>
           </span>
           <button
             onClick={onClose}

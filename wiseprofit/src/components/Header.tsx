@@ -9,7 +9,6 @@ import {
   CircleHelp,
   MessageSquareWarning,
   ArrowDownCircle,
-  Home,
   UserRound
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';

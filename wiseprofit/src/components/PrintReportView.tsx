@@ -2,20 +2,22 @@ import React from 'react';
 import { InventoryItem, GlobalSummary } from '../types/inventory';
 import { calculateItem, formatRupiah } from '../utils/calculator';
 import { Printer, ArrowLeft } from 'lucide-react';
+import type { Language } from '../i18n/translations';
 
 interface PrintReportViewProps {
   items: InventoryItem[];
   summary: GlobalSummary;
+  language: Language;
   modalAwal?: number;
   onBack?: () => void;
 }
 
-export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary, onBack }) => {
+export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary, language, onBack }) => {
   const handlePrint = () => {
     window.print();
   };
 
-  const todayStr = new Intl.DateTimeFormat('id-ID', {
+  const todayStr = new Intl.DateTimeFormat(language === 'id' ? 'id-ID' : 'en-US', {
     dateStyle: 'full',
     timeStyle: 'short',
   }).format(new Date());
@@ -28,14 +30,14 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
           className="flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Kembali ke WiseProfit</span>
+          <span>{language === 'id' ? 'Kembali ke WiseProfit' : 'Back to WiseProfit'}</span>
         </button>
         <button
           onClick={handlePrint}
           className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-neutral-900 hover:bg-neutral-800 rounded-lg shadow-sm cursor-pointer"
         >
           <Printer className="w-4 h-4" />
-          <span>Cetak atau Simpan sebagai PDF</span>
+          <span>{language === 'id' ? 'Cetak atau Simpan sebagai PDF' : 'Print or Save as PDF'}</span>
         </button>
       </div>
 
@@ -45,14 +47,14 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
             NIAGANOVA RETAIL MATRIX
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            LAPORAN PENJUALAN & EKUITAS ARUS KAS
+            {language === 'id' ? 'LAPORAN PENJUALAN & EKUITAS ARUS KAS' : 'SALES & CASH FLOW EQUITY REPORT'}
           </h1>
           <p className="text-xs text-neutral-500 mt-1">
-            Format: Nama Barang · Qty 1 Wadah · Harga Beli · Terjual · Harga Jual · Gain (Untung Terjual) · Equity · Kas Masuk · Simpanan 1 Bln
+            {language === 'id' ? 'Format: Nama Barang · Isi Wadah · Harga Beli · Terjual · Harga Jual · Keuntungan · Ekuitas · Kas Masuk · Simpanan 1 Bulan' : 'Format: Item Name · Units per Container · Purchase Price · Units Sold · Selling Price · Realized Gain · Equity · Cash Inflow · 1-Month Savings'}
           </p>
         </div>
         <div className="text-left sm:text-right text-xs text-neutral-600 font-mono">
-          <div>Tanggal Laporan:</div>
+          <div>{language === 'id' ? 'Tanggal Laporan:' : 'Report Date:'}</div>
           <div className="font-semibold text-neutral-900">{todayStr}</div>
         </div>
       </div>
@@ -60,19 +62,19 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
       {/* Summary Box */}
       <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
         <div className="p-3 border border-neutral-300 rounded bg-neutral-50">
-          <span className="text-neutral-500 block">Modal Awal Usaha:</span>
+          <span className="text-neutral-500 block">{language === 'id' ? 'Modal Awal Usaha:' : 'Initial Business Capital:'}</span>
           <span className="font-bold text-base font-mono tabular-nums">{formatRupiah(summary.modalAwalUsaha)}</span>
         </div>
         <div className="p-3 border border-neutral-300 rounded bg-neutral-50">
-          <span className="text-neutral-500 block">Untung Terealisasi (Gain):</span>
+          <span className="text-neutral-500 block">{language === 'id' ? 'Untung Terealisasi (Gain):' : 'Realized Profit (Gain):'}</span>
           <span className="font-bold text-base font-mono tabular-nums text-emerald-800">+{formatRupiah(summary.totalGainTerjual)}</span>
         </div>
         <div className="p-3 border border-neutral-900 rounded bg-emerald-50 text-emerald-950">
-          <span className="text-emerald-800 block font-semibold text-[10px] uppercase">SISA KAS TOKO:</span>
+          <span className="text-emerald-800 block font-semibold text-[10px] uppercase">{language === 'id' ? 'SISA KAS TOKO:' : 'REMAINING CASH:'}</span>
           <span className="font-extrabold text-base font-mono tabular-nums text-emerald-900">{formatRupiah(summary.saldoKasSaatIni)}</span>
         </div>
         <div className="p-3 border border-neutral-300 rounded bg-neutral-50">
-          <span className="text-neutral-500 block">Total Setelah Untung:</span>
+          <span className="text-neutral-500 block">{language === 'id' ? 'Total Setelah Untung:' : 'Total After Profit:'}</span>
           <span className="font-extrabold text-base font-mono tabular-nums text-neutral-900">{formatRupiah(summary.totalSetelahUntung)}</span>
         </div>
       </div>
@@ -81,15 +83,15 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
       <table className="w-full text-left border-collapse text-xs mb-8">
         <thead>
           <tr className="border-y border-neutral-900 bg-neutral-100 text-neutral-900 font-bold">
-            <th className="py-2 px-2">NAMA BARANG</th>
-            <th className="py-2 px-2 text-center">ISI WADAH</th>
-            <th className="py-2 px-2 text-right">HARGA BELI</th>
-            <th className="py-2 px-2 text-center">TERJUAL</th>
-            <th className="py-2 px-2 text-right">HARGA JUAL</th>
-            <th className="py-2 px-2 text-right">GAIN (UNTUNG)</th>
-            <th className="py-2 px-2 text-right">EQUITY (MODAL)</th>
-            <th className="py-2 px-2 text-right bg-neutral-200">TOTAL SETELAH UNTUNG</th>
-            <th className="py-2 px-2 text-right bg-emerald-100">SISA KAS</th>
+            <th className="py-2 px-2">{language === 'id' ? 'NAMA BARANG' : 'ITEM NAME'}</th>
+            <th className="py-2 px-2 text-center">{language === 'id' ? 'ISI WADAH' : 'UNITS / CONTAINER'}</th>
+            <th className="py-2 px-2 text-right">{language === 'id' ? 'HARGA BELI' : 'PURCHASE PRICE'}</th>
+            <th className="py-2 px-2 text-center">{language === 'id' ? 'TERJUAL' : 'UNITS SOLD'}</th>
+            <th className="py-2 px-2 text-right">{language === 'id' ? 'HARGA JUAL' : 'SELLING PRICE'}</th>
+            <th className="py-2 px-2 text-right">{language === 'id' ? 'GAIN (UNTUNG)' : 'GAIN (PROFIT)'}</th>
+            <th className="py-2 px-2 text-right">{language === 'id' ? 'EQUITY (MODAL)' : 'EQUITY (CAPITAL)'}</th>
+            <th className="py-2 px-2 text-right bg-neutral-200">{language === 'id' ? 'TOTAL SETELAH UNTUNG' : 'TOTAL AFTER PROFIT'}</th>
+            <th className="py-2 px-2 text-right bg-emerald-100">{language === 'id' ? 'SISA KAS' : 'CASH BALANCE'}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-300">
@@ -149,7 +151,7 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
         </tbody>
         <tfoot>
           <tr className="border-t-2 border-neutral-900 font-bold bg-neutral-100">
-            <td colSpan={5} className="py-2.5 px-2 text-right">TOTAL KESELURUHAN:</td>
+            <td colSpan={5} className="py-2.5 px-2 text-right">{language === 'id' ? 'TOTAL KESELURUHAN:' : 'GRAND TOTAL:'}</td>
             <td className="py-2.5 px-2 text-right font-mono tabular-nums text-emerald-900">
               +{formatRupiah(summary.totalGainTerjual)}
             </td>
@@ -168,12 +170,12 @@ export const PrintReportView: React.FC<PrintReportViewProps> = ({ items, summary
 
       <div className="mt-8 pt-4 border-t border-neutral-300 grid grid-cols-2 text-xs">
         <div className="space-y-1 text-neutral-500">
-          <p className="font-semibold text-neutral-700">Catatan Penutupan Kas Toko:</p>
-          <p>• Barang belum laku mengurangi ekuitas kas dan tidak dicatat untung sebelum terjual.</p>
-          <p>• Keuntungan dan simpanan dihitung nyata dari barang yang telah laku.</p>
+          <p className="font-semibold text-neutral-700">{language === 'id' ? 'Catatan Penutupan Kas Toko:' : 'Cash Closing Notes:'}</p>
+          <p>• {language === 'id' ? 'Barang belum laku mengurangi ekuitas kas dan tidak dicatat untung sebelum terjual.' : 'Unsold goods reduce cash equity and are not recorded as profit until sold.'}</p>
+          <p>• {language === 'id' ? 'Keuntungan dan simpanan dihitung nyata dari barang yang telah laku.' : 'Profit and savings are calculated from items that have actually been sold.'}</p>
         </div>
         <div className="text-right space-y-10">
-          <p className="text-neutral-600">Kasir / Pemilik Usaha,</p>
+          <p className="text-neutral-600">{language === 'id' ? 'Kasir / Pemilik Usaha,' : 'Cashier / Business Owner,'}</p>
           <p className="font-semibold text-neutral-900 underline underline-offset-4">( ........................................ )</p>
         </div>
       </div>

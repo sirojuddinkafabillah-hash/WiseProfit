@@ -256,7 +256,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 onChange={(e) => onSelectMonth(e.target.value)}
                 className="bg-transparent text-slate-200 focus:outline-none cursor-pointer pr-1"
               >
-                <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'Semua Periode'}</option>
+                <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'All Periods'}</option>
                 {availableMonths.map((m) => {
                   const [y, mon] = m.split('-');
                   const monthName = new Date(Number(y), Number(mon) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });

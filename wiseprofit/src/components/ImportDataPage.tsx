@@ -302,7 +302,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const validC = parsed.filter(p => p.isValid).length;
       setResultMessage({
         type: 'success',
-        text: `Successfully read ${parsed.length} data rows (${validC} items ready to save). Review the table preview below, then click "{t('Impor Data', 'Import Data')}" to save.`
+        text: `${t('Berhasil membaca', 'Successfully read')} ${parsed.length} ${t('baris data', 'data rows')} (${validC} ${t('barang siap disimpan', 'items ready to save')}). ${t('Periksa pratinjau tabel di bawah, lalu klik "Impor Data" untuk menyimpan.', 'Review the table preview below, then click "Import Data" to save.')}`
       });
     }
 
@@ -901,7 +901,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-start gap-2 text-[11px] font-mono text-slate-400">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <span>
-              Automatically recognized fields: <strong>No</strong>, <strong>{t('Tanggal Input', 'Entry Date')}</strong>, <strong>{t('Nama Barang', 'Nama Items')}</strong>, <strong>{t('Isi per Wadah', 'Units per Container')}</strong>, <strong>{t('Harga Beli per Wadah', 'Purchase Price per Container')}</strong>, <strong>{t('Jumlah Terjual', 'Units Sold')}</strong>, <strong>{t('Harga Jual per Unit', 'Selling Price per Unit')}</strong>, <strong>{t('Keuntungan', 'Gain')}</strong>, <strong>{t('Modal Kembali', 'Cost Recovered')}</strong>, <strong>{t('Nilai Sisa Stok', 'Remaining Inventory Value')}</strong>, <strong>{t('TOTAL SETELAH LABA', 'TOTAL AFTER PROFIT')}</strong>, dan <strong>{t('SALDO KAS', 'CASH BALANCE')}</strong>.
+              Automatically recognized fields: <strong>No</strong>, <strong>{t('Tanggal Input', 'Entry Date')}</strong>, <strong>{t('Nama Barang', 'Item Name')}</strong>, <strong>{t('Isi per Wadah', 'Units per Container')}</strong>, <strong>{t('Harga Beli per Wadah', 'Purchase Price per Container')}</strong>, <strong>{t('Jumlah Terjual', 'Units Sold')}</strong>, <strong>{t('Harga Jual per Unit', 'Selling Price per Unit')}</strong>, <strong>{t('Keuntungan', 'Gain')}</strong>, <strong>{t('Modal Kembali', 'Cost Recovered')}</strong>, <strong>{t('Nilai Sisa Stok', 'Remaining Inventory Value')}</strong>, <strong>{t('TOTAL SETELAH LABA', 'TOTAL AFTER PROFIT')}</strong>, dan <strong>{t('SALDO KAS', 'CASH BALANCE')}</strong>.
             </span>
           </div>
         </div>
@@ -943,7 +943,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                       {t('Tambahkan', 'Append')}
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-                      {t('Tambahkan', 'Append')} new data without deleting {currentItemsCount} item yang sudah ada di Supabase.
+                      {t(`Tambahkan ${currentItemsCount} data baru tanpa menghapus data yang sudah ada di Supabase.`, `Append ${currentItemsCount} new items without deleting existing data in Supabase.`)}
                     </div>
                   </div>
                 </label>
@@ -1008,7 +1008,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
               ) : (
                 <>
                   <Database className="w-4 h-4" />
-                  <span>{t('Impor Data', 'Import Data')} {validCount > 0 ? `(${validCount} Items)` : ''}</span>
+                  <span>{t('Impor Data', 'Import Data')} {validCount > 0 ? `(${validCount} ${t('Barang', 'Items')})` : ''}</span>
                 </>
               )}
             </button>
@@ -1041,7 +1041,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
               </div>
               <div>
                 <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                  <span>{t('Periksa data sebelum menyimpan', 'Review data before saving')} ({parsedRows.length} rows)</span>
+                  <span>{t('Periksa data sebelum menyimpan', 'Review data before saving')} ({parsedRows.length} {t('baris', 'rows')})</span>
                   <span className="text-[10px] text-cyan-400 font-normal">
                     (Format 12 Kolom Persis Seperti Gambar)
                   </span>
@@ -1075,7 +1075,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-3.5 h-3.5" />
-                    <span>{t('Simpan Data (', '{t('Simpan Data', 'Save Data')} ('){validCount} Items)</span>
+                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('Barang', 'Items')})</span>
                   </>
                 )}
               </button>
@@ -1225,7 +1225,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-4 h-4" />
-                    <span>{t('Simpan Data (', '{t('Simpan Data', 'Save Data')} ('){validCount} Items)</span>
+                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('Barang', 'Items')})</span>
                   </>
                 )}
               </button>

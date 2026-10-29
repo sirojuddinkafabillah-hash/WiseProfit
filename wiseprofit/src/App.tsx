@@ -862,6 +862,7 @@ export default function App() {
               {/* PAGE 4: IMPOR DATA (EXCEL / CSV / JSON) */}
               {activePage === 'import' && (
                 <ImportDataPage
+                  language={language}
                   currentItemsCount={items.length}
                   currentModalAwal={modalAwal}
                   currentItems={items}
@@ -871,11 +872,11 @@ export default function App() {
               )}
 
               {activePage === 'faq' && (
-                <SupportPage mode="faq" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
+                <SupportPage language={language} onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
               )}
 
               {activePage === 'complaints' && (
-                <SupportPage mode="complaints" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
+                <SupportPage language={language} mode="complaints" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
               )}
             </>
           )}
@@ -962,6 +963,7 @@ export default function App() {
         />
 
         <DownloadModal
+          language={language}
           isOpen={isDownloadModalOpen}
           onClose={() => setIsDownloadModalOpen(false)}
           items={items}

@@ -141,7 +141,25 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
   const handleExportExcel = () => {
     // 1. Primary Sheet: exact 12-column layout matching user's image
     const exportRows = buildExcelExportRows(filteredItems, modalAwal);
-    const wsStoreFormat = XLSX.utils.json_to_sheet(exportRows, { header: USER_IMAGE_HEADERS });
+    const exportHeaders = language === 'id' ? USER_IMAGE_HEADERS : [
+      'No',
+      'Input Date',
+      'Item Name',
+      'Units per Container',
+      'Purchase Price per Container',
+      'Units Sold',
+      'Selling Price per Unit',
+      'Realized Gain',
+      'Cost Recovered',
+      'Remaining Stock Value (Equity)',
+      'TOTAL AFTER PROFIT (Cash Inflow)',
+      'CASH BALANCE',
+    ];
+    const headerMap = Object.fromEntries(USER_IMAGE_HEADERS.map((header, index) => [header, exportHeaders[index]]));
+    const localizedExportRows = exportRows.map((row) =>
+      Object.fromEntries(Object.entries(row).map(([key, value]) => [headerMap[key] || key, value]))
+    );
+    const wsStoreFormat = XLSX.utils.json_to_sheet(localizedExportRows, { header: exportHeaders });
 
     wsStoreFormat['!cols'] = [
       { wch: 6 },   // No

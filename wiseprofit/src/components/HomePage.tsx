@@ -326,7 +326,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
         <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95">
           <div className="flex flex-col items-stretch gap-3 border-b border-slate-700 px-3 py-3">
             <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">{t('Catatan', 'Notes')}</h2><p className="mt-1 text-xs text-slate-400">{t('Atur catatan ke dalam folder seperti aplikasi catatan di ponsel. Catatan disimpan lokal di perangkat ini dan tidak tersinkron ke perangkat lain.', 'Organize notes into folders like a notes app on your phone. Notes are stored locally on this device and do not sync to other devices.')}</p></div></div>
-            <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>New note</button>
+            <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>{t('Catatan baru', 'New note')}</button>
           </div>
           <div className="grid min-w-0 grid-cols-1">
             <aside className="border-b border-slate-700 p-3">

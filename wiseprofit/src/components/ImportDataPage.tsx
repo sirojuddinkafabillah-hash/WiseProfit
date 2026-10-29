@@ -710,13 +710,6 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               <span>{t('Unduh Template CSV', 'Download CSV Template')}</span>
             </button>
 
-            <button
-              onClick={onNavigateToInventory}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
-            >
-              <span>{t('Kembali ke Kasir', 'Back to Cashier')}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
       </div>

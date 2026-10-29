@@ -25,8 +25,10 @@ import {
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { USER_IMAGE_HEADERS, buildExcelExportRows } from '../utils/excelExporter';
+import type { Language } from '../i18n/translations';
 
 interface ReportsEquityPageProps {
+  language: Language;
   items: InventoryItem[];
   modalAwal: number;
   summary: GlobalSummary;
@@ -37,6 +39,7 @@ interface ReportsEquityPageProps {
 }
 
 export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
+  language,
   items,
   modalAwal,
   summary,
@@ -192,11 +195,11 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-500/20"
             >
               <ArrowLeft className="w-4 h-4 stroke-[3]" />
-              <span>Back to Cashier</span>
+              <span>{language === 'id' ? 'Kembali ke Kasir' : 'Back to Cashier'}</span>
             </button>
           )}
           <span className="hidden sm:inline-block text-xs font-sans text-slate-400">
-            · Standalone Page: <strong className="text-slate-200">Sales & Equity Report</strong>
+            · Standalone Page: <strong className="text-slate-200">{language === 'id' ? 'Laporan Penjualan & Ekuitas' : 'Sales & Equity Report'}</strong>
           </span>
         </div>
 
@@ -208,7 +211,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             title="Download the full report as an Excel file (.xlsx)"
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Export Excel</span>
+            <span className="hidden sm:inline">{language === 'id' ? 'Ekspor Excel' : 'Export Excel'}</span>
           </button>
           <button
             type="button"
@@ -217,7 +220,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             title="Print the report in receipt / A4 format"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Print or Save PDF</span>
+            <span>{language === 'id' ? 'Cetak atau Simpan PDF' : 'Print or Save PDF'}</span>
           </button>
         </div>
       </div>
@@ -253,7 +256,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 onChange={(e) => onSelectMonth(e.target.value)}
                 className="bg-transparent text-slate-200 focus:outline-none cursor-pointer pr-1"
               >
-                <option value="all" className="bg-slate-900 text-white">All Periods</option>
+                <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'All Periods'}</option>
                 {availableMonths.map((m) => {
                   const [y, mon] = m.split('-');
                   const monthName = new Date(Number(y), Number(mon) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -293,7 +296,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
-            <span className="uppercase tracking-wider font-semibold">1. Initial Capital</span>
+            <span className="uppercase tracking-wider font-semibold">{language === 'id' ? '1. Modal Awal' : '1. Initial Capital'}</span>
             <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400">
               <DollarSign className="w-4 h-4" />
             </div>
@@ -302,7 +305,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(modalAwal)}
           </div>
           <div className="mt-2 text-[11px] font-sans text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800">
-            <span>Stock purchases:</span>
+            <span>{language === 'id' ? 'Pembelian stok:' : 'Stock purchases:'}</span>
             <span className="text-slate-200 font-semibold">{formatRupiah(summary.totalPengeluaranBeli)}</span>
           </div>
         </div>
@@ -311,7 +314,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
-            <span className="uppercase tracking-wider font-semibold">2. Actual Cash Balance</span>
+            <span className="uppercase tracking-wider font-semibold">{language === 'id' ? '2. Saldo Kas Aktual' : '2. Actual Cash Balance'}</span>
             <div className={`p-2 rounded-xl border ${
               summary.saldoKasSaatIni >= modalAwal 
                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
@@ -326,11 +329,11 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(summary.saldoKasSaatIni)}
           </div>
           <div className="mt-2 text-[11px] font-sans text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800">
-            <span>Inflow: <strong className="text-emerald-400 font-semibold">+{formatRupiah(summary.totalPemasukanJual)}</strong></span>
+            <span>{language === 'id' ? 'Uang masuk:' : 'Inflow:'} <strong className="text-emerald-400 font-semibold">+{formatRupiah(summary.totalPemasukanJual)}</strong></span>
             {summary.totalPenarikanKas > 0 ? (
               <span className="text-rose-400 font-semibold">Withdrawn: -{formatRupiah(summary.totalPenarikanKas)}</span>
             ) : (
-              <span className="text-slate-500">No withdrawals yet</span>
+              <span className="text-slate-500">{language === 'id' ? 'Belum ada penarikan' : 'No withdrawals yet'}</span>
             )}
           </div>
         </div>
@@ -339,7 +342,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
-            <span className="uppercase tracking-wider font-semibold">3. Remaining Inventory Value</span>
+            <span className="uppercase tracking-wider font-semibold">{language === 'id' ? '3. Nilai Sisa Persediaan' : '3. Remaining Inventory Value'}</span>
             <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
               <Package className="w-4 h-4" />
             </div>
@@ -348,7 +351,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(summary.totalNilaiSisaStok)}
           </div>
           <div className="mt-2 text-[11px] font-sans text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800">
-            <span>Cost recovered from sold items:</span>
+            <span>{language === 'id' ? 'Modal kembali dari barang terjual:' : 'Cost recovered from sold items:'}</span>
             <span className="text-slate-200 font-semibold">{formatRupiah(summary.totalModalKembali)}</span>
           </div>
         </div>
@@ -357,7 +360,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-colors pointer-events-none" />
           <div className="flex items-center justify-between text-xs font-sans text-slate-400 mb-2">
-            <span className="uppercase tracking-wider font-semibold">4. Total Business Equity</span>
+            <span className="uppercase tracking-wider font-semibold">{language === 'id' ? '4. Total Ekuitas Usaha' : '4. Total Business Equity'}</span>
             <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
               <PieChart className="w-4 h-4" />
             </div>
@@ -366,7 +369,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             {formatRupiah(totalEkuitasUsaha)}
           </div>
           <div className="mt-2 text-[11px] font-sans flex items-center justify-between pt-2 border-t border-slate-800">
-            <span className="text-slate-400">Capital Growth:</span>
+            <span className="text-slate-400">{language === 'id' ? 'Pertumbuhan Modal:' : 'Capital Growth:'}</span>
             <span className={`font-bold flex items-center gap-0.5 ${
               pertumbuhanEkuitasNominal >= 0 ? 'text-emerald-400' : 'text-rose-400'
             }`}>
@@ -417,11 +420,11 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <div className="flex items-center justify-between text-xs font-sans text-slate-300 pt-1">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-md bg-emerald-500 inline-block" />
-                <span>Available cash: <strong>{formatRupiah(summary.saldoKasSaatIni)}</strong> ({percentCash.toFixed(1)}%)</span>
+                <span>{language === 'id' ? 'Kas tersedia:' : 'Available cash:'} <strong>{formatRupiah(summary.saldoKasSaatIni)}</strong> ({percentCash.toFixed(1)}%)</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-md bg-purple-500 inline-block" />
-                <span>Remaining inventory value: <strong>{formatRupiah(summary.totalNilaiSisaStok)}</strong> ({percentStock.toFixed(1)}%)</span>
+                <span>{language === 'id' ? 'Nilai persediaan tersisa:' : 'Remaining inventory value:'} <strong>{formatRupiah(summary.totalNilaiSisaStok)}</strong> ({percentStock.toFixed(1)}%)</span>
               </div>
             </div>
           </div>
@@ -429,27 +432,27 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           {/* 3 Secondary Financial Insights */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800 text-xs font-sans">
             <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-2xl">
-              <span className="text-slate-400 text-[11px] block">Realized Net Profit</span>
+              <span className="text-slate-400 text-[11px] block">{language === 'id' ? 'Laba Bersih Terealisasi' : 'Realized Net Profit'}</span>
               <span className="text-emerald-400 font-bold text-base mt-1 block">
                 +{formatRupiah(summary.totalGainTerjual)}
               </span>
-              <span className="text-[10px] text-slate-500 mt-1 block">From units sold</span>
+              <span className="text-[10px] text-slate-500 mt-1 block">{language === 'id' ? 'Dari unit yang terjual' : 'From units sold'}</span>
             </div>
 
             <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-2xl">
-              <span className="text-slate-400 text-[11px] block">Average Profit Margin</span>
+              <span className="text-slate-400 text-[11px] block">{language === 'id' ? 'Rata-rata Margin Laba' : 'Average Profit Margin'}</span>
               <span className="text-cyan-400 font-bold text-base mt-1 block">
                 {formatAngka(summary.rataRataMargin, 1)}%
               </span>
-              <span className="text-[10px] text-slate-500 mt-1 block">Gross margin per product</span>
+              <span className="text-[10px] text-slate-500 mt-1 block">{language === 'id' ? 'Margin kotor per produk' : 'Gross margin per product'}</span>
             </div>
 
             <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-2xl">
-              <span className="text-slate-400 text-[11px] block">Potential Profit from Remaining Stock</span>
+              <span className="text-slate-400 text-[11px] block">{language === 'id' ? 'Potensi Laba dari Sisa Stok' : 'Potential Profit from Remaining Stock'}</span>
               <span className="text-amber-300 font-bold text-base mt-1 block">
                 +{formatRupiah(Math.max(0, summary.totalSetelahUntungPenuh - summary.totalPengeluaranBeli - summary.totalGainTerjual))}
               </span>
-              <span className="text-[10px] text-slate-500 mt-1 block">If all remaining stock is sold</span>
+              <span className="text-[10px] text-slate-500 mt-1 block">{language === 'id' ? 'Jika seluruh sisa stok terjual' : 'If all remaining stock is sold'}</span>
             </div>
           </div>
 
@@ -545,7 +548,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-sans text-slate-400">
-            <span>Business status:</span>
+            <span>{language === 'id' ? 'Status usaha:' : 'Business status:'}</span>
             <span className={`font-semibold ${summary.totalPemasukanJual >= summary.totalPengeluaranBeli ? 'text-emerald-400' : 'text-amber-300'}`}>
               {summary.totalPemasukanJual >= summary.totalPengeluaranBeli 
                 ? 'Purchase Cost Sudah Tertutup Penuh' 
@@ -581,7 +584,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Cari nama items..."
+                placeholder={language === 'id' ? "Cari nama barang..." : "Search item name..."}
                 className="pl-8 pr-3 py-1.5 text-xs bg-slate-950/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 font-sans w-44 sm:w-56"
               />
             </div>
@@ -594,11 +597,11 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="bg-transparent text-slate-200 focus:outline-none cursor-pointer pr-1"
               >
-                <option value="gain" className="bg-slate-900 text-white">Sort: Highest Profit</option>
-                <option value="terjual" className="bg-slate-900 text-white">Sort: Most Units Sold</option>
-                <option value="omset" className="bg-slate-900 text-white">Sort: Highest Revenue</option>
-                <option value="nilaiStok" className="bg-slate-900 text-white">Sort: Remaining Inventory Value</option>
-                <option value="terbaru" className="bg-slate-900 text-white">Sort: Newest Date</option>
+                <option value="gain" className="bg-slate-900 text-white">{language === 'id' ? 'Urutkan: Laba Tertinggi' : 'Sort: Highest Profit'}</option>
+                <option value="terjual" className="bg-slate-900 text-white">{language === 'id' ? 'Urutkan: Unit Terjual Terbanyak' : 'Sort: Most Units Sold'}</option>
+                <option value="omset" className="bg-slate-900 text-white">{language === 'id' ? 'Urutkan: Omzet Tertinggi' : 'Sort: Highest Revenue'}</option>
+                <option value="nilaiStok" className="bg-slate-900 text-white">{language === 'id' ? 'Urutkan: Nilai Sisa Stok' : 'Sort: Remaining Inventory Value'}</option>
+                <option value="terbaru" className="bg-slate-900 text-white">{language === 'id' ? 'Urutkan: Tanggal Terbaru' : 'Sort: Newest Date'}</option>
               </select>
             </div>
           </div>
@@ -610,14 +613,14 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <thead>
               <tr className="bg-slate-900/90 text-slate-300 font-sans uppercase text-[10px] tracking-wider border-b border-slate-800">
                 <th className="py-3 px-3.5 font-bold">No</th>
-                <th className="py-3 px-3.5 font-bold">Item & Date</th>
-                <th className="py-3 px-3.5 font-bold text-right">Purchase Cost</th>
-                <th className="py-3 px-3.5 font-bold text-center">Sold / Stock</th>
-                <th className="py-3 px-3.5 font-bold text-right">Selling Price</th>
-                <th className="py-3 px-3.5 font-bold text-right text-cyan-300">Revenue Masuk Kas</th>
-                <th className="py-3 px-3.5 font-bold text-right text-emerald-300">Net Profit</th>
-                <th className="py-3 px-3.5 font-bold text-right text-purple-300">Remaining Stock Value</th>
-                <th className="py-3 px-3.5 font-bold text-center">Capital Status</th>
+                <th className="py-3 px-3.5 font-bold">{language === 'id' ? 'Barang & Tanggal' : 'Item & Date'}</th>
+                <th className="py-3 px-3.5 font-bold text-right">{language === 'id' ? 'Biaya Pembelian' : 'Purchase Cost'}</th>
+                <th className="py-3 px-3.5 font-bold text-center">{language === 'id' ? 'Terjual / Stok' : 'Sold / Stock'}</th>
+                <th className="py-3 px-3.5 font-bold text-right">{language === 'id' ? 'Harga Jual' : 'Selling Price'}</th>
+                <th className="py-3 px-3.5 font-bold text-right text-cyan-300">{language === 'id' ? 'Omzet Masuk Kas' : 'Revenue Inflow'}</th>
+                <th className="py-3 px-3.5 font-bold text-right text-emerald-300">{language === 'id' ? 'Laba Bersih' : 'Net Profit'}</th>
+                <th className="py-3 px-3.5 font-bold text-right text-purple-300">{language === 'id' ? 'Nilai Sisa Stok' : 'Remaining Stock Value'}</th>
+                <th className="py-3 px-3.5 font-bold text-center">{language === 'id' ? 'Status Modal' : 'Capital Status'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/80 font-sans text-[11px]">

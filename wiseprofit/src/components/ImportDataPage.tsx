@@ -3,7 +3,6 @@ import { InventoryItem } from '../types/inventory';
 import { importItemsToSupabase } from '../services/supabaseApi';
 import { calculateItem, formatRupiah } from '../utils/calculator';
 import { useAuth } from '../context/AuthContext';
-import { batchUploadToCloud } from '../services/supabaseSync';
 import * as XLSX from 'xlsx';
 import { 
   UploadCloud, 

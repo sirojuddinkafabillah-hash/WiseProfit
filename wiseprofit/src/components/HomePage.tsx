@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2, {t('Folder', 'Folder')}, {t('Folder', 'Folder')}Plus, FileText, Plus, Search, ArrowLeft, Trash } from 'lucide-react';
+import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2, Folder, FolderPlus, FileText, Plus, Search, ArrowLeft, Trash } from 'lucide-react';
 import type { AppUser } from '../context/AuthContext';
 import type { BackgroundTheme } from './CosmicInteractiveBackground';
 
@@ -22,30 +22,30 @@ interface HomePageProps {
   onLogout: () => Promise<void>;
 }
 
-type Note{t('Folder', 'Folder')} = { id: string; name: string };
+type NoteFolder = { id: string; name: string };
 type SavedNote = { id: string; title: string; content: string; folderId: string; updatedAt: number };
 
-const DEFAULT_NOTE_FOLDERS: Note{t('Folder', 'Folder')}[] = [{ id: 'personal', name: t('Pribadi', 'Personal') }, { id: 'business', name: t('Usaha', 'Business') }];
+const DEFAULT_NOTE_FOLDERS: NoteFolder[] = [{ id: 'personal', name: 'Personal' }, { id: 'business', name: 'Business' }];
 
 const THEMES: { id: BackgroundTheme; name: string; description: string; preview: string; icon: React.ReactNode }[] = [
-  { id: 'cosmic-nebula', name: t('Nebula', 'Nebula'), description: t('Tema gelap dengan cahaya hijau dan biru', 'Dark theme with green and blue glow'), preview: 'from-slate-950 via-indigo-950 to-emerald-950', icon: <Moon className="h-4 w-4" /> },
-  { id: 'aurora-emerald', name: t('Aurora Hijau', 'Aurora Green'), description: t('Nuansa hijau segar', 'Fresh green tones'), preview: 'from-emerald-950 via-teal-900 to-slate-950', icon: <Sparkles className="h-4 w-4" /> },
-  { id: 'cyber-sapphire', name: t('Safir Biru', 'Blue Sapphire'), description: t('Nuansa biru modern yang sejuk', 'Cool, modern blue tones'), preview: 'from-blue-950 via-sky-900 to-indigo-950', icon: <Monitor className="h-4 w-4" /> },
-  { id: 'light-crystal', name: t('Terang', 'Light'), description: t('Latar cerah dan ringan', 'Bright, lightweight background'), preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
+  { id: 'cosmic-nebula', name: 'Nebula', description: 'Dark theme with green and blue glow', preview: 'from-slate-950 via-indigo-950 to-emerald-950', icon: <Moon className="h-4 w-4" /> },
+  { id: 'aurora-emerald', name: 'Aurora Green', description: 'Fresh green tones', preview: 'from-emerald-950 via-teal-900 to-slate-950', icon: <Sparkles className="h-4 w-4" /> },
+  { id: 'cyber-sapphire', name: 'Blue Sapphire', description: 'Cool, modern blue tones', preview: 'from-blue-950 via-sky-900 to-indigo-950', icon: <Monitor className="h-4 w-4" /> },
+  { id: 'light-crystal', name: 'Light', description: 'Bright, lightweight background', preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
 ];
 
 export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
   const t = (id: string, en: string) => language === 'id' ? id : en;
   const [name, setName] = useState(user.displayName || '');
-  const [note{t('Folder', 'Folder')}s, setNote{t('Folder', 'Folder')}s] = useState<Note{t('Folder', 'Folder')}[]>(DEFAULT_NOTE_FOLDERS);
-  const [saved{t('Catatan', 'Notes')}, setSaved{t('Catatan', 'Notes')}] = useState<SavedNote[]>([]);
-  const [active{t('Folder', 'Folder')}Id, setActive{t('Folder', 'Folder')}Id] = useState('all');
+  const [noteFolders, setNoteFolders] = useState<NoteFolder[]>(DEFAULT_NOTE_FOLDERS);
+  const [savedNotes, setSavedNotes] = useState<SavedNote[]>([]);
+  const [activeFolderId, setActiveFolderId] = useState('all');
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
   const [draftTitle, setDraftTitle] = useState('');
   const [draftContent, setDraftContent] = useState('');
   const [noteSearch, setNoteSearch] = useState('');
-  const [new{t('Folder', 'Folder')}Name, setNew{t('Folder', 'Folder')}Name] = useState('');
-  const [show{t('Folder', 'Folder')}Input, setShow{t('Folder', 'Folder')}Input] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [showFolderInput, setShowFolderInput] = useState(false);
   const [isSavingName, setIsSavingName] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -75,37 +75,37 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
     try {
       const foldersRaw = localStorage.getItem(`wp_note_folders_${user.uid}`);
       const notesRaw = localStorage.getItem(`wp_notes_v2_${user.uid}`);
-      const folders = foldersRaw ? JSON.parse(foldersRaw) as Note{t('Folder', 'Folder')}[] : DEFAULT_NOTE_FOLDERS;
+      const folders = foldersRaw ? JSON.parse(foldersRaw) as NoteFolder[] : DEFAULT_NOTE_FOLDERS;
       const notes = notesRaw ? JSON.parse(notesRaw) as SavedNote[] : [];
       const legacyNote = localStorage.getItem(`wp_notes_${user.uid}`) || '';
-      const migrated{t('Catatan', 'Notes')} = notes.length || !legacyNote.trim() ? notes : [{ id: `legacy-${Date.now()}`, title: t('Catatan lama', 'Old note'), content: legacyNote, folderId: 'personal', updatedAt: Date.now() }];
-      setNote{t('Folder', 'Folder')}s(folders.length ? folders : DEFAULT_NOTE_FOLDERS);
-      setSaved{t('Catatan', 'Notes')}(migrated{t('Catatan', 'Notes')});
-      setActive{t('Folder', 'Folder')}Id('all');
+      const migratedNotes = notes.length || !legacyNote.trim() ? notes : [{ id: `legacy-${Date.now()}`, title: 'Old note', content: legacyNote, folderId: 'personal', updatedAt: Date.now() }];
+      setNoteFolders(folders.length ? folders : DEFAULT_NOTE_FOLDERS);
+      setSavedNotes(migratedNotes);
+      setActiveFolderId('all');
       setActiveNoteId(null);
       setDraftTitle('');
       setDraftContent('');
       setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));
     } catch {
-      setNote{t('Folder', 'Folder')}s(DEFAULT_NOTE_FOLDERS);
-      setSaved{t('Catatan', 'Notes')}([]);
+      setNoteFolders(DEFAULT_NOTE_FOLDERS);
+      setSavedNotes([]);
       setLocalPhoto(null);
     }
   }, [user.uid]);
 
   useEffect(() => {
     try {
-      localStorage.setItem(`wp_note_folders_${user.uid}`, JSON.stringify(note{t('Folder', 'Folder')}s));
-      localStorage.setItem(`wp_notes_v2_${user.uid}`, JSON.stringify(saved{t('Catatan', 'Notes')}));
+      localStorage.setItem(`wp_note_folders_${user.uid}`, JSON.stringify(noteFolders));
+      localStorage.setItem(`wp_notes_v2_${user.uid}`, JSON.stringify(savedNotes));
     } catch (error) {
-      console.error('{t('Catatan', 'Notes')} could not be saved in this browser:', error);
+      console.error('Notes could not be saved in this browser:', error);
     }
-  }, [user.uid, note{t('Folder', 'Folder')}s, saved{t('Catatan', 'Notes')}]);
+  }, [user.uid, noteFolders, savedNotes]);
 
   const handleWallpaperSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) { setNameMessage(t('Pilih file gambar untuk wallpaper.', t('Pilih file gambar untuk wallpaper.', 'Choose an image file for the wallpaper.'))); return; }
+    if (!file.type.startsWith('image/')) { setNameMessage(t('Pilih file gambar untuk wallpaper.', 'Choose an image file for the wallpaper.')); return; }
     if (file.size > 3 * 1024 * 1024) { setNameMessage(t('Ukuran wallpaper maksimal 3 MB.', 'Wallpaper must be 3 MB or smaller.')); return; }
     const reader = new FileReader();
     reader.onload = () => { const result = typeof reader.result === 'string' ? reader.result : null; if (result) { onWallpaperChange(result); setNameMessage(t('Wallpaper diterapkan di perangkat ini.', 'Wallpaper applied on this device.')); } };
@@ -193,10 +193,10 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
   };
 
   const createNote = () => {
-    const folderId = active{t('Folder', 'Folder')}Id === 'all' ? 'personal' : active{t('Folder', 'Folder')}Id;
+    const folderId = activeFolderId === 'all' ? 'personal' : activeFolderId;
     const id = `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const newNote: SavedNote = { id, title: '', content: '', folderId, updatedAt: Date.now() };
-    setSaved{t('Catatan', 'Notes')}((previous) => [newNote, ...previous]);
+    setSavedNotes((previous) => [newNote, ...previous]);
     setActiveNoteId(id);
     setDraftTitle('');
     setDraftContent('');
@@ -211,36 +211,36 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
   const updateCurrentNote = (field: 'title' | 'content', value: string) => {
     if (field === 'title') setDraftTitle(value); else setDraftContent(value);
     if (!activeNoteId) return;
-    setSaved{t('Catatan', 'Notes')}((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, [field]: value, updatedAt: Date.now() } : item));
+    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, [field]: value, updatedAt: Date.now() } : item));
   };
 
   const saveNote = () => {
     if (!activeNoteId) { setNameMessage(t('Pilih atau buat catatan terlebih dahulu.', 'Select or create a note first.')); return; }
-    setSaved{t('Catatan', 'Notes')}((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, title: draftTitle.trim() || t('Catatan tanpa judul', 'Untitled note'), content: draftContent, updatedAt: Date.now() } : item));
+    setSavedNotes((previous) => previous.map((item) => item.id === activeNoteId ? { ...item, title: draftTitle.trim() || 'Untitled note', content: draftContent, updatedAt: Date.now() } : item));
     setNameMessage(t('Catatan disimpan di browser/perangkat ini.', 'Note saved in this browser/device.'));
   };
 
-  const addNote{t('Folder', 'Folder')} = () => {
-    const clean = new{t('Folder', 'Folder')}Name.trim();
+  const addNoteFolder = () => {
+    const clean = newFolderName.trim();
     if (!clean) return;
     const folder = { id: `folder-${Date.now()}`, name: clean.slice(0, 32) };
-    setNote{t('Folder', 'Folder')}s((previous) => [...previous, folder]);
-    setActive{t('Folder', 'Folder')}Id(folder.id);
-    setNew{t('Folder', 'Folder')}Name('');
-    setShow{t('Folder', 'Folder')}Input(false);
+    setNoteFolders((previous) => [...previous, folder]);
+    setActiveFolderId(folder.id);
+    setNewFolderName('');
+    setShowFolderInput(false);
   };
 
   const deleteCurrentNote = () => {
     if (!activeNoteId) return;
-    setSaved{t('Catatan', 'Notes')}((previous) => previous.filter((item) => item.id !== activeNoteId));
+    setSavedNotes((previous) => previous.filter((item) => item.id !== activeNoteId));
     setActiveNoteId(null);
     setDraftTitle('');
     setDraftContent('');
     setNameMessage(t('Catatan dihapus.', 'Note deleted.'));
   };
 
-  const visible{t('Catatan', 'Notes')} = saved{t('Catatan', 'Notes')}
-    .filter((item) => active{t('Folder', 'Folder')}Id === 'all' || item.folderId === active{t('Folder', 'Folder')}Id)
+  const visibleNotes = savedNotes
+    .filter((item) => activeFolderId === 'all' || item.folderId === activeFolderId)
     .filter((item) => `${item.title} ${item.content}`.toLowerCase().includes(noteSearch.toLowerCase()))
     .sort((a, b) => b.updatedAt - a.updatedAt);
 
@@ -262,17 +262,17 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-4">
           <div className="flex shrink-0 flex-col items-center gap-2">
-            <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Choose profile photo" />
-            <button type="button" onClick={() => photoInputRef.current?.click()} title="Change profile photo" aria-label="Change profile photo" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
-              {localPhoto ? <img src={localPhoto} alt="Profile photo" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Profile photo" className="h-full w-full object-cover" /> : <span aria-label={`Initials for ${displayName}`} className="wp-profile-initials">{initials}</span>}
+            <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label={t('Pilih foto profil', 'Choose profile photo')} />
+            <button type="button" onClick={() => photoInputRef.current?.click()} title={t('Ubah foto profil', 'Change profile photo')} aria-label={t('Ubah foto profil', 'Change profile photo')} className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
+              {localPhoto ? <img src={localPhoto} alt={t('Foto profil', 'Profile photo')} className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt={t('Foto profil', 'Profile photo')} className="h-full w-full object-cover" /> : <span aria-label={`Initials for ${displayName}`} className="wp-profile-initials">{initials}</span>}
             </button>
             <button type="button" onClick={() => { if (photoInputRef.current) { photoInputRef.current.value = ''; photoInputRef.current.click(); } }} className="wp-profile-photo-action inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold">
               <Camera className="h-3.5 w-3.5" /> {localPhoto || user.photoURL ? t('Ubah foto', 'Change photo') : t('Tambah foto', 'Add photo')}
             </button>
-            {localPhoto && <button type="button" onClick={removePhoto} title="Remove profile photo" aria-label="Remove profile photo" className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
+            {localPhoto && <button type="button" onClick={removePhoto} title={t('Hapus foto profil', 'Remove profile photo')} aria-label={t('Hapus foto profil', 'Remove profile photo')} className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="wp-profile-eyebrow mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold"><CheckCircle2 className="h-3.5 w-3.5" /> WiseProfit Home</div>
+            <div className="wp-profile-eyebrow mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold"><CheckCircle2 className="h-3.5 w-3.5" /> {t('Beranda WiseProfit', 'WiseProfit Home')}</div>
             <h1 className="wp-profile-title break-words text-xl font-bold tracking-tight">{t('Halo', 'Hello')}, {displayName}!</h1>
             <p className="wp-profile-description mt-2 max-w-2xl text-sm leading-relaxed">{t('Kelola profil, sesuaikan ruang kerja, dan simpan catatan usaha di satu tempat.', 'Manage your profile, customize your workspace, and keep your business notes in one place.')}</p>
             <div className="wp-profile-email mt-3 flex items-center gap-2 break-all text-xs"><Mail className="h-3.5 w-3.5 shrink-0" />{user.email || t('Email tidak tersedia', 'Email unavailable')}</div>
@@ -284,7 +284,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
         <div className="wp-profile-card rounded-2xl border p-4">
           <div className="mb-5 flex items-center gap-3"><div className="wp-profile-icon rounded-xl p-2.5"><UserRound className="h-5 w-5" /></div><div><h2 className="wp-profile-title font-bold">{t('Profil Anda', 'Your Profile')}</h2><p className="wp-profile-muted mt-1 text-xs">{t('Nama ini akan ditampilkan di WiseProfit.', 'This name will be displayed in WiseProfit.')}</p></div></div>
           <label htmlFor="wiseprofit-profile-name" className="wp-profile-label mb-2 block text-sm font-semibold">{t('Nama tampilan', 'Display name')}</label>
-          <div className="flex min-w-0 flex-col gap-2"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder="{t('Masukkan nama Anda', 'Enter your name')}" className="wp-profile-input min-w-0 flex-1 rounded-xl border px-3 py-3 text-sm" /><button type="button" onClick={saveName} disabled={isSavingName} className="wp-profile-save inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-bold disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? '{t('Menyimpan…', 'Saving…')}' : '{t('Simpan nama', 'Save name')}'}</button></div>
+          <div className="flex min-w-0 flex-col gap-2"><input id="wiseprofit-profile-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder={t('Masukkan nama Anda', 'Enter your name')} className="wp-profile-input min-w-0 flex-1 rounded-xl border px-3 py-3 text-sm" /><button type="button" onClick={saveName} disabled={isSavingName} className="wp-profile-save inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-bold disabled:opacity-60"><Save className="h-4 w-4" />{isSavingName ? t('Menyimpan…', 'Saving…') : t('Simpan nama', 'Save name')}</button></div>
           <p className="wp-profile-muted mt-3 text-xs leading-relaxed">{t('Email akun tidak berubah. Hanya nama tampilan yang diperbarui.', 'Your account email will not change. Only your display name will be updated.')}</p>
         </div>
 
@@ -308,7 +308,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Jenis font', 'Font family')}</label><select value={fontChoice} onChange={(e) => onFontChange(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-white"><option value="Calibri, Carlito, Arial, sans-serif">Calibri — Professional documents</option><option value="Cambria, Georgia, serif">Cambria — Formal documents</option><option value="Arial, Helvetica, sans-serif">Arial</option><option value="Helvetica, Arial, sans-serif">Helvetica</option><option value="Swiss, Arial, Helvetica, sans-serif">Swiss — Sans-serif</option><option value="Aptos, Calibri, sans-serif">Aptos — Modern Office</option><option value="Times New Roman, Times, serif">Times New Roman</option><option value="Georgia, serif">Georgia — Classic</option><option value="Verdana, sans-serif">Verdana — Wide</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Trebuchet MS, sans-serif">Trebuchet MS</option><option value="Garamond, serif">Garamond</option><option value="Inter, Arial, sans-serif">Inter — Modern</option><option value="system-ui, sans-serif">System default</option><option value="monospace">Monospace — Technical</option></select></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Warna teks', 'Text color')}</label><div className="grid grid-cols-2 gap-2">{([{id:'default',name:'Default',sample:'#cbd5e1'},{id:'bright',name:'Bright white',sample:'#ffffff'},{id:'soft',name:'Soft gray',sample:'#94a3b8'},{id:'warm',name:'Cream',sample:'#f5deb3'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTextChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${textChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
             <div><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Warna aksen dasbor', 'Dashboard accent color')}</label><div className="flex flex-wrap gap-3">{([{id:'emerald',name:'Green',color:'#34d399'},{id:'blue',name:'Blue',color:'#60a5fa'},{id:'violet',name:'Purple',color:'#a78bfa'},{id:'rose',name:'Pink',color:'#fb7185'},{id:'amber',name:'Gold',color:'#fbbf24'},{id:'cyan',name:'Cyan',color:'#22d3ee'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onAccentChange(x.id)} title={x.name} aria-label={x.name} className={`h-9 w-9 rounded-full border-2 ${accentChoice===x.id?'border-white ring-2 ring-white/20':'border-transparent'}`} style={{backgroundColor:x.color}}>{accentChoice===x.id && <CheckCircle2 className="mx-auto h-4 w-4 text-slate-950"/>}</button>)}</div></div>
-            <div><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Warna tabel', 'Table color')}</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Dark',sample:'#172033'},{id:'light',name:t('Terang', 'Light'),sample:'#e2e8f0'},{id:'blue',name:'Blue',sample:'#172c49'},{id:'green',name:'Green',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
+            <div><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Warna tabel', 'Table color')}</label><div className="grid grid-cols-2 gap-2">{([{id:'slate',name:'Dark',sample:'#172033'},{id:'light',name:'Light',sample:'#e2e8f0'},{id:'blue',name:'Blue',sample:'#172c49'},{id:'green',name:'Green',sample:'#17352f'}] as const).map((x) => <button type="button" key={x.id} onClick={() => onTableChange(x.id)} className={`flex items-center gap-2 rounded-xl border p-2 text-xs ${tableChoice===x.id?'border-white ring-1 ring-white/20':'border-slate-700'}`}><span className="h-5 w-5 rounded border border-white/20" style={{backgroundColor:x.sample}}/><span className="text-slate-200">{x.name}</span></button>)}</div></div>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-3 border-t border-slate-700 pt-5">
             <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Custom accent color<input type="color" value={customAccent} onChange={(e) => setCustomAccent(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
@@ -316,8 +316,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
             <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-700 p-3 text-sm text-slate-200">Custom text color<input type="color" value={customText} onChange={(e) => setCustomText(e.target.value)} className="h-10 w-12 cursor-pointer rounded border-0 bg-transparent" /></label>
           </div>
           <div className="mt-6 border-t border-slate-700 pt-5"><label className="mb-2 block text-sm font-semibold text-slate-200">{t('Wallpaper dasbor', 'Dashboard wallpaper')}</label>
-            <input ref={wallpaperInputRef} type="file" accept="image/*" onChange={handleWallpaperSelected} className="hidden" aria-label="{t('Pilih wallpaper', 'Choose wallpaper')}"/>
-            <div className="flex flex-wrap gap-3"><button type="button" onClick={() => wallpaperInputRef.current?.click()} className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-emerald-300"><Camera className="mr-2 inline h-4 w-4"/>{t('Pilih wallpaper', 'Choose wallpaper')}</button>{wallpaper && <button type="button" onClick={() => {onWallpaperChange(null); setNameMessage('t('Wallpaper dihapus.', 'Wallpaper removed.')');}} className="rounded-xl border border-rose-400/30 px-4 py-2.5 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"><Trash2 className="mr-2 inline h-4 w-4"/>{t('Hapus wallpaper', 'Remove wallpaper')}</button>}</div>
+            <input ref={wallpaperInputRef} type="file" accept="image/*" onChange={handleWallpaperSelected} className="hidden" aria-label="Choose wallpaper"/>
+            <div className="flex flex-wrap gap-3"><button type="button" onClick={() => wallpaperInputRef.current?.click()} className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-emerald-300"><Camera className="mr-2 inline h-4 w-4"/>{t('Pilih wallpaper', 'Choose wallpaper')}</button>{wallpaper && <button type="button" onClick={() => {onWallpaperChange(null); setNameMessage(t('Wallpaper dihapus.', 'Wallpaper removed.'));}} className="rounded-xl border border-rose-400/30 px-4 py-2.5 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"><Trash2 className="mr-2 inline h-4 w-4"/>{t('Hapus wallpaper', 'Remove wallpaper')}</button>}</div>
             {wallpaper && <img src={wallpaper} alt="Wallpaper preview" className="mt-3 h-28 w-full rounded-xl border border-slate-700 object-cover"/>}
             <p className="mt-2 text-xs text-slate-400">{t('Ukuran gambar maksimal 3 MB. Pengaturan ini disimpan di browser/perangkat ini dan tidak memengaruhi data transaksi.', 'Images must be 3 MB or smaller. This setting is saved in this browser/device and does not affect transaction data.')}</p>
           </div>
@@ -325,28 +325,28 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
 
         <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95">
           <div className="flex flex-col items-stretch gap-3 border-b border-slate-700 px-3 py-3">
-            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">{t('Catatan', 'Notes')}</h2><p className="mt-1 text-xs text-slate-400">{t('Catatan', 'Notes')} organized into folders, like a notes app on your phone.</p></div></div>
-            <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>{t('Catatan baru', 'New note')}</button>
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">{t('Catatan', 'Notes')}</h2><p className="mt-1 text-xs text-slate-400">{t('Atur catatan ke dalam folder seperti aplikasi catatan di ponsel.', 'Notes organized into folders, like a notes app on your phone.')}</p></div></div>
+            <button type="button" onClick={createNote} className="inline-flex items-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-200"><Plus className="h-4 w-4"/>New note</button>
           </div>
           <div className="grid min-w-0 grid-cols-1">
             <aside className="border-b border-slate-700 p-3">
-              <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">{t('Folder', 'Folder')}</span><button type="button" onClick={() => setShow{t('Folder', 'Folder')}Input((value) => !value)} title="{t('Buat folder', 'Create folder')}" className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><{t('Folder', 'Folder')}Plus className="h-4 w-4"/></button></div>
-              {show{t('Folder', 'Folder')}Input && <form onSubmit={(e) => { e.preventDefault(); addNote{t('Folder', 'Folder')}(); }} className="mb-3 flex gap-1"><input value={new{t('Folder', 'Folder')}Name} onChange={(e) => setNew{t('Folder', 'Folder')}Name(e.target.value)} autoFocus maxLength={32} placeholder="{t('Folder', 'Folder')} name" className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
+              <div className="mb-3 flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Folder</span><button type="button" onClick={() => setShowFolderInput((value) => !value)} title={t('Buat folder', 'Create folder')} className="rounded-lg p-1.5 text-amber-200 hover:bg-amber-300/10"><FolderPlus className="h-4 w-4"/></button></div>
+              {showFolderInput && <form onSubmit={(e) => { e.preventDefault(); addNoteFolder(); }} className="mb-3 flex gap-1"><input value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} autoFocus maxLength={32} placeholder={t('Nama folder', 'Folder name')} className="min-w-0 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-xs text-white"/><button type="submit" className="rounded-lg bg-amber-300 px-2 text-xs font-bold text-slate-950">OK</button></form>}
               <div className="flex gap-2 overflow-x-auto flex-col">
-                <button type="button" onClick={() => {setActive{t('Folder', 'Folder')}Id('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${active{t('Folder', 'Folder')}Id === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><{t('Folder', 'Folder')} className="h-4 w-4"/>{t('Semua catatan', 'All notes')} <span className="ml-auto text-xs opacity-70">{saved{t('Catatan', 'Notes')}.length}</span></button>
-                {note{t('Folder', 'Folder')}s.map((folder) => <button type="button" key={folder.id} onClick={() => {setActive{t('Folder', 'Folder')}Id(folder.id); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${active{t('Folder', 'Folder')}Id === folder.id ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><{t('Folder', 'Folder')} className="h-4 w-4"/><span className="truncate">{folder.name}</span><span className="ml-auto text-xs opacity-70">{saved{t('Catatan', 'Notes')}.filter((n) => n.folderId === folder.id).length}</span></button>)}
+                <button type="button" onClick={() => {setActiveFolderId('all'); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === 'all' ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/>{t('Semua catatan', 'All notes')} <span className="ml-auto text-xs opacity-70">{savedNotes.length}</span></button>
+                {noteFolders.map((folder) => <button type="button" key={folder.id} onClick={() => {setActiveFolderId(folder.id); setActiveNoteId(null);}} className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm ${activeFolderId === folder.id ? 'bg-amber-300/15 text-amber-200' : 'text-slate-300 hover:bg-slate-800'}`}><Folder className="h-4 w-4"/><span className="truncate">{folder.name}</span><span className="ml-auto text-xs opacity-70">{savedNotes.filter((n) => n.folderId === folder.id).length}</span></button>)}
               </div>
             </aside>
             <div className="min-w-0">
               {!activeNoteId ? <>
-                <div className="border-b border-slate-800 p-3"><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={noteSearch} onChange={(e) => setNoteSearch(e.target.value)} placeholder="{t('Cari catatan...', 'Search notes...')}" className="w-full rounded-xl border border-slate-700 bg-slate-950 py-2.5 pl-9 pr-3 text-sm text-white"/></div></div>
+                <div className="border-b border-slate-800 p-3"><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={noteSearch} onChange={(e) => setNoteSearch(e.target.value)} placeholder={t('Cari catatan...', 'Search notes...')} className="w-full rounded-xl border border-slate-700 bg-slate-950 py-2.5 pl-9 pr-3 text-sm text-white"/></div></div>
                 <div className="max-h-[420px] overflow-y-auto p-2">
-                  {visible{t('Catatan', 'Notes')}.length ? visible{t('Catatan', 'Notes')}.map((item) => <button key={item.id} type="button" onClick={() => openNote(item)} className="mb-2 block w-full rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left transition hover:border-amber-300/40 hover:bg-slate-900"><div className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0 text-amber-300"/><span className="truncate text-sm font-semibold text-slate-100">{item.title || t('Catatan tanpa judul', 'Untitled note')}</span></div><p className="mt-1 line-clamp-2 whitespace-pre-wrap text-xs text-slate-400">{item.content || '{t('Belum ada isi catatan', 'No note content yet')}'}</p><p className="mt-2 text-[10px] text-slate-500">{new Date(item.updatedAt).toLocaleString('en-US', {dateStyle:'medium',timeStyle:'short'})} · {note{t('Folder', 'Folder')}s.find((f) => f.id === item.folderId)?.name || '{t('Folder', 'Folder')}'}</p></button>) : <div className="p-8 text-center text-sm text-slate-500"><NotebookPen className="mx-auto mb-2 h-7 w-7 opacity-50"/>{t('Belum ada catatan di folder ini.', 'No notes in this folder yet.')}</div>}
+                  {visibleNotes.length ? visibleNotes.map((item) => <button key={item.id} type="button" onClick={() => openNote(item)} className="mb-2 block w-full rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left transition hover:border-amber-300/40 hover:bg-slate-900"><div className="flex items-center gap-2"><FileText className="h-4 w-4 shrink-0 text-amber-300"/><span className="truncate text-sm font-semibold text-slate-100">{item.title || t('Catatan tanpa judul', 'Untitled note')}</span></div><p className="mt-1 line-clamp-2 whitespace-pre-wrap text-xs text-slate-400">{item.content || t('Belum ada isi catatan', 'No note content yet')}</p><p className="mt-2 text-[10px] text-slate-500">{new Date(item.updatedAt).toLocaleString('en-US', {dateStyle:'medium',timeStyle:'short'})} · {noteFolders.find((f) => f.id === item.folderId)?.name || 'Folder'}</p></button>) : <div className="p-8 text-center text-sm text-slate-500"><NotebookPen className="mx-auto mb-2 h-7 w-7 opacity-50"/>{t('Belum ada catatan di folder ini.', 'No notes in this folder yet.')}</div>}
                 </div>
               </> : <div className="p-3 sm:p-4">
-                <div className="mb-3 flex items-center justify-between gap-2"><button type="button" onClick={() => setActiveNoteId(null)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-300/10"><ArrowLeft className="h-3.5 w-3.5"/>{t('Semua catatan', 'All notes')}</button><button type="button" onClick={deleteCurrentNote} title="{t('Hapus catatan', 'Delete note')}" className="rounded-lg p-2 text-rose-300 hover:bg-rose-500/10"><Trash className="h-4 w-4"/></button></div>
-                <input value={draftTitle} onChange={(e) => updateCurrentNote('title', e.target.value)} maxLength={120} placeholder="{t('Judul catatan', 'Note title')}" className="mb-3 w-full border-0 border-b border-slate-700 bg-transparent px-1 py-3 text-lg font-bold text-white outline-none placeholder:text-slate-600"/>
-                <textarea value={draftContent} onChange={(e) => updateCurrentNote('content', e.target.value)} maxLength={20000} rows={12} placeholder="{t('Mulai menulis...', 'Start writing...')}" className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 text-sm leading-7 text-slate-100 outline-none focus:border-amber-300/40"/>
+                <div className="mb-3 flex items-center justify-between gap-2"><button type="button" onClick={() => setActiveNoteId(null)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-300/10"><ArrowLeft className="h-3.5 w-3.5"/>{t('Semua catatan', 'All notes')}</button><button type="button" onClick={deleteCurrentNote} title={t('Hapus catatan', 'Delete note')} className="rounded-lg p-2 text-rose-300 hover:bg-rose-500/10"><Trash className="h-4 w-4"/></button></div>
+                <input value={draftTitle} onChange={(e) => updateCurrentNote('title', e.target.value)} maxLength={120} placeholder={t('Judul catatan', 'Note title')} className="mb-3 w-full border-0 border-b border-slate-700 bg-transparent px-1 py-3 text-lg font-bold text-white outline-none placeholder:text-slate-600"/>
+                <textarea value={draftContent} onChange={(e) => updateCurrentNote('content', e.target.value)} maxLength={20000} rows={12} placeholder={t('Mulai menulis...', 'Start writing...')} className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 text-sm leading-7 text-slate-100 outline-none focus:border-amber-300/40"/>
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><p className="text-xs text-slate-500">{t('Tersimpan otomatis di browser ·', 'Auto-saved in this browser ·')} {draftContent.length} characters</p><button type="button" onClick={saveNote} className="inline-flex items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs font-semibold text-amber-200 hover:bg-amber-300/15"><Save className="h-4 w-4"/>{t('Simpan sekarang', 'Save now')}</button></div>
               </div>}
             </div>
@@ -355,8 +355,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
       </section>
 
       <section className="flex flex-col gap-3 rounded-2xl border border-rose-400/20 bg-rose-950/20 p-3">
-        <div><h2 className="font-bold text-white">{t('Keluar dari WiseProfit', '{t('Keluar', 'Sign out')} of WiseProfit')}</h2><p className="mt-1 text-sm leading-relaxed text-slate-400">{t('Anda akan keluar, dan data usaha disembunyikan sampai Anda masuk kembali.', 'You will be signed out, and business data will be hidden until you sign in again.')}</p></div>
-        <button type="button" onClick={handleLogout} disabled={isLoggingOut} className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/10 px-5 py-3 text-sm font-bold text-rose-200 hover:bg-rose-500/20 disabled:opacity-60"><LogOut className="h-4 w-4" />{isLoggingOut ? '{t('Sedang keluar…', 'Signing out…')}' : '{t('Keluar', 'Sign out')}'}</button>
+        <div><h2 className="font-bold text-white">{t('Keluar dari WiseProfit', 'Sign out of WiseProfit')}</h2><p className="mt-1 text-sm leading-relaxed text-slate-400">{t('Anda akan keluar, dan data usaha disembunyikan sampai Anda masuk kembali.', 'You will be signed out, and business data will be hidden until you sign in again.')}</p></div>
+        <button type="button" onClick={handleLogout} disabled={isLoggingOut} className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/10 px-5 py-3 text-sm font-bold text-rose-200 hover:bg-rose-500/20 disabled:opacity-60"><LogOut className="h-4 w-4" />{isLoggingOut ? t('Sedang keluar…', 'Signing out…') : t('Keluar', 'Sign out')}</button>
       </section>
       {nameMessage && <p role="status" className="rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-sm text-slate-300">{nameMessage}</p>}
     </div>

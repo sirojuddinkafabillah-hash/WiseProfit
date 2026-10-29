@@ -901,7 +901,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-start gap-2 text-[11px] font-mono text-slate-400">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <span>
-              Automatically recognized fields: <strong>No</strong>, <strong>Entry Date</strong>, <strong>Nama Items</strong>, <strong>Units per Container</strong>, <strong>Purchase Price per Container</strong>, <strong>Units Sold</strong>, <strong>Selling Price per Unit</strong>, <strong>Gain</strong>, <strong>Cost Recovered</strong>, <strong>Remaining Inventory Value</strong>, <strong>TOTAL AFTER PROFIT</strong>, dan <strong>CASH BALANCE</strong>.
+              Automatically recognized fields: <strong>No</strong>, <strong>{t('Tanggal Input', 'Entry Date')}</strong>, <strong>{t('Nama Barang', 'Nama Items')}</strong>, <strong>{t('Isi per Wadah', 'Units per Container')}</strong>, <strong>{t('Harga Beli per Wadah', 'Purchase Price per Container')}</strong>, <strong>{t('Jumlah Terjual', 'Units Sold')}</strong>, <strong>{t('Harga Jual per Unit', 'Selling Price per Unit')}</strong>, <strong>{t('Keuntungan', 'Gain')}</strong>, <strong>{t('Modal Kembali', 'Cost Recovered')}</strong>, <strong>{t('Nilai Sisa Stok', 'Remaining Inventory Value')}</strong>, <strong>{t('TOTAL SETELAH LABA', 'TOTAL AFTER PROFIT')}</strong>, dan <strong>{t('SALDO KAS', 'CASH BALANCE')}</strong>.
             </span>
           </div>
         </div>
@@ -1087,17 +1087,17 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
               <thead className="sticky top-0 z-10 shadow-md">
                 <tr className="bg-[#1f4e78] text-white font-mono text-[10px] font-bold uppercase tracking-wider border-b border-cyan-800/80">
                   <th className="py-3 px-2 text-center w-10 border-r border-[#2a6496]">No</th>
-                  <th className="py-3 px-3 min-w-[100px] border-r border-[#2a6496]">Entry Date</th>
-                  <th className="py-3 px-3 min-w-[140px] border-r border-[#2a6496]">Nama Items</th>
-                  <th className="py-3 px-3 text-right min-w-[100px] border-r border-[#2a6496]">Units per Container</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Purchase Price per Container</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Units Sold</th>
-                  <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">Selling Price per Unit</th>
+                  <th className="py-3 px-3 min-w-[100px] border-r border-[#2a6496]">{t('Tanggal Input', 'Entry Date')}</th>
+                  <th className="py-3 px-3 min-w-[140px] border-r border-[#2a6496]">{t('Nama Barang', 'Nama Items')}</th>
+                  <th className="py-3 px-3 text-right min-w-[100px] border-r border-[#2a6496]">{t('Isi per Wadah', 'Units per Container')}</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Harga Beli per Wadah', 'Purchase Price per Container')}</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Jumlah Terjual', 'Units Sold')}</th>
+                  <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">{t('Harga Jual per Unit', 'Selling Price per Unit')}</th>
                   <th className="py-3 px-3 text-right min-w-[130px] border-r border-[#2a6496] text-emerald-200">Gain (Untung Terealisasi)</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Cost Recovered</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Modal Kembali', 'Cost Recovered')}</th>
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Remaining Inventory Value (Equity)</th>
                   <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">TOTAL AFTER PROFIT (Uang Masuk Kas)</th>
-                  <th className="py-3 px-3 text-right min-w-[110px] text-amber-200">CASH BALANCE</th>
+                  <th className="py-3 px-3 text-right min-w-[110px] text-amber-200">{t('SALDO KAS', 'CASH BALANCE')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/80 font-mono text-[11px]">

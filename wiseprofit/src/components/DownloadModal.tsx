@@ -86,22 +86,44 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 20 * 1024 * 1024) {
+      setStatusMessage({ type: 'error', text: 'File cadangan terlalu besar. Ukuran maksimum yang didukung adalah 20 MB.' });
+      e.target.value = '';
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
-      const content = event.target?.result as string;
-      const parsed = parseBackupJSON(content);
-      if (parsed) {
+      try {
+        const content = event.target?.result;
+        if (typeof content !== 'string' || !content.trim()) {
+          throw new Error('File kosong atau tidak dapat dibaca.');
+        }
+        const parsed = parseBackupJSON(content);
+        if (!parsed.items.length) {
+          setStatusMessage({
+            type: 'error',
+            text: 'Cadangan tidak berisi data barang yang valid. Data saat ini tidak diubah.'
+          });
+          return;
+        }
+
         onRestoreData(parsed.items, parsed.modalAwal);
         setStatusMessage({
           type: 'success',
-          text: `Berhasil memulihkan ${parsed.items.length} barang dan modal Rp ${parsed.modalAwal.toLocaleString('id-ID')} dari file cadangan!`
+          text: `Berhasil memproses cadangan berisi ${parsed.items.length} barang dan modal Rp ${parsed.modalAwal.toLocaleString('id-ID')}. Sinkronisasi akun berjalan melalui aplikasi.`
         });
-      } else {
+      } catch (error) {
         setStatusMessage({
           type: 'error',
-          text: 'Format file tidak valid atau rusak. Pastikan file berakhiran .json hasil ekspor dari aplikasi ini.'
+          text: `File cadangan tidak valid atau rusak: ${error instanceof Error ? error.message : 'Format JSON tidak sesuai'}`
         });
+      } finally {
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
+    };
+    reader.onerror = () => {
+      setStatusMessage({ type: 'error', text: 'File tidak dapat dibaca. Coba pilih file JSON lain.' });
       if (fileInputRef.current) fileInputRef.current.value = '';
     };
     reader.readAsText(file);

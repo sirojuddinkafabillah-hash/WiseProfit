@@ -848,6 +848,7 @@ export default function App() {
               {activePage === 'withdrawals' && (
                 <WithdrawalPage
                   withdrawals={withdrawals}
+                  language={language}
                   availableBalance={cashSummary.saldoKasSaatIni}
                   isSaving={isSavingCloud}
                   onSave={async (data) => {
@@ -997,7 +998,8 @@ export default function App() {
           isOpen={isWithdrawalModalOpen}
           onClose={() => setIsWithdrawalModalOpen(false)}
           withdrawals={withdrawals}
-          saldoKasSaatIni={summary.saldoKasSaatIni}
+          language={language}
+          saldoKasSaatIni={cashSummary.saldoKasSaatIni}
           onAddWithdrawal={handleAddWithdrawal}
           onDeleteWithdrawal={handleDeleteWithdrawal}
           isSaving={isSavingCloud}

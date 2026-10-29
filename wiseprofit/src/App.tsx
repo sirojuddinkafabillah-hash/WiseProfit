@@ -441,11 +441,11 @@ export default function App() {
       if (error) throw error;
       const saved = await saveUserProfile(user.uid, { email: user.email || undefined, displayName: cleanName, modalAwal, globalSavePercentMonthly });
       if (!saved) throw new Error('Could not save the name to your online profile.');
-      setNotification('Profile name updated successfully.');
+      setNotification(language === 'id' ? 'Nama profil berhasil diperbarui.' : 'Profile name updated successfully.');
       return true;
     } catch (error) {
       console.error('Failed to update display name:', error);
-      setNotification('Nama belum saved successfully. Periksa koneksi lalu coba lagi.');
+      setNotification(language === 'id' ? 'Nama belum tersimpan. Periksa koneksi lalu coba lagi.' : 'Name was not saved. Check your connection and try again.');
       return false;
     }
   };
@@ -455,7 +455,7 @@ export default function App() {
     if (!user) return;
     try {
       await saveUserProfile(user.uid, { email: user.email || undefined, displayName: user.displayName || undefined, modalAwal: newModal });
-      setNotification(`Initial business capital IDR ${newModal.toLocaleString('id-ID')} saved to the cloud.`);
+      setNotification(language === 'id' ? `Modal awal usaha Rp${newModal.toLocaleString('id-ID')} berhasil disimpan ke cloud.` : `Initial business capital IDR ${newModal.toLocaleString('en-US')} saved to the cloud.`);
     } catch (e) {
       console.error('Failed to update modalAwal:', e);
     }
@@ -898,23 +898,23 @@ export default function App() {
 
       {user && isProfilePanelOpen && (
         <div className="pointer-events-none fixed inset-0 z-[60]">
-          {window.innerWidth < 640 && <button type="button" aria-label="Close profile panel" onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
+          {window.innerWidth < 640 && <button type="button" aria-label={language === 'id' ? 'Tutup panel profil' : 'Close profile panel'} onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
           <aside
             className={`pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200 ${window.innerWidth < 640 ? 'w-screen' : ''}`}
             style={{ width: window.innerWidth < 640 ? '100vw' : `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` }}
           >
             <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
-              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">Profile & Notes</p><p className="text-[11px] text-slate-400">WiseProfit side panel</p></div>
+              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Catatan' : 'Profile & Notes'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Panel samping WiseProfit' : 'WiseProfit side panel'}</p></div>
               <div className="flex shrink-0 items-center gap-1">
-                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title="One-third screen width" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
-                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title="Expand panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Wide</button>
-                <button type="button" onClick={() => setProfilePanelWidth(320)} title="Shrink panel" className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Small</button>
-                <button type="button" onClick={() => setIsProfilePanelOpen(false)} title="Close panel" className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
+                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title={language === 'id' ? 'Sepertiga lebar layar' : 'One-third screen width'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
+                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title={language === 'id' ? 'Perlebar panel' : 'Expand panel'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Wide</button>
+                <button type="button" onClick={() => setProfilePanelWidth(320)} title={language === 'id' ? 'Persempit panel' : 'Shrink panel'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">Small</button>
+                <button type="button" onClick={() => setIsProfilePanelOpen(false)} title={language === 'id' ? 'Tutup panel' : 'Close panel'} className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
               </div>
             </div>
             <div
               role="separator"
-              aria-label="Resize profile panel"
+              aria-label={language === 'id' ? 'Ubah lebar panel profil' : 'Resize profile panel'}
               aria-orientation="vertical"
               onPointerDown={(event) => { if (window.innerWidth >= 640) { event.currentTarget.setPointerCapture(event.pointerId); } }}
               onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, event.clientX))); }}
@@ -923,6 +923,7 @@ export default function App() {
             <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
               <HomePage
                 user={user}
+                language={language}
                 theme={backgroundTheme}
                 onThemeChange={handleThemeChange}
                 accentChoice={accentChoice}
@@ -938,7 +939,7 @@ export default function App() {
                 onSaveName={handleSaveDisplayName}
                 onLogout={async () => {
                   try { await logout(); setIsProfilePanelOpen(false); }
-                  catch (error) { console.error('Logout failed:', error); setNotification('Could not sign out. Please try again.'); }
+                  catch (error) { console.error('Logout failed:', error); setNotification(language === 'id' ? 'Gagal keluar. Silakan coba lagi.' : 'Could not sign out. Please try again.'); }
                 }}
               />
             </div>

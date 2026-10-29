@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
-import { SupportChatWidget } from './SupportChatWidget';
 import { SupportTicketList } from './SupportTicketList';
-import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send, Copy, CheckCircle2, Download } from 'lucide-react';
+import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send } from 'lucide-react';
 
 interface SupportPageProps {
   language: 'id' | 'en';
@@ -11,14 +10,6 @@ interface SupportPageProps {
   onBackToInventory: () => void;
   onGoToComplaints?: () => void;
 }
-
-type FeedbackRecord = {
-  id: number;
-  category: string;
-  subject: string;
-  detail: string;
-  createdAt: string;
-};
 
 const FAQS = {
   en: [
@@ -50,17 +41,6 @@ const CATEGORIES = [
   { value: 'Other', en: 'Other', id: 'Lainnya' },
 ];
 
-function getSavedFeedback(): FeedbackRecord[] {
-  try {
-    const parsed = JSON.parse(localStorage.getItem('wiseprofit_local_feedback') || '[]');
-    return Array.isArray(parsed) ? parsed.filter((entry: any) =>
-      entry && typeof entry.subject === 'string' && typeof entry.detail === 'string'
-    ) : [];
-  } catch {
-    return [];
-  }
-}
-
 export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initialMode, onBackToInventory }) => {
   const { user } = useAuth();
   const isId = language === 'id';
@@ -72,17 +52,6 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
   const [subject, setSubject] = useState('');
   const [detail, setDetail] = useState('');
   const [message, setMessage] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [feedbackVersion, setFeedbackVersion] = useState(0);
-  const savedFeedback = useMemo(() => getSavedFeedback(), [feedbackVersion]);
-
-  const complaintText = [
-    t('Keluhan WiseProfit', 'WiseProfit feedback'),
-    `${t('Kategori', 'Category')}: ${CATEGORIES.find(c => c.value === category)?.[language] || category}`,
-    `${t('Judul', 'Subject')}: ${subject.trim()}`,
-    `${t('Detail', 'Details')}: ${detail.trim()}`,
-    `${t('Tanggal', 'Date')}: ${new Date().toLocaleString(language === 'id' ? 'id-ID' : 'en-US')}`,
-  ].join('\\n');
 
   const handleSave = async () => {
     if (!subject.trim() || !detail.trim()) {
@@ -119,29 +88,6 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
     }
   };
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(complaintText);
-      setCopied(true);
-      setMessage(t('Teks keluhan berhasil disalin. Kirim melalui kanal bantuan resmi.', 'Feedback copied. Send it through your official support channel.'));
-    } catch {
-      setMessage(t('Penyalinan otomatis tidak tersedia. Pilih lalu salin teks keluhan secara manual.', 'Automatic copying is unavailable. Select and copy the feedback text manually.'));
-    }
-  };
-
-  const handleDownload = () => {
-    const blob = new Blob([complaintText], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `wiseprofit-feedback-${new Date().toISOString().slice(0, 10)}.txt`;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-    URL.revokeObjectURL(url);
-    setMessage(t('File keluhan diunduh. Anda dapat mengirimkannya secara manual.', 'Feedback file downloaded. You can send it manually.'));
-  };
-
   return (
     <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -174,11 +120,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
         </div>
       ) : (
         <div className="space-y-5">
-          <SupportChatWidget language={language} />
           <SupportTicketList language={language} />
-          <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-            {t('Keluhan dikirim ke sistem tiket jika database Supabase sudah dikonfigurasi. Jika email belum aktif, tiket tetap tersimpan.', 'Feedback is sent to the support ticket system when Supabase is configured. If email is not configured, the ticket is still saved.')}
-          </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <div className="grid gap-4">
               <label className="grid gap-2 text-sm font-semibold text-slate-800">{t('Kategori', 'Category')}
@@ -195,33 +137,10 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
               {message && <p role="status" className="text-sm text-slate-700">{message}</p>}
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => void handleSave()} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> {t('Kirim ke developer', 'Submit ticket')}</button>
-                <button type="button" onClick={handleCopy} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><Copy className="h-4 w-4" /> {copied ? t('Tersalin', 'Copied') : t('Salin teks', 'Copy text')}</button>
-                <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><Download className="h-4 w-4" /> {t('Unduh sebagai TXT', 'Download as TXT')}</button>
               </div>
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <h2 className="text-sm font-bold text-slate-900">{t('Keluhan tersimpan di browser ini', 'Feedback saved in this browser')}</h2>
-              <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{savedFeedback.length}</span>
-            </div>
-            {savedFeedback.length === 0 ? (
-              <p className="text-sm text-slate-500">{t('Belum ada keluhan tersimpan.', 'No saved feedback yet.')}</p>
-            ) : (
-              <ul className="space-y-3">
-                {[...savedFeedback].reverse().map(entry => (
-                  <li key={entry.id} className="rounded-xl border border-slate-100 bg-slate-50 p-3">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <p className="text-sm font-semibold text-slate-800">{entry.subject}</p>
-                      <span className="text-xs text-slate-500">{new Date(entry.createdAt).toLocaleString(isId ? 'id-ID' : 'en-US')}</span>
-                    </div>
-                    <p className="mt-1 text-xs font-medium text-blue-700">{CATEGORIES.find(c => c.value === entry.category)?.[language] || entry.category}</p>
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">{entry.detail}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+
         </div>
       )}
     </section>

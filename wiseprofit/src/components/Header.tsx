@@ -7,7 +7,6 @@ import {
   TrendingUp, 
   UploadCloud,
   CircleHelp,
-  MessageSquareWarning,
   ShieldCheck,
   ArrowDownCircle,
   UserRound

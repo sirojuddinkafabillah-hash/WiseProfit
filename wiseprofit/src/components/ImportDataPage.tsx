@@ -571,7 +571,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   const handleExecuteImport = async () => {
     const validItems = parsedRows.filter(r => r.isValid).map(r => r.item);
     if (validItems.length === 0) {
-      setResultMessage({ type: 'error', text: 'No valid item data to import. Please check the rows marked in red.' });
+      setResultMessage({ type: 'error', text: t('Tidak ada data barang valid untuk diimpor. Periksa baris yang ditandai merah.', 'No valid item data to import. Please check the rows marked in red.') });
       return;
     }
 
@@ -608,7 +608,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
     } catch (err: any) {
       setResultMessage({
         type: 'error',
-        text: `Impor gagal disimpan ke cloud: ${err?.message || 'Terjadi kesalahan.'} Data tidak dinyatakan berhasil. Periksa koneksi lalu coba lagi.`
+        text: t(`Impor gagal disimpan ke cloud: ${err?.message || 'Terjadi kesalahan.'} Data tidak dinyatakan berhasil. Periksa koneksi lalu coba lagi.`, `Import failed to save to the cloud: ${err?.message || 'An error occurred.'} The data has not been confirmed as saved. Check your connection and try again.`)
       });
     } finally {
       setIsProcessing(false);
@@ -661,7 +661,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 </span>
               </div>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
-                Dukungan format tabel persis gambar: No, Tanggal, Nama, Container, Beli, Terjual, Jual, Gain, Modal Kembali, Sisa Stok, Total Omset, Sisa Kas
+                {t('Dukungan format tabel 12 kolom: No, Tanggal, Nama Barang, Wadah, Harga Beli, Terjual, Harga Jual, Untung, Modal Kembali, Sisa Stok, Total Omset, Sisa Kas', 'Supports the 12-column layout: No, Date, Item Name, Container, Purchase Price, Sold, Selling Price, Profit, Cost Recovered, Remaining Stock, Total Revenue, Cash Balance')}
               </p>
             </div>
           </div>

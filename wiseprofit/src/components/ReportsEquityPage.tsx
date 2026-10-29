@@ -205,27 +205,6 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Top Breadcrumb & Return to Kasir Nav Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 sm:p-5 bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-lg">
-        <div className="flex items-center gap-3">
-          {onBackToInventory && (
-            <button
-              type="button"
-              onClick={onBackToInventory}
-              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-500/20"
-            >
-              <ArrowLeft className="w-4 h-4 stroke-[3]" />
-              <span>{language === 'id' ? 'Kembali ke Kasir' : 'Back to Cashier'}</span>
-            </button>
-          )}
-          <span className="hidden sm:inline-block text-xs font-sans text-slate-400">
-            · {language === 'id' ? 'Halaman Mandiri:' : 'Standalone Page:'} <strong className="text-slate-200">{language === 'id' ? 'Laporan Penjualan & Ekuitas' : 'Sales & Equity Report'}</strong>
-          </span>
-        </div>
-
-      </div>
-
-      {/* Top Banner & Filter Controls */}
       <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -747,27 +726,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
         </div>
       </div>
 
-      {/* Bottom Return to Kasir Banner */}
-      {onBackToInventory && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl shadow-lg font-sans">
-          <div className="text-center sm:text-left">
-            <div className="text-sm font-bold text-white font-sans">
-              {language === 'id' ? 'Selesai Meninjau Laporan Penjualan?' : 'Finished Reviewing the Sales Report?'}
-            </div>
-            <div className="text-xs text-slate-400 mt-0.5 font-sans">
-              {language === 'id' ? 'Kembali ke halaman kasir dan catatan transaksi persediaan.' : 'Return to the cashier interface and inventory transaction records.'}
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={onBackToInventory}
-            className="flex items-center gap-2.5 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-2xl shadow-xl shadow-emerald-500/25 transition-all cursor-pointer whitespace-nowrap"
-          >
-            <ArrowLeft className="w-4 h-4 stroke-[3]" />
-            <span>{language === 'id' ? 'Kembali ke Kasir' : 'Back to Cashier'}</span>
-          </button>
-        </div>
-      )}
+
     </div>
   );
 };

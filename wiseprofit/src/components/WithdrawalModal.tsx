@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Withdrawal } from '../types/inventory';
 import { formatRupiah } from '../utils/calculator';
+import type { Language } from '../i18n/translations';
 import { 
   Wallet, 
   ArrowDownCircle, 
@@ -19,6 +20,7 @@ interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
   withdrawals: Withdrawal[];
+  language: Language;
   saldoKasSaatIni: number;
   onAddWithdrawal: (nominal: number, tanggal: string, catatan?: string) => Promise<boolean>;
   onDeleteWithdrawal: (id: string) => Promise<boolean>;
@@ -29,13 +31,16 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
   isOpen,
   onClose,
   withdrawals,
+  language,
   saldoKasSaatIni,
   onAddWithdrawal,
   onDeleteWithdrawal,
   isSaving = false,
 }) => {
   const [nominalInput, setNominalInput] = useState<string>('');
-  const [tanggalInput, setTanggalInput] = useState<string>(() => new Date().toISOString().slice(0, 10));
+  const localToday = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  const isId = language === 'id';
+  const [tanggalInput, setTanggalInput] = useState<string>(localToday);
   const [catatanInput, setCatatanInput] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -54,44 +59,55 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     setSuccessMessage(null);
 
     if (parsedNominal <= 0) {
-      setErrorMessage('Masukkan jumlah penarikan lebih dari Rp0.');
+      setErrorMessage(isId ? 'Masukkan jumlah penarikan lebih dari Rp0.' : 'Enter a withdrawal amount greater than zero.');
       return;
     }
 
     if (!tanggalInput) {
-      setErrorMessage('Pilih tanggal penarikan.');
+      setErrorMessage(isId ? 'Pilih tanggal penarikan.' : 'Select a withdrawal date.');
       return;
     }
 
+    if (parsedNominal > saldoKasSaatIni) {
+      setErrorMessage(isId ? 'Saldo kas tidak mencukupi untuk nominal penarikan ini.' : 'Insufficient cash balance for this withdrawal amount.');
+      return;
+    }
+    if (isSubmitting || isSaving) return;
     setIsSubmitting(true);
     try {
       const ok = await onAddWithdrawal(parsedNominal, tanggalInput, catatanInput.trim() || undefined);
       if (ok) {
-        setSuccessMessage(`Penarikan berhasil dicatat ${formatRupiah(parsedNominal)} ke Cloud.`);
+        setSuccessMessage(isId ? `Penarikan ${formatRupiah(parsedNominal)} berhasil disimpan ke Cloud.` : `Withdrawal of ${formatRupiah(parsedNominal)} saved to the cloud.`);
         setNominalInput('');
         setCatatanInput('');
         setTimeout(() => setSuccessMessage(null), 3000);
       } else {
-        setErrorMessage('Penarikan belum berhasil disimpan. Periksa koneksi lalu coba lagi.');
+        setErrorMessage(isId ? 'Penarikan belum berhasil disimpan. Periksa koneksi lalu coba lagi.' : 'Withdrawal could not be saved. Check your connection and try again.');
       }
     } catch (err) {
-      setErrorMessage('Terjadi kesalahan saat menyimpan data penarikan.');
+      setErrorMessage(isId ? 'Terjadi kesalahan saat menyimpan data penarikan.' : 'An error occurred while saving the withdrawal.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, amount: number) => {
+    const confirmed = window.confirm(isId ? `Hapus riwayat penarikan ${formatRupiah(amount)}? Saldo kas akan dihitung ulang.` : `Delete withdrawal ${formatRupiah(amount)}? The cash balance will be recalculated.`);
+    if (!confirmed) return;
     setDeletingId(id);
     try {
-      await onDeleteWithdrawal(id);
+      const ok = await onDeleteWithdrawal(id);
+      if (!ok) setErrorMessage(isId ? 'Riwayat gagal dihapus. Periksa koneksi lalu coba lagi.' : 'Could not delete the history. Check your connection and try again.');
+      else setSuccessMessage(isId ? 'Riwayat penarikan berhasil dihapus.' : 'Withdrawal history deleted.');
+    } catch {
+      setErrorMessage(isId ? 'Riwayat gagal dihapus. Periksa koneksi lalu coba lagi.' : 'Could not delete the history. Check your connection and try again.');
     } finally {
       setDeletingId(null);
     }
   };
 
   const handlePreset = (amount: number) => {
-    setNominalInput(String(amount));
+    setNominalInput(String(Math.min(Math.max(0, amount), Math.max(0, saldoKasSaatIni))));
   };
 
   return (
@@ -273,7 +289,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
             <button
               type="submit"
-              disabled={isSubmitting || parsedNominal <= 0}
+              disabled={isSubmitting || isSaving || parsedNominal <= 0 || parsedNominal > saldoKasSaatIni}
               className="w-full py-2.5 bg-rose-500 hover:bg-rose-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold font-mono text-sm rounded-xl transition-all cursor-pointer shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
             >
               <ArrowDownCircle className="w-4 h-4" />
@@ -324,8 +340,8 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
                     <button
                       type="button"
-                      onClick={() => handleDelete(item.id)}
-                      disabled={deletingId === item.id}
+                      onClick={() => handleDelete(item.id, item.nominal)}
+                      disabled={deletingId === item.id || isSaving}
                       title="Hapus riwayat penarikan ini"
                       className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer shrink-0"
                     >

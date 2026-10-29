@@ -123,11 +123,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               <ArrowDownCircle className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white tracking-tight">
-                Penarikan Uang / Kas Toko
-              </h2>
+              <h2 className="text-lg font-bold text-white tracking-tight">{isId ? 'Penarikan Uang / Kas Toko' : 'Cash Withdrawal'}</h2>
               <p className="text-xs text-slate-400">
-                Pencatatan uang keluar dari kasir (ambil untung / keperluan pribadi / operasional)
+                {isId ? 'Pencatatan uang keluar dari kasir (ambil untung / keperluan pribadi / operasional)' : 'Record cash taken from the till for profit, personal needs, or operations.'}
               </p>
             </div>
           </div>
@@ -162,20 +160,20 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80">
               <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mb-1">
                 <Wallet className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Uang yang tersedia:</span>
+                <span>{isId ? 'Uang yang tersedia:' : 'Available cash:'}</span>
               </div>
               <div className="text-xl font-bold text-emerald-400 tabular-nums">
                 {formatRupiah(saldoKasSaatIni)}
               </div>
               <div className="text-[10px] text-slate-500 mt-0.5">
-                Total uang fisik di laci kasir
+                {isId ? 'Total uang fisik di laci kasir' : 'Cash currently available in the till'}
               </div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80">
               <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mb-1">
                 <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                <span>Total uang yang sudah ditarik:</span>
+                <span>{isId ? 'Total uang yang sudah ditarik:' : 'Total withdrawn:'}</span>
               </div>
               <div className="text-xl font-bold text-rose-400 tabular-nums">
                 {formatRupiah(totalWithdrawn)}
@@ -191,7 +189,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
                 <Plus className="w-3.5 h-3.5" />
-                Catat Penarikan Kas Baru
+                {isId ? 'Catat Penarikan Kas Baru' : 'Record New Cash Withdrawal'}
               </span>
               {parsedNominal > 0 && (
                 <span className={`text-[11px] font-mono font-medium ${projectedSaldo < 0 ? 'text-rose-400' : 'text-slate-400'}`}>
@@ -204,7 +202,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               {/* Nominal Input */}
               <div className="space-y-1 sm:col-span-1">
                 <label className="block text-xs font-medium text-slate-300">
-                  Nominal Penarikan (Rp) *
+                  {isId ? 'Nominal Penarikan (Rp) *' : 'Withdrawal Amount (IDR) *'}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 text-slate-400 font-mono font-bold text-sm">
@@ -226,11 +224,12 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               {/* Tanggal Input */}
               <div className="space-y-1 sm:col-span-1">
                 <label className="block text-xs font-medium text-slate-300">
-                  Tanggal Penarikan *
+                  {isId ? 'Tanggal Penarikan *' : 'Withdrawal Date *'}
                 </label>
                 <div className="relative">
                   <input
                     type="date"
+                    max={localToday()}
                     value={tanggalInput}
                     onChange={(e) => setTanggalInput(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-mono text-sm focus:outline-none focus:border-emerald-500"
@@ -242,11 +241,11 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               {/* Catatan Input */}
               <div className="space-y-1 sm:col-span-2">
                 <label className="block text-xs font-medium text-slate-300">
-                  Catatan / Keperluan (Opsional)
+                  {isId ? 'Catatan / Keperluan (Opsional)' : 'Note / Purpose (Optional)'}
                 </label>
                 <input
                   type="text"
-                  placeholder="Contoh: Ambil laba harian, Kebutuhan pribadi, Uang transport..."
+                  placeholder={isId ? 'Contoh: Ambil laba harian, Kebutuhan pribadi, Uang transport...' : 'Example: Daily profit, personal needs, transport...'}
                   value={catatanInput}
                   onChange={(e) => setCatatanInput(e.target.value)}
                   maxLength={500}
@@ -257,7 +256,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
             {/* Quick Preset Buttons */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              <span className="text-[11px] text-slate-400 font-mono mr-1">Pilihan Cepat:</span>
+              <span className="text-[11px] text-slate-400 font-mono mr-1">{isId ? 'Pilihan Cepat:' : 'Quick amounts:'}</span>
               {[20000, 50000, 100000, 200000, 500000].map((amt) => (
                 <button
                   key={amt}
@@ -274,7 +273,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                   onClick={() => handlePreset(saldoKasSaatIni)}
                   className="px-2.5 py-1 text-[11px] font-mono bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 rounded-lg cursor-pointer transition-colors"
                 >
-                  Tarik Semua Kas
+                  {isId ? 'Tarik Semua Kas' : 'Withdraw All Cash'}
                 </button>
               )}
             </div>
@@ -293,7 +292,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               className="w-full py-2.5 bg-rose-500 hover:bg-rose-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold font-mono text-sm rounded-xl transition-all cursor-pointer shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
             >
               <ArrowDownCircle className="w-4 h-4" />
-              <span>{isSubmitting ? 'Menyimpan ke Cloud...' : `Simpan Penarikan ${parsedNominal > 0 ? formatRupiah(parsedNominal) : ''}`}</span>
+              <span>{isSubmitting ? (isId ? 'Menyimpan ke Cloud...' : 'Saving to cloud...') : `${isId ? 'Simpan Penarikan' : 'Withdraw'} ${parsedNominal > 0 ? formatRupiah(parsedNominal) : ''}`}</span>
             </button>
           </form>
 
@@ -305,13 +304,13 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 Riwayat Penarikan Kas ({withdrawals.length})
               </span>
               <span className="text-[11px] font-mono text-slate-400">
-                Tersimpan Permanen di Supabase
+                {isId ? 'Tersimpan Permanen di Supabase' : 'Persistently stored in Supabase'}
               </span>
             </div>
 
             {withdrawals.length === 0 ? (
               <div className="p-8 text-center rounded-2xl bg-slate-950/40 border border-slate-800 text-slate-400 space-y-1">
-                <p className="text-sm font-medium text-slate-300">Belum ada riwayat penarikan kas</p>
+                <p className="text-sm font-medium text-slate-300">{isId ? 'Belum ada riwayat penarikan kas' : 'No cash withdrawals yet'}</p>
                 <p className="text-xs text-slate-500">Uang tunai hasil penjualan dan sisa modal masih tersimpan penuh di kasir.</p>
               </div>
             ) : (
@@ -333,7 +332,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                         </p>
                       ) : (
                         <p className="text-[11px] text-slate-500 italic">
-                          Tanpa catatan
+                          {isId ? 'Tanpa catatan' : 'No note'}
                         </p>
                       )}
                     </div>
@@ -356,7 +355,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
         {/* Modal Footer */}
         <div className="px-6 py-3.5 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs font-mono text-slate-400">
-          <span>Jumlah ini akan mengurangi uang kas yang tersedia.</span>
+          <span>{isId ? 'Jumlah ini akan mengurangi uang kas yang tersedia.' : 'This amount will reduce available cash.'}</span>
           <button
             type="button"
             onClick={onClose}

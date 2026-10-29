@@ -140,11 +140,27 @@ export function parseBackupJSON(jsonString: string): { items: InventoryItem[]; m
   }
 
   // Sanitize items
-  const validItems = items.filter((it: any) =>
-    it &&
-    typeof it === 'object' &&
-    (typeof it.namaBarang === 'string' || typeof it.namaItems === 'string') &&
-    String(it.namaBarang ?? it.namaItems).trim().length > 0
-  );
+  const validItems = items
+    .filter((it: any) =>
+      it &&
+      typeof it === 'object' &&
+      (typeof it.namaBarang === 'string' || typeof it.namaItems === 'string') &&
+      String(it.namaBarang ?? it.namaItems).trim().length > 0
+    )
+    .map((it: any) => ({
+      ...it,
+      namaBarang: String(it.namaBarang ?? it.namaItems).trim(),
+      satuanWadah: String(it.satuanWadah ?? it.satuanContainer ?? 'Dus'),
+      jumlahBarangWadah: Math.max(1, Number(it.jumlahBarangWadah ?? it.jumlahItemsContainer) || 1),
+      jumlahBarangDijualSatuan: Math.max(0, Number(it.jumlahBarangDijualSatuan ?? it.jumlahItemsDijualSatuan) || 0),
+      hargaBeli: Math.max(0, Number(it.hargaBeli) || 0),
+      hargaJualSatuan: Math.max(0, Number(it.hargaJualSatuan) || 0),
+      satuanUnit: String(it.satuanUnit || 'pcs'),
+      persentaseLabaDisimpanBulanan: Number.isFinite(Number(it.persentaseLabaDisimpanBulanan))
+        ? Math.min(100, Math.max(0, Number(it.persentaseLabaDisimpanBulanan)))
+        : 50,
+      createdAt: Number(it.createdAt) || Date.now(),
+      updatedAt: Number(it.updatedAt) || Number(it.createdAt) || Date.now(),
+    }));
   return { items: validItems as InventoryItem[], modalAwal };
 }

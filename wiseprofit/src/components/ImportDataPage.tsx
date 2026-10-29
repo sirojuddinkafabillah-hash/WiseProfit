@@ -572,39 +572,40 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       return;
     }
 
+    if (!user) {
+      setResultMessage({ type: 'error', text: 'Silakan masuk ke akun WiseProfit sebelum mengimpor data agar data tersimpan dengan benar.' });
+      return;
+    }
+
+    if (importMode === 'replace' && currentItemsCount > 0) {
+      const confirmed = window.confirm(
+        'Mode Ganti Semua akan menghapus data barang lama di akun ini dan menggantinya dengan data impor. Pastikan Anda sudah mengunduh cadangan. Lanjutkan?'
+      );
+      if (!confirmed) return;
+    }
+
     setIsProcessing(true);
     setResultMessage(null);
 
+    const modalAwalParam = typeof newModalAwal === 'number' && Number.isFinite(newModalAwal) && newModalAwal >= 0
+      ? newModalAwal
+      : undefined;
+
     try {
-      const modalAwalParam = typeof newModalAwal === 'number' && newModalAwal >= 0 ? newModalAwal : undefined;
-      
-      // Save directly to user's Supabase if user is authenticated
-      if (user) {
-        await batchUploadToCloud(user.uid, user.email || '', modalAwalParam, validItems);
+      const res = await importItemsToSupabase(validItems, importMode, modalAwalParam, user.uid);
+      if (!res.success) {
+        throw new Error(res.message || 'Server tidak mengonfirmasi penyimpanan data.');
       }
 
-      const res = await importItemsToSupabase(validItems, importMode, modalAwalParam, user?.uid);
-
-      if (res.success) {
-        setResultMessage({
-          type: 'success',
-          text: `Successfully imported ${validItems.length} items to the cloud database! They are saved to your account.`
-        });
-        onImportSuccess(validItems, modalAwalParam, importMode);
-      } else {
-        // Apply to local Kasir state
-        onImportSuccess(validItems, modalAwalParam, importMode);
-        setResultMessage({
-          type: 'success',
-          text: `Data ${validItems.length} items successfully applied to Cashier & Inventory!`
-        });
-      }
-    } catch (err: any) {
-      const modalAwalParam = typeof newModalAwal === 'number' && newModalAwal >= 0 ? newModalAwal : undefined;
-      onImportSuccess(validItems, modalAwalParam, importMode);
+      await onImportSuccess(validItems, modalAwalParam, importMode);
       setResultMessage({
         type: 'success',
-        text: `Data ${validItems.length} items successfully applied to Cashier & Inventory!`
+        text: `Berhasil mengimpor ${validItems.length} barang dan menyimpan data ke akun cloud Anda.`
+      });
+    } catch (err: any) {
+      setResultMessage({
+        type: 'error',
+        text: `Impor gagal disimpan ke cloud: ${err?.message || 'Terjadi kesalahan.'} Data tidak dinyatakan berhasil. Periksa koneksi lalu coba lagi.`
       });
     } finally {
       setIsProcessing(false);

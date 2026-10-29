@@ -258,6 +258,9 @@ export default function App() {
     return calculateSummary(filteredMonthlyItems, modalAwal, withdrawals);
   }, [filteredMonthlyItems, modalAwal, withdrawals]);
 
+  // Saldo kas untuk transaksi harus selalu memakai seluruh inventori, bukan filter bulan laporan.
+  const cashSummary = useMemo(() => calculateSummary(items, modalAwal, withdrawals), [items, modalAwal, withdrawals]);
+
   // Handlers for Items with Cloud persistence
   const handleAddItem = async (newItemData: Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'>) => {
     if (!user) {
@@ -461,6 +464,19 @@ export default function App() {
   const handleAddWithdrawal = async (nominal: number, tanggal: string, catatan?: string): Promise<boolean> => {
     if (!user) {
       setIsAuthModalOpen(true);
+      return false;
+    }
+    // Revalidate in the central handler so every withdrawal entry point is protected.
+    if (!Number.isSafeInteger(nominal) || nominal <= 0) {
+      setNotification(language === 'id' ? 'Nominal penarikan harus berupa rupiah bulat lebih dari Rp0.' : 'Withdrawal amount must be a positive whole number.');
+      return false;
+    }
+    if (nominal > cashSummary.saldoKasSaatIni) {
+      setNotification(language === 'id' ? `Saldo kas tidak cukup. Saldo tersedia ${cashSummary.saldoKasSaatIni.toLocaleString('id-ID')} rupiah.` : `Insufficient cash balance. Available balance: IDR ${cashSummary.saldoKasSaatIni.toLocaleString('id-ID')}.`);
+      return false;
+    }
+    if (!tanggal || !/^\\d{4}-\\d{2}-\\d{2}$/.test(tanggal)) {
+      setNotification(language === 'id' ? 'Tanggal penarikan tidak valid.' : 'Invalid withdrawal date.');
       return false;
     }
 
@@ -799,7 +815,7 @@ export default function App() {
                   <InventoryTable
                     items={items}
                     modalAwal={modalAwal}
-                    saldoKasSaatIni={summary.saldoKasSaatIni}
+                    saldoKasSaatIni={cashSummary.saldoKasSaatIni}
                     onEditItem={(item) => {
                       setEditingItem(item);
                       setIsItemModalOpen(true);
@@ -832,7 +848,7 @@ export default function App() {
               {activePage === 'withdrawals' && (
                 <WithdrawalPage
                   withdrawals={withdrawals}
-                  availableBalance={summary.saldoKasSaatIni}
+                  availableBalance={cashSummary.saldoKasSaatIni}
                   isSaving={isSavingCloud}
                   onSave={async (data) => {
                     return await handleAddWithdrawal(data.nominal, data.tanggal, data.catatan);

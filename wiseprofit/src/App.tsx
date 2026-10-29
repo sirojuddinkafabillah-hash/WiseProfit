@@ -990,6 +990,7 @@ export default function App() {
         {/* Print View Component */}
         {activePage === 'reports' && isPrintReportOpen && (
           <PrintReportView
+            language={language}
             items={filteredMonthlyItems}
             summary={summary}
             modalAwal={modalAwal}

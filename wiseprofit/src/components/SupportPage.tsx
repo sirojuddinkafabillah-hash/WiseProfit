@@ -57,11 +57,11 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
 
   const handleSave = async () => {
     if (!subject.trim() || !detail.trim()) {
-      setMessage(t('Isi judul dan detail keluhan terlebih dahulu.', 'Please enter both a subject and details.'));
+      setMessage(t('Isi judul dan detail.', 'Enter a subject and details.'));
       return;
     }
     if (!user) {
-      setMessage(t('Silakan masuk ke akun WiseProfit sebelum mengirim keluhan.', 'Please sign in to WiseProfit before submitting a ticket.'));
+      setMessage(t('Masuk untuk mengirim feedback.', 'Sign in to send feedback.'));
       return;
     }
     if (isSubmitting) return;
@@ -83,12 +83,12 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
           });
         } catch (notifyError) { console.warn('Ticket saved but email notification failed:', notifyError); }
       }
-      setMessage(t('Keluhan berhasil dikirim. Nomor tiket: ', 'Ticket submitted. Ticket ID: ') + ticket.id);
+      setMessage(t('Terkirim. ID tiket: ', 'Sent. Ticket ID: ') + ticket.id);
       setSubject('');
       setDetail('');
     } catch (error) {
       console.error('Could not create support ticket:', error);
-      setMessage(t('Keluhan belum terkirim. Pastikan migrasi Supabase sudah dijalankan, lalu coba lagi.', 'Ticket was not submitted. Ensure the Supabase migration is applied, then try again.'));
+      setMessage(t('Gagal mengirim. Coba lagi nanti.', 'Could not send. Try again later.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -100,8 +100,8 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">{mode === 'faq' ? <CircleHelp className="h-5 w-5" /> : <MessageSquareWarning className="h-5 w-5" />}</div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{mode === 'faq' ? t('FAQ — Pertanyaan Umum', 'FAQ — Frequently Asked Questions') : t('Keluhan dan Saran', 'Complaints & Suggestions')}</h1>
-            <p className="mt-1 text-sm text-slate-600">{mode === 'faq' ? t('Jawaban singkat untuk membantu penggunaan WiseProfit.', 'Quick answers to help you use WiseProfit.') : t('Catat masalah atau saran tentang WiseProfit.', 'Record an issue or suggestion about WiseProfit.')}</p>
+            <h1 className="text-xl font-bold text-slate-900">{mode === 'faq' ? t('FAQ', 'FAQ') : t('Feedback', 'Feedback')}</h1>
+            <p className="mt-1 text-sm text-slate-600">{mode === 'faq' ? t('Bantuan singkat WiseProfit.', 'Quick WiseProfit help.') : t('Kirim masalah atau saran.', 'Report an issue or suggestion.')}</p>
           </div>
         </div>
         <button type="button" onClick={onBackToInventory} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"><ArrowLeft className="h-4 w-4" /> {t('Kembali ke Kasir', 'Back to Cashier')}</button>
@@ -109,7 +109,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
 
       <div className="mb-5 flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
         <button type="button" onClick={() => setMode('faq')} aria-pressed={mode === 'faq'} className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${mode === 'faq' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}><CircleHelp className="h-4 w-4" />{t('FAQ', 'FAQ')}</button>
-        <button type="button" onClick={() => setMode('complaints')} aria-pressed={mode === 'complaints'} className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${mode === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}><MessageSquareWarning className="h-4 w-4" />{t('Keluhan & Saran', 'Feedback & Suggestions')}</button>
+        <button type="button" onClick={() => setMode('complaints')} aria-pressed={mode === 'complaints'} className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${mode === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}><MessageSquareWarning className="h-4 w-4" />{t('Feedback', 'Feedback')}</button>
       </div>
 
       {mode === 'faq' ? (
@@ -123,7 +123,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
               {openFaq === index && <p className="border-t border-slate-100 px-4 py-4 text-sm leading-6 text-slate-600">{faq.a}</p>}
             </div>
           ))}
-          <button type="button" onClick={() => setMode('complaints')} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> {t('Punya keluhan lain?', 'Have another issue?')}</button>
+          <button type="button" onClick={() => setMode('complaints')} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> {t('Butuh bantuan lain?', 'Need more help?')}</button>
         </div>
       ) : (
         <div className="space-y-5">
@@ -135,15 +135,15 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
                   {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c[language]}</option>)}
                 </select>
               </label>
-              <label className="grid gap-2 text-sm font-semibold text-slate-800">{t('Judul keluhan', 'Subject')}
+              <label className="grid gap-2 text-sm font-semibold text-slate-800">{t('Judul', 'Subject')}
                 <input value={subject} onChange={e => setSubject(e.target.value)} maxLength={120} placeholder={t('Contoh: Data tidak tersimpan', 'Example: Data is not saving')} className="rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal text-slate-800 placeholder:text-slate-400" />
               </label>
-              <label className="grid gap-2 text-sm font-semibold text-slate-800">{t('Detail keluhan atau saran', 'Complaint or suggestion details')}
+              <label className="grid gap-2 text-sm font-semibold text-slate-800">{t('Detail', 'Details')}
                 <textarea value={detail} onChange={e => setDetail(e.target.value)} rows={5} maxLength={3000} placeholder={t('Jelaskan langkah yang dilakukan dan masalah yang muncul...', 'Describe the steps you took and what went wrong...')} className="resize-y rounded-lg border border-slate-300 bg-white px-3 py-3 font-normal leading-6 text-slate-800 placeholder:text-slate-400" />
               </label>
               {message && <p role="status" className="text-sm text-slate-700">{message}</p>}
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => void handleSave()} disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"><Send className="h-4 w-4" /> {isSubmitting ? t('Mengirim…', 'Submitting…') : t('Kirim ke developer', 'Submit ticket')}</button>
+                <button type="button" onClick={() => void handleSave()} disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"><Send className="h-4 w-4" /> {isSubmitting ? t('Mengirim…', 'Submitting…') : t('Kirim', 'Send')}</button>
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
-const json = (res: VercelResponse, status: number, body: unknown) => res.status(status).setHeader('Content-Type', 'application/json').json(body);
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const json = (res: any, status: number, body: unknown) => res.status(status).setHeader('Content-Type', 'application/json').json(body);
+export default async function handler(req: any, res: VercelResponse) {
  if (req.method !== 'POST') return json(res,405,{error:'Method not allowed'});
  const auth = req.headers.authorization || ''; const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
  const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;

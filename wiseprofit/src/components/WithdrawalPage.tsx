@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, CalendarDays, CheckCircle2, CircleAlert, Clock3, History, Trash2, Wallet } from 'lucide-react';
 import { formatRupiah } from '../utils/calculator';
+import type { Language } from '../i18n/translations';
 
 export interface WithdrawalRecord {
   id: string;
@@ -13,6 +14,7 @@ export interface WithdrawalRecord {
 
 interface WithdrawalPageProps {
   withdrawals: WithdrawalRecord[];
+  language: Language;
   availableBalance: number;
   isSaving: boolean;
   onSave: (data: { nominal: number; tanggal: string; catatan: string }) => Promise<boolean>;
@@ -27,6 +29,7 @@ const today = () => {
 
 export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
   withdrawals,
+  language,
   availableBalance,
   isSaving,
   onSave,
@@ -42,18 +45,19 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
   const [success, setSuccess] = useState('');
 
   const nominal = Number(nominalInput);
+  const isId = language === 'id';
   const totalWithdrawals = useMemo(
     () => withdrawals.reduce((total, item) => total + Math.max(0, Number(item.nominal) || 0), 0),
     [withdrawals]
   );
 
   const validationMessage = useMemo(() => {
-    if (!nominalInput.trim()) return 'Masukkan nominal penarikan.';
-    if (!Number.isSafeInteger(nominal) || nominal <= 0) return 'Nominal harus berupa angka bulat lebih besar dari Rp0.';
-    if (nominal > availableBalance) return 'Saldo kas tidak mencukupi untuk penarikan ini.';
-    if (!tanggal) return 'Pilih tanggal penarikan.';
-    if (!catatan.trim()) return 'Isi catatan atau tujuan penarikan.';
-    if (catatan.trim().length > 500) return 'Catatan maksimal 500 karakter.';
+    if (!nominalInput.trim()) return isId ? 'Masukkan nominal penarikan.' : 'Enter a withdrawal amount.';
+    if (!Number.isSafeInteger(nominal) || nominal <= 0) return isId ? 'Nominal harus berupa angka bulat lebih besar dari Rp0.' : 'Amount must be a positive whole number.';
+    if (nominal > availableBalance) return isId ? 'Saldo kas tidak mencukupi untuk penarikan ini.' : 'Insufficient cash balance for this withdrawal.';
+    if (!tanggal) return isId ? 'Pilih tanggal penarikan.' : 'Select a withdrawal date.';
+    if (!catatan.trim()) return isId ? 'Isi catatan atau tujuan penarikan.' : 'Enter a note or withdrawal purpose.';
+    if (catatan.trim().length > 500) return isId ? 'Catatan maksimal 500 karakter.' : 'Notes must be 500 characters or fewer.';
     return '';
   }, [nominalInput, nominal, availableBalance, tanggal, catatan]);
 
@@ -65,7 +69,7 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
       return;
     }
     if (!confirmed) {
-      setError('Centang konfirmasi bahwa data penarikan sudah benar.');
+      setError(isId ? 'Centang konfirmasi bahwa data penarikan sudah benar.' : 'Confirm that the withdrawal details are correct.');
       return;
     }
     setShowConfirmation(true);
@@ -73,13 +77,18 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
 
   const handleConfirmSave = async () => {
     setError('');
+    if (nominal > availableBalance) {
+      setShowConfirmation(false);
+      setError(isId ? 'Saldo kas berubah dan tidak lagi mencukupi. Periksa saldo lalu coba lagi.' : 'The cash balance changed and is no longer sufficient. Review the balance and try again.');
+      return;
+    }
     const saved = await onSave({ nominal, tanggal, catatan: catatan.trim() });
     setShowConfirmation(false);
     if (!saved) {
-      setError('Transaksi gagal disimpan. Periksa koneksi lalu coba kembali.');
+      setError(isId ? 'Transaksi gagal disimpan. Periksa koneksi lalu coba kembali.' : 'Could not save the transaction. Check your connection and try again.');
       return;
     }
-    setSuccess('Penarikan berhasil disimpan ke riwayat akun Anda.');
+    setSuccess(isId ? 'Penarikan berhasil disimpan ke riwayat akun Anda.' : 'Withdrawal saved to your account history.');
     setNominalInput('');
     setTanggal(today());
     setCatatan('');
@@ -232,15 +241,21 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
               <tbody className="divide-y divide-slate-800">
                 {[...withdrawals].sort((a, b) => b.createdAt - a.createdAt).map((item) => (
                   <tr key={item.id} className="hover:bg-slate-800/30">
-                    <td className="px-5 py-4 whitespace-nowrap text-slate-300">{new Date(item.tanggal + 'T00:00:00').toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                    <td className="px-5 py-4 whitespace-nowrap text-slate-300">{new Date(item.tanggal + 'T00:00:00').toLocaleDateString(isId ? 'id-ID' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                     <td className="px-5 py-4 text-slate-200 max-w-sm"><div className="break-words">{item.catatan || '—'}</div><div className="text-[10px] text-slate-600 mt-1 font-mono">{item.id}</div></td>
                     <td className="px-5 py-4 text-right whitespace-nowrap font-mono font-bold text-rose-300">−{formatRupiah(item.nominal)}</td>
-                    <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-500">{new Date(item.createdAt).toLocaleString('id-ID')}</td>
+                    <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-500">{new Date(item.createdAt).toLocaleString(isId ? 'id-ID' : 'en-US')}</td>
                     {onDelete && (
                       <td className="px-5 py-4 whitespace-nowrap text-center">
                         <button
                           type="button"
-                          onClick={() => onDelete(item.id)}
+                          onClick={async () => {
+                            const confirmedDelete = window.confirm(isId ? `Hapus riwayat penarikan ${formatRupiah(item.nominal)}? Saldo kas akan dihitung ulang.` : `Delete withdrawal ${formatRupiah(item.nominal)}? The cash balance will be recalculated.`);
+                            if (!confirmedDelete) return;
+                            const deleted = await onDelete(item.id);
+                            if (!deleted) setError(isId ? 'Riwayat gagal dihapus. Periksa koneksi lalu coba lagi.' : 'Could not delete the history. Check your connection and try again.');
+                            else setSuccess(isId ? 'Riwayat penarikan berhasil dihapus.' : 'Withdrawal history deleted.');
+                          }}
                           title="Hapus riwayat penarikan"
                           className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
                         >

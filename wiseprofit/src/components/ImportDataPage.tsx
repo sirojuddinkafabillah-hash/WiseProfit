@@ -617,11 +617,19 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       setResultMessage({ type: 'error', text: 'There are no store items to export.' });
       return;
     }
-    exportToStyledExcel(currentItems, currentModalAwal);
-    setResultMessage({
-      type: 'success',
-      text: `Successfully exported ${currentItems.length} items to an Excel file (.xlsx) with 12 columns matching the template format!`
-    });
+    try {
+      exportToStyledExcel(currentItems, currentModalAwal);
+      setResultMessage({
+        type: 'success',
+        text: `Successfully exported ${currentItems.length} items to an Excel file (.xlsx) with 12 columns matching the template format!`
+      });
+    } catch (error) {
+      console.error('Failed to export inventory:', error);
+      setResultMessage({
+        type: 'error',
+        text: 'Export failed. Please try again or use the CSV export option.'
+      });
+    }
   };
 
   const validCount = parsedRows.filter(r => r.isValid).length;

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowDownToLine, ArrowLeft, CalendarDays, CheckCircle2, CircleAlert, Clock3, History, Trash2, Wallet } from 'lucide-react';
+import { ArrowDownToLine, CalendarDays, CheckCircle2, CircleAlert, Clock3, History, Trash2, Wallet } from 'lucide-react';
 import { formatRupiah } from '../utils/calculator';
 import type { Language } from '../i18n/translations';
 
@@ -19,7 +19,6 @@ interface WithdrawalPageProps {
   isSaving: boolean;
   onSave: (data: { nominal: number; tanggal: string; catatan: string }) => Promise<boolean>;
   onDelete?: (id: string) => Promise<boolean>;
-  onBackToInventory?: () => void;
 }
 
 const today = () => {
@@ -34,7 +33,6 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
   isSaving,
   onSave,
   onDelete,
-  onBackToInventory,
 }) => {
   const [nominalInput, setNominalInput] = useState('');
   const [tanggal, setTanggal] = useState(today);
@@ -105,16 +103,7 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
           <h1 className="text-xl sm:text-2xl font-extrabold text-white mt-2">{isId ? 'Penarikan Uang' : 'Cash Withdrawal'}</h1>
           <p className="text-sm text-slate-400 mt-1">{isId ? 'Catat uang yang diambil dari kas usaha, beserta alasan dan tanggalnya.' : 'Record money taken from business cash, including its purpose and date.'}</p>
         </div>
-        {onBackToInventory && (
-          <button
-            type="button"
-            onClick={onBackToInventory}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold border border-slate-700 transition-colors cursor-pointer self-start sm:self-auto shadow-sm"
-          >
-            <ArrowLeft className="w-4 h-4 text-emerald-400" />
-            <span>{isId ? 'Kembali ke Kasir' : 'Back to Cashier'}</span>
-          </button>
-        )}
+
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

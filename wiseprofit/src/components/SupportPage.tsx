@@ -1,4 +1,8 @@
 import React, { useMemo, useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
+import { SupportChatWidget } from './SupportChatWidget';
+import { SupportTicketList } from './SupportTicketList';
 import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send, Copy, CheckCircle2, Download } from 'lucide-react';
 
 interface SupportPageProps {
@@ -58,6 +62,7 @@ function getSavedFeedback(): FeedbackRecord[] {
 }
 
 export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBackToInventory, onGoToComplaints }) => {
+  const { user } = useAuth();
   const isId = language === 'id';
   const t = (id: string, en: string) => isId ? id : en;
   const faqs = FAQS[language];
@@ -78,19 +83,38 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
     `${t('Tanggal', 'Date')}: ${new Date().toLocaleString(language === 'id' ? 'id-ID' : 'en-US')}`,
   ].join('\\n');
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!subject.trim() || !detail.trim()) {
       setMessage(t('Isi judul dan detail keluhan terlebih dahulu.', 'Please enter both a subject and details.'));
       return;
     }
+    if (!user) {
+      setMessage(t('Silakan masuk ke akun WiseProfit sebelum mengirim keluhan.', 'Please sign in to WiseProfit before submitting a ticket.'));
+      return;
+    }
     try {
-      const current = getSavedFeedback();
-      current.push({ id: Date.now(), category, subject: subject.trim(), detail: detail.trim(), createdAt: new Date().toISOString() });
-      localStorage.setItem('wiseprofit_local_feedback', JSON.stringify(current));
-      setFeedbackVersion(v => v + 1);
-      setMessage(t('Keluhan tersimpan di browser ini. Keluhan belum dikirim ke admin.', 'Feedback saved in this browser. It has not been sent to an administrator.'));
-    } catch {
-      setMessage(t('Keluhan gagal disimpan. Salin atau unduh teksnya agar tidak hilang.', 'Feedback could not be saved. Copy or download the text to avoid losing it.'));
+      const { data: ticket, error } = await supabase.from('support_tickets').insert({
+        user_id: user.uid, user_email: user.email, category,
+        subject: subject.trim(), detail: detail.trim(),
+      }).select('id').single();
+      if (error || !ticket) throw error || new Error('Ticket was not created.');
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (token) {
+        try {
+          await fetch('/api/support/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: JSON.stringify({ ticketId: ticket.id }),
+          });
+        } catch (notifyError) { console.warn('Ticket saved but email notification failed:', notifyError); }
+      }
+      setMessage(t('Keluhan berhasil dikirim. Nomor tiket: ', 'Ticket submitted. Ticket ID: ') + ticket.id);
+      setSubject('');
+      setDetail('');
+    } catch (error) {
+      console.error('Could not create support ticket:', error);
+      setMessage(t('Keluhan belum terkirim. Pastikan migrasi Supabase sudah dijalankan, lalu coba lagi.', 'Ticket was not submitted. Ensure the Supabase migration is applied, then try again.'));
     }
   };
 
@@ -144,8 +168,10 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
         </div>
       ) : (
         <div className="space-y-5">
+          <SupportChatWidget language={language} />
+          <SupportTicketList language={language} />
           <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-            {t('Formulir ini menyimpan keluhan di browser Anda. Keluhan tidak dikirim otomatis ke admin. Setelah menyimpan, unduh atau salin teksnya untuk dikirim melalui kanal bantuan resmi.', 'This form saves feedback in your browser. It does not automatically send it to an administrator. After saving, download or copy the text and send it through your official support channel.')}
+            {t('Keluhan dikirim ke sistem tiket jika database Supabase sudah dikonfigurasi. Jika email belum aktif, tiket tetap tersimpan.', 'Feedback is sent to the support ticket system when Supabase is configured. If email is not configured, the ticket is still saved.')}
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <div className="grid gap-4">
@@ -162,7 +188,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
               </label>
               {message && <p role="status" className="text-sm text-slate-700">{message}</p>}
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={handleSave} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> {t('Simpan keluhan', 'Save feedback')}</button>
+                <button type="button" onClick={() => void handleSave()} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> {t('Kirim ke developer', 'Submit ticket')}</button>
                 <button type="button" onClick={handleCopy} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><Copy className="h-4 w-4" /> {copied ? t('Tersalin', 'Copied') : t('Salin teks', 'Copy text')}</button>
                 <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><Download className="h-4 w-4" /> {t('Unduh sebagai TXT', 'Download as TXT')}</button>
               </div>

@@ -18,7 +18,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
 
-export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'faq' | 'complaints';
+export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'faq' | 'complaints' | 'support-admin';
 
 interface HeaderProps {
   activePage: AppPage;
@@ -158,6 +158,8 @@ export const Header: React.FC<HeaderProps> = ({
               <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'faq' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
                 <CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span>
               </button>
+              {(user?.userMetadata as any)?.role === "support_admin" && <button type="button" onClick={() => onChangePage("support-admin")} className="flex items-center gap-2 rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700"><MessageSquareWarning className="h-3.5 w-3.5" /><span>{language === "id" ? "Inbox Developer" : "Developer Inbox"}</span></button>
+              }
               <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'complaints' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
                 <MessageSquareWarning className="w-3.5 h-3.5" /><span>{t('header.otherFeedback', language)}</span>
               </button>

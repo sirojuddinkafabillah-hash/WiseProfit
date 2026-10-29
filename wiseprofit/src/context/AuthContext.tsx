@@ -21,7 +21,7 @@ function mapUser(user: SupabaseUser | null): AppUser | null {
     email: user.email || null,
     displayName: String(metadata.full_name || metadata.name || metadata.display_name || user.email || ''),
     photoURL: typeof metadata.avatar_url === 'string' ? metadata.avatar_url : (typeof metadata.picture === 'string' ? metadata.picture : null),
-    userMetadata: metadata,
+    userMetadata: { ...metadata, ...(user.app_metadata || {}) },
   };
 }
 

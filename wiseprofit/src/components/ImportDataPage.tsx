@@ -263,7 +263,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
 
       let error: string | undefined = undefined;
       if (!namaBarang) {
-        error = 'Item name cannot be empty';
+        error = t('Nama barang tidak boleh kosong', 'Item name cannot be empty');
       } else if (hargaBeli <= 0 && hargaJualSatuan <= 0) {
         error = 'Harap isi harga beli atau harga jual';
       }
@@ -302,7 +302,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const validC = parsed.filter(p => p.isValid).length;
       setResultMessage({
         type: 'success',
-        text: `Successfully read ${parsed.length} data rows (${validC} items ready to save). Review the table preview below, then click "Import Data" to save.`
+        text: `Successfully read ${parsed.length} data rows (${validC} items ready to save). Review the table preview below, then click "{t('Impor Data', 'Import Data')}" to save.`
       });
     }
 
@@ -413,7 +413,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             }
             processRawData(content.items, file.name);
           } else {
-            setResultMessage({ type: 'error', text: 'JSON must be an item array or an object with an "items" property.' });
+            setResultMessage({ type: 'error', text: t('JSON harus berupa array barang atau objek dengan properti "items".', 'JSON must be an item array or an object with an "items" property.') });
           }
         } catch {
           setResultMessage({ type: 'error', text: t('File JSON rusak atau tidak valid.', 'JSON file is damaged or invalid.') });
@@ -555,7 +555,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const target = { ...updated[idx].item, [field]: value };
       
       let error: string | undefined = undefined;
-      if (!target.namaBarang) error = 'Item name cannot be empty';
+      if (!target.namaBarang) error = t('Nama barang tidak boleh kosong', 'Item name cannot be empty');
       else if (target.hargaBeli <= 0 && target.hargaJualSatuan <= 0) error = 'Harap isi harga beli atau jual';
 
       updated[idx] = {
@@ -657,7 +657,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   Store Cashier Data Import & Export Center
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#1f4e78] text-cyan-200 border border-cyan-500/40">
-                  12-Column Excel Format
+                  {t('Format Excel 12 Kolom', '12-Column Excel Format')}
                 </span>
               </div>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
@@ -676,7 +676,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 title={t("Ekspor seluruh data barang toko saat ini ke file Excel dengan 12 kolom persis seperti gambar", "Export all current store items to an Excel file with the exact 12-column layout")}
               >
                 <Download className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Export Excel in This Format ({currentItems.length} Items)</span>
+                <span>{t('Ekspor Excel dengan Format Ini', 'Export Excel in This Format')} ({currentItems.length} Items)</span>
               </button>
             )}
 
@@ -847,7 +847,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                       Drag an Excel spreadsheet here, or click to browse
                     </div>
                     <p className="text-xs text-slate-400 mt-1 font-mono">
-                      Supports spreadsheet formats (.xlsx, .xls, .csv) or JSON
+                      {t('Mendukung format spreadsheet (.xlsx, .xls, .csv) atau JSON', 'Supports spreadsheet formats (.xlsx, .xls, .csv) or JSON')}
                     </p>
                     <div className="mt-3 flex items-center justify-center gap-2">
                       <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
@@ -914,14 +914,14 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 <Database className="w-4 h-4" />
               </div>
               <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-                Storage Settings
+                {t('Pengaturan Penyimpanan', 'Storage Settings')}
               </h2>
             </div>
 
-            {/* Mode: Append vs Replace */}
+            {/* Mode: {t('Tambahkan', 'Append')} vs Replace */}
             <div className="space-y-2">
               <label className="block text-xs font-mono font-semibold text-slate-300">
-                Database Import Method:
+                {t('Metode Impor Database:', 'Database Import Method:')}
               </label>
 
               <div className="space-y-2">
@@ -940,10 +940,10 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                   />
                   <div>
                     <div className="text-xs font-bold font-mono text-emerald-300">
-                      Append
+                      {t('Tambahkan', 'Append')}
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-                      Append new data without deleting {currentItemsCount} existing items in Supabase.
+                      {t('Tambahkan', 'Append')} new data without deleting {currentItemsCount} item yang sudah ada di Supabase.
                     </div>
                   </div>
                 </label>
@@ -963,10 +963,10 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                   />
                   <div>
                     <div className="text-xs font-bold font-mono text-rose-300">
-                      Replace All Data
+                      {t('Ganti Semua Data', 'Replace All Data')}
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-                      Clear the database first, then import only the items from this file.
+                      {t('Kosongkan database terlebih dahulu, lalu impor hanya barang dari file ini.', 'Clear the database first, then import only the items from this file.')}
                     </div>
                   </div>
                 </label>
@@ -976,7 +976,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
             {/* Modal Awal Setting */}
             <div className="space-y-1.5 pt-2 border-t border-slate-800">
               <label className="block text-xs font-mono font-semibold text-slate-300">
-                Initial Business Capital (IDR):
+                {t('Modal Awal Usaha (IDR):', 'Initial Business Capital (IDR):')}
               </label>
               <input
                 type="number"
@@ -988,7 +988,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 className="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500"
               />
               <p className="text-[10px] font-mono text-slate-400">
-                Initial cashier capital used to calculate the running CASH BALANCE column.
+                {t('Modal awal kasir untuk menghitung kolom SALDO KAS berjalan.', 'Initial cashier capital used to calculate the running CASH BALANCE column.')}
               </p>
             </div>
           </div>
@@ -1008,7 +1008,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
               ) : (
                 <>
                   <Database className="w-4 h-4" />
-                  <span>Import Data {validCount > 0 ? `(${validCount} Items)` : ''}</span>
+                  <span>{t('Impor Data', 'Import Data')} {validCount > 0 ? `(${validCount} Items)` : ''}</span>
                 </>
               )}
             </button>
@@ -1024,7 +1024,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 className="w-full py-2 px-3 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Clear preview</span>
+                <span>{t('Hapus pratinjau', 'Clear preview')}</span>
               </button>
             )}
           </div>
@@ -1041,20 +1041,20 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
               </div>
               <div>
                 <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                  <span>Review data before saving ({parsedRows.length} rows)</span>
+                  <span>{t('Periksa data sebelum menyimpan', 'Review data before saving')} ({parsedRows.length} rows)</span>
                   <span className="text-[10px] text-cyan-400 font-normal">
                     (Format 12 Kolom Persis Seperti Gambar)
                   </span>
                 </h2>
                 <p className="text-[11px] font-mono text-slate-400">
-                  Can be edited directly before saving to Supabase
+                  {t('Data dapat diedit langsung sebelum disimpan ke Supabase', 'Can be edited directly before saving to Supabase')}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
               <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                ✓ {validCount} Ready to Import
+                ✓ {validCount} {t('Siap Diimpor', 'Ready to Import')}
               </span>
               {invalidCount > 0 && (
                 <span className="px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
@@ -1075,7 +1075,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-3.5 h-3.5" />
-                    <span>Save Data ({validCount} Items)</span>
+                    <span>{t('Simpan Data (', '{t('Simpan Data', 'Save Data')} ('){validCount} Items)</span>
                   </>
                 )}
               </button>
@@ -1095,8 +1095,8 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                   <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">{t('Harga Jual per Unit', 'Selling Price per Unit')}</th>
                   <th className="py-3 px-3 text-right min-w-[130px] border-r border-[#2a6496] text-emerald-200">Gain (Untung Terealisasi)</th>
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Modal Kembali', 'Cost Recovered')}</th>
-                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">Remaining Inventory Value (Equity)</th>
-                  <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">TOTAL AFTER PROFIT (Uang Masuk Kas)</th>
+                  <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Nilai Sisa Stok (Ekuitas)', 'Remaining Inventory Value (Equity)')}</th>
+                  <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">{t('TOTAL SETELAH LABA (Uang Masuk Kas)', 'TOTAL AFTER PROFIT (Cash Inflow)')}</th>
                   <th className="py-3 px-3 text-right min-w-[110px] text-amber-200">{t('SALDO KAS', 'CASH BALANCE')}</th>
                 </tr>
               </thead>
@@ -1195,7 +1195,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
           {/* Bottom Table Action Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-800">
             <div className="text-xs font-mono text-slate-400">
-              Total <strong className="text-white">{parsedRows.length}</strong> data rows (<strong className="text-emerald-400">{validCount} valid</strong>)
+              {t('Total', 'Total')} <strong className="text-white">{parsedRows.length}</strong> {t('baris data', 'data rows')} (<strong className="text-emerald-400">{validCount} {t('valid', 'valid')}</strong>)
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -1209,7 +1209,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Cancel</span>
+                <span>{t('Batal', 'Cancel')}</span>
               </button>
               <button
                 type="button"
@@ -1225,7 +1225,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-4 h-4" />
-                    <span>Save Data ({validCount} Items)</span>
+                    <span>{t('Simpan Data (', '{t('Simpan Data', 'Save Data')} ('){validCount} Items)</span>
                   </>
                 )}
               </button>

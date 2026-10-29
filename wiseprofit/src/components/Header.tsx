@@ -7,7 +7,7 @@ import {
   TrendingUp, 
   UploadCloud,
   CircleHelp,
-  MessageSquareWarning,
+  ShieldCheck,
   ArrowDownCircle,
   UserRound
 } from 'lucide-react';
@@ -80,11 +80,16 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
               </button>
-              {(user?.userMetadata as any)?.role === "support_admin" && (
-                <button type="button" onClick={() => onChangePage("support-admin")} aria-label={language === "id" ? "Inbox developer" : "Developer inbox"} title={language === "id" ? "Keluhan pengguna" : "User support tickets"} className={`flex h-6 w-7 items-center justify-center rounded-md border transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}>
-                  <MessageSquareWarning className="h-3.5 w-3.5" />
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={() => user ? onChangePage("support-admin") : onOpenAuthModal()}
+                aria-label={language === "id" ? "Login Admin" : "Admin Login"}
+                title={language === "id" ? "Login Admin" : "Admin Login"}
+                className={`inline-flex items-center gap-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}
+              >
+                <ShieldCheck className="h-3 w-3" />
+                <span>{language === "id" ? "Login Admin" : "Admin Login"}</span>
+              </button>
             </div>
 
             {/* Desktop Navigation Tabs */}
@@ -155,10 +160,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>{t('header.importExport', language)}</span>
               </button>
               <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}>
-                <CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan & Feedback' : 'Help & Feedback'}</span>
+                <CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span>
               </button>
-              {(user?.userMetadata as any)?.role === "support_admin" && <button type="button" onClick={() => onChangePage("support-admin")} className="flex items-center gap-2 rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700"><MessageSquareWarning className="h-3.5 w-3.5" /><span>{language === "id" ? "Inbox Developer" : "Developer Inbox"}</span></button>
-              }
+
             </nav>
           </div>
 
@@ -245,11 +249,16 @@ export const Header: React.FC<HeaderProps> = ({
             >
               {profilePhoto ? <img src={profilePhoto} alt="Profile" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
             </button>
-            {(user?.userMetadata as any)?.role === "support_admin" && (
-              <button type="button" onClick={() => onChangePage("support-admin")} aria-label={language === "id" ? "Inbox developer" : "Developer inbox"} title={language === "id" ? "Keluhan pengguna" : "User support tickets"} className={`flex h-6 w-7 items-center justify-center rounded-md border transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}>
-                <MessageSquareWarning className="h-3.5 w-3.5" />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => user ? onChangePage("support-admin") : onOpenAuthModal()}
+              aria-label={language === "id" ? "Login Admin" : "Admin Login"}
+              title={language === "id" ? "Login Admin" : "Admin Login"}
+              className={`inline-flex items-center gap-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}
+            >
+              <ShieldCheck className="h-3 w-3" />
+              <span>{language === "id" ? "Login Admin" : "Admin Login"}</span>
+            </button>
           </div>
           <button
             type="button"

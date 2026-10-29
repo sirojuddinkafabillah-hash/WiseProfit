@@ -838,13 +838,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                       {parsedRows.length} data rows detected ({validCount} valid, {invalidCount} invalid)
                     </p>
                     <p className="text-[11px] text-cyan-400 mt-2 font-mono underline">
-                      Klik untuk memilih file lain
+                      {t('Klik untuk memilih file lain', 'Click to choose another file')}
                     </p>
                   </div>
                 ) : (
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight">
-                      Drag an Excel spreadsheet here, or click to browse
+                      {t('Seret file Excel ke sini, atau klik untuk memilih', 'Drag an Excel spreadsheet here, or click to browse')}
                     </div>
                     <p className="text-xs text-slate-400 mt-1 font-mono">
                       {t('Mendukung format spreadsheet (.xlsx, .xls, .csv) atau JSON', 'Supports spreadsheet formats (.xlsx, .xls, .csv) or JSON')}

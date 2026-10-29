@@ -140,6 +140,11 @@ export function parseBackupJSON(jsonString: string): { items: InventoryItem[]; m
   }
 
   // Sanitize items
-  const validItems = items.filter((it) => it && typeof it.namaBarang === 'string');
-  return { items: validItems, modalAwal };
+  const validItems = items.filter((it: any) =>
+    it &&
+    typeof it === 'object' &&
+    (typeof it.namaBarang === 'string' || typeof it.namaItems === 'string') &&
+    String(it.namaBarang ?? it.namaItems).trim().length > 0
+  );
+  return { items: validItems as InventoryItem[], modalAwal };
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { SupportTicketList } from './SupportTicketList';
+import { SupportChatWidget } from './SupportChatWidget';
 import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send } from 'lucide-react';
 
 interface SupportPageProps {
@@ -113,6 +114,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
 
       {mode === 'faq' ? (
         <div className="space-y-3">
+          <SupportChatWidget language={language} onCreateTicket={() => setMode('complaints')} />
           {faqs.map((faq, index) => (
             <div key={faq.q} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
               <button type="button" aria-expanded={openFaq === index} onClick={() => setOpenFaq(openFaq === index ? null : index)} className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left text-sm font-semibold text-slate-800 hover:bg-slate-50">

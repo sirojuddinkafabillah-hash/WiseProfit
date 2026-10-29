@@ -395,7 +395,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
             ) : (
               <div>
                 <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                  Dengan login email, Anda bebas menghapus histori penelusuran atau cache browser kapan saja tanpa takut data hilang. Cukup masuk kembali, dan data langsung pulih!
+                  {t('Dengan login email, Anda dapat menghapus riwayat atau cache browser tanpa takut kehilangan data. Cukup masuk kembali untuk memulihkan data.', 'When signed in, you can clear browser history or cache without losing your data. Simply sign in again to restore it.')}
                 </p>
                 <button
                   onClick={() => {
@@ -414,7 +414,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
           {/* SECTION 1: CADANGAN MANUAL (FILE FISIK) */}
           <div className="space-y-2.5">
             <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
-              Cadangan Manual File Fisik (.JSON)
+              {t('Cadangan Manual ke File (.JSON)', 'Manual File Backup (.JSON)')}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

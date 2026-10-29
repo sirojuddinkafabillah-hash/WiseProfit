@@ -614,7 +614,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-900/90 text-slate-300 font-sans uppercase text-[10px] tracking-wider border-b border-slate-800">
-                <th className="py-3 px-3.5 font-bold">No</th>
+                <th className="py-3 px-3.5 font-bold">{language === 'id' ? 'No.' : 'No.'}</th>
                 <th className="py-3 px-3.5 font-bold">{language === 'id' ? 'Barang & Tanggal' : 'Item & Date'}</th>
                 <th className="py-3 px-3.5 font-bold text-right">{language === 'id' ? 'Biaya Pembelian' : 'Purchase Cost'}</th>
                 <th className="py-3 px-3.5 font-bold text-center">{language === 'id' ? 'Terjual / Stok' : 'Sold / Stock'}</th>
@@ -766,7 +766,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             className="flex items-center gap-2.5 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-sans text-xs font-extrabold rounded-2xl shadow-xl shadow-emerald-500/25 transition-all cursor-pointer whitespace-nowrap"
           >
             <ArrowLeft className="w-4 h-4 stroke-[3]" />
-            <span>Back to Cashier</span>
+            <span>{language === 'id' ? 'Kembali ke Kasir' : 'Back to Cashier'}</span>
           </button>
         </div>
       )}

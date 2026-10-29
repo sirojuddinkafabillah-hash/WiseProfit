@@ -162,16 +162,18 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
     wsStoreFormat['!autofilter'] = { ref: `A1:L${range.e.r + 1}` };
 
     // 2. Summary Sheet
+    const metricHeader = language === 'id' ? 'Metrik Keuangan & Ekuitas' : 'Equity & Financial Metric';
+    const valueHeader = language === 'id' ? 'Nilai (IDR)' : 'Value (IDR)';
     const summarySheetData = [
-      { 'Equity & Financial Metric': 'Modal Awal Usaha', 'Value (IDR)': modalAwal },
-      { 'Equity & Financial Metric': 'Total Pengeluaran Pembelian Stok', 'Value (IDR)': summary.totalPengeluaranBeli },
-      { 'Equity & Financial Metric': 'Total Pendapatan Penjualan', 'Value (IDR)': summary.totalPemasukanJual },
-      { 'Equity & Financial Metric': 'Modal Kembali', 'Value (IDR)': summary.totalModalKembali },
-      { 'Equity & Financial Metric': 'Total Laba Bersih Terealisasi', 'Value (IDR)': summary.totalGainTerjual },
-      { 'Equity & Financial Metric': 'Nilai Ekuitas Stok Tersisa', 'Value (IDR)': summary.totalNilaiSisaStok },
-      { 'Equity & Financial Metric': 'Saldo Kas Tersedia', 'Value (IDR)': summary.saldoKasSaatIni },
-      { 'Equity & Financial Metric': 'TOTAL EKUITAS USAHA (Kas + Stok)', 'Value (IDR)': totalEkuitasUsaha },
-      { 'Equity & Financial Metric': 'Pertumbuhan Modal / ROI (%)', 'Value (IDR)': `${persenPertumbuhanEkuitas.toFixed(2)}%` },
+      { [metricHeader]: language === 'id' ? 'Modal Awal Usaha' : 'Initial Business Capital', [valueHeader]: modalAwal },
+      { [metricHeader]: language === 'id' ? 'Total Pengeluaran Pembelian Stok' : 'Total Stock Purchase Expenses', [valueHeader]: summary.totalPengeluaranBeli },
+      { [metricHeader]: language === 'id' ? 'Total Pendapatan Penjualan' : 'Total Sales Revenue', [valueHeader]: summary.totalPemasukanJual },
+      { [metricHeader]: language === 'id' ? 'Modal Kembali' : 'Cost Recovered', [valueHeader]: summary.totalModalKembali },
+      { [metricHeader]: language === 'id' ? 'Total Laba Bersih Terealisasi' : 'Total Realized Net Profit', [valueHeader]: summary.totalGainTerjual },
+      { [metricHeader]: language === 'id' ? 'Nilai Ekuitas Stok Tersisa' : 'Remaining Inventory Equity Value', [valueHeader]: summary.totalNilaiSisaStok },
+      { [metricHeader]: language === 'id' ? 'Saldo Kas Tersedia' : 'Available Cash Balance', [valueHeader]: summary.saldoKasSaatIni },
+      { [metricHeader]: language === 'id' ? 'TOTAL EKUITAS USAHA (Kas + Stok)' : 'TOTAL BUSINESS EQUITY (Cash + Stock)', [valueHeader]: totalEkuitasUsaha },
+      { [metricHeader]: language === 'id' ? 'Pertumbuhan Modal / ROI (%)' : 'Capital Growth / ROI (%)', [valueHeader]: `${persenPertumbuhanEkuitas.toFixed(2)}%` },
     ];
     const wsSummary = XLSX.utils.json_to_sheet(summarySheetData);
 
@@ -259,7 +261,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'All Periods'}</option>
                 {availableMonths.map((m) => {
                   const [y, mon] = m.split('-');
-                  const monthName = new Date(Number(y), Number(mon) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                  const monthName = new Date(Number(y), Number(mon) - 1, 1).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { month: 'long', year: 'numeric' });
                   return (
                     <option key={m} value={m} className="bg-slate-900 text-white">
                       {monthName}
@@ -408,12 +410,12 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               <div
                 style={{ width: `${percentCash}%` }}
                 className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-l-lg transition-all duration-500 relative group"
-                title={`Kas Cair: ${percentCash.toFixed(1)}%`}
+                title={`${language === 'id' ? 'Kas Cair' : 'Cash'}: ${percentCash.toFixed(1)}%`}
               />
               <div
                 style={{ width: `${percentStock}%` }}
                 className="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-r-lg transition-all duration-500 relative group"
-                title={`Inventory Equity: ${percentStock.toFixed(1)}%`}
+                title={`${language === 'id' ? 'Ekuitas Persediaan' : 'Inventory Equity'}: ${percentStock.toFixed(1)}%`}
               />
             </div>
 
@@ -707,7 +709,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
               ) : (
                 <tr>
                   <td colSpan={9} className="py-8 text-center text-slate-500 font-sans text-xs">
-                    {searchTerm ? 'No items match your search.' : 'No item data for this period.'}
+                    {searchTerm ? (language === 'id' ? 'Tidak ada barang yang cocok dengan pencarian.' : 'No items match your search.') : (language === 'id' ? 'Tidak ada data barang untuk periode ini.' : 'No item data for this period.')}
                   </td>
                 </tr>
               )}
@@ -738,7 +740,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                     {formatRupiah(summary.totalNilaiSisaStok)}
                   </td>
                   <td className="py-3.5 px-3.5 text-center text-[10px] text-slate-400">
-                    {summary.totalPemasukanJual >= summary.totalPengeluaranBeli ? 'Break-even Reached' : 'Break-even in Progress'}
+                    {summary.totalPemasukanJual >= summary.totalPengeluaranBeli ? (language === 'id' ? 'Titik impas tercapai' : 'Break-even Reached') : (language === 'id' ? 'Menuju titik impas' : 'Break-even in Progress')}
                   </td>
                 </tr>
               </tfoot>

@@ -1,6 +1,6 @@
 import { InventoryItem } from '../types/inventory';
 import { supabase, testSupabaseConnection } from '../lib/supabase';
-import { batchUploadToCloud, clearAllUserItemsFromCloud, saveUserProfile, saveInventoryItemToCloud, deleteInventoryItemFromCloud } from './supabaseSync';
+import { batchUploadToCloud, clearAllUserItemsFromCloud, saveUserProfile, saveInventoryItemToCloud, deleteInventoryItemFromCloud, fetchUserItemsOnce } from './supabaseSync';
 
 export interface SupabaseInventoryResponse { success: boolean; source?: string; items: InventoryItem[]; modalAwal?: number; globalSavePercentMonthly?: number; message?: string; }
 export interface SupabaseStatus { connected: boolean; dbName: string; error: string | null; needsIpWhitelist?: boolean; uriMasked: string; }
@@ -37,10 +37,30 @@ export async function checkSupabaseStatus(): Promise<SupabaseStatus | null> {
 }
 export async function importItemsToSupabase(items: InventoryItem[], mode: 'append' | 'replace' = 'append', modalAwal?: number, userId?: string): Promise<{ success: boolean; message: string; count?: number; source?: string }> {
   if (!userId) return { success: false, message: 'Silakan masuk terlebih dahulu.' };
+
+  // Keep a rollback copy before a destructive replace import.
+  const previousItems = mode === 'replace' ? await fetchUserItemsOnce(userId) : [];
   if (mode === 'replace') {
     const cleared = await clearAllUserItemsFromCloud(userId);
-    if (!cleared) return { success: false, message: 'Gagal mengosongkan data lama di Supabase.' };
+    if (!cleared) return { success: false, message: 'Gagal mengosongkan data lama di Supabase. Data lama dipertahankan.' };
   }
+
   const saved = await batchUploadToCloud(userId, items, modalAwal ?? 50000);
-  return saved ? { success: true, message: `Berhasil menyimpan ${items.length} barang ke Supabase.`, count: items.length, source: 'supabase' } : { success: false, message: 'Gagal menyimpan data ke Supabase.' };
+  if (saved) {
+    return { success: true, message: `Berhasil menyimpan ${items.length} barang ke Supabase.`, count: items.length, source: 'supabase' };
+  }
+
+  if (mode === 'replace') {
+    // Best-effort rollback if the new data could not be saved after clearing old rows.
+    const clearedAfterFailure = await clearAllUserItemsFromCloud(userId);
+    const rollbackSucceeded = clearedAfterFailure && (
+      previousItems.length === 0 ||
+      await batchUploadToCloud(userId, previousItems, modalAwal ?? 50000)
+    );
+    if (!rollbackSucceeded) {
+      return { success: false, message: 'Impor gagal dan pemulihan otomatis data lama tidak berhasil. Periksa koneksi dan pulihkan dari cadangan JSON.' };
+    }
+  }
+
+  return { success: false, message: 'Gagal menyimpan data ke Supabase.' };
 }

@@ -359,11 +359,11 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
               </div>
               {user ? (
                 <span className="text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                  Tersinkron
+                  {t('Tersinkron', 'Synced')}
                 </span>
               ) : (
                 <span className="text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                  Belum Login
+                  {t('Belum Login', 'Not Signed In')}
                 </span>
               )}
             </div>
@@ -371,7 +371,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
             {user ? (
               <div>
                 <p className="text-xs text-slate-400 font-mono">
-                  Terhubung ke akun: <strong className="text-emerald-400">{user.email}</strong>. Seluruh penambahan barang dan perubahan kas otomatis tersimpan di database Cloud Server.
+                  {t('Terhubung ke akun:', 'Connected to account:')} <strong className="text-emerald-400">{user.email}</strong>. {t('Seluruh penambahan barang dan perubahan kas otomatis tersimpan di server cloud.', 'All item additions and cash changes are automatically saved to the cloud database.')}
                 </p>
                 <div className="mt-3 flex items-center gap-2 font-mono">
                   <button
@@ -470,7 +470,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
           {/* SECTION 2: EKSPOR LAPORAN */}
           <div className="space-y-2.5 pt-2 border-t border-slate-800">
             <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
-              Ekspor & Rekap Laporan
+              {t('Ekspor & Rekap Laporan', 'Export & Report Summary')}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -529,7 +529,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
             onClick={onClose}
             className="px-4 py-1.5 text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
           >
-            Tutup
+            {t('Tutup', 'Close')}
           </button>
         </div>
       </div>

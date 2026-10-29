@@ -163,15 +163,15 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
 
     // 2. Summary Sheet
     const summarySheetData = [
-      { 'Equity & Financial Metric': 'Initial Business Capital', 'Value (IDR)': modalAwal },
-      { 'Equity & Financial Metric': 'Total Stock Purchase Expenses', 'Value (IDR)': summary.totalPengeluaranBeli },
-      { 'Equity & Financial Metric': 'Total Sales Revenue Received', 'Value (IDR)': summary.totalPemasukanJual },
-      { 'Equity & Financial Metric': 'Cost Recovered', 'Value (IDR)': summary.totalModalKembali },
-      { 'Equity & Financial Metric': 'Total Realized Net Profit (Gain)', 'Value (IDR)': summary.totalGainTerjual },
-      { 'Equity & Financial Metric': 'Remaining Inventory Equity Value', 'Value (IDR)': summary.totalNilaiSisaStok },
-      { 'Equity & Financial Metric': 'Available Cash Balance', 'Value (IDR)': summary.saldoKasSaatIni },
-      { 'Equity & Financial Metric': 'TOTAL BUSINESS EQUITY (Cash + Stock)', 'Value (IDR)': totalEkuitasUsaha },
-      { 'Equity & Financial Metric': 'Capital Growth / ROI (%)', 'Value (IDR)': `${persenPertumbuhanEkuitas.toFixed(2)}%` },
+      { 'Equity & Financial Metric': 'Modal Awal Usaha', 'Value (IDR)': modalAwal },
+      { 'Equity & Financial Metric': 'Total Pengeluaran Pembelian Stok', 'Value (IDR)': summary.totalPengeluaranBeli },
+      { 'Equity & Financial Metric': 'Total Pendapatan Penjualan', 'Value (IDR)': summary.totalPemasukanJual },
+      { 'Equity & Financial Metric': 'Modal Kembali', 'Value (IDR)': summary.totalModalKembali },
+      { 'Equity & Financial Metric': 'Total Laba Bersih Terealisasi', 'Value (IDR)': summary.totalGainTerjual },
+      { 'Equity & Financial Metric': 'Nilai Ekuitas Stok Tersisa', 'Value (IDR)': summary.totalNilaiSisaStok },
+      { 'Equity & Financial Metric': 'Saldo Kas Tersedia', 'Value (IDR)': summary.saldoKasSaatIni },
+      { 'Equity & Financial Metric': 'TOTAL EKUITAS USAHA (Kas + Stok)', 'Value (IDR)': totalEkuitasUsaha },
+      { 'Equity & Financial Metric': 'Pertumbuhan Modal / ROI (%)', 'Value (IDR)': `${persenPertumbuhanEkuitas.toFixed(2)}%` },
     ];
     const wsSummary = XLSX.utils.json_to_sheet(summarySheetData);
 
@@ -199,7 +199,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             </button>
           )}
           <span className="hidden sm:inline-block text-xs font-sans text-slate-400">
-            · Standalone Page: <strong className="text-slate-200">{language === 'id' ? 'Laporan Penjualan & Ekuitas' : 'Sales & Equity Report'}</strong>
+            · {language === 'id' ? 'Halaman Mandiri:' : 'Standalone Page:'} <strong className="text-slate-200">{language === 'id' ? 'Laporan Penjualan & Ekuitas' : 'Sales & Equity Report'}</strong>
           </span>
         </div>
 
@@ -208,7 +208,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             type="button"
             onClick={handleExportExcel}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
-            title="Download the full report as an Excel file (.xlsx)"
+            title={language === 'id' ? 'Unduh laporan lengkap sebagai file Excel (.xlsx)' : 'Download the full report as an Excel file (.xlsx)'}
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
             <span className="hidden sm:inline">{language === 'id' ? 'Ekspor Excel' : 'Export Excel'}</span>
@@ -217,7 +217,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             type="button"
             onClick={onPrintReport}
             className="flex items-center gap-1.5 px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
-            title="Print the report in receipt / A4 format"
+            title={language === 'id' ? 'Cetak laporan dalam format struk / A4' : 'Print the report in receipt / A4 format'}
           >
             <Printer className="w-3.5 h-3.5" />
             <span>{language === 'id' ? 'Cetak atau Simpan PDF' : 'Print or Save PDF'}</span>
@@ -235,14 +235,14 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                  Sales & Business Equity Report
+                  {language === 'id' ? 'Laporan Penjualan & Ekuitas Usaha' : 'Sales & Business Equity Report'}
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-sans font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  Real-time
+                  {language === 'id' ? 'Waktu nyata' : 'Real-time'}
                 </span>
               </div>
               <p className="text-xs text-slate-400 font-sans mt-0.5">
-                Comprehensive overview of cash balance, remaining inventory assets, and realized net profit
+                {language === 'id' ? 'Ringkasan saldo kas, aset stok tersisa, dan laba bersih terealisasi' : 'Comprehensive overview of cash balance, remaining inventory assets, and realized net profit'}
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
                 onChange={(e) => onSelectMonth(e.target.value)}
                 className="bg-transparent text-slate-200 focus:outline-none cursor-pointer pr-1"
               >
-                <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'All Periods'}</option>
+                <option value="all" className="bg-slate-900 text-white">{language === 'id' ? 'Semua Periode' : 'Semua Periode'}</option>
                 {availableMonths.map((m) => {
                   const [y, mon] = m.split('-');
                   const monthName = new Date(Number(y), Number(mon) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -272,19 +272,19 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
             <button
               onClick={handleExportExcel}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-sans font-semibold transition-colors cursor-pointer shadow-xs"
-              title="Download the full report as an Excel file (.xlsx)"
+              title={language === 'id' ? 'Unduh laporan lengkap sebagai file Excel (.xlsx)' : 'Download the full report as an Excel file (.xlsx)'}
             >
               <Download className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Export Excel</span>
+              <span>{language === 'id' ? 'Ekspor Excel' : 'Export Excel'}</span>
             </button>
 
             <button
               onClick={onPrintReport}
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-sans font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
-              title="Print the official report in receipt / A4 format"
+              title={language === 'id' ? 'Cetak laporan resmi dalam format struk / A4' : 'Print the official report in receipt / A4 format'}
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print or Save PDF</span>
+              <span>{language === 'id' ? 'Cetak atau Simpan PDF' : 'Print or Save PDF'}</span>
             </button>
           </div>
         </div>

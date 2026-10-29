@@ -18,6 +18,7 @@ import { WithdrawalPage } from './components/WithdrawalPage';
 import { WithdrawalModal } from './components/WithdrawalModal';
 import { HomePage } from './components/HomePage';
 import { SupportPage } from './components/SupportPage';
+import { SupportAdminPage } from './components/SupportAdminPage';
 import { supabase } from './lib/supabase';
 import { CosmicInteractiveBackground, BackgroundTheme } from './components/CosmicInteractiveBackground';
 import { useAuth } from './context/AuthContext';
@@ -875,6 +876,7 @@ export default function App() {
                 <SupportPage language={language} mode="faq" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
               )}
 
+              {activePage === 'support-admin' && <SupportAdminPage language={language} onBack={() => setActivePage('inventory')} />}
               {activePage === 'complaints' && (
                 <SupportPage language={language} mode="complaints" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
               )}

@@ -817,6 +817,7 @@ export default function App() {
               {/* PAGE 2: LAPORAN PENJUALAN & EKUITAS (HALAMAN MANDIRI) */}
               {activePage === 'reports' && (
                 <ReportsEquityPage
+                  language={language}
                   items={items}
                   modalAwal={modalAwal}
                   summary={summary}

@@ -13,7 +13,7 @@ const FAQS = [
   { q: 'How do I record a cash withdrawal?', a: 'Open Withdrawals, enter the amount, date, and note. Make sure the amount does not exceed available cash before saving.' },
   { q: 'How do I export or import data?', a: 'Open Import/Export. To import, choose a supported file and review the preview before applying the data. To export, choose an available Excel, CSV, or backup option.' },
   { q: 'How do I change my profile photo?', a: 'Open the profile panel by clicking your profile photo, then select Change photo. Choose an image that meets the size limit shown in the app.' },
-  { q: 'Is my data saved to my cloud account?', a: 'For connected accounts, data can sync with the app's cloud service. Make sure syncing is complete before closing the app, and export backups regularly.' },
+  { q: 'Is my data saved to my cloud account?', a: "For connected accounts, data can sync with the app's cloud service. Make sure syncing is complete before closing the app, and export backups regularly." },
 ];
 
 export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventory, onGoToComplaints }) => {

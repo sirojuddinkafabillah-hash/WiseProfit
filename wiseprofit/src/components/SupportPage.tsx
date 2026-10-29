@@ -3,12 +3,11 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { SupportTicketList } from './SupportTicketList';
 import { SupportChatWidget } from './SupportChatWidget';
-import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send } from 'lucide-react';
+import { CircleHelp, MessageSquareWarning, ChevronDown, Send } from 'lucide-react';
 
 interface SupportPageProps {
   language: 'id' | 'en';
   mode: 'faq' | 'complaints';
-  onBackToInventory: () => void;
   onGoToComplaints?: () => void;
 }
 
@@ -42,7 +41,7 @@ const CATEGORIES = [
   { value: 'Other', en: 'Other', id: 'Lainnya' },
 ];
 
-export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initialMode, onBackToInventory }) => {
+export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initialMode }) => {
   const { user } = useAuth();
   const isId = language === 'id';
   const [mode, setMode] = useState<'faq' | 'complaints'>(initialMode);
@@ -104,7 +103,6 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
             <p className="mt-1 text-sm text-slate-600">{mode === 'faq' ? t('Bantuan singkat WiseProfit.', 'Quick WiseProfit help.') : t('Kirim masalah atau saran.', 'Report an issue or suggestion.')}</p>
           </div>
         </div>
-        <button type="button" onClick={onBackToInventory} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"><ArrowLeft className="h-4 w-4" /> {t('Kembali ke Kasir', 'Back to Cashier')}</button>
       </div>
 
       <div className="mb-5 flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm">

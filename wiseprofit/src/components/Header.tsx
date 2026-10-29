@@ -70,15 +70,22 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">
           {/* Brand & Logo */}
           <div className="flex items-center gap-4 lg:gap-6">
-            <button
-              type="button"
-              onClick={() => onChangePage('home')}
-              aria-label={t("header.openProfileHome", language)}
-              title={t("header.profile", language)}
-              className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700 hover:border-emerald-300'}`}
-            >
-              {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
-            </button>
+            <div className="flex w-11 shrink-0 flex-col items-center gap-1">
+              <button
+                type="button"
+                onClick={() => onChangePage('home')}
+                aria-label={t("header.openProfileHome", language)}
+                title={t("header.profile", language)}
+                className={`flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700 hover:border-emerald-300'}`}
+              >
+                {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
+              </button>
+              {(user?.userMetadata as any)?.role === "support_admin" && (
+                <button type="button" onClick={() => onChangePage("support-admin")} aria-label={language === "id" ? "Inbox developer" : "Developer inbox"} title={language === "id" ? "Keluhan pengguna" : "User support tickets"} className={`flex h-6 w-7 items-center justify-center rounded-md border transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}>
+                  <MessageSquareWarning className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
 
             {/* Desktop Navigation Tabs */}
             <nav className="wp-main-navigation hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
@@ -228,15 +235,22 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Navigation Bar (visible on smaller screens) */}
         <div className="flex md:hidden items-center justify-between gap-1 py-2.5 border-t border-slate-800/80 font-sans text-xs overflow-x-auto">
-          <button
-            type="button"
-            onClick={() => onChangePage('home')}
-            aria-label="Open profile and home"
-            title="Profile"
-            className={`flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 transition-all ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700'}`}
-          >
-            {profilePhoto ? <img src={profilePhoto} alt="Profile" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
-          </button>
+          <div className="flex shrink-0 flex-col items-center gap-1">
+            <button
+              type="button"
+              onClick={() => onChangePage('home')}
+              aria-label="Open profile and home"
+              title="Profile"
+              className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 transition-all ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700'}`}
+            >
+              {profilePhoto ? <img src={profilePhoto} alt="Profile" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
+            </button>
+            {(user?.userMetadata as any)?.role === "support_admin" && (
+              <button type="button" onClick={() => onChangePage("support-admin")} aria-label={language === "id" ? "Inbox developer" : "Developer inbox"} title={language === "id" ? "Keluhan pengguna" : "User support tickets"} className={`flex h-6 w-7 items-center justify-center rounded-md border transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}>
+                <MessageSquareWarning className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
           <button
             type="button"
             onClick={() => onChangePage('inventory')}

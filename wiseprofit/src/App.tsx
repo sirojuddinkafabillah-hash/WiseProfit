@@ -856,7 +856,6 @@ export default function App() {
                     return await handleAddWithdrawal(data.nominal, data.tanggal, data.catatan);
                   }}
                   onDelete={handleDeleteWithdrawal}
-                  onBackToInventory={() => setActivePage('inventory')}
                 />
               )}
 

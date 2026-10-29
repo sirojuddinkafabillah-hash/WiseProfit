@@ -19,7 +19,7 @@ const FAQS = {
     { q: 'How do I import or export data?', a: 'Open Import/Export. Review the preview before importing. Download a JSON backup regularly, and keep the file somewhere safe. Excel and CSV exports are useful for spreadsheets.' },
     { q: 'How do I restore a backup?', a: 'Open the backup and export window, select your JSON backup, and follow the confirmation messages. Sign in to the correct account first.' },
     { q: 'Is my data sent to the cloud?', a: 'When you are signed in and cloud storage is connected, the app can sync data to your account. Check the connection/sync status and keep a separate backup.' },
-    { q: 'Does the complaint form contact an administrator?', a: 'Not automatically. The form saves a copy in this browser. Download or copy the complaint and send it through your official support channel.' },
+    { q: 'Does submitting feedback notify the developer?', a: 'Your feedback is saved as a support ticket. Email notifications depend on whether the notification service is configured.' },
   ],
   id: [
     { q: 'Bagaimana cara menambah barang?', a: 'Buka Kasir & Inventori, lalu isi nama barang, jumlah isi wadah, harga beli, dan harga jual. Periksa kembali nilainya sebelum menyimpan.' },
@@ -28,7 +28,7 @@ const FAQS = {
     { q: 'Bagaimana mengimpor atau mengekspor data?', a: 'Buka Impor/Ekspor. Periksa pratinjau sebelum mengimpor. Unduh cadangan JSON secara berkala dan simpan di tempat aman. Ekspor Excel dan CSV dapat digunakan di aplikasi spreadsheet.' },
     { q: 'Bagaimana memulihkan cadangan?', a: 'Buka jendela cadangan dan ekspor, pilih file cadangan JSON, lalu ikuti pesan konfirmasi. Pastikan Anda masuk ke akun yang benar.' },
     { q: 'Apakah data tersimpan di cloud?', a: 'Jika Anda masuk dan penyimpanan cloud terhubung, data dapat disinkronkan ke akun Anda. Periksa status koneksi/sinkronisasi dan tetap simpan cadangan terpisah.' },
-    { q: 'Apakah formulir keluhan langsung menghubungi admin?', a: 'Belum otomatis. Formulir menyimpan salinan di browser ini. Unduh atau salin keluhan, lalu kirim melalui kanal bantuan resmi.' },
+    { q: 'Apakah pengiriman keluhan memberi tahu developer?', a: 'Keluhan disimpan sebagai tiket bantuan. Pemberitahuan email bergantung pada konfigurasi layanan notifikasi.' },
   ],
 };
 
@@ -52,6 +52,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
   const [subject, setSubject] = useState('');
   const [detail, setDetail] = useState('');
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSave = async () => {
     if (!subject.trim() || !detail.trim()) {
@@ -62,6 +63,8 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
       setMessage(t('Silakan masuk ke akun WiseProfit sebelum mengirim keluhan.', 'Please sign in to WiseProfit before submitting a ticket.'));
       return;
     }
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       const { data: ticket, error } = await supabase.from('support_tickets').insert({
         user_id: user.uid, user_email: user.email, category,
@@ -85,6 +88,8 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
     } catch (error) {
       console.error('Could not create support ticket:', error);
       setMessage(t('Keluhan belum terkirim. Pastikan migrasi Supabase sudah dijalankan, lalu coba lagi.', 'Ticket was not submitted. Ensure the Supabase migration is applied, then try again.'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -136,7 +141,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initia
               </label>
               {message && <p role="status" className="text-sm text-slate-700">{message}</p>}
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => void handleSave()} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><Send className="h-4 w-4" /> {t('Kirim ke developer', 'Submit ticket')}</button>
+                <button type="button" onClick={() => void handleSave()} disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"><Send className="h-4 w-4" /> {isSubmitting ? t('Mengirim…', 'Submitting…') : t('Kirim ke developer', 'Submit ticket')}</button>
               </div>
             </div>
           </div>

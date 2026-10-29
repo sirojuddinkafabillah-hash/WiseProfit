@@ -32,6 +32,7 @@ import {
 } from '../utils/excelExporter';
 
 interface ImportDataPageProps {
+  language: 'id' | 'en';
   currentItemsCount: number;
   currentModalAwal: number;
   currentItems?: InventoryItem[];
@@ -109,6 +110,7 @@ export const formatExcelSerialDate = (val: any): string => {
 };
 
 export const ImportDataPage: React.FC<ImportDataPageProps> = ({
+  language,
   currentItemsCount,
   currentModalAwal,
   currentItems = [],
@@ -116,6 +118,8 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   onNavigateToInventory,
 }) => {
   const { user } = useAuth();
+  const isId = language === 'id';
+  const t = (id: string, en: string) => isId ? id : en;
   const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload');
   const [dragActive, setDragActive] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
@@ -292,7 +296,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
     if (parsed.length === 0) {
       setResultMessage({
         type: 'error',
-        text: 'No data rows were detected. Make sure the table contains item rows.'
+        text: t('Tidak ditemukan baris data. Pastikan tabel berisi data barang.', 'No data rows were detected. Make sure the table contains item rows.')
       });
     } else {
       const validC = parsed.filter(p => p.isValid).length;
@@ -309,7 +313,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   const parseDelimitedText = (text: string, sourceName: string) => {
     const lines = text.trim().split(/\r?\n/).filter(line => line.trim().length > 0);
     if (lines.length === 0) {
-      setResultMessage({ type: 'error', text: 'The text contains no data rows.' });
+      setResultMessage({ type: 'error', text: t('Teks tidak berisi baris data.', 'The text contains no data rows.') });
       return;
     }
 
@@ -376,7 +380,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
     }
 
     if (rows.length === 0) {
-      setResultMessage({ type: 'error', text: 'Gagal mengekstrak data dari teks CSV/Tabel.' });
+      setResultMessage({ type: 'error', text: t('Gagal mengekstrak data dari teks CSV/Tabel.', 'Failed to extract data from CSV/table text.') });
       return;
     }
 
@@ -386,7 +390,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   // Parse Text pasted from Excel or Google Sheets
   const handleProcessPastedText = () => {
     if (!pastedText.trim()) {
-      setResultMessage({ type: 'error', text: 'Kotak teks masih kosong. Salin tabel dari Excel atau Google Sheets lalu tempel di sini.' });
+      setResultMessage({ type: 'error', text: t('Kotak teks masih kosong. Salin tabel dari Excel atau Google Sheets lalu tempel di sini.', 'The text box is empty. Copy a table from Excel or Google Sheets and paste it here.') });
       return;
     }
     parseDelimitedText(pastedText, `Tempel Teks (${pastedText.split(/\r?\n/).length} rows)`);
@@ -412,7 +416,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             setResultMessage({ type: 'error', text: 'JSON must be an item array or an object with an "items" property.' });
           }
         } catch {
-          setResultMessage({ type: 'error', text: 'File JSON rusak atau tidak valid.' });
+          setResultMessage({ type: 'error', text: t('File JSON rusak atau tidak valid.', 'JSON file is damaged or invalid.') });
         }
       };
       reader.readAsText(file);
@@ -424,7 +428,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
           parseDelimitedText(text, file.name);
         } catch (err) {
           console.error('Error reading CSV text:', err);
-          setResultMessage({ type: 'error', text: 'Gagal membaca isi file CSV/Teks.' });
+          setResultMessage({ type: 'error', text: t('Gagal membaca isi file CSV/Teks.', 'Failed to read CSV/text file.') });
         }
       };
       reader.readAsText(file);
@@ -449,7 +453,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
           const raw2D: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false });
           
           if (raw2D.length === 0) {
-            setResultMessage({ type: 'error', text: 'Lembar kerja pertama dalam file Excel kosong.' });
+            setResultMessage({ type: 'error', text: t('Lembar kerja pertama dalam file Excel kosong.', 'The first worksheet in the Excel file is empty.') });
             return;
           }
 
@@ -504,14 +508,14 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               processRawData(fallbackJson, file.name);
               return;
             }
-            setResultMessage({ type: 'error', text: 'No item data rows were detected in the Excel worksheet.' });
+            setResultMessage({ type: 'error', text: t('Tidak ditemukan baris data barang pada lembar Excel.', 'No item data rows were detected in the Excel worksheet.') });
             return;
           }
 
           processRawData(extractedRows, file.name);
         } catch (err) {
           console.error('Error parsing spreadsheet:', err);
-          setResultMessage({ type: 'error', text: 'Could not read the Excel file. Make sure the table has a header row.' });
+          setResultMessage({ type: 'error', text: t('File Excel tidak dapat dibaca. Pastikan tabel memiliki baris judul kolom.', 'Could not read the Excel file. Make sure the table has a header row.') });
         }
       };
       reader.readAsArrayBuffer(file);
@@ -614,7 +618,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
   // Export current inventory in database using the exact 12-column format
   const handleExportCurrentInventory = () => {
     if (!currentItems || currentItems.length === 0) {
-      setResultMessage({ type: 'error', text: 'There are no store items to export.' });
+      setResultMessage({ type: 'error', text: t('Tidak ada barang toko untuk diekspor.', 'There are no store items to export.') });
       return;
     }
     try {
@@ -627,7 +631,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       console.error('Failed to export inventory:', error);
       setResultMessage({
         type: 'error',
-        text: 'Export failed. Please try again or use the CSV export option.'
+        text: t('Ekspor gagal. Coba lagi atau gunakan opsi ekspor CSV.', 'Export failed. Please try again or use the CSV export option.')
       });
     }
   };
@@ -669,7 +673,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               <button
                 onClick={handleExportCurrentInventory}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 text-emerald-300 hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs"
-                title="Ekspor seluruh data barang toko saat ini ke file Excel dengan 12 kolom persis seperti gambar"
+                title={t("Ekspor seluruh data barang toko saat ini ke file Excel dengan 12 kolom persis seperti gambar", "Export all current store items to an Excel file with the exact 12-column layout")}
               >
                 <Download className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Export Excel in This Format ({currentItems.length} Items)</span>
@@ -680,10 +684,10 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             <button
               onClick={handleLoadSampleFromImage}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-[#1f4e78]/80 hover:bg-[#1f4e78] border border-cyan-500/50 text-cyan-200 hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs"
-              title="Muat 21 data produk contoh dari gambar (sprite, coco pie, aquviva, kiko, pino, dilan, dll)"
+              title={t("Muat 21 data produk contoh dari gambar", "Load 21 sample products from the reference image")}
             >
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Try sample data</span>
+              <span>{t('Coba data contoh', 'Try sample data')}</span>
             </button>
 
             {/* Download Template Excel */}
@@ -693,7 +697,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Unduh file template Excel (.xlsx) dengan 12 kolom persis seperti gambar"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Download Excel Template</span>
+              <span>{t('Unduh Template Excel', 'Download Excel Template')}</span>
             </button>
 
             {/* Download Template CSV */}
@@ -703,14 +707,14 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
               title="Unduh file template CSV dengan 12 kolom persis seperti gambar"
             >
               <FileText className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Download CSV Template</span>
+              <span>{t('Unduh Template CSV', 'Download CSV Template')}</span>
             </button>
 
             <button
               onClick={onNavigateToInventory}
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20"
             >
-              <span>Back to Cashier</span>
+              <span>{t('Kembali ke Kasir', 'Back to Cashier')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -739,7 +743,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                 onClick={onNavigateToInventory}
                 className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs cursor-pointer shadow-sm transition-all"
               >
-                <span>View items in Cashier & Stock</span>
+                <span>{t('Lihat barang di Kasir & Stok', 'View items in Cashier & Stock')}</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             )}
@@ -765,7 +769,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <UploadCloud className="w-4 h-4" />
-                  <span>Choose an Excel or CSV file</span>
+                  <span>{t('Pilih file Excel atau CSV', 'Choose an Excel or CSV file')}</span>
                 </button>
 
                 <button
@@ -778,13 +782,13 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
                   }`}
                 >
                   <ClipboardPaste className="w-4 h-4" />
-                  <span>Paste data from Excel</span>
+                  <span>{t('Tempel data dari Excel', 'Paste data from Excel')}</span>
                 </button>
               </div>
 
               <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
                 <Database className="w-3.5 h-3.5" />
-                <span>Account storage</span>
+                <span>{t('Penyimpanan akun', 'Account storage')}</span>
               </span>
             </div>
 
@@ -886,7 +890,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                     className="flex items-center gap-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono rounded-xl text-xs transition-all cursor-pointer shadow-md shadow-cyan-500/20"
                   >
                     <ClipboardPaste className="w-3.5 h-3.5" />
-                    <span>Review pasted data</span>
+                    <span>{t('Periksa data yang ditempel', 'Review pasted data')}</span>
                   </button>
                 </div>
               </div>

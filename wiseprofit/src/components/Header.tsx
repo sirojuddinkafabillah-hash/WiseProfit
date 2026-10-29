@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Plus, 
-  Download, 
   Cloud, 
   CheckCircle2, 
-  BookOpen, 
-  Printer, 
   ShoppingBag, 
   TrendingUp, 
   UploadCloud,
   CircleHelp,
   MessageSquareWarning,
   ArrowDownCircle,
-  Home,
   UserRound
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -41,11 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   onChangePage,
   itemsCount = 0,
   onOpenAddModal,
-  onPrintReport,
-  onOpenGuide,
-  onOpenDownloadModal,
   onOpenAuthModal,
-  onOpenWithdrawalModal,
   withdrawalsCount = 0,
   isSyncingCloud = false,
   language,
@@ -173,50 +165,6 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
           <div className="wp-header-quick-tools flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Quick Helper Tools */}
-            <nav className="hidden 2xl:flex items-center gap-1.5 text-xs font-sans font-medium text-slate-300">
-              <button
-                type="button"
-                onClick={onOpenGuide}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{t('header.financeGuide', language)}</span>
-              </button>
-              {onOpenWithdrawalModal && (
-                <button
-                  type="button"
-                  onClick={onOpenWithdrawalModal}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-rose-500/30 bg-rose-950/40 hover:bg-rose-900/60 hover:text-white text-rose-300 transition-colors cursor-pointer font-semibold text-[11px]"
-                  title={t("header.cashWithdrawalTitle", language)}
-                >
-                  <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                  <span>{t('header.withdrawCash', language)}</span>
-                  {withdrawalsCount > 0 && (
-                    <span className="px-1.5 py-0.2 bg-rose-500/20 text-rose-300 rounded-full text-[10px]">
-                      {withdrawalsCount}
-                    </span>
-                  )}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={onPrintReport}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800 hover:text-white transition-colors cursor-pointer text-[11px]"
-              >
-                <Printer className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{t('header.printReport', language)}</span>
-              </button>
-              <button
-                type="button"
-                onClick={onOpenDownloadModal}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 hover:text-white text-slate-200 transition-colors cursor-pointer font-semibold text-[11px]"
-              >
-                <Download className="w-3.5 h-3.5 text-slate-400" />
-                <span>{t('header.backupRestore', language)}</span>
-              </button>
-            </nav>
-
             {/* Cloud Auth */}
             {user ? (
               <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-700/80 py-1 px-2.5 rounded-xl text-xs font-sans">

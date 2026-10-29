@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { SupportChatWidget } from './SupportChatWidget';
+import { SupportTicketList } from './SupportTicketList';
 import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send, Copy, CheckCircle2, Download } from 'lucide-react';
 
 interface SupportPageProps {
@@ -168,6 +169,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
       ) : (
         <div className="space-y-5">
           <SupportChatWidget language={language} />
+          <SupportTicketList language={language} />
           <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-900">
             {t('Keluhan dikirim ke sistem tiket jika database Supabase sudah dikonfigurasi. Jika email belum aktif, tiket tetap tersimpan.', 'Feedback is sent to the support ticket system when Supabase is configured. If email is not configured, the ticket is still saved.')}
           </div>

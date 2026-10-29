@@ -155,14 +155,11 @@ export const Header: React.FC<HeaderProps> = ({
                 <UploadCloud className="w-3.5 h-3.5" />
                 <span>{t('header.importExport', language)}</span>
               </button>
-              <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'faq' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
-                <CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span>
+              <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}>
+                <CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan & Feedback' : 'Help & Feedback'}</span>
               </button>
               {(user?.userMetadata as any)?.role === "support_admin" && <button type="button" onClick={() => onChangePage("support-admin")} className="flex items-center gap-2 rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700"><MessageSquareWarning className="h-3.5 w-3.5" /><span>{language === "id" ? "Inbox Developer" : "Developer Inbox"}</span></button>
               }
-              <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${activePage === 'complaints' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-600 hover:text-blue-700 hover:bg-slate-50'}`}>
-                <MessageSquareWarning className="w-3.5 h-3.5" /><span>{t('header.otherFeedback', language)}</span>
-              </button>
             </nav>
           </div>
 
@@ -349,8 +346,7 @@ export const Header: React.FC<HeaderProps> = ({
             <UploadCloud className="w-3.5 h-3.5" />
             <span>{t('header.importExportShort', language)}</span>
           </button>
-          <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'faq' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><CircleHelp className="w-3.5 h-3.5" /><span>FAQ</span></button>
-          <button type="button" onClick={() => onChangePage('complaints')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${activePage === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 bg-white'}`}><MessageSquareWarning className="w-3.5 h-3.5" /><span>{t("header.otherFeedback", language)}</span></button>
+          <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-700 text-white' : 'text-slate-400 bg-slate-900/60'}`}><CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span></button>
         </div>
       </div>
     </header>

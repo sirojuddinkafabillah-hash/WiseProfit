@@ -873,13 +873,10 @@ export default function App() {
               )}
 
               {activePage === 'faq' && (
-                <SupportPage language={language} mode="faq" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
+                <SupportPage language={language} mode="faq" onBackToInventory={() => setActivePage('inventory')} />
               )}
 
               {activePage === 'support-admin' && <SupportAdminPage language={language} onBack={() => setActivePage('inventory')} />}
-              {activePage === 'complaints' && (
-                <SupportPage language={language} mode="complaints" onBackToInventory={() => setActivePage('inventory')} onGoToComplaints={() => setActivePage('complaints')} />
-              )}
             </>
           )}
         </main>

@@ -9,7 +9,7 @@ interface SupportPageProps {
   language: 'id' | 'en';
   mode: 'faq' | 'complaints';
   onBackToInventory: () => void;
-  onGoToComplaints: () => void;
+  onGoToComplaints?: () => void;
 }
 
 type FeedbackRecord = {
@@ -61,9 +61,10 @@ function getSavedFeedback(): FeedbackRecord[] {
   }
 }
 
-export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBackToInventory, onGoToComplaints }) => {
+export const SupportPage: React.FC<SupportPageProps> = ({ language, mode: initialMode, onBackToInventory }) => {
   const { user } = useAuth();
   const isId = language === 'id';
+  const [mode, setMode] = useState<'faq' | 'complaints'>(initialMode);
   const t = (id: string, en: string) => isId ? id : en;
   const faqs = FAQS[language];
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -154,6 +155,11 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
         <button type="button" onClick={onBackToInventory} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"><ArrowLeft className="h-4 w-4" /> {t('Kembali ke Kasir', 'Back to Cashier')}</button>
       </div>
 
+      <div className="mb-5 flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
+        <button type="button" onClick={() => setMode('faq')} aria-pressed={mode === 'faq'} className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${mode === 'faq' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}><CircleHelp className="h-4 w-4" />{t('FAQ', 'FAQ')}</button>
+        <button type="button" onClick={() => setMode('complaints')} aria-pressed={mode === 'complaints'} className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${mode === 'complaints' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}><MessageSquareWarning className="h-4 w-4" />{t('Keluhan & Saran', 'Feedback & Suggestions')}</button>
+      </div>
+
       {mode === 'faq' ? (
         <div className="space-y-3">
           {faqs.map((faq, index) => (
@@ -164,7 +170,7 @@ export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBack
               {openFaq === index && <p className="border-t border-slate-100 px-4 py-4 text-sm leading-6 text-slate-600">{faq.a}</p>}
             </div>
           ))}
-          <button type="button" onClick={onGoToComplaints} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> {t('Punya keluhan lain?', 'Have another issue?')}</button>
+          <button type="button" onClick={() => setMode('complaints')} className="mt-2 inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"><MessageSquareWarning className="h-4 w-4" /> {t('Punya keluhan lain?', 'Have another issue?')}</button>
         </div>
       ) : (
         <div className="space-y-5">

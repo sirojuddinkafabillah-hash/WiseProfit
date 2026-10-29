@@ -654,7 +654,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                  Store Cashier Data Import & Export Center
+                  {t('Pusat Impor & Ekspor Data Kasir', 'Store Cashier Data Import & Export Center')}
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#1f4e78] text-cyan-200 border border-cyan-500/40">
                   {t('Format Excel 12 Kolom', '12-Column Excel Format')}
@@ -901,7 +901,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-start gap-2 text-[11px] font-mono text-slate-400">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <span>
-              Automatically recognized fields: <strong>No</strong>, <strong>{t('Tanggal Input', 'Entry Date')}</strong>, <strong>{t('Nama Barang', 'Item Name')}</strong>, <strong>{t('Isi per Wadah', 'Units per Container')}</strong>, <strong>{t('Harga Beli per Wadah', 'Purchase Price per Container')}</strong>, <strong>{t('Jumlah Terjual', 'Units Sold')}</strong>, <strong>{t('Harga Jual per Unit', 'Selling Price per Unit')}</strong>, <strong>{t('Keuntungan', 'Gain')}</strong>, <strong>{t('Modal Kembali', 'Cost Recovered')}</strong>, <strong>{t('Nilai Sisa Stok', 'Remaining Inventory Value')}</strong>, <strong>{t('TOTAL SETELAH LABA', 'TOTAL AFTER PROFIT')}</strong>, dan <strong>{t('SALDO KAS', 'CASH BALANCE')}</strong>.
+              {t('Kolom yang dikenali otomatis:', 'Automatically recognized fields:')} <strong>No</strong>, <strong>{t('Tanggal Input', 'Entry Date')}</strong>, <strong>{t('Nama Barang', 'Item Name')}</strong>, <strong>{t('Isi per Wadah', 'Units per Container')}</strong>, <strong>{t('Harga Beli per Wadah', 'Purchase Price per Container')}</strong>, <strong>{t('Jumlah Terjual', 'Units Sold')}</strong>, <strong>{t('Harga Jual per Unit', 'Selling Price per Unit')}</strong>, <strong>{t('Keuntungan', 'Gain')}</strong>, <strong>{t('Modal Kembali', 'Cost Recovered')}</strong>, <strong>{t('Nilai Sisa Stok', 'Remaining Inventory Value')}</strong>, <strong>{t('TOTAL SETELAH LABA', 'TOTAL AFTER PROFIT')}</strong>, {t('dan', 'and')} <strong>{t('SALDO KAS', 'CASH BALANCE')}</strong>.
             </span>
           </div>
         </div>
@@ -1043,7 +1043,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
                   <span>{t('Periksa data sebelum menyimpan', 'Review data before saving')} ({parsedRows.length} {t('baris', 'rows')})</span>
                   <span className="text-[10px] text-cyan-400 font-normal">
-                    (Format 12 Kolom Persis Seperti Gambar)
+                    ({t('Format 12 Kolom Persis Seperti Gambar', 'Exact 12-Column Layout')})
                   </span>
                 </h2>
                 <p className="text-[11px] font-mono text-slate-400">
@@ -1075,7 +1075,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-3.5 h-3.5" />
-                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('Barang', 'Items')})</span>
+                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('barang', 'items')})</span>
                   </>
                 )}
               </button>
@@ -1093,7 +1093,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Harga Beli per Wadah', 'Purchase Price per Container')}</th>
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Jumlah Terjual', 'Units Sold')}</th>
                   <th className="py-3 px-3 text-right min-w-[110px] border-r border-[#2a6496]">{t('Harga Jual per Unit', 'Selling Price per Unit')}</th>
-                  <th className="py-3 px-3 text-right min-w-[130px] border-r border-[#2a6496] text-emerald-200">Gain (Untung Terealisasi)</th>
+                  <th className="py-3 px-3 text-right min-w-[130px] border-r border-[#2a6496] text-emerald-200">{t('Laba Terealisasi', 'Realized Gain')}</th>
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Modal Kembali', 'Cost Recovered')}</th>
                   <th className="py-3 px-3 text-right min-w-[120px] border-r border-[#2a6496]">{t('Nilai Sisa Stok (Ekuitas)', 'Remaining Inventory Value (Equity)')}</th>
                   <th className="py-3 px-3 text-right min-w-[170px] border-r border-[#2a6496] text-cyan-200">{t('TOTAL SETELAH LABA (Uang Masuk Kas)', 'TOTAL AFTER PROFIT (Cash Inflow)')}</th>
@@ -1225,7 +1225,7 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                 ) : (
                   <>
                     <Database className="w-4 h-4" />
-                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('Barang', 'Items')})</span>
+                    <span>{t('Simpan Data', 'Save Data')} ({validCount} {t('barang', 'items')})</span>
                   </>
                 )}
               </button>

@@ -186,29 +186,29 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const noUrut = !isNaN(parsedNo) && parsedNo > 0 ? parsedNo : (idx + 1);
 
       // 1. Nama Items (Index 2 in 12-column layout)
-      let namaItems = String(findValue(row, [
+      let namaBarang = String(findValue(row, [
         'Nama Items', 'nama barang', 'nama_barang', 'nama', 'barang', 'item', 'produk', 'nama produk', 
         'deskripsi', 'description', 'uraian', 'product', 'nama_produk', 'kode/nama', 'title'
       ], 2) || '').trim();
 
-      // If namaItems looks like a number and row has no headers, check index 1 or 2
-      if (!namaItems && row['__col_2']) {
-        namaItems = String(row['__col_2']).trim();
+      // If namaBarang looks like a number and row has no headers, check index 1 or 2
+      if (!namaBarang && row['__col_2']) {
+        namaBarang = String(row['__col_2']).trim();
       }
 
       // 2. Satuan Container (default 'Dus')
-      const satuanContainer = String(findValue(row, [
+      const satuanWadah = String(findValue(row, [
         'Satuan Container', 'satuan wadah', 'satuan_wadah', 'wadah', 'kemasan', 'satuan beli', 'packaging', 
         'pack', 'dus', 'karton', 'satuan', 'unit wadah', 'satuan_beli'
       ]) || 'Dus').trim();
 
       // 3. Units per Container (Index 3 in 12-column layout)
-      let jumlahItemsContainer = parseIndonesianNumber(findValue(row, [
+      let jumlahBarangWadah = parseIndonesianNumber(findValue(row, [
         'Units per Container', 'jumlah 1 wadah', 'isi wadah', 'isi', 'jumlah barang wadah', 'qty wadah', 'isi 1 wadah', 
         'jumlah', 'qty', 'kuantitas', 'kapasitas', 'isi per wadah', 'pcs per dus', 'isi dus', 
         'isi karton', 'banyaknya', 'isi_wadah', 'jumlah_barang_wadah', 'isi/kemasan', 'pcs/dus'
       ], 3));
-      if (jumlahItemsContainer <= 0) jumlahItemsContainer = 1;
+      if (jumlahBarangWadah <= 0) jumlahBarangWadah = 1;
 
       // 4. Satuan Unit
       const satuanUnit = String(findValue(row, [
@@ -230,7 +230,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       ], 6));
 
       // 7. Units Sold (Index 5 in 12-column layout)
-      const jumlahItemsDijualSatuan = parseIndonesianNumber(findValue(row, [
+      const jumlahBarangDijualSatuan = parseIndonesianNumber(findValue(row, [
         'Units Sold', 'jumlah terjual satuan', 'jumlah terjual', 'terjual', 'jumlah_terjual', 
         'unit terjual', 'laku', 'sold', 'qty jual', 'sudah laku', 'terjual satuan', 'penjualan', 'qty terjual', 'terjual (unit)'
       ], 5)) || 0;
@@ -248,17 +248,17 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
 
       // Smart fallback: If hargaJualSatuan is empty but hargaBeli is filled, auto-calculate +25% markup
       if (hargaJualSatuan <= 0 && hargaBeli > 0) {
-        const modalPerUnit = hargaBeli / Math.max(1, jumlahItemsContainer);
+        const modalPerUnit = hargaBeli / Math.max(1, jumlahBarangWadah);
         hargaJualSatuan = Math.ceil((modalPerUnit * 1.25) / 500) * 500;
       }
 
       // If hargaBeli is empty but hargaJualSatuan is filled, estimate 80% cost
       if (hargaBeli <= 0 && hargaJualSatuan > 0) {
-        hargaBeli = Math.round(hargaJualSatuan * jumlahItemsContainer * 0.8);
+        hargaBeli = Math.round(hargaJualSatuan * jumlahBarangWadah * 0.8);
       }
 
       let error: string | undefined = undefined;
-      if (!namaItems) {
+      if (!namaBarang) {
         error = 'Item name cannot be empty';
       } else if (hargaBeli <= 0 && hargaJualSatuan <= 0) {
         error = 'Harap isi harga beli atau harga jual';
@@ -267,12 +267,12 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const item: InventoryItem = {
         id: `import_${now}_${idx}_${Math.random().toString(36).substring(2, 6)}`,
         noUrut,
-        namaItems: namaItems || `Items Baris ${noUrut}`,
-        satuanContainer: satuanContainer || 'Dus',
-        jumlahItemsContainer: Math.max(1, jumlahItemsContainer),
+        namaBarang: namaBarang || `Items Baris ${noUrut}`,
+        satuanWadah: satuanWadah || 'Dus',
+        jumlahBarangWadah: Math.max(1, jumlahBarangWadah),
         satuanUnit: satuanUnit || 'pcs',
         hargaBeli: Math.max(0, hargaBeli),
-        jumlahItemsDijualSatuan: Math.max(0, jumlahItemsDijualSatuan),
+        jumlahBarangDijualSatuan: Math.max(0, jumlahBarangDijualSatuan),
         hargaJualSatuan: Math.max(0, hargaJualSatuan),
         perputaranBulan: 1,
         persentaseLabaDisimpanBulanan: 50,
@@ -551,7 +551,7 @@ export const ImportDataPage: React.FC<ImportDataPageProps> = ({
       const target = { ...updated[idx].item, [field]: value };
       
       let error: string | undefined = undefined;
-      if (!target.namaItems) error = 'Item name cannot be empty';
+      if (!target.namaBarang) error = 'Item name cannot be empty';
       else if (target.hargaBeli <= 0 && target.hargaJualSatuan <= 0) error = 'Harap isi harga beli atau jual';
 
       updated[idx] = {
@@ -1115,8 +1115,8 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                       <td className="py-2 px-3 font-sans font-bold text-white border-r border-slate-800">
                         <input
                           type="text"
-                          value={item.namaItems}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'namaItems', e.target.value)}
+                          value={item.namaBarang}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'namaBarang', e.target.value)}
                           className="w-full px-2 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white font-sans text-xs focus:border-cyan-500 focus:outline-none"
                         />
                       </td>
@@ -1124,8 +1124,8 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                         <input
                           type="number"
                           min="1"
-                          value={item.jumlahItemsContainer}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahItemsContainer', Math.max(1, Number(e.target.value)))}
+                          value={item.jumlahBarangWadah}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahBarangWadah', Math.max(1, Number(e.target.value)))}
                           className="w-16 px-1.5 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white text-xs text-right focus:border-cyan-500 focus:outline-none"
                         />
                       </td>
@@ -1143,8 +1143,8 @@ No\tEntry Date\tNama Items\tUnits per Container\tPurchase Price per Container\tU
                         <input
                           type="number"
                           min="0"
-                          value={item.jumlahItemsDijualSatuan}
-                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahItemsDijualSatuan', Math.max(0, Number(e.target.value)))}
+                          value={item.jumlahBarangDijualSatuan}
+                          onChange={(e) => handleUpdatePreviewRow(idx, 'jumlahBarangDijualSatuan', Math.max(0, Number(e.target.value)))}
                           className="w-16 px-1.5 py-1 bg-slate-900/80 border border-slate-700/60 rounded text-white text-xs text-right focus:border-cyan-500 focus:outline-none"
                         />
                       </td>

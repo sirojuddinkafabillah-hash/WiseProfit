@@ -262,7 +262,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, theme, onThemeChange, 
           <div className="flex shrink-0 flex-col items-center gap-2">
             <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelected} className="hidden" aria-label="Choose profile photo" />
             <button type="button" onClick={() => photoInputRef.current?.click()} title="Change profile photo" aria-label="Change profile photo" className="wp-profile-avatar group relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 text-3xl font-bold shadow-sm transition focus:outline-none focus:ring-2">
-              {localPhoto ? <img src={localPhoto} alt="Profile photo" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Profile photo" className="h-full w-full object-cover" /> : <span aria-label={`Inisial ${displayName}`} className="wp-profile-initials">{initials}</span>}
+              {localPhoto ? <img src={localPhoto} alt="Profile photo" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="Profile photo" className="h-full w-full object-cover" /> : <span aria-label={`Initials for ${displayName}`} className="wp-profile-initials">{initials}</span>}
             </button>
             <button type="button" onClick={() => { if (photoInputRef.current) { photoInputRef.current.value = ''; photoInputRef.current.click(); } }} className="wp-profile-photo-action inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold">
               <Camera className="h-3.5 w-3.5" /> {localPhoto || user.photoURL ? 'Change photo' : 'Add photo'}

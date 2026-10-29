@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowLeft, CircleHelp, MessageSquareWarning, ChevronDown, Send, Copy, CheckCircle2, Download } from 'lucide-react';
 
 interface SupportPageProps {
+  language: 'id' | 'en';
   mode: 'faq' | 'complaints';
   onBackToInventory: () => void;
   onGoToComplaints: () => void;
@@ -56,11 +57,7 @@ function getSavedFeedback(): FeedbackRecord[] {
   }
 }
 
-export const SupportPage: React.FC<SupportPageProps> = ({ mode, onBackToInventory, onGoToComplaints }) => {
-  const [language] = useState<'id' | 'en'>(() => {
-    try { return localStorage.getItem('wp_language') === 'en' ? 'en' : 'id'; }
-    catch { return 'id'; }
-  });
+export const SupportPage: React.FC<SupportPageProps> = ({ language, mode, onBackToInventory, onGoToComplaints }) => {
   const isId = language === 'id';
   const t = (id: string, en: string) => isId ? id : en;
   const faqs = FAQS[language];

@@ -40,7 +40,6 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAuthModal,
   onOpenProfilePanel,
   withdrawalsCount = 0,
-  isSyncingCloud = false,
   language,
   onLanguageChange,
 }) => {
@@ -183,24 +182,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
 
-            {user ? (
-              <button
-                type="button"
-                onClick={onOpenProfilePanel}
-                aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
-                aria-haspopup="dialog"
-                title={isSyncingCloud ? (language === 'id' ? 'Sinkronisasi sedang berlangsung' : 'Sync in progress') : (language === 'id' ? 'Profil dan pengaturan' : 'Profile and settings')}
-                className="flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-0.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 shadow-sm">
-                  {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-6 w-6 text-slate-500" />}
-                </span>
-                <span className="inline-flex items-center gap-1 text-[9px] font-semibold leading-none text-emerald-600">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  ON
-                </span>
-              </button>
-            ) : (
+            {!user && (
               <button type="button" onClick={onOpenAuthModal} className="flex shrink-0 items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
                 <LogIn className="h-3.5 w-3.5" />
                 {t('header.signIn', language)}
@@ -226,7 +208,30 @@ export const Header: React.FC<HeaderProps> = ({
         inert={!sidebarOpen}
         className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,270px)] flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="border-b border-slate-100 px-4 py-4">
+        {user && (
+          <div className="border-b border-slate-100 p-3">
+            <button
+              type="button"
+              onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
+              aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
+              aria-haspopup="dialog"
+              className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 text-left transition hover:border-blue-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
+                {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-slate-800">{user.displayName || (language === 'id' ? 'Profil Saya' : 'My Profile')}</span>
+                <span className="mt-1 flex items-center gap-1 text-[10px] font-medium text-emerald-600">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  ON · {language === 'id' ? 'Online' : 'Online'}
+                </span>
+              </span>
+              <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" />
+            </button>
+          </div>
+        )}
+        <div className="border-b border-slate-100 px-4 py-3">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
           <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
         </div>

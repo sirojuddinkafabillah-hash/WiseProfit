@@ -83,7 +83,6 @@ export const Header: React.FC<HeaderProps> = ({
     { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
     { page: 'import', label: t('header.importExport', language), icon: UploadCloud },
     { page: 'faq', label: language === 'id' ? 'Bantuan' : 'Help', icon: CircleHelp },
-    { page: 'home', label: language === 'id' ? 'Profil & Pengaturan' : 'Profile & Settings', icon: Settings },
   ];
 
   const navigate = (page: AppPage) => {
@@ -197,7 +196,7 @@ export const Header: React.FC<HeaderProps> = ({
           type="button"
           aria-label={language === 'id' ? 'Tutup menu navigasi' : 'Close navigation menu'}
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-40 cursor-default bg-slate-950/30 backdrop-blur-[1px]"
+          className="fixed inset-0 z-40 cursor-default bg-slate-950/10 backdrop-blur-[0.5px] transition-opacity duration-200"
         />
       )}
 
@@ -206,16 +205,16 @@ export const Header: React.FC<HeaderProps> = ({
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
         aria-hidden={!sidebarOpen}
         inert={!sidebarOpen}
-        className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,270px)] flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,290px)] flex-col overflow-hidden rounded-r-2xl border-r border-white/60 bg-white/72 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.20)] backdrop-blur-2xl transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         {user && (
-          <div className="border-b border-slate-100 p-3">
+          <div className="border-b border-white/50 p-3">
             <button
               type="button"
               onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
               aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
               aria-haspopup="dialog"
-              className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 text-left transition hover:border-blue-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex w-full items-center gap-3 rounded-xl border border-white/70 bg-white/55 p-3 text-left shadow-sm backdrop-blur-md transition hover:border-blue-200/80 hover:bg-blue-50/75 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
@@ -231,19 +230,19 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         )}
-        <div className="border-b border-slate-100 px-4 py-3">
+        <div className="border-b border-white/50 px-4 py-3">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
           <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-3">
+        <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-3">
           {navigationItems.map(({ page, label, icon: Icon, count }) => (
             <button
               key={page}
               type="button"
               onClick={() => navigate(page)}
               aria-current={isActive(page) ? 'page' : undefined}
-              className={`group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition-colors ${isActive(page) ? 'bg-blue-50 font-semibold text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all duration-150 ${isActive(page) ? 'bg-blue-600/10 font-semibold text-blue-800 ring-1 ring-inset ring-blue-600/15' : 'text-slate-700 hover:bg-white/65 hover:text-slate-950'}`}
             >
               <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-blue-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
               <span className="flex-1">{label}</span>
@@ -253,11 +252,11 @@ export const Header: React.FC<HeaderProps> = ({
           ))}
         </nav>
 
-        <div className="border-t border-slate-100 p-3">
+        <div className="border-t border-white/50 bg-white/20 p-3">
           <button
             type="button"
             onClick={() => { setSidebarOpen(false); user ? onChangePage('support-admin') : onOpenAuthModal(); }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-slate-700 transition hover:bg-white/65 hover:text-slate-950"
           >
             <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
             <span className="flex-1">{language === 'id' ? 'Login Admin' : 'Admin Login'}</span>

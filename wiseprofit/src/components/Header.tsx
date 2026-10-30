@@ -115,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label="WiseProfit - Kasir"
             className="flex shrink-0 items-center gap-2.5 rounded-lg text-left"
           >
-            <span className="relative flex h-12 w-12 items-center justify-center rounded-[15px] border-[3px] border-blue-100 bg-blue-50 shadow-[0_5px_16px_rgba(37,99,235,0.16)] sm:h-14 sm:w-14">
+            <span className="relative flex h-12 w-12 items-center justify-center rounded-[15px] border-2 border-blue-200 bg-white shadow-[0_6px_18px_rgba(37,99,235,0.22)] ring-2 ring-blue-50 sm:h-14 sm:w-14">
               <svg viewBox="0 0 64 64" className="h-10 w-10 sm:h-12 sm:w-12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
                   <linearGradient id="wp-cube-top" x1="13" y1="8" x2="48" y2="30" gradientUnits="userSpaceOnUse">
@@ -205,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
         aria-hidden={!sidebarOpen}
         inert={!sidebarOpen}
-        className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,290px)] flex-col overflow-hidden rounded-r-2xl border-r border-white/60 bg-white/72 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.20)] backdrop-blur-2xl transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,310px)] flex-col overflow-hidden rounded-r-2xl border-r border-white/70 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.22)] transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'rgba(239,246,255,0.78)', backdropFilter: 'blur(24px) saturate(165%)', WebkitBackdropFilter: 'blur(24px) saturate(165%)' }}
       >
         {user && (
           <div className="border-b border-white/50 p-3">
@@ -214,7 +214,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
               aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
               aria-haspopup="dialog"
-              className="flex w-full items-center gap-3 rounded-xl border border-white/70 bg-white/55 p-3 text-left shadow-sm backdrop-blur-md transition hover:border-blue-200/80 hover:bg-blue-50/75 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex w-full items-center gap-3 rounded-xl border border-white/80 bg-white/65 p-3 text-left shadow-sm backdrop-blur-md transition hover:border-blue-200 hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
@@ -242,12 +242,12 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={() => navigate(page)}
               aria-current={isActive(page) ? 'page' : undefined}
-              className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all duration-150 ${isActive(page) ? 'bg-blue-600/10 font-semibold text-blue-800 ring-1 ring-inset ring-blue-600/15' : 'text-slate-700 hover:bg-white/65 hover:text-slate-950'}`}
+              className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm transition-all duration-150 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
             >
-              <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-blue-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
+              <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
               <span className="flex-1">{label}</span>
               {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
-              {isActive(page) && <ChevronRight className="h-4 w-4 text-blue-500" />}
+              {isActive(page) && <ChevronRight className="h-4 w-4 text-white" />}
             </button>
           ))}
         </nav>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Menu, X, Plus, CheckCircle2, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
-  Wallet, ChevronRight, Settings, LogIn
+  ChevronRight, Settings, LogIn
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -114,13 +114,33 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={() => navigate('inventory')}
             aria-label="WiseProfit - Kasir"
-            className="flex shrink-0 items-center gap-2 rounded-lg text-left"
+            className="flex shrink-0 items-center gap-2.5 rounded-lg text-left"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-sm shadow-blue-600/20">
-              <Wallet className="h-5 w-5" />
+            <span className="relative flex h-12 w-12 items-center justify-center rounded-[15px] border-[3px] border-blue-100 bg-blue-50 shadow-[0_5px_16px_rgba(37,99,235,0.16)] sm:h-14 sm:w-14">
+              <svg viewBox="0 0 64 64" className="h-10 w-10 sm:h-12 sm:w-12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="wp-cube-top" x1="13" y1="8" x2="48" y2="30" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#60A5FA"/><stop offset="1" stopColor="#2563EB"/>
+                  </linearGradient>
+                  <linearGradient id="wp-cube-side" x1="33" y1="23" x2="53" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#2563EB"/><stop offset="1" stopColor="#1D4ED8"/>
+                  </linearGradient>
+                </defs>
+                <path d="M32 5 54 17.5 32 30 10 17.5 32 5Z" fill="url(#wp-cube-top)" stroke="#1D4ED8" strokeWidth="2"/>
+                <path d="M10 17.5 32 30v27L10 44.5v-27Z" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="2" strokeLinejoin="round"/>
+                <path d="M54 17.5 32 30v27l22-12.5v-27Z" fill="url(#wp-cube-side)" stroke="#1D4ED8" strokeWidth="2" strokeLinejoin="round"/>
+                <path d="m18 21.5 14 8 14-8M18 28l8 4.5v8l-8-4.5v-8Z" stroke="white" strokeWidth="2.4" strokeLinejoin="round"/>
+                <path d="m32 34 14-8v8l-14 8v-8Z" fill="#DBEAFE" stroke="white" strokeWidth="2"/>
+                <path d="m27 43 5 3 5-3v7l-5 3-5-3v-7Z" fill="#BFDBFE" stroke="white" strokeWidth="1.8" strokeLinejoin="round"/>
+              </svg>
             </span>
-            <span className="text-[19px] font-extrabold tracking-tight text-slate-900 sm:text-[21px]">
-              Wise<span className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 bg-clip-text text-transparent">Profit</span>
+            <span className="flex flex-col">
+              <span className="font-serif text-[18px] font-bold leading-tight tracking-tight sm:text-[19px]">
+                <span className="text-[#10264B]">Wise</span><span className="text-[#1769E8]">Profit</span>
+              </span>
+              <span className="mt-1 font-serif text-[10px] leading-none tracking-[0.01em] text-[#334766] sm:text-[11px]">
+                Business Management
+              </span>
             </span>
           </button>
 

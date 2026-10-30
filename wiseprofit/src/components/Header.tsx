@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Plus, 
-  Cloud, 
-  CheckCircle2, 
-  ShoppingBag, 
-  TrendingUp, 
-  UploadCloud,
-  CircleHelp,
-  ShieldCheck,
-  ArrowDownCircle,
-  UserRound,
-  ArrowLeft
+import {
+  Menu, X, Plus, CheckCircle2, ShoppingBag, TrendingUp,
+  UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
+  Wallet, ChevronRight, Settings, LogIn
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -33,6 +25,13 @@ interface HeaderProps {
   onLanguageChange: (language: 'id' | 'en') => void;
 }
 
+type NavigationItem = {
+  page: AppPage;
+  label: string;
+  icon: React.ElementType;
+  count?: number;
+};
+
 export const Header: React.FC<HeaderProps> = ({
   activePage,
   onChangePage,
@@ -46,6 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const loadProfilePhoto = () => {
@@ -64,271 +64,153 @@ export const Header: React.FC<HeaderProps> = ({
     };
   }, [user?.uid, user?.photoURL]);
 
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [activePage]);
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSidebarOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [sidebarOpen]);
+
+  const navigationItems: NavigationItem[] = [
+    { page: 'inventory', label: t('header.cashier', language), icon: ShoppingBag, count: itemsCount },
+    { page: 'reports', label: t('header.businessReports', language), icon: TrendingUp },
+    { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
+    { page: 'import', label: t('header.importExport', language), icon: UploadCloud },
+    { page: 'faq', label: language === 'id' ? 'Bantuan' : 'Help', icon: CircleHelp },
+    { page: 'home', label: language === 'id' ? 'Profil & Pengaturan' : 'Profile & Settings', icon: Settings },
+  ];
+
+  const navigate = (page: AppPage) => {
+    onChangePage(page);
+    setSidebarOpen(false);
+  };
+
+  const isActive = (page: AppPage) => page === 'faq'
+    ? activePage === 'faq' || activePage === 'complaints'
+    : activePage === page;
+
   return (
-    <header className="wp-app-header no-print sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Header Bar */}
-        <div className="flex items-center justify-between gap-3 min-h-[4.5rem] py-2">
-          {activePage !== 'inventory' && activePage !== 'home' && (
-            <button type="button" onClick={() => onChangePage('inventory')}
-              aria-label={language === 'id' ? 'Kembali ke beranda utama' : 'Back to main home'}
-              title={language === 'id' ? 'Kembali ke beranda utama' : 'Back to main home'}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-100 hover:bg-slate-800 hover:border-blue-400 transition-colors">
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-          )}
-          {/* Brand & Logo */}
-          <div className="flex items-center gap-4 lg:gap-6">
-            <div className="flex w-11 shrink-0 flex-col items-center gap-1">
-              <button
-                type="button"
-                onClick={() => onChangePage('home')}
-                aria-label={t("header.openProfileHome", language)}
-                title={t("header.profile", language)}
-                className={`flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 transition-all cursor-pointer ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700 hover:border-emerald-300'}`}
-              >
-                {profilePhoto ? <img src={profilePhoto} alt={t("header.profile", language)} className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-5 w-5" /></span>}
-              </button>
-              <button
-                type="button"
-                onClick={() => user ? onChangePage("support-admin") : onOpenAuthModal()}
-                aria-label={language === "id" ? "Login Admin" : "Admin Login"}
-                title={language === "id" ? "Login Admin" : "Admin Login"}
-                className={`inline-flex items-center gap-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}
-              >
-                <ShieldCheck className="h-3 w-3" />
-                <span>{language === "id" ? "Login Admin" : "Admin Login"}</span>
-              </button>
+    <>
+      <header className="wp-app-header no-print sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 text-slate-800 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto flex min-h-[4.25rem] max-w-[1600px] items-center gap-3 px-3 sm:px-5 lg:px-7">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen((open) => !open)}
+            aria-label={sidebarOpen ? (language === 'id' ? 'Tutup menu' : 'Close menu') : (language === 'id' ? 'Buka menu' : 'Open menu')}
+            aria-expanded={sidebarOpen}
+            aria-controls="wp-main-sidebar"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('inventory')}
+            aria-label="WiseProfit - Kasir"
+            className="flex shrink-0 items-center gap-2 rounded-lg text-left"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-sm shadow-blue-600/20">
+              <Wallet className="h-5 w-5" />
+            </span>
+            <span className="text-[19px] font-extrabold tracking-tight text-slate-900 sm:text-[21px]">
+              Wise<span className="text-blue-600">Profit</span>
+            </span>
+          </button>
+
+          <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-white p-1 shadow-sm" role="group" aria-label={t('header.chooseLanguage', language)}>
+              <span className="hidden px-1 text-[11px] font-medium text-slate-500 sm:inline">{t('language.label', language)}</span>
+              <div className="relative flex items-center rounded-full bg-slate-100 p-0.5">
+                <span aria-hidden="true" className={`absolute inset-y-0.5 w-[32px] rounded-full bg-blue-600 shadow-sm transition-transform duration-200 ${language === 'en' ? 'translate-x-[32px]' : 'translate-x-0'}`} />
+                <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} className={`relative z-10 w-8 rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'id' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>ID</button>
+                <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} className={`relative z-10 w-8 rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'en' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>EN</button>
+              </div>
             </div>
 
-            {/* Desktop Navigation Tabs */}
-            {(activePage === 'inventory' || activePage === 'home') && <nav className="wp-main-navigation hidden md:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl font-sans text-sm">
-              <button
-                type="button"
-                onClick={() => onChangePage('inventory')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
-                  activePage === 'inventory'
-                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                }`}
-              >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>{t('header.cashierStock', language)}</span>
-                {itemsCount > 0 && (
-                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                    activePage === 'inventory' ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {itemsCount}
-                  </span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onChangePage('reports')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  activePage === 'reports'
-                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                }`}
-              >
-                <TrendingUp className="w-3.5 h-3.5" />
-                <span>{t('header.businessReports', language)}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onChangePage('withdrawals')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  activePage === 'withdrawals'
-                    ? 'bg-rose-400/10 text-rose-300 border border-rose-400/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                }`}
-              >
-                <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-                <span>{t('header.withdrawals', language)}</span>
-                {withdrawalsCount > 0 && (
-                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                    activePage === 'withdrawals' ? 'bg-slate-950/30 text-white' : 'bg-rose-500/20 text-rose-300'
-                  }`}>
-                    {withdrawalsCount}
-                  </span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onChangePage('import')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  activePage === 'import'
-                    ? 'bg-emerald-400/12 text-emerald-300 border border-emerald-400/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                }`}
-              >
-                <UploadCloud className="w-3.5 h-3.5" />
-                <span>{t('header.importExport', language)}</span>
-              </button>
-              <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center gap-2 px-3 py-2 rounded-xl font-semibold transition-all cursor-pointer ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}>
-                <CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span>
-              </button>
-
-            </nav>}
-          </div>
-
-          {/* Quick Tools & Cloud Auth */}
-          <div className="flex items-center gap-1.5 rounded-full border border-blue-200 bg-white p-1 shadow-sm" role="group" aria-label={t("header.chooseLanguage", language)}>
-            <span className="hidden sm:inline px-1 text-[10px] font-semibold text-slate-500">{t('language.label', language)}</span>
-            <div className="relative flex items-center rounded-full bg-slate-100 p-0.5" aria-label={t("header.chooseLanguage", language)}>
-              <span aria-hidden="true" className={`absolute inset-y-0.5 w-[34px] rounded-full bg-blue-600 shadow-sm transition-transform duration-200 ${language === 'en' ? 'translate-x-[34px]' : 'translate-x-0'}`} />
-              <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'id' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>ID</button>
-              <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} className={`relative z-10 w-[34px] rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'en' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>EN</button>
-            </div>
-          </div>
-          <div className="wp-header-quick-tools flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Cloud Auth */}
             {user ? (
-              <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-700/80 py-1 px-2.5 rounded-xl text-xs font-sans">
-                <div className="flex items-center gap-2 text-slate-200 font-medium">
-                  {user.photoURL ? (
-                    <img
-                      src={user.photoURL}
-                      alt={t("header.avatar", language)}
-                      className="w-5 h-5 rounded-full ring-1 ring-emerald-500"
-                    />
-                  ) : (
-                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 flex items-center justify-center text-[10px] font-bold">
-                      {(user.email?.[0] || 'U').toUpperCase()}
-                    </div>
-                  )}
-                  <span className="hidden lg:inline-block max-w-[120px] truncate text-[11px] text-slate-200">
-                    {user.email || user.displayName || t('header.account', language)}
-                  </span>
-                  <span
-                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                      isSyncingCloud
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                    }`}
-                  >
-                    {isSyncingCloud ? (
-                      t("header.syncing", language)
-                    ) : (
-                      <>
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        <span className="hidden sm:inline">{t("header.online", language)}</span>
-                      </>
-                    )}
-                  </span>
-                </div>
-
+              <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white py-1 pl-1.5 pr-2.5 sm:flex">
+                <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-slate-100">
+                  {profilePhoto ? <img src={profilePhoto} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : <UserRound className="h-4 w-4 text-slate-500" />}
+                </span>
+                <span className="hidden max-w-[130px] truncate text-[11px] font-medium text-slate-600 lg:inline">{user.email || user.displayName || t('header.account', language)}</span>
+                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold ${isSyncingCloud ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${isSyncingCloud ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+                  {isSyncingCloud ? t('header.syncing', language) : t('header.online', language)}
+                </span>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={onOpenAuthModal}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-sans font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-500/20"
-                title={t("header.signInEmail", language)}
-              >
-                <Cloud className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t('header.signIn', language)}</span>
+              <button type="button" onClick={onOpenAuthModal} className="hidden items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100 sm:inline-flex">
+                <LogIn className="h-3.5 w-3.5" />
+                {t('header.signIn', language)}
               </button>
             )}
 
-            {/* Quick Add Trigger Button */}
-            <button
-              type="button"
-              onClick={onOpenAddModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-sans text-xs font-semibold border border-slate-700 transition-colors cursor-pointer shadow-xs"
-            >
-              <Plus className="w-3.5 h-3.5 text-emerald-400" />
+            <button type="button" onClick={onOpenAddModal} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+              <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">{t('header.add', language)}</span>
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation Bar (visible on smaller screens) */}
-        {(activePage === 'inventory' || activePage === 'home') && <div className="flex md:hidden items-center justify-between gap-1 py-2.5 border-t border-slate-800/80 font-sans text-xs overflow-x-auto">
-          <div className="flex shrink-0 flex-col items-center gap-1">
+      {sidebarOpen && (
+        <button
+          type="button"
+          aria-label={language === 'id' ? 'Tutup menu navigasi' : 'Close navigation menu'}
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-40 cursor-default bg-slate-950/30 backdrop-blur-[1px]"
+        />
+      )}
+
+      <aside
+        id="wp-main-sidebar"
+        aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
+        aria-hidden={!sidebarOpen}
+        inert={!sidebarOpen}
+        className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,270px)] flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      >
+        <div className="border-b border-slate-100 px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
+          <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
+        </div>
+
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-3">
+          {navigationItems.map(({ page, label, icon: Icon, count }) => (
             <button
+              key={page}
               type="button"
-              onClick={() => onChangePage('home')}
-              aria-label="Open profile and home"
-              title="Profile"
-              className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 transition-all ${activePage === 'home' ? 'border-emerald-300 ring-2 ring-emerald-400/20' : 'border-slate-700'}`}
+              onClick={() => navigate(page)}
+              aria-current={isActive(page) ? 'page' : undefined}
+              className={`group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition-colors ${isActive(page) ? 'bg-blue-50 font-semibold text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
             >
-              {profilePhoto ? <img src={profilePhoto} alt="Profile" className="h-full w-full object-cover" /> : user?.photoURL ? <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center bg-slate-800 text-emerald-300"><UserRound className="h-4 w-4" /></span>}
+              <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-blue-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
+              <span className="flex-1">{label}</span>
+              {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
+              {isActive(page) && <ChevronRight className="h-4 w-4 text-blue-500" />}
             </button>
-            <button
-              type="button"
-              onClick={() => user ? onChangePage("support-admin") : onOpenAuthModal()}
-              aria-label={language === "id" ? "Login Admin" : "Admin Login"}
-              title={language === "id" ? "Login Admin" : "Admin Login"}
-              className={`inline-flex items-center gap-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold transition-colors ${activePage === "support-admin" ? "border-blue-400 bg-blue-600 text-white" : "border-slate-700 bg-slate-900 text-blue-300 hover:border-blue-400 hover:bg-slate-800"}`}
-            >
-              <ShieldCheck className="h-3 w-3" />
-              <span>{language === "id" ? "Login Admin" : "Admin Login"}</span>
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={() => onChangePage('inventory')}
-            className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold transition-all shrink-0 ${
-              activePage === 'inventory'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm shadow-emerald-500/30'
-                : 'text-slate-400 hover:text-white bg-slate-900/60'
-            }`}
-          >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>{t('header.cashier', language)}</span>
-            {itemsCount > 0 && (
-              <span className="text-[10px] opacity-80">({itemsCount})</span>
-            )}
-          </button>
+          ))}
+        </nav>
 
+        <div className="border-t border-slate-100 p-3">
           <button
             type="button"
-            onClick={() => onChangePage('reports')}
-            className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold transition-all shrink-0 ${
-              activePage === 'reports'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm shadow-emerald-500/30'
-                : 'text-slate-400 hover:text-white bg-slate-900/60'
-            }`}
+            onClick={() => { setSidebarOpen(false); user ? onChangePage('support-admin') : onOpenAuthModal(); }}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
           >
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>{t('header.reports', language)}</span>
+            <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
+            <span className="flex-1">{language === 'id' ? 'Login Admin' : 'Admin Login'}</span>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
           </button>
-
-          <button
-            type="button"
-            onClick={() => onChangePage('withdrawals')}
-            className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold transition-all shrink-0 ${
-              activePage === 'withdrawals'
-                ? 'bg-rose-500 text-white shadow-sm shadow-rose-500/30'
-                : 'text-slate-400 hover:text-white bg-slate-900/60'
-            }`}
-          >
-            <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
-            <span>{t('header.withdrawCash', language)}</span>
-            {withdrawalsCount > 0 && (
-              <span className="text-[10px] opacity-80">({withdrawalsCount})</span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onChangePage('import')}
-            className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold transition-all shrink-0 ${
-              activePage === 'import'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm shadow-emerald-500/30'
-                : 'text-slate-400 hover:text-white bg-slate-900/60'
-            }`}
-          >
-            <UploadCloud className="w-3.5 h-3.5" />
-            <span>{t('header.importExportShort', language)}</span>
-          </button>
-          <button type="button" onClick={() => onChangePage('faq')} className={`flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-xl font-bold shrink-0 ${(activePage === 'faq' || activePage === 'complaints') ? 'bg-blue-700 text-white' : 'text-slate-400 bg-slate-900/60'}`}><CircleHelp className="w-3.5 h-3.5" /><span>{language === 'id' ? 'Bantuan' : 'Help'}</span></button>
-        </div>}
-      </div>
-    </header>
+          <div className="px-3 pb-2 pt-1 text-[10px] text-slate-400">WiseProfit · {language === 'id' ? 'Pengelolaan Usaha' : 'Business Management'}</div>
+        </div>
+      </aside>
+    </>
   );
 };

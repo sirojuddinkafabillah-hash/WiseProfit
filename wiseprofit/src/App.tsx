@@ -642,6 +642,7 @@ export default function App() {
           onOpenGuide={() => setIsGuideModalOpen(true)}
           onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
           onOpenAuthModal={() => setIsAuthModalOpen(true)}
+          onOpenProfilePanel={() => setIsProfilePanelOpen((open) => !open)}
           onOpenWithdrawalModal={() => setActivePage('withdrawals')}
           withdrawalsCount={withdrawals.length}
           isSyncingCloud={isSavingCloud || isLoadingData}

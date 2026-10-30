@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Menu, X, Plus, Cloud, CheckCircle2, ShoppingBag, TrendingUp,
+  Menu, X, Plus, CheckCircle2, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
   Wallet, ChevronRight, Settings, LogIn
 } from 'lucide-react';
@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const isActive = (page: AppPage) => page === 'faq'
     ? activePage === 'faq' || activePage === 'complaints'
-    : activePage === page || (page === 'inventory' && activePage === 'home');
+    : activePage === page;
 
   return (
     <>

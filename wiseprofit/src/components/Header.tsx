@@ -120,7 +120,7 @@ export const Header: React.FC<HeaderProps> = ({
               <Wallet className="h-5 w-5" />
             </span>
             <span className="text-[19px] font-extrabold tracking-tight text-slate-900 sm:text-[21px]">
-              Wise<span className="text-blue-600">Profit</span>
+              Wise<span className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 bg-clip-text text-transparent">Profit</span>
             </span>
           </button>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Menu, X, CheckCircle2, ShoppingBag, TrendingUp,
+  Menu, X, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
   ChevronRight, Settings, LogIn
 } from 'lucide-react';
@@ -18,6 +18,7 @@ interface HeaderProps {
   onOpenGuide: () => void;
   onOpenDownloadModal: () => void;
   onOpenAuthModal: () => void;
+  onOpenProfilePanel: () => void;
   onOpenWithdrawalModal?: () => void;
   withdrawalsCount?: number;
   isSyncingCloud?: boolean;
@@ -36,8 +37,8 @@ export const Header: React.FC<HeaderProps> = ({
   activePage,
   onChangePage,
   itemsCount = 0,
-  onOpenAddModal,
   onOpenAuthModal,
+  onOpenProfilePanel,
   withdrawalsCount = 0,
   isSyncingCloud = false,
   language,
@@ -144,29 +145,51 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </button>
 
-          <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
-            <div className="flex shrink-0 items-center gap-1.5" role="group" aria-label={t('header.chooseLanguage', language)}>
-              <button type="button" onClick={() => onLanguageChange('id')} aria-label="Bahasa Indonesia" aria-pressed={language === 'id'} className={`flex h-8 w-9 items-center justify-center overflow-hidden rounded-lg border bg-white text-xl leading-none shadow-sm transition ${language === 'id' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 opacity-70 hover:opacity-100'}`}>🇮🇩</button>
-              <button type="button" onClick={() => onLanguageChange('en')} aria-label="English" aria-pressed={language === 'en'} className={`flex h-8 w-9 items-center justify-center overflow-hidden rounded-lg border bg-white text-xl leading-none shadow-sm transition ${language === 'en' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 opacity-70 hover:opacity-100'}`}>🇬🇧</button>
+          <div className="ml-auto flex min-w-0 items-center gap-3 sm:gap-4">
+            <div className="flex shrink-0 items-center rounded-full border border-slate-200 bg-slate-50 p-1 shadow-sm" role="group" aria-label={t('header.chooseLanguage', language)}>
+              <button
+                type="button"
+                onClick={() => onLanguageChange('id')}
+                aria-label="Bahasa Indonesia"
+                aria-pressed={language === 'id'}
+                className={`flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition ${language === 'id' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}
+              >
+                <span aria-hidden="true">🇮🇩</span><span>ID</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onLanguageChange('en')}
+                aria-label="English"
+                aria-pressed={language === 'en'}
+                className={`flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition ${language === 'en' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}
+              >
+                <span aria-hidden="true">🇬🇧</span><span>EN</span>
+              </button>
             </div>
 
             {user ? (
-              <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white py-1 pl-1.5 pr-2.5 sm:flex">
-                <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-slate-100">
-                  {profilePhoto ? <img src={profilePhoto} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : <UserRound className="h-4 w-4 text-slate-500" />}
+              <button
+                type="button"
+                onClick={onOpenProfilePanel}
+                aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
+                aria-haspopup="dialog"
+                title={isSyncingCloud ? (language === 'id' ? 'Sinkronisasi sedang berlangsung' : 'Sync in progress') : (language === 'id' ? 'Profil dan pengaturan' : 'Profile and settings')}
+                className="flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-0.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 shadow-sm">
+                  {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-6 w-6 text-slate-500" />}
                 </span>
-                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold ${isSyncingCloud ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>
-                  <span className={`h-1.5 w-1.5 rounded-full ${isSyncingCloud ? 'bg-amber-500' : 'bg-emerald-500'}`} />
-                  {isSyncingCloud ? t('header.syncing', language) : t('header.online', language)}
+                <span className="inline-flex items-center gap-1 text-[9px] font-semibold leading-none text-emerald-600">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  ON
                 </span>
-              </div>
+              </button>
             ) : (
-              <button type="button" onClick={onOpenAuthModal} className="hidden items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100 sm:inline-flex">
+              <button type="button" onClick={onOpenAuthModal} className="flex shrink-0 items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
                 <LogIn className="h-3.5 w-3.5" />
                 {t('header.signIn', language)}
               </button>
             )}
-
           </div>
         </div>
       </header>

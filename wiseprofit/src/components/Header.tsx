@@ -152,18 +152,34 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onLanguageChange('id')}
                 aria-label="Bahasa Indonesia"
                 aria-pressed={language === 'id'}
-                className={`flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition ${language === 'id' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}
+                title="Bahasa Indonesia"
+                className={`flex h-8 w-10 items-center justify-center rounded-full transition ${language === 'id' ? 'bg-blue-600 shadow-sm ring-1 ring-blue-700' : 'text-slate-600 hover:bg-white'}`}
               >
-                <span aria-hidden="true">🇮🇩</span><span>ID</span>
+                <img
+                  src="https://flagcdn.com/w40/id.png"
+                  srcSet="https://flagcdn.com/w80/id.png 2x"
+                  alt=""
+                  aria-hidden="true"
+                  className="h-5 w-7 rounded-[3px] object-cover shadow-sm"
+                  loading="eager"
+                />
               </button>
               <button
                 type="button"
                 onClick={() => onLanguageChange('en')}
                 aria-label="English"
                 aria-pressed={language === 'en'}
-                className={`flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition ${language === 'en' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}
+                title="English"
+                className={`flex h-8 w-10 items-center justify-center rounded-full transition ${language === 'en' ? 'bg-blue-600 shadow-sm ring-1 ring-blue-700' : 'text-slate-600 hover:bg-white'}`}
               >
-                <span aria-hidden="true">🇬🇧</span><span>EN</span>
+                <img
+                  src="https://flagcdn.com/w40/gb.png"
+                  srcSet="https://flagcdn.com/w80/gb.png 2x"
+                  alt=""
+                  aria-hidden="true"
+                  className="h-5 w-7 rounded-[3px] object-cover shadow-sm"
+                  loading="eager"
+                />
               </button>
             </div>
 

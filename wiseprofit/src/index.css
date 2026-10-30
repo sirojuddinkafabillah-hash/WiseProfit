@@ -2037,3 +2037,47 @@ html, body {
   opacity: 1 !important;
   text-shadow: none !important;
 }
+
+
+/* Premium Glass Sidebar: enforce real translucency above legacy surface overrides. */
+#root .wp-glass-sidebar {
+  background: rgba(239, 246, 255, .78) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(165%) !important;
+  backdrop-filter: blur(24px) saturate(165%) !important;
+  border-right: 1px solid rgba(255,255,255,.78) !important;
+}
+#root .wp-glass-sidebar nav button[aria-current="page"] {
+  background: linear-gradient(110deg, #2563eb 0%, #1d4ed8 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 7px 18px rgba(37,99,235,.25) !important;
+}
+#root .wp-glass-sidebar nav button[aria-current="page"] svg,
+#root .wp-glass-sidebar nav button[aria-current="page"] span {
+  color: #fff !important;
+}
+#root .wp-glass-sidebar nav button:not([aria-current="page"]) {
+  color: #18345f !important;
+  font-weight: 600 !important;
+}
+#root .wp-glass-sidebar nav button:not([aria-current="page"]) svg {
+  color: #31527f !important;
+}
+#root .wp-glass-sidebar > div:first-child button {
+  background: rgba(255,255,255,.68) !important;
+  color: #18345f !important;
+}
+#root .wp-glass-sidebar > div:first-child button span {
+  color: #18345f !important;
+}
+/* Ensure the workspace remains a visible, distinct surface beneath the glass panel. */
+#root main {
+  position: relative;
+  isolation: isolate;
+  background-color: rgba(243,246,252,.88) !important;
+  background-image: radial-gradient(ellipse at 12% 0%, rgba(37,99,235,.07), transparent 34rem),
+                    radial-gradient(ellipse at 90% 8%, rgba(109,69,216,.05), transparent 30rem) !important;
+}
+#root main > div:not([hidden]) {
+  position: relative;
+  z-index: 1;
+}

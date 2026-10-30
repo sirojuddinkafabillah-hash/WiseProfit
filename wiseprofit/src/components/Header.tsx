@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Menu, X, Plus, CheckCircle2, ShoppingBag, TrendingUp,
+  Menu, X, CheckCircle2, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
   ChevronRight, Settings, LogIn
 } from 'lucide-react';
@@ -145,13 +145,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
-            <div className="flex shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-white p-1 shadow-sm" role="group" aria-label={t('header.chooseLanguage', language)}>
-              <span className="hidden px-1 text-[11px] font-medium text-slate-500 sm:inline">{t('language.label', language)}</span>
-              <div className="relative flex items-center rounded-full bg-slate-100 p-0.5">
-                <span aria-hidden="true" className={`absolute inset-y-0.5 w-[32px] rounded-full bg-blue-600 shadow-sm transition-transform duration-200 ${language === 'en' ? 'translate-x-[32px]' : 'translate-x-0'}`} />
-                <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} className={`relative z-10 w-8 rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'id' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>ID</button>
-                <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} className={`relative z-10 w-8 rounded-full py-1 text-[10px] font-bold transition-colors ${language === 'en' ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}>EN</button>
-              </div>
+            <div className="flex shrink-0 items-center gap-1.5" role="group" aria-label={t('header.chooseLanguage', language)}>
+              <button type="button" onClick={() => onLanguageChange('id')} aria-label="Bahasa Indonesia" aria-pressed={language === 'id'} className={`flex h-8 w-9 items-center justify-center overflow-hidden rounded-lg border bg-white text-xl leading-none shadow-sm transition ${language === 'id' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 opacity-70 hover:opacity-100'}`}>🇮🇩</button>
+              <button type="button" onClick={() => onLanguageChange('en')} aria-label="English" aria-pressed={language === 'en'} className={`flex h-8 w-9 items-center justify-center overflow-hidden rounded-lg border bg-white text-xl leading-none shadow-sm transition ${language === 'en' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 opacity-70 hover:opacity-100'}`}>🇬🇧</button>
             </div>
 
             {user ? (
@@ -159,7 +155,6 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-slate-100">
                   {profilePhoto ? <img src={profilePhoto} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt={t('header.avatar', language)} className="h-full w-full object-cover" /> : <UserRound className="h-4 w-4 text-slate-500" />}
                 </span>
-                <span className="hidden max-w-[130px] truncate text-[11px] font-medium text-slate-600 lg:inline">{user.email || user.displayName || t('header.account', language)}</span>
                 <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold ${isSyncingCloud ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>
                   <span className={`h-1.5 w-1.5 rounded-full ${isSyncingCloud ? 'bg-amber-500' : 'bg-emerald-500'}`} />
                   {isSyncingCloud ? t('header.syncing', language) : t('header.online', language)}
@@ -172,10 +167,6 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            <button type="button" onClick={onOpenAddModal} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">{t('header.add', language)}</span>
-            </button>
           </div>
         </div>
       </header>

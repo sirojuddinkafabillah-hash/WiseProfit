@@ -173,6 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
         id="wp-main-sidebar"
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
         aria-hidden={!sidebarOpen}
+        inert={!sidebarOpen}
         className={`no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,270px)] flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="border-b border-slate-100 px-4 py-4">

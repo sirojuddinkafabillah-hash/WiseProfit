@@ -141,7 +141,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   };
 
   return (
-    <div className="bg-slate-900/85 backdrop-blur-2xl border border-slate-700/60 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] overflow-hidden transition-all">
+    <div className="wp-inventory-shell bg-slate-900/85 backdrop-blur-2xl border border-slate-700/60 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] overflow-hidden transition-all">
       {/* Table Toolbar & Filters */}
       <div className="p-4 sm:p-5 border-b border-slate-800/90 bg-slate-950/60 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-wrap">
@@ -223,7 +223,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       </div>
 
       {/* Main Luxury Dark Table */}
-      <div className="overflow-x-auto">
+      <div className="wp-inventory-scroll overflow-x-auto">
         <table className="wp-inventory-table w-full text-left text-xs border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-950/90 text-slate-400 font-mono text-[10px] tracking-wider select-none uppercase">

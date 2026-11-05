@@ -2081,3 +2081,52 @@ html, body {
   position: relative;
   z-index: 1;
 }
+
+
+/* Inventory table surface: override legacy global light-table rules only here. */
+#root .wp-inventory-shell {
+  background: rgba(15, 23, 42, .94) !important;
+  border-color: rgba(71, 85, 105, .58) !important;
+  color: #e2e8f0 !important;
+}
+#root .wp-inventory-shell > .wp-inventory-scroll {
+  background: transparent !important;
+}
+#root table.wp-inventory-table {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(71, 85, 105, .55) !important;
+}
+#root table.wp-inventory-table thead,
+#root table.wp-inventory-table thead tr,
+#root table.wp-inventory-table thead th {
+  background: rgba(2, 6, 23, .92) !important;
+  color: #cbd5e1 !important;
+  border-color: rgba(71, 85, 105, .55) !important;
+}
+#root table.wp-inventory-table tbody,
+#root table.wp-inventory-table tbody tr,
+#root table.wp-inventory-table tbody td {
+  background-color: transparent !important;
+  color: #dbe5f3 !important;
+  border-color: rgba(71, 85, 105, .42) !important;
+}
+#root table.wp-inventory-table tbody tr:nth-child(even) {
+  background-color: rgba(30, 41, 59, .42) !important;
+}
+#root table.wp-inventory-table tbody tr:hover {
+  background-color: rgba(51, 65, 85, .58) !important;
+}
+#root table.wp-inventory-table tbody tr td:nth-child(5) {
+  background-color: rgba(2, 6, 23, .28) !important;
+}
+#root table.wp-inventory-table tbody tr td:nth-child(9) {
+  background-color: rgba(6, 78, 59, .22) !important;
+}
+#root table.wp-inventory-table tfoot,
+#root table.wp-inventory-table tfoot tr,
+#root table.wp-inventory-table tfoot td {
+  background: rgba(2, 6, 23, .94) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(71, 85, 105, .58) !important;
+}

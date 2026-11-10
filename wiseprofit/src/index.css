@@ -2406,3 +2406,25 @@ html, body {
 #root main .wp-inventory-table th {
   background: rgba(232, 240, 252, .82) !important;
 }
+
+
+/* Fix the actual opaque page layer behind the inventory table. Keep cards/forms as-is; let the animated canvas show through the table workspace. */
+#root main {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+#root main > div > div.space-y-6:has(.wp-inventory-table) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+#root main .wp-inventory-table {
+  color: #e2e8f0 !important;
+}
+#root main .wp-inventory-table tbody,
+#root main .wp-inventory-table tbody tr,
+#root main .wp-inventory-table tbody td {
+  color: #e2e8f0 !important;
+}
+#root main .wp-inventory-table td .text-slate-100,
+#root main .wp-inventory-table td .text-slate-200 { color: #e2e8f0 !important; }

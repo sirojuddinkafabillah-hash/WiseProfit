@@ -252,16 +252,6 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         )}
-        <button
-          type="button"
-          onClick={onOpenNotes}
-          title={language === 'id' ? 'Catatan' : 'Notes'}
-          aria-label={language === 'id' ? 'Buka Catatan' : 'Open Notes'}
-          className="mx-auto mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-slate-700 transition hover:bg-white/80 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
-          <NotebookPen className="h-[19px] w-[19px] text-[#31527F]" />
-          <span className="sr-only">{language === 'id' ? 'Catatan' : 'Notes'}</span>
-        </button>
         <div className="sr-only">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
           <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
@@ -269,18 +259,31 @@ export const Header: React.FC<HeaderProps> = ({
 
         <nav className="flex-1 space-y-2 overflow-y-auto px-2 py-3">
           {navigationItems.map(({ page, label, icon: Icon, count }) => (
-            <button
-              key={page}
-              type="button"
-              onClick={() => navigate(page)}
-              aria-current={isActive(page) ? 'page' : undefined}
-              title={label}
-              className={`group relative mx-auto flex h-11 w-11 items-center justify-center rounded-xl p-0 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
-            >
-              <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
-              <span className="sr-only">{label}</span>
-              {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
-            </button>
+            <React.Fragment key={page}>
+              <button
+                type="button"
+                onClick={() => navigate(page)}
+                aria-current={isActive(page) ? 'page' : undefined}
+                title={label}
+                className={`group relative mx-auto flex h-11 w-11 items-center justify-center rounded-xl p-0 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
+              >
+                <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
+                <span className="sr-only">{label}</span>
+                {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
+              </button>
+              {page === 'withdrawals' && (
+                <button
+                  type="button"
+                  onClick={onOpenNotes}
+                  title={language === 'id' ? 'Catatan' : 'Notes'}
+                  aria-label={language === 'id' ? 'Buka Catatan' : 'Open Notes'}
+                  className="group relative mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-slate-700 transition hover:bg-white/80 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <NotebookPen className="h-[19px] w-[19px] text-[#31527F] group-hover:text-blue-700" />
+                  <span className="sr-only">{language === 'id' ? 'Catatan' : 'Notes'}</span>
+                </button>
+              )}
+            </React.Fragment>
           ))}
         </nav>
 

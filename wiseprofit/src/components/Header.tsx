@@ -64,7 +64,15 @@ export const Header: React.FC<HeaderProps> = ({
       }
     };
     loadProfilePhoto();
-    const refresh = () => { loadProfilePhoto(); };
+    const refresh = (event?: Event) => {
+      // Apply the just-uploaded URL immediately; then confirm the persisted cloud value.
+      const detail = (event as CustomEvent<{ url?: string | null }> | undefined)?.detail;
+      if (detail && Object.prototype.hasOwnProperty.call(detail, 'url')) {
+        setProfilePhoto(detail.url || user?.photoURL || null);
+        setProfilePhotoFailed(false);
+      }
+      void loadProfilePhoto();
+    };
     window.addEventListener('storage', refresh);
     window.addEventListener('wiseprofit-profile-photo-updated', refresh);
     return () => {

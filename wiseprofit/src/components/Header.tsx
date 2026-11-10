@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
@@ -52,31 +52,45 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     let active = true;
+    // Each read gets a sequence number. Older requests may finish later, but
+    // they must never overwrite a newer upload/removal event.
+    let latestRequest = 0;
     const loadProfilePhoto = async () => {
+      const requestId = ++latestRequest;
       try {
         const cloudPhoto = user ? await getProfilePhotoUrl(user.uid) : null;
-        if (!active) return;
+        if (!active || requestId !== latestRequest) return;
         const savedPhoto = user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null;
         setProfilePhoto(cloudPhoto || savedPhoto || user?.photoURL || null);
         setProfilePhotoFailed(false);
       } catch {
-        if (active) setProfilePhoto(user?.photoURL || null);
+        if (active && requestId === latestRequest) {
+          const savedPhoto = user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null;
+          setProfilePhoto(savedPhoto || user?.photoURL || null);
+          setProfilePhotoFailed(false);
+        }
       }
     };
-    loadProfilePhoto();
-    const refresh = (event?: Event) => {
-      // Apply the just-uploaded URL immediately; then confirm the persisted cloud value.
-      const detail = (event as CustomEvent<{ url?: string | null }> | undefined)?.detail;
-      if (detail && Object.prototype.hasOwnProperty.call(detail, 'url')) {
-        setProfilePhoto(detail.url || user?.photoURL || null);
+    void loadProfilePhoto();
+
+    const refresh = (event: Event) => {
+      const customEvent = event as CustomEvent<{ url?: string | null }>;
+      if (customEvent.detail && Object.prototype.hasOwnProperty.call(customEvent.detail, 'url')) {
+        // The upload/remove service already verified the database write. Trust
+        // that exact result and invalidate every older in-flight profile read.
+        latestRequest += 1;
+        setProfilePhoto(customEvent.detail.url || user?.photoURL || null);
         setProfilePhotoFailed(false);
+        return;
       }
       void loadProfilePhoto();
     };
+
     window.addEventListener('storage', refresh);
     window.addEventListener('wiseprofit-profile-photo-updated', refresh);
     return () => {
       active = false;
+      latestRequest += 1;
       window.removeEventListener('storage', refresh);
       window.removeEventListener('wiseprofit-profile-photo-updated', refresh);
     };

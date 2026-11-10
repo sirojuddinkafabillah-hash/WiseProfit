@@ -98,7 +98,17 @@ export default function App() {
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
   const [activePage, setActivePage] = useState<AppPage>('inventory');
   const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);
+  const [openNotesInProfile, setOpenNotesInProfile] = useState(false);
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isProfilePanelOpen || !openNotesInProfile) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById('wp-notes-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setOpenNotesInProfile(false);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [isProfilePanelOpen, openNotesInProfile]);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
   useEffect(() => {
@@ -642,6 +652,7 @@ export default function App() {
           onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
           onOpenAuthModal={() => setIsAuthModalOpen(true)}
           onOpenProfilePanel={() => setIsProfilePanelOpen((open) => !open)}
+          onOpenNotes={() => { if (!user) { setIsAuthModalOpen(true); return; } setOpenNotesInProfile(true); setIsProfilePanelOpen(true); }}
           onOpenWithdrawalModal={() => setActivePage('withdrawals')}
           withdrawalsCount={withdrawals.length}
           isSyncingCloud={isSavingCloud || isLoadingData}

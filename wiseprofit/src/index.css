@@ -2379,3 +2379,30 @@ html, body {
   color: #1d5fc4 !important;
   stroke-width: 2.2 !important;
 }
+
+
+/* Inventory table: remove only the opaque white layer so the existing animated theme behind it can show through. */
+#root main :has(> .overflow-x-auto > .wp-inventory-table) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-color: rgba(96, 142, 205, .28) !important;
+}
+#root main .wp-inventory-table {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+#root main .wp-inventory-table tbody,
+#root main .wp-inventory-table tbody tr,
+#root main .wp-inventory-table tbody td {
+  background: transparent !important;
+}
+#root main .wp-inventory-table tbody tr:hover {
+  background: rgba(59, 130, 246, .075) !important;
+}
+/* Keep the column header readable; only the white body/wrapper layers become transparent. */
+#root main .wp-inventory-table thead,
+#root main .wp-inventory-table thead tr,
+#root main .wp-inventory-table th {
+  background: rgba(232, 240, 252, .82) !important;
+}

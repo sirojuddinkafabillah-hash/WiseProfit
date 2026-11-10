@@ -34,15 +34,6 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   const [quickSoldInputVal, setQuickSoldInputVal] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  useEffect(() => {
-    const handleGlobalSearch = (event: Event) => {
-      const customEvent = event as CustomEvent<string>;
-      setSearchQuery(customEvent.detail || '');
-    };
-    window.addEventListener('wp-global-search-query', handleGlobalSearch);
-    return () => window.removeEventListener('wp-global-search-query', handleGlobalSearch);
-  }, []);
-
   // Extract unique months from items
   const availableMonths = useMemo(() => {
     const monthSet = new Set<string>();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ShoppingBag, TrendingUp,
+  Menu, X, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
   ChevronRight, Settings, LogIn
 } from 'lucide-react';
@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const loadProfilePhoto = () => {
@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, [user?.uid, user?.photoURL]);
 
   useEffect(() => {
-    setSidebarOpen(true);
+    setSidebarOpen(false);
   }, [activePage]);
 
   useEffect(() => {
@@ -100,13 +100,13 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="mx-auto flex min-h-[4.25rem] max-w-[1600px] items-center gap-3 px-3 sm:px-5 lg:px-7">
           <button
             type="button"
-            onClick={() => setSidebarOpen(true)}
+            onClick={() => setSidebarOpen((open) => !open)}
             aria-label={sidebarOpen ? (language === 'id' ? 'Tutup menu' : 'Close menu') : (language === 'id' ? 'Buka menu' : 'Open menu')}
             aria-expanded={sidebarOpen}
             aria-controls="wp-main-sidebar"
-            className="hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <span className="sr-only">Menu</span>
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
 
           <button
@@ -191,7 +191,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </header>
 
-      {false && sidebarOpen && (
+      {sidebarOpen && (
         <button
           type="button"
           aria-label={language === 'id' ? 'Tutup menu navigasi' : 'Close navigation menu'}
@@ -203,8 +203,9 @@ export const Header: React.FC<HeaderProps> = ({
       <aside
         id="wp-main-sidebar"
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
-        aria-hidden={false}
-        className="wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[84px] flex-col overflow-hidden rounded-r-2xl border-r border-white/70 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.22)]" style={{ background: 'rgba(239,246,255,0.78)', backdropFilter: 'blur(24px) saturate(165%)', WebkitBackdropFilter: 'blur(24px) saturate(165%)' }}
+        aria-hidden={!sidebarOpen}
+        inert={!sidebarOpen}
+        className={`wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[84px] flex-col overflow-hidden rounded-r-2xl border-r border-white/70 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.22)] transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'rgba(239,246,255,0.78)', backdropFilter: 'blur(24px) saturate(165%)', WebkitBackdropFilter: 'blur(24px) saturate(165%)' }}
       >
         {user && (
           <div className="border-b border-white/50 p-3">
@@ -213,9 +214,9 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
               aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
               aria-haspopup="dialog"
-              className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-white/80 bg-white/65 p-1 text-left shadow-sm backdrop-blur-md transition hover:border-blue-200 hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex w-full items-center gap-3 rounded-xl border border-white/80 bg-white/65 p-3 text-left shadow-sm backdrop-blur-md transition hover:border-blue-200 hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
               </span>
               <span className="sr-only">
@@ -242,25 +243,27 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => navigate(page)}
               aria-current={isActive(page) ? 'page' : undefined}
               title={label}
-              className={`group mx-auto flex h-12 w-12 items-center justify-center rounded-xl px-0 py-0 text-left text-sm transition-all duration-150 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
+              className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm transition-all duration-150 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
             >
               <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
               <span className="sr-only">{label}</span>
-
+              {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
+              {isActive(page) && <ChevronRight className="h-4 w-4 text-white" />}
             </button>
           ))}
         </nav>
 
-        <div className="border-t border-white/50 bg-white/20 p-2">
+        <div className="border-t border-white/50 bg-white/20 p-3">
           <button
             type="button"
             onClick={() => { setSidebarOpen(false); user ? onChangePage('support-admin') : onOpenAuthModal(); }}
-            className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl px-2 py-2.5 text-center text-[13px] font-medium text-slate-700 transition hover:bg-white/65 hover:text-slate-950"
+            className="flex h-11 w-full items-center justify-center rounded-xl px-2 py-2.5 text-center text-[13px] font-medium text-slate-700 transition hover:bg-white/65 hover:text-slate-950"
           >
             <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
-            <span className="sr-only">{language === 'id' ? 'Login Admin' : 'Admin Login'}</span>
+            <span className="flex-1">{language === 'id' ? 'Login Admin' : 'Admin Login'}</span>
+            <ChevronRight className="h-4 w-4 text-slate-400" />
           </button>
-
+          <div className="px-3 pb-2 pt-1 text-[10px] text-slate-400">WiseProfit · {language === 'id' ? 'Pengelolaan Usaha' : 'Business Management'}</div>
         </div>
       </aside>
     </>

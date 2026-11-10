@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka } from '../utils/calculator';
-import { Plus, Calendar, Package, Calculator } from 'lucide-react';
+import { Plus, Calendar, Package, Calculator, ChevronDown, X } from 'lucide-react';
 
 interface QuickAddBarProps {
   onAdd: (item: Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -12,6 +12,7 @@ const inputClass = "w-full rounded-xl border border-blue-100 bg-white px-3 py-2.
 const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePercentMonthly = 0 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const todayStr = new Date().toISOString().slice(0, 10);
   const [tanggalInput, setTanggalInput] = useState(todayStr);
   const [namaBarang, setNamaBarang] = useState('');
@@ -43,18 +44,22 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
       catatan: catatan.trim(),
     });
     setNamaBarang(''); setJumlahWadah(''); setHargaBeli(''); setHargaJual(''); setCatatan('');
+    setIsExpanded(false);
   };
 
   return (
     <section className="wp-quick-add-panel mb-6 rounded-3xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>
-          <div><h2 className="text-base font-bold text-[#18345F]">{t('quick.title')}</h2><p className="text-xs text-slate-500">Lengkapi informasi barang dalam satu form</p></div>
-        </div>
-        <span className="rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">Input barang</span>
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <button type="button" onClick={() => setIsExpanded((open) => !open)} aria-expanded={isExpanded} className="flex w-full items-center justify-between gap-3 text-left">
+        <span className="flex min-w-0 items-center gap-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>
+          <span className="min-w-0"><span className="block text-sm font-bold text-[#18345F]">{t('quick.title')}</span><span className="block text-xs text-slate-500">{isExpanded ? 'Formulir input barang' : 'Buka formulir untuk menambahkan barang'}</span></span>
+        </span>
+        <span className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-blue-600 px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700">
+          {isExpanded ? <><X className="h-4 w-4" />Tutup</> : <><Plus className="h-4 w-4" />Tambah Barang</>}
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+        </span>
+      </button>
+      {isExpanded && <form onSubmit={handleSubmit} className="mt-4 space-y-4 border-t border-blue-100 pt-4">
         <div>
           <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#42618B]">Informasi barang</p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -83,7 +88,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
           </div>
           <button type="submit" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/20 transition hover:from-blue-700 hover:to-blue-800 active:scale-[0.98]"><Plus className="h-4 w-4" />Tambah Barang</button>
         </div>
-      </form>
+      </form>}
     </section>
   );
 };

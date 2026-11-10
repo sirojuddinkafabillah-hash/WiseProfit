@@ -105,13 +105,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="bg-slate-900 border border-slate-700/80 text-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+      <div className="wp-item-modal-card bg-white border border-blue-100 text-[#18345F] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="px-6 py-4 border-b border-blue-100 flex items-center justify-between bg-blue-50/80">
           <div>
-            <h3 className="text-base font-bold text-white tracking-tight">
+            <h3 className="text-base font-bold text-[#18345F] tracking-tight">
               {editingItem ? t('modal.editTitle') : t('modal.addTitle')}
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5 font-mono">
+            <p className="text-xs text-slate-500 mt-0.5 font-mono">
               {t('modal.subtitle')}
             </p>
           </div>
@@ -126,8 +126,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-mono font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+              <label className="block text-xs font-mono font-semibold text-[#385477] mb-1 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-blue-600" />
                 <span>{t('modal.purchaseDate')}</span>
               </label>
               <input
@@ -135,7 +135,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                 required
                 value={tanggalInput}
                 onChange={(e) => setTanggalInput(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-500 font-mono text-white"
+                className="w-full px-3 py-2 text-xs bg-white border border-blue-100 rounded-xl focus:outline-none focus:border-emerald-500 font-mono text-white"
               />
             </div>
 
@@ -169,7 +169,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                 <select
                   onChange={(e) => e.target.value && setSatuanWadah(e.target.value)}
                   value=""
-                  className="px-2.5 py-2 text-xs bg-slate-800 border border-slate-700 rounded-xl text-slate-200"
+                  className="px-2.5 py-2 text-xs bg-blue-50 border border-blue-100 rounded-xl text-[#18345F]"
                 >
                   <option value="">{t('modal.choose')}</option>
                   {COMMON_CONTAINERS.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -285,13 +285,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
           </div>
 
           {/* Live Preview Box */}
-          <div className="bg-slate-950 rounded-xl border border-slate-800 p-4 text-xs space-y-3">
+          <div className="wp-item-preview bg-blue-50 rounded-xl border border-blue-100 p-4 text-xs space-y-3">
             <div className="flex items-center gap-2 font-bold text-white font-mono text-[11px] uppercase tracking-wider">
               <Calculator className="w-4 h-4 text-emerald-400" />
               <span>Perkiraan keuntungan barang</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
-              <div className="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+              <div className="bg-white border border-blue-100 p-2.5 rounded-lg">
                 <span className="text-slate-400 block text-[10px]">Potong Modal:</span>
                 <span className="font-bold text-rose-400 text-xs">-{formatRupiah(hargaBeli)}</span>
               </div>

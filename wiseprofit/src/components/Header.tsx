@@ -205,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
         aria-hidden={!sidebarOpen}
         inert={!sidebarOpen}
-        className={`wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[min(84vw,310px)] flex-col overflow-hidden rounded-r-2xl border-r border-white/70 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.22)] transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'rgba(239,246,255,0.78)', backdropFilter: 'blur(24px) saturate(165%)', WebkitBackdropFilter: 'blur(24px) saturate(165%)' }}
+        className={`wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-50 flex w-[84px] flex-col overflow-hidden rounded-r-2xl border-r border-white/70 text-slate-800 shadow-[0_18px_60px_rgba(15,23,42,0.22)] transition-[transform,background-color] duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'rgba(239,246,255,0.78)', backdropFilter: 'blur(24px) saturate(165%)', WebkitBackdropFilter: 'blur(24px) saturate(165%)' }}
       >
         {user && (
           <div className="border-b border-white/50 p-3">
@@ -219,33 +219,34 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
               </span>
-              <span className="min-w-0 flex-1">
+              <span className="sr-only">
                 <span className="block truncate text-sm font-semibold text-slate-800">{user.displayName || (language === 'id' ? 'Profil Saya' : 'My Profile')}</span>
                 <span className="mt-1 flex items-center gap-1 text-[10px] font-medium text-emerald-600">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   ON · {language === 'id' ? 'Online' : 'Online'}
                 </span>
               </span>
-              <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" />
+              
             </button>
           </div>
         )}
-        <div className="border-b border-white/50 px-4 py-3">
+        <div className="sr-only">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
           <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
         </div>
 
-        <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-3">
+        <nav className="flex-1 space-y-2 overflow-y-auto px-2 py-3">
           {navigationItems.map(({ page, label, icon: Icon, count }) => (
             <button
               key={page}
               type="button"
               onClick={() => navigate(page)}
               aria-current={isActive(page) ? 'page' : undefined}
+              title={label}
               className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm transition-all duration-150 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
             >
               <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
-              <span className="flex-1">{label}</span>
+              <span className="sr-only">{label}</span>
               {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
               {isActive(page) && <ChevronRight className="h-4 w-4 text-white" />}
             </button>
@@ -256,7 +257,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => { setSidebarOpen(false); user ? onChangePage('support-admin') : onOpenAuthModal(); }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-slate-700 transition hover:bg-white/65 hover:text-slate-950"
+            className="flex h-11 w-full items-center justify-center rounded-xl px-2 py-2.5 text-center text-[13px] font-medium text-slate-700 transition hover:bg-white/65 hover:text-slate-950"
           >
             <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
             <span className="flex-1">{language === 'id' ? 'Login Admin' : 'Admin Login'}</span>

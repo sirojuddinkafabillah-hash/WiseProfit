@@ -929,7 +929,6 @@ export default function App() {
                   try { await logout(); setIsProfilePanelOpen(false); }
                   catch (error) { console.error('Logout failed:', error); setNotification(language === 'id' ? 'Gagal keluar. Silakan coba lagi.' : 'Could not sign out. Please try again.'); }
                 }}
-                mode="profile"
               />
             </div>
           </aside>

@@ -779,7 +779,6 @@ export default function App() {
             <div key={activePage} className="min-h-[65vh] w-full animate-in fade-in duration-200">
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
               {activePage === 'notes' && user && <NotesPage user={user} language={language} />}
-}
 
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (

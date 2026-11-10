@@ -2102,24 +2102,24 @@ html, body {
 #root .wp-item-modal-card input, #root .wp-item-modal-card select { background:#f8fbff !important; color:#18345f !important; border-color:#dbeafe !important; }
 #root .wp-item-modal-card .wp-item-preview { background:#f3f7ff !important; border-color:#dbeafe !important; }
 
-/* WiseProfit reference dashboard skin: cool blue glass, soft waves and fixed icon rails */
-:root { color-scheme: light; }
+
+/* WiseProfit reference dashboard — safe layout layer.
+   Do not globally recolor utility classes: existing cards, forms and status colors
+   must retain their own component-level styling. */
 html, body, #root { min-height:100%; background:#eaf2ff; }
 body { color:#18345f; }
 #root > div.relative.min-h-screen {
   min-height:100vh !important;
-  color:#18345f !important;
   background:
     radial-gradient(ellipse at 12% 8%, rgba(255,255,255,.98) 0%, rgba(239,246,255,.92) 30%, transparent 57%),
     radial-gradient(ellipse at 82% 3%, rgba(147,190,255,.35) 0%, transparent 38%),
     linear-gradient(135deg,#f8fbff 0%,#eaf2ff 48%,#dceaff 100%) !important;
 }
 #root > div.relative.min-h-screen::before {
-  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.72;
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.68;
   background:
     radial-gradient(ellipse 55% 18% at 72% 0%,rgba(104,161,255,.18),transparent 75%),
-    radial-gradient(ellipse 42% 16% at 10% 100%,rgba(91,153,255,.13),transparent 75%),
-    linear-gradient(145deg,transparent 0 62%,rgba(255,255,255,.32) 62.2% 64%,transparent 64.2%);
+    radial-gradient(ellipse 42% 16% at 10% 100%,rgba(91,153,255,.13),transparent 75%);
 }
 #root .wp-reference-topbar {
   background:rgba(232,241,255,.78) !important;
@@ -2128,13 +2128,13 @@ body { color:#18345f; }
   border-color:rgba(255,255,255,.82) !important;
 }
 #root .wp-reference-sidebar {
-  background:rgba(245,249,255,.76) !important;
+  background:rgba(245,249,255,.82) !important;
   backdrop-filter:blur(24px) saturate(165%) !important;
   -webkit-backdrop-filter:blur(24px) saturate(165%) !important;
   box-shadow:8px 0 34px rgba(39,91,170,.08) !important;
 }
 #root .wp-reference-tools {
-  background:rgba(255,255,255,.72) !important;
+  background:rgba(255,255,255,.78) !important;
   backdrop-filter:blur(22px) saturate(160%) !important;
   -webkit-backdrop-filter:blur(22px) saturate(160%) !important;
 }
@@ -2144,93 +2144,23 @@ body { color:#18345f; }
   margin:72px 76px 0 84px !important;
   padding:22px 18px 30px !important;
   overflow:visible !important;
-  color:#18345f !important;
   background:transparent !important;
 }
-#root main > div, #root main section, #root main article { color:#18345f; }
-#root main .dashboard-hero { color:#18345f !important; }
-#root main .dashboard-hero * { color:inherit; }
-#root main .dashboard-hero .text-emerald-300,
-#root main .dashboard-hero .text-emerald-400 { color:#168b61 !important; }
-#root footer { margin-left:84px !important; margin-right:76px !important; background:rgba(255,255,255,.55) !important; color:#587097 !important; border-color:#dbeafe !important; }
-#root .wp-quick-add-panel, #root .wp-item-modal-card,
-#root main .rounded-3xl.border, #root main .rounded-2xl.border {
-  box-shadow:0 8px 26px rgba(37,99,235,.075) !important;
+#root footer { margin-left:84px !important; margin-right:76px !important; }
+#root .wp-reference-tools button:focus-visible,
+#root .wp-reference-sidebar button:focus-visible {
+  outline:2px solid #60a5fa !important; outline-offset:2px !important;
 }
-#root main .bg-slate-950, #root main .bg-slate-900, #root main .bg-slate-800 {
-  background-color:#fff !important;
-}
-#root main .text-white { color:#18345f !important; }
-#root main .text-slate-100, #root main .text-slate-200, #root main .text-slate-300 { color:#385477 !important; }
-#root main .text-slate-400, #root main .text-slate-500 { color:#647a9d !important; }
-#root main .border-slate-700, #root main .border-slate-800, #root main .border-slate-600 { border-color:#dbeafe !important; }
-#root main input, #root main select, #root main textarea {
-  background:#fff !important; color:#18345f !important; border-color:#dbeafe !important;
-}
-#root main input::placeholder, #root main textarea::placeholder { color:#8194b2 !important; }
-#root main button:not([class*="bg-gradient"]):not([type="submit"]) { transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease; }
-#root main .rounded-2xl, #root main .rounded-3xl { border-radius:18px !important; }
-#root .wp-reference-tools button:focus-visible, #root .wp-reference-sidebar button:focus-visible { outline:2px solid #60a5fa !important; outline-offset:2px !important; }
 @media(max-width:900px) {
-  #root .wp-reference-topbar { left:72px !important; right:0 !important; padding-left:12px !important; padding-right:12px !important; }
+  #root .wp-reference-tools { display:flex !important; width:58px !important; right:2px !important; padding:5px !important; gap:4px !important; }
+  #root main { margin-left:72px !important; margin-right:62px !important; padding:16px 12px 24px !important; }
+  #root footer { margin-left:72px !important; margin-right:62px !important; }
   #root .wp-reference-sidebar { width:72px !important; }
-  #root .wp-reference-tools { display:none !important; }
-  #root main { margin-left:72px !important; margin-right:0 !important; padding:16px 12px 24px !important; }
-  #root footer { margin-left:72px !important; margin-right:0 !important; }
 }
 @media(max-width:560px) {
   #root .wp-reference-topbar { height:64px !important; }
   #root .wp-global-search { height:40px !important; padding:0 12px !important; }
-  #root main { margin-top:64px !important; }
-}
-
-/* Remove the old dark cosmic layer from the reference dashboard; keep the profile wallpaper feature intact. */
-#root .fixed.inset-0.pointer-events-none.z-0.bg-gradient-to-br { background:transparent !important; }
-#root .fixed.inset-0.pointer-events-none.z-0.bg-gradient-to-br canvas { opacity:0 !important; }
-#root .no-print.fixed.bottom-4.right-4.z-\[60\] { display:none !important; }
-#root main .bg-slate-900, #root main .bg-slate-900\/80, #root main .bg-slate-900\/90,
-#root main .bg-slate-950, #root main .bg-slate-950\/80, #root main .bg-slate-800 {
-  background:rgba(255,255,255,.88) !important;
-  color:#18345f !important;
-  border-color:#dbeafe !important;
-  box-shadow:0 8px 24px rgba(37,99,235,.07) !important;
-}
-#root main .bg-slate-900 *, #root main .bg-slate-900\/80 *, #root main .bg-slate-950 *,
-#root main .bg-slate-950\/80 *, #root main .bg-slate-800 * { color:inherit; }
-#root main .text-emerald-300, #root main .text-emerald-400, #root main .text-teal-300 { color:#0f9f76 !important; }
-#root main .text-rose-300, #root main .text-rose-400 { color:#dc5670 !important; }
-#root main .bg-emerald-950, #root main .bg-emerald-950\/60, #root main .bg-emerald-950\/70 {
-  background:#e8fbf3 !important; border-color:#b8f0d7 !important; color:#087a56 !important;
-}
-#root main .bg-rose-950, #root main .bg-rose-950\/70 { background:#fff0f2 !important; border-color:#ffd1d8 !important; color:#be3452 !important; }
-#root main .bg-emerald-500 { background:#16a36a !important; color:#fff !important; }
-#root main .border-emerald-500\/25, #root main .border-emerald-500\/30, #root main .border-emerald-500\/40 { border-color:#d6e9ff !important; }
-#root main table { border-collapse:separate !important; border-spacing:0 !important; overflow:hidden; border-radius:14px; }
-#root main thead { background:linear-gradient(100deg,#dceaff,#cfe1ff) !important; color:#18345f !important; }
-#root main thead th { color:#18345f !important; border-color:#d3e3fb !important; }
-#root main tbody tr { background:rgba(255,255,255,.88) !important; }
-#root main tbody tr:nth-child(even) { background:rgba(244,248,255,.94) !important; }
-#root main tbody td { color:#18345f !important; border-color:#e0eafb !important; }
-#root main .shadow-\[0_20px_50px_rgba\(0\,0\,0\,0\.35\)\] { box-shadow:0 12px 32px rgba(37,99,235,.09) !important; }
-#root main button[class*="bg-emerald-500"] { color:#fff !important; }
-#root .wp-reference-topbar .wp-global-search:focus-within { border-color:#93b9ff !important; box-shadow:0 0 0 3px rgba(37,99,235,.08),0 5px 18px rgba(37,99,235,.08) !important; }
-
-@media(max-width:900px) {
-  #root .wp-reference-tools { display:flex !important; width:58px !important; right:2px !important; padding:5px !important; gap:4px !important; }
-  #root .wp-reference-tools .wp-right-tool { font-size:9px !important; padding:7px 1px !important; }
-  #root .wp-reference-tools .wp-right-tool > span:first-child { width:32px !important; height:32px !important; }
-  #root main { margin-right:62px !important; }
-  #root footer { margin-right:62px !important; }
-}
-@media(max-width:560px) {
-  #root .wp-reference-tools { top:auto !important; bottom:8px !important; right:6px !important; width:48px !important; }
-  #root .wp-reference-tools .wp-right-tool > span:last-of-type { display:none !important; }
-  #root main { margin-right:52px !important; }
+  #root main { margin-top:64px !important; margin-right:52px !important; }
   #root footer { margin-right:52px !important; }
+  #root .wp-reference-tools { top:auto !important; bottom:8px !important; right:6px !important; width:48px !important; }
 }
-#root main button.bg-gradient-to-r, #root main button.bg-blue-600,
-#root main button[type="submit"], #root main button.bg-emerald-500 {
-  color:#fff !important;
-}
-#root main button.bg-gradient-to-r *, #root main button.bg-blue-600 *,
-#root main button[type="submit"] * { color:inherit !important; }

@@ -2499,3 +2499,17 @@ html, body, #root {
 #root main .wp-inventory-table td {
   opacity: 1 !important;
 }
+
+/* Specificity fix: Tailwind's bg-slate-950/35 utility was overriding the transparent main workspace. */
+#root main[class*="bg-slate-950"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* The inventory card stays a distinct solid surface; only the surrounding page sheet is transparent. */
+#root main .wp-inventory-table {
+  background-color: #ffffff !important;
+}
+#root main :has(> .overflow-x-auto > .wp-inventory-table) {
+  background-color: #ffffff !important;
+}

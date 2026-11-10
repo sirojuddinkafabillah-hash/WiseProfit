@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   ShoppingBag, TrendingUp,
-  UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
+  UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, NotebookPen,
   LogIn
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +20,7 @@ interface HeaderProps {
   onOpenDownloadModal: () => void;
   onOpenAuthModal: () => void;
   onOpenProfilePanel: () => void;
+  onOpenNotes: () => void;
   onOpenWithdrawalModal?: () => void;
   withdrawalsCount?: number;
   isSyncingCloud?: boolean;
@@ -40,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
   itemsCount = 0,
   onOpenAuthModal,
   onOpenProfilePanel,
+  onOpenNotes,
   withdrawalsCount = 0,
   language,
   onLanguageChange,
@@ -250,6 +252,16 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         )}
+        <button
+          type="button"
+          onClick={onOpenNotes}
+          title={language === 'id' ? 'Catatan' : 'Notes'}
+          aria-label={language === 'id' ? 'Buka Catatan' : 'Open Notes'}
+          className="mx-auto mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-slate-700 transition hover:bg-white/80 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <NotebookPen className="h-[19px] w-[19px] text-[#31527F]" />
+          <span className="sr-only">{language === 'id' ? 'Catatan' : 'Notes'}</span>
+        </button>
         <div className="sr-only">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
           <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>

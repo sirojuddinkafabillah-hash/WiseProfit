@@ -166,7 +166,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
         ]);
         try { localStorage.removeItem(`wp_profile_photo_${user.uid}`); } catch { /* cloud copy is authoritative */ }
         setLocalPhoto(cloudUrl);
-        window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
+        window.dispatchEvent(new CustomEvent('wiseprofit-profile-photo-updated', { detail: { url: cloudUrl } }));
         setPhotoMessage(t('Foto profil berhasil disimpan dan disinkronkan.', 'Profile photo saved and synced successfully.'));
       } finally {
         bitmap.close();
@@ -186,7 +186,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
       await removeProfilePhoto(user.uid);
       localStorage.removeItem(`wp_profile_photo_${user.uid}`);
       setLocalPhoto(null);
-      window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
+      window.dispatchEvent(new CustomEvent('wiseprofit-profile-photo-updated', { detail: { url: null } }));
       setPhotoMessage(t('Foto unggahan dihapus. Foto Google akan digunakan jika tersedia.', 'Uploaded photo removed. Google photo will be used if available.'));
     } catch (error) {
       console.error('[WiseProfit] Avatar removal failed:', error);

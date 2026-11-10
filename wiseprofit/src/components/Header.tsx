@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex min-w-0 flex-1 items-center">
         <div className="wp-global-search flex h-12 w-full max-w-[670px] items-center gap-3 rounded-full border border-blue-100/90 bg-white/75 px-5 shadow-[0_5px_18px_rgba(37,99,235,.08)] backdrop-blur-xl">
           <Search className="h-5 w-5 shrink-0 text-[#5473A6]"/>
-          <input aria-label={language==='id'?'Cari barang, kode, atau nama':'Search item, code, or name'} onKeyDown={e=>{if(e.key==='Enter')openSearch();}} placeholder={language==='id'?'Cari barang, kode, atau nama...':'Search items, code, or name...'} className="w-full bg-transparent text-sm text-[#18345F] outline-none placeholder:text-[#6B82A8]" onFocus={()=>{}}/>
+          <input aria-label={language==='id'?'Cari barang, kode, atau nama':'Search item, code, or name'} onChange={e=>window.dispatchEvent(new CustomEvent('wp-global-search-query',{detail:e.target.value}))} onKeyDown={e=>{if(e.key==='Enter')openSearch();}} placeholder={language==='id'?'Cari barang, kode, atau nama...':'Search items, code, or name...'} className="w-full bg-transparent text-sm text-[#18345F] outline-none placeholder:text-[#6B82A8]" onFocus={()=>{}}/>
         </div>
       </div>
       <div className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/90 px-4 py-2 text-xs font-bold text-emerald-700 shadow-sm sm:flex">

@@ -2464,3 +2464,38 @@ html, body {
 #root main .wp-inventory-table td * {
   opacity: 1 !important;
 }
+
+/* Final workspace layering: keep the table card solid; remove the large white sheet behind it. */
+html, body, #root {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+#root main {
+  position: relative !important;
+  isolation: isolate !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* Remove the page-sized white sheet around the inventory workspace. */
+#root main > div,
+#root main > div > div,
+#root main > div > div.space-y-6 {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* Preserve the existing table card and its readable light table surface. */
+#root main :has(> .overflow-x-auto > .wp-inventory-table) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+#root main .wp-inventory-table,
+#root main .wp-inventory-table thead,
+#root main .wp-inventory-table tbody,
+#root main .wp-inventory-table tr,
+#root main .wp-inventory-table th,
+#root main .wp-inventory-table td {
+  opacity: 1 !important;
+}

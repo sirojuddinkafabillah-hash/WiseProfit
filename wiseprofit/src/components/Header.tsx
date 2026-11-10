@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Menu, X, ShoppingBag, TrendingUp,
+  ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
   LogIn
 } from 'lucide-react';

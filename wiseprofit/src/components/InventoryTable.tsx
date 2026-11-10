@@ -3,9 +3,12 @@ import { t, getInitialLanguage } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka, formatTanggalSederhana } from '../utils/calculator';
 import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { QuickAddBar } from './QuickAddBar';
 
 interface InventoryTableProps {
   items: InventoryItem[];
+  onAdd: (item: Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  globalSavePercentMonthly: number;
   modalAwal: number;
   saldoKasSaatIni: number;
   onEditItem: (item: InventoryItem) => void;
@@ -19,6 +22,8 @@ interface InventoryTableProps {
 
 export const InventoryTable: React.FC<InventoryTableProps> = ({
   items,
+  onAdd,
+  globalSavePercentMonthly,
   modalAwal,
   saldoKasSaatIni,
   onEditItem,
@@ -142,6 +147,9 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
 
   return (
     <div className="bg-slate-900/85 backdrop-blur-2xl border border-slate-700/60 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] overflow-hidden transition-all">
+      <div className="border-b border-slate-800/80 bg-white/95 p-3 sm:p-4">
+        <QuickAddBar onAdd={onAdd} globalSavePercentMonthly={globalSavePercentMonthly} />
+      </div>
       {/* Table Toolbar & Filters */}
       <div className="p-4 sm:p-5 border-b border-slate-800/90 bg-slate-950/60 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-wrap">

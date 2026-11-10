@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { UserRound, Palette, NotebookPen, LogOut, Save, CheckCircle2, Sparkles, Moon, Sun, Monitor, Mail, Camera, Trash2, Folder, FolderPlus, FileText, Plus, Search, ArrowLeft, Trash } from 'lucide-react';
 import type { AppUser } from '../context/AuthContext';
 import type { BackgroundTheme } from './CosmicInteractiveBackground';
+import { getProfilePhotoUrl, uploadProfilePhoto, removeProfilePhoto } from '../services/supabaseSync';
 
 interface HomePageProps {
   user: AppUser;
@@ -86,6 +87,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
       setDraftTitle('');
       setDraftContent('');
       setLocalPhoto(localStorage.getItem(`wp_profile_photo_${user.uid}`));
+      getProfilePhotoUrl(user.uid).then((url) => { if (url) setLocalPhoto(url); }).catch((error) => console.warn('[WiseProfit] Avatar cloud read failed:', error));
     } catch {
       setNoteFolders(DEFAULT_NOTE_FOLDERS);
       setSavedNotes([]);
@@ -131,7 +133,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
     try {
       const imageUrl = URL.createObjectURL(file);
       const image = new Image();
-      image.onload = () => {
+      image.onload = async () => {
         try {
           const maxDimension = 640;
           const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
@@ -140,17 +142,18 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
           canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
           const context = canvas.getContext('2d');
           if (!context) throw new Error('Canvas is unavailable');
-          // Use white as the background for transparent areas in PNG/WebP photos.
           context.fillStyle = '#ffffff';
           context.fillRect(0, 0, canvas.width, canvas.height);
           context.drawImage(image, 0, 0, canvas.width, canvas.height);
-          const result = canvas.toDataURL('image/jpeg', 0.88);
-          localStorage.setItem(`wp_profile_photo_${user.uid}`, result);
-          setLocalPhoto(result);
+          const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('Photo conversion failed')), 'image/jpeg', 0.88));
+          const cloudUrl = await uploadProfilePhoto(user.uid, blob);
+          try { localStorage.removeItem(`wp_profile_photo_${user.uid}`); } catch { /* cloud copy is authoritative */ }
+          setLocalPhoto(cloudUrl);
           window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
-          setNameMessage(t('Foto profil diubah dan disimpan di perangkat ini.', 'Profile photo changed and saved on this device.'));
-        } catch {
-          setNameMessage(t('Foto tidak tersimpan. Coba gambar lain yang lebih kecil.', 'Photo was not saved. Try another, smaller image.'));
+          setNameMessage(t('Foto profil berhasil disimpan dan disinkronkan.', 'Profile photo saved and synced successfully.'));
+        } catch (error) {
+          console.error('[WiseProfit] Avatar upload failed:', error);
+          setNameMessage(t('Foto belum tersimpan ke cloud. Pastikan migrasi Supabase sudah dijalankan, lalu coba lagi.', 'Photo could not be saved to cloud. Run the Supabase migration, then try again.'));
         } finally {
           URL.revokeObjectURL(imageUrl);
           input.value = '';
@@ -168,14 +171,16 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
     }
   };
 
-  const removePhoto = () => {
+  const removePhoto = async () => {
     try {
+      await removeProfilePhoto(user.uid);
       localStorage.removeItem(`wp_profile_photo_${user.uid}`);
       setLocalPhoto(null);
       window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
-      setNameMessage(t('Foto profil dihapus.', 'Profile photo removed.'));
-    } catch {
-      setNameMessage(t('Foto tidak dapat dihapus. Silakan coba lagi.', 'Photo could not be removed. Please try again.'));
+      setNameMessage(t('Foto unggahan dihapus. Foto Google akan digunakan jika tersedia.', 'Uploaded photo removed. Google photo will be used if available.'));
+    } catch (error) {
+      console.error('[WiseProfit] Avatar removal failed:', error);
+      setNameMessage(t('Foto belum dapat dihapus dari cloud. Coba lagi setelah migrasi Supabase dijalankan.', 'Could not remove cloud photo. Try again after running the Supabase migration.'));
     }
   };
 

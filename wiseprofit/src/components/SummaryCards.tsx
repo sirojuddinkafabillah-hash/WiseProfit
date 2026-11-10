@@ -201,9 +201,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                     <span>{t('summary.withdrawCash')}</span>
                   </button>
                 )}
-                <span className="text-[11px] font-sans text-emerald-400 font-semibold bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                  {t('summary.readyToUse')}
-                </span>
+                {infoButton('cash', 'Kas tersedia setelah memperhitungkan modal awal, pembelian stok, pemasukan penjualan, dan penarikan.') }
               </div>
             </div>
 
@@ -211,17 +209,11 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
               {formatRupiah(summary.saldoKasSaatIni)}
             </div>
 
-            <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              {t('summary.spendableStockMoney')} ({formatRupiah(summary.sisaModalSebelumJual)}) + penjualan ({formatRupiah(summary.totalPemasukanJual)})
-              {summary.totalPenarikanKas > 0 ? ` - ${t('summary.withdrawal')} (${formatRupiah(summary.totalPenarikanKas)})` : ''}.
-            </p>
+            
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] font-sans text-emerald-400 font-medium flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{t('summary.canBuyStock')}</span>
-            </div>
+            
             {summary.totalPenarikanKas > 0 && onOpenWithdrawalModal && (
               <button
                 type="button"
@@ -244,18 +236,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                 <TrendingUp className="w-4 h-4" />
                 <span>{t('summary.salesProfit')}</span>
               </div>
-              <span className="text-[11px] font-sans text-emerald-400 font-semibold bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded-md">
-                {t('summary.realizedProfit')}
-              </span>
+              {infoButton('profit', 'Keuntungan yang sudah terealisasi dari barang yang terjual.') }
             </div>
 
             <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-sans tabular-nums tracking-tight drop-shadow-[0_0_12px_rgba(52,211,153,0.3)]">
               +{formatRupiah(summary.totalGainTerjual)}
             </div>
 
-            <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              {t('summary.realizedProfitDescription')}
-            </p>
+            
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-sans">
@@ -272,11 +260,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                 <Percent className="w-4 h-4 text-cyan-400" />
                 <span>{t('summary.capitalChange')}</span>
               </div>
-              <span className={`text-[11px] font-sans font-semibold px-2 py-0.5 rounded-md ${
-                isTumbuh ? 'text-emerald-300 bg-emerald-950/70 border border-emerald-500/30' : isRugi ? 'text-rose-300 bg-rose-950/70 border border-rose-500/30' : 'text-slate-300 bg-slate-800'
-              }`}>
-                {isTumbuh ? t('summary.growing') : isRugi ? t('summary.attentionNeeded') : t('summary.unchanged')}
-              </span>
+              {infoButton('growth', 'Persentase perubahan modal dibandingkan dengan modal awal berdasarkan hasil usaha yang tercatat.') }
             </div>
 
             <div className="text-2xl sm:text-3xl font-extrabold font-sans tabular-nums tracking-tight drop-shadow-sm">
@@ -285,13 +269,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
               </span>
             </div>
 
-            <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              {isTumbuh
-                ? `${t('summary.realProfitGrowth')} +${formatRupiah(summary.totalGainTerjual)} ${t('summary.fromStartingCapital')}`
-                : isRugi
-                ? t('summary.cashBelowCapital')
-                : t('summary.noSalesYet')}
-            </p>
+            
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-sans">
@@ -310,18 +288,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
                 <ShieldCheck className="w-4 h-4 text-amber-400" />
                 <span>{t('summary.businessEquity')}</span>
               </div>
-              <span className="text-[11px] font-sans text-amber-400 font-semibold bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                {t('summary.cashPlusStock')}
-              </span>
+              {infoButton('equity', 'Total nilai kekayaan usaha yang mencakup kas dan nilai stok, sesuai perhitungan aplikasi.') }
             </div>
 
             <div className="text-2xl sm:text-3xl font-extrabold text-amber-300 font-sans tabular-nums tracking-tight drop-shadow-[0_0_12px_rgba(251,191,36,0.25)]">
               {formatRupiah(summary.totalSetelahUntung)}
             </div>
 
-            <p className="mt-2 text-xs text-slate-400 leading-relaxed font-sans">
-              {t('summary.equityDescription')}
-            </p>
+            
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-[11px] font-sans">

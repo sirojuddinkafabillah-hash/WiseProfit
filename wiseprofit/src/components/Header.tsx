@@ -65,11 +65,14 @@ export const Header: React.FC<HeaderProps> = ({
     };
     loadProfilePhoto();
     const refresh = (event?: Event) => {
-      // Apply the just-uploaded URL immediately; then confirm the persisted cloud value.
+      // Use the verified URL returned by the profile upload directly.
+      // A second async read here can race and overwrite the new photo with stale data.
+      const isPhotoUpdate = event?.type === 'wiseprofit-profile-photo-updated';
       const detail = (event as CustomEvent<{ url?: string | null }> | undefined)?.detail;
-      if (detail && Object.prototype.hasOwnProperty.call(detail, 'url')) {
+      if (isPhotoUpdate && detail && Object.prototype.hasOwnProperty.call(detail, 'url')) {
         setProfilePhoto(detail.url || user?.photoURL || null);
         setProfilePhotoFailed(false);
+        return;
       }
       void loadProfilePhoto();
     };

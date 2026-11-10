@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, NotebookPen,
-  LogIn
+  LogIn, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -49,8 +49,15 @@ export const Header: React.FC<HeaderProps> = ({
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [profilePhotoFailed, setProfilePhotoFailed] = useState(false);
-  const sidebarOpen = true;
-  const setSidebarOpen = (_open: boolean | ((value: boolean) => boolean)) => {};
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
+    try { return localStorage.getItem('wp_sidebar_collapsed') !== 'true'; } catch { return true; }
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('wp-sidebar-collapsed', !sidebarOpen);
+    try { localStorage.setItem('wp_sidebar_collapsed', sidebarOpen ? 'false' : 'true'); } catch { /* preference is optional */ }
+    return () => document.documentElement.classList.remove('wp-sidebar-collapsed');
+  }, [sidebarOpen]);
 
   useEffect(() => {
     let active = true;
@@ -88,10 +95,6 @@ export const Header: React.FC<HeaderProps> = ({
   }, [user?.uid, user?.photoURL]);
 
   useEffect(() => {
-    setSidebarOpen(false);
-  }, [activePage]);
-
-  useEffect(() => {
     if (!sidebarOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setSidebarOpen(false);
@@ -110,7 +113,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navigate = (page: AppPage) => {
     onChangePage(page);
-    setSidebarOpen(false);
   };
 
   const isActive = (page: AppPage) => page === 'faq'
@@ -204,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </header>
 
-      <aside
+      {sidebarOpen && <aside
         id="wp-main-sidebar"
         aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
         className="wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-40 flex w-[68px] flex-col overflow-hidden border-r border-white/70 text-slate-800 shadow-[0_12px_36px_rgba(15,23,42,0.12)]" style={{ background: "rgba(239,246,255,0.92)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)" }}
@@ -213,7 +215,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="border-b border-white/60 px-2 py-3">
             <button
               type="button"
-              onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
+              onClick={onOpenProfilePanel}
               aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
               aria-haspopup="dialog"
               title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="relative mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -290,13 +292,24 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="border-t border-white/50 bg-white/20 p-3">
           <button
             type="button"
-            onClick={() => { setSidebarOpen(false); user ? onChangePage('support-admin') : onOpenAuthModal(); }}
+            onClick={() => { user ? onChangePage('support-admin') : onOpenAuthModal(); }}
             title={language === "id" ? "Login Admin" : "Admin Login"} aria-label={language === "id" ? "Login Admin" : "Admin Login"} className="group mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-slate-600 transition hover:bg-white/90 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
           </button>
         </div>
-      </aside>
+      </aside>}
+      <button
+        type="button"
+        className="wp-sidebar-toggle no-print"
+        onClick={() => setSidebarOpen((open) => !open)}
+        aria-label={sidebarOpen ? (language === 'id' ? 'Ciutkan toolbar' : 'Collapse toolbar') : (language === 'id' ? 'Buka toolbar' : 'Expand toolbar')}
+        aria-expanded={sidebarOpen}
+        aria-controls="wp-main-sidebar"
+        title={sidebarOpen ? (language === 'id' ? 'Ciutkan toolbar' : 'Collapse toolbar') : (language === 'id' ? 'Buka toolbar' : 'Expand toolbar')}
+      >
+        {sidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+      </button>
     </>
   );
 };

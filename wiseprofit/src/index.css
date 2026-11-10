@@ -2101,3 +2101,85 @@ html, body {
 #root .wp-item-modal-card { background:#fff !important; color:#18345f !important; border-color:#dbeafe !important; }
 #root .wp-item-modal-card input, #root .wp-item-modal-card select { background:#f8fbff !important; color:#18345f !important; border-color:#dbeafe !important; }
 #root .wp-item-modal-card .wp-item-preview { background:#f3f7ff !important; border-color:#dbeafe !important; }
+
+/* WiseProfit reference dashboard skin: cool blue glass, soft waves and fixed icon rails */
+:root { color-scheme: light; }
+html, body, #root { min-height:100%; background:#eaf2ff; }
+body { color:#18345f; }
+#root > div.relative.min-h-screen {
+  min-height:100vh !important;
+  color:#18345f !important;
+  background:
+    radial-gradient(ellipse at 12% 8%, rgba(255,255,255,.98) 0%, rgba(239,246,255,.92) 30%, transparent 57%),
+    radial-gradient(ellipse at 82% 3%, rgba(147,190,255,.35) 0%, transparent 38%),
+    linear-gradient(135deg,#f8fbff 0%,#eaf2ff 48%,#dceaff 100%) !important;
+}
+#root > div.relative.min-h-screen::before {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.72;
+  background:
+    radial-gradient(ellipse 55% 18% at 72% 0%,rgba(104,161,255,.18),transparent 75%),
+    radial-gradient(ellipse 42% 16% at 10% 100%,rgba(91,153,255,.13),transparent 75%),
+    linear-gradient(145deg,transparent 0 62%,rgba(255,255,255,.32) 62.2% 64%,transparent 64.2%);
+}
+#root .wp-reference-topbar {
+  background:rgba(232,241,255,.78) !important;
+  backdrop-filter:blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%) !important;
+  border-color:rgba(255,255,255,.82) !important;
+}
+#root .wp-reference-sidebar {
+  background:rgba(245,249,255,.76) !important;
+  backdrop-filter:blur(24px) saturate(165%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(165%) !important;
+  box-shadow:8px 0 34px rgba(39,91,170,.08) !important;
+}
+#root .wp-reference-tools {
+  background:rgba(255,255,255,.72) !important;
+  backdrop-filter:blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%) !important;
+}
+#root main {
+  max-width:none !important; width:auto !important;
+  min-height:calc(100vh - 72px) !important;
+  margin:72px 76px 0 84px !important;
+  padding:22px 18px 30px !important;
+  overflow:visible !important;
+  color:#18345f !important;
+  background:transparent !important;
+}
+#root main > div, #root main section, #root main article { color:#18345f; }
+#root main .dashboard-hero { color:#18345f !important; }
+#root main .dashboard-hero * { color:inherit; }
+#root main .dashboard-hero .text-emerald-300,
+#root main .dashboard-hero .text-emerald-400 { color:#168b61 !important; }
+#root footer { margin-left:84px !important; margin-right:76px !important; background:rgba(255,255,255,.55) !important; color:#587097 !important; border-color:#dbeafe !important; }
+#root .wp-quick-add-panel, #root .wp-item-modal-card,
+#root main .rounded-3xl.border, #root main .rounded-2xl.border {
+  box-shadow:0 8px 26px rgba(37,99,235,.075) !important;
+}
+#root main .bg-slate-950, #root main .bg-slate-900, #root main .bg-slate-800 {
+  background-color:#fff !important;
+}
+#root main .text-white { color:#18345f !important; }
+#root main .text-slate-100, #root main .text-slate-200, #root main .text-slate-300 { color:#385477 !important; }
+#root main .text-slate-400, #root main .text-slate-500 { color:#647a9d !important; }
+#root main .border-slate-700, #root main .border-slate-800, #root main .border-slate-600 { border-color:#dbeafe !important; }
+#root main input, #root main select, #root main textarea {
+  background:#fff !important; color:#18345f !important; border-color:#dbeafe !important;
+}
+#root main input::placeholder, #root main textarea::placeholder { color:#8194b2 !important; }
+#root main button:not([class*="bg-gradient"]):not([type="submit"]) { transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease; }
+#root main .rounded-2xl, #root main .rounded-3xl { border-radius:18px !important; }
+#root .wp-reference-tools button:focus-visible, #root .wp-reference-sidebar button:focus-visible { outline:2px solid #60a5fa !important; outline-offset:2px !important; }
+@media(max-width:900px) {
+  #root .wp-reference-topbar { left:72px !important; right:0 !important; padding-left:12px !important; padding-right:12px !important; }
+  #root .wp-reference-sidebar { width:72px !important; }
+  #root .wp-reference-tools { display:none !important; }
+  #root main { margin-left:72px !important; margin-right:0 !important; padding:16px 12px 24px !important; }
+  #root footer { margin-left:72px !important; margin-right:0 !important; }
+}
+@media(max-width:560px) {
+  #root .wp-reference-topbar { height:64px !important; }
+  #root .wp-global-search { height:40px !important; padding:0 12px !important; }
+  #root main { margin-top:64px !important; }
+}

@@ -194,7 +194,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => { setSidebarOpen(false); onOpenProfilePanel(); }}
               aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
               aria-haspopup="dialog"
-              title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="relative mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}

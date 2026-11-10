@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka } from '../utils/calculator';
-import { Plus, Calendar, Package, Tag, ArrowRight, Sparkles } from 'lucide-react';
+import { Plus, Calendar, Package, Calculator } from 'lucide-react';
 
 interface QuickAddBarProps {
   onAdd: (item: Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
   globalSavePercentMonthly?: number;
 }
+const inputClass = "w-full rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-[#18345F] outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePercentMonthly = 0 }) => {
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -18,194 +20,70 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
   const [satuanUnit, setSatuanUnit] = useState('pcs');
   const [hargaBeli, setHargaBeli] = useState<number | ''>('');
   const [hargaJual, setHargaJual] = useState<number | ''>('');
-
-  const numJumlahWadah = Number(jumlahWadah) || 0;
-  const numHargaBeli = Number(hargaBeli) || 0;
-  const numHargaJual = Number(hargaJual) || 0;
-
-  const hasBasicData = numJumlahWadah > 0 && numHargaBeli > 0 && numHargaJual > 0;
-
-  const previewCalc = hasBasicData
-    ? calculateItem({
-        id: 'tmp',
-        namaBarang: namaBarang || 'Barang',
-        satuanWadah: satuanWadah || 'Wadah',
-        jumlahBarangWadah: numJumlahWadah,
-        satuanUnit: satuanUnit || 'pcs',
-        hargaBeli: numHargaBeli,
-        jumlahBarangDijualSatuan: 0,
-        hargaJualSatuan: numHargaJual,
-        perputaranBulan: 1,
-        persentaseLabaDisimpanBulanan: globalSavePercentMonthly,
-        tanggalInput: tanggalInput || todayStr,
-        createdAt: 0,
-        updatedAt: 0,
-      })
-    : null;
+  const [catatan, setCatatan] = useState('');
+  const qty = Number(jumlahWadah) || 0;
+  const buy = Number(hargaBeli) || 0;
+  const sell = Number(hargaJual) || 0;
+  const preview = qty > 0 && buy > 0 && sell > 0 ? calculateItem({
+    id: 'tmp', namaBarang: namaBarang || 'Barang', satuanWadah: satuanWadah || 'Wadah',
+    jumlahBarangWadah: qty, satuanUnit: satuanUnit || 'pcs', hargaBeli: buy,
+    jumlahBarangDijualSatuan: 0, hargaJualSatuan: sell, perputaranBulan: 1,
+    persentaseLabaDisimpanBulanan: globalSavePercentMonthly, tanggalInput,
+    createdAt: 0, updatedAt: 0,
+  }) : null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!namaBarang.trim()) return;
-    if (numJumlahWadah <= 0) return;
-    if (numHargaBeli <= 0) return;
-    if (numHargaJual <= 0) return;
-
+    if (!namaBarang.trim() || qty <= 0 || buy <= 0 || sell <= 0) return;
     onAdd({
-      namaBarang: namaBarang.trim(),
-      satuanWadah: satuanWadah || 'Wadah',
-      jumlahBarangWadah: numJumlahWadah,
-      satuanUnit: satuanUnit || 'pcs',
-      hargaBeli: numHargaBeli,
-      jumlahBarangDijualSatuan: 0, // Default 0 (belum ada yang laku)
-      hargaJualSatuan: numHargaJual,
-      perputaranBulan: 1,
-      persentaseLabaDisimpanBulanan: globalSavePercentMonthly,
-      tanggalInput: tanggalInput || todayStr,
+      namaBarang: namaBarang.trim(), satuanWadah: satuanWadah || 'Wadah',
+      jumlahBarangWadah: qty, satuanUnit: satuanUnit || 'pcs', hargaBeli: buy,
+      jumlahBarangDijualSatuan: 0, hargaJualSatuan: sell, perputaranBulan: 1,
+      persentaseLabaDisimpanBulanan: globalSavePercentMonthly, tanggalInput,
+      catatan: catatan.trim(),
     });
-
-    setNamaBarang('');
-    setJumlahWadah('');
-    setHargaBeli('');
-    setHargaJual('');
+    setNamaBarang(''); setJumlahWadah(''); setHargaBeli(''); setHargaJual(''); setCatatan('');
   };
 
   return (
-    <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)] mb-6 transition-all">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+    <section className="wp-quick-add-panel mb-6 rounded-3xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <Package className="w-4 h-4" />
-          </div>
-          <h2 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-            {t('quick.title')}
-          </h2>
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>
+          <div><h2 className="text-base font-bold text-[#18345F]">{t('quick.title')}</h2><p className="text-xs text-slate-500">Lengkapi informasi barang dalam satu form</p></div>
         </div>
-        <p className="text-[11px] font-mono text-slate-400">
-          {t('quick.description')}
-        </p>
+        <span className="rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">Input barang</span>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-12 gap-3.5">
-          {/* {t('quick.inputDate')} */}
-          <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
-            <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              {t('quick.inputDate')}
-            </label>
-            <input
-              type="date"
-              required
-              value={tanggalInput}
-              onChange={(e) => setTanggalInput(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 font-mono transition-colors"
-            />
-          </div>
-
-          {/* {t('quick.itemName')} */}
-          <div className="sm:col-span-1 md:col-span-4 lg:col-span-4">
-            <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              {t('quick.itemName')}
-            </label>
-            <input
-              type="text"
-              required
-              value={namaBarang}
-              onChange={(e) => setNamaBarang(e.target.value)}
-              placeholder={t('quick.itemPlaceholder')}
-              className="w-full px-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 font-sans transition-colors"
-            />
-          </div>
-
-          {/* Isi Wadah */}
-          <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
-            <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              {t('quick.quantity')}
-            </label>
-            <input
-              type="number"
-              min="1"
-              required
-              value={jumlahWadah}
-              onChange={(e) => setJumlahWadah(e.target.value === '' ? '' : Number(e.target.value))}
-              placeholder={t('quick.quantityPlaceholder')}
-              className="w-full px-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
-            />
-          </div>
-
-          {/* {t('quick.buyPrice')} */}
-          <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">
-            <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              {t('quick.buyPrice')}
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xs">Rp</span>
-              <input
-                type="number"
-                min="0"
-                step="100"
-                required
-                value={hargaBeli}
-                onChange={(e) => setHargaBeli(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder={t('quick.buyPlaceholder')}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
-              />
-            </div>
-          </div>
-
-          {/* {t('quick.sellPrice')} */}
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-2">
-            <label className="block text-[11px] font-mono font-semibold text-slate-300 mb-1.5">
-              {t('quick.sellPrice')}
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xs">Rp</span>
-              <input
-                type="number"
-                min="0"
-                step="100"
-                required
-                value={hargaJual}
-                onChange={(e) => setHargaJual(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder={t('quick.sellPlaceholder')}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-950/80 border border-slate-700/70 text-slate-100 placeholder:text-slate-500 rounded-xl font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
-              />
-            </div>
+        <div>
+          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#42618B]">Informasi barang</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div><label className={labelClass}>{t('quick.inputDate')}</label><div className="relative"><Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-500" /><input type="date" required value={tanggalInput} onChange={e=>setTanggalInput(e.target.value)} className={inputClass+" pl-9"} /></div></div>
+            <div className="sm:col-span-2"><label className={labelClass}>{t('quick.itemName')}</label><input type="text" required value={namaBarang} onChange={e=>setNamaBarang(e.target.value)} placeholder={t('quick.itemPlaceholder')} className={inputClass} /></div>
+            <div><label className={labelClass}>Satuan kemasan</label><input type="text" value={satuanWadah} onChange={e=>setSatuanWadah(e.target.value)} placeholder="Dus / Karton / Pak" className={inputClass} /></div>
+            <div><label className={labelClass}>Isi per kemasan</label><input type="number" min="1" required value={jumlahWadah} onChange={e=>setJumlahWadah(e.target.value===''?'':Number(e.target.value))} placeholder="Contoh: 24" className={inputClass} /></div>
+            <div><label className={labelClass}>Satuan barang</label><input type="text" value={satuanUnit} onChange={e=>setSatuanUnit(e.target.value)} placeholder="Pcs / Botol / Kg" className={inputClass} /></div>
           </div>
         </div>
-
-        {/* Live Calculation Preview & Submit Button */}
-        <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-800">
-          <div className="flex items-center gap-3 text-xs font-mono text-slate-300 flex-wrap">
-            {previewCalc ? (
-              <div className="flex items-center gap-3 text-[11px] bg-slate-950/90 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl flex-wrap shadow-inner">
-                <span>
-                  {t('quick.costPerUnit')} <strong className="text-white">{formatRupiah(previewCalc.hppSatuan)}</strong>/unit
-                </span>
-                <span className="text-slate-700">|</span>
-                <span>
-                  {t('quick.profitPerUnit')} <strong className="text-emerald-400 font-bold">+{formatRupiah(previewCalc.gainSatuan)}</strong> ({formatAngka(previewCalc.marginPersen, 1)}%)
-                </span>
-                <span className="text-slate-700">|</span>
-                <span>
-                  {t('quick.fullProfitPotential')} <strong className="text-amber-300 font-bold">+{formatRupiah(previewCalc.potensiTotalGain)}</strong>
-                </span>
-              </div>
-            ) : (
-              <span className="text-slate-400 font-mono text-[11px]">
-                {t('quick.previewHint')}
-              </span>
-            )}
+        <div>
+          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#42618B]">Informasi harga</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div><label className={labelClass}>Harga beli total per kemasan</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">Rp</span><input type="number" min="1" required value={hargaBeli} onChange={e=>setHargaBeli(e.target.value===''?'':Number(e.target.value))} placeholder="0" className={inputClass+" pl-9"} /></div></div>
+            <div><label className={labelClass}>Harga jual per satuan</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">Rp</span><input type="number" min="1" required value={hargaJual} onChange={e=>setHargaJual(e.target.value===''?'':Number(e.target.value))} placeholder="0" className={inputClass+" pl-9"} /></div></div>
+            <div className="sm:col-span-2"><label className={labelClass}>Catatan barang (opsional)</label><input type="text" value={catatan} onChange={e=>setCatatan(e.target.value)} placeholder="Contoh: Kulakan agen, rak depan..." className={inputClass} /></div>
           </div>
-
-          <button
-            type="submit"
-            className="flex items-center justify-center gap-1.5 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 text-xs font-mono font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all cursor-pointer shrink-0"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>{t('quick.save')}</span>
-          </button>
+        </div>
+        <div className="flex flex-col gap-3 border-t border-blue-50 pt-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
+            {preview ? <>
+              <div className="rounded-xl bg-blue-50 px-3 py-2"><span className="block text-[10px] text-slate-500">Modal per satuan</span><strong className="text-sm text-[#18345F]">{formatRupiah(preview.hppSatuan)}</strong></div>
+              <div className="rounded-xl bg-emerald-50 px-3 py-2"><span className="block text-[10px] text-slate-500">Untung per satuan</span><strong className="text-sm text-emerald-700">+{formatRupiah(preview.gainSatuan)}</strong></div>
+              <div className="rounded-xl bg-indigo-50 px-3 py-2"><span className="block text-[10px] text-slate-500">Potensi keuntungan total</span><strong className="text-sm text-indigo-700">+{formatRupiah(preview.potensiTotalGain)}</strong><span className="ml-1 text-[10px] text-slate-500">({formatAngka(preview.marginPersen,1)}%)</span></div>
+            </> : <span className="flex items-center gap-2 text-xs text-slate-500"><Calculator className="h-4 w-4 text-blue-500" />Isi jumlah dan harga untuk melihat perhitungan otomatis.</span>}
+          </div>
+          <button type="submit" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/20 transition hover:from-blue-700 hover:to-blue-800 active:scale-[0.98]"><Plus className="h-4 w-4" />Tambah Barang</button>
         </div>
       </form>
-    </div>
+    </section>
   );
 };

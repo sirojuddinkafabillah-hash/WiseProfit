@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { t } from '../i18n/translations';
 import { GlobalSummary } from '../types/inventory';
 import { formatRupiah, formatAngka } from '../utils/calculator';
-import { Wallet, Edit3, Check, TrendingUp, ArrowDownRight, ArrowUpRight, Percent, ShieldCheck, Clock, Coins } from 'lucide-react';
+import { Wallet, Edit3, Check, TrendingUp, ArrowDownRight, ArrowUpRight, Percent, ShieldCheck, Clock, Coins, Info } from 'lucide-react';
 
 interface SummaryCardsProps {
   summary: GlobalSummary;
@@ -24,6 +24,25 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
 }) => {
   const [isEditingModal, setIsEditingModal] = useState(false);
   const [modalInput, setModalInput] = useState(String(modalAwal));
+  const [openInfo, setOpenInfo] = useState<string | null>(null);
+
+  const infoButton = (key: string, content: string) => (
+    <div className="relative">
+      <button type="button" aria-label="Lihat keterangan" aria-expanded={openInfo === key}
+        onClick={() => setOpenInfo(openInfo === key ? null : key)}
+        className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-blue-500">
+        <Info className="h-4 w-4" />
+      </button>
+      {openInfo === key && (
+        <div role="dialog" className="absolute right-0 top-9 z-50 w-64 rounded-xl border border-slate-200 bg-white p-3 text-left text-xs font-normal normal-case tracking-normal text-slate-600 shadow-xl">
+          <div className="mb-1 flex items-center justify-between gap-2 font-semibold text-slate-800">Keterangan
+            <button type="button" onClick={() => setOpenInfo(null)} aria-label="Tutup keterangan" className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">×</button>
+          </div>
+          {content}
+        </div>
+      )}
+    </div>
+  );
 
   const handleSaveModal = () => {
     const val = Math.max(0, Number(modalInput) || 0);

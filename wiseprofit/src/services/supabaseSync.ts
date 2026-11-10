@@ -137,34 +137,61 @@ export async function fetchUserWithdrawalsOnce(userId: string): Promise<Withdraw
 }
 
 
-/** Upload a user's custom avatar to their private, user-scoped storage path. */
+/** Upload a versioned avatar so browsers/CDNs cannot keep showing the previous image. */
 export async function uploadProfilePhoto(userId: string, file: Blob): Promise<string> {
-  const path = `${userId}/avatar.jpg`;
+  // A unique object path is essential: overwriting avatar.jpg can leave the old
+  // image in browser/CDN caches even when the database row has been updated.
+  const previousUrl = await getProfilePhotoUrl(userId).catch(() => null);
+  const version = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  const path = `${userId}/avatar-${version}.jpg`;
   const { error: uploadError } = await supabase.storage.from('profile-photos').upload(path, file, {
-    contentType: 'image/jpeg', upsert: true, cacheControl: '3600',
+    contentType: 'image/jpeg', upsert: false, cacheControl: '0',
   });
-  if (uploadError) throw uploadError;
+  if (uploadError) throw new Error(`Storage upload failed: ${uploadError.message}`);
+
   const { data } = supabase.storage.from('profile-photos').getPublicUrl(path);
-  const avatarUrl = data.publicUrl + `?v=${Date.now()}`;
-  const { error: profileError } = await supabase.from('profiles').upsert({
-    user_id: userId, avatar_url: data.publicUrl, updated_at: new Date().toISOString(),
-  }, { onConflict: 'user_id' });
-  if (profileError) throw profileError;
+  const avatarUrl = `${data.publicUrl}?v=${version}`;
+  const { data: savedProfile, error: profileError } = await supabase.from('profiles').upsert({
+    user_id: userId, avatar_url: avatarUrl, updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id' }).select('avatar_url').single();
+  if (profileError) {
+    // Do not leave an orphaned upload when the profile pointer could not be saved.
+    await supabase.storage.from('profile-photos').remove([path]);
+    throw new Error(`Profile URL save failed: ${profileError.message}`);
+  }
+  if (savedProfile?.avatar_url !== avatarUrl) {
+    throw new Error('Profile URL verification failed: saved URL does not match the new photo.');
+  }
+
+  // Remove the previous managed avatar only after the new URL is confirmed saved.
+  if (previousUrl) {
+    const marker = '/profile-photos/';
+    const previousPath = decodeURIComponent(previousUrl.split(marker)[1]?.split('?')[0] || '');
+    if (previousPath.startsWith(`${userId}/`) && previousPath !== path) {
+      const { error: cleanupError } = await supabase.storage.from('profile-photos').remove([previousPath]);
+      if (cleanupError) console.warn('[Supabase] Previous avatar cleanup:', cleanupError.message);
+    }
+  }
   return avatarUrl;
 }
 
 export async function getProfilePhotoUrl(userId: string): Promise<string | null> {
   const { data, error } = await supabase.from('profiles').select('avatar_url').eq('user_id', userId).maybeSingle();
   if (error) {
-    if (error.code !== '42703' && !error.message?.toLowerCase().includes('avatar_url')) console.warn('[Supabase] Get avatar:', error.message);
-    return null;
+    console.warn('[Supabase] Get avatar URL failed:', error.message);
+    throw new Error(`Profile photo lookup failed: ${error.message}`);
   }
   return data?.avatar_url || null;
 }
 
 export async function removeProfilePhoto(userId: string): Promise<void> {
-  const { error: storageError } = await supabase.storage.from('profile-photos').remove([`${userId}/avatar.jpg`]);
-  if (storageError) console.warn('[Supabase] Remove avatar file:', storageError.message);
+  const currentUrl = await getProfilePhotoUrl(userId).catch(() => null);
+  const marker = '/profile-photos/';
+  const currentPath = currentUrl ? decodeURIComponent(currentUrl.split(marker)[1]?.split('?')[0] || '') : '';
+  if (currentPath.startsWith(`${userId}/`)) {
+    const { error: storageError } = await supabase.storage.from('profile-photos').remove([currentPath]);
+    if (storageError) console.warn('[Supabase] Remove avatar file:', storageError.message);
+  }
   const { error } = await supabase.from('profiles').upsert({
     user_id: userId, avatar_url: null, updated_at: new Date().toISOString(),
   }, { onConflict: 'user_id' });

@@ -135,3 +135,38 @@ export async function fetchUserWithdrawalsOnce(userId: string): Promise<Withdraw
   if (error) { console.error('[Supabase] Fetch withdrawals:', error); return []; }
   return (data || []).map((row: any) => row.data as Withdrawal);
 }
+
+
+/** Upload a user's custom avatar to their private, user-scoped storage path. */
+export async function uploadProfilePhoto(userId: string, file: Blob): Promise<string> {
+  const path = `${userId}/avatar.jpg`;
+  const { error: uploadError } = await supabase.storage.from('profile-photos').upload(path, file, {
+    contentType: 'image/jpeg', upsert: true, cacheControl: '3600',
+  });
+  if (uploadError) throw uploadError;
+  const { data } = supabase.storage.from('profile-photos').getPublicUrl(path);
+  const avatarUrl = data.publicUrl + `?v=${Date.now()}`;
+  const { error: profileError } = await supabase.from('profiles').upsert({
+    user_id: userId, avatar_url: data.publicUrl, updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id' });
+  if (profileError) throw profileError;
+  return avatarUrl;
+}
+
+export async function getProfilePhotoUrl(userId: string): Promise<string | null> {
+  const { data, error } = await supabase.from('profiles').select('avatar_url').eq('user_id', userId).maybeSingle();
+  if (error) {
+    if (error.code !== '42703' && !error.message?.toLowerCase().includes('avatar_url')) console.warn('[Supabase] Get avatar:', error.message);
+    return null;
+  }
+  return data?.avatar_url || null;
+}
+
+export async function removeProfilePhoto(userId: string): Promise<void> {
+  const { error: storageError } = await supabase.storage.from('profile-photos').remove([`${userId}/avatar.jpg`]);
+  if (storageError) console.warn('[Supabase] Remove avatar file:', storageError.message);
+  const { error } = await supabase.from('profiles').upsert({
+    user_id: userId, avatar_url: null, updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id' });
+  if (error) throw error;
+}

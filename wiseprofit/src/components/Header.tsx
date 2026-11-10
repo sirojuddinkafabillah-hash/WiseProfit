@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
+import { getProfilePhotoUrl } from '../services/supabaseSync';
 
 export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'faq' | 'complaints' | 'support-admin';
 
@@ -50,21 +51,26 @@ export const Header: React.FC<HeaderProps> = ({
   const setSidebarOpen = (_open: boolean | ((value: boolean) => boolean)) => {};
 
   useEffect(() => {
-    const loadProfilePhoto = () => {
+    let active = true;
+    const loadProfilePhoto = async () => {
       try {
+        const cloudPhoto = user ? await getProfilePhotoUrl(user.uid) : null;
+        if (!active) return;
         const savedPhoto = user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null;
-        setProfilePhoto(savedPhoto || user?.photoURL || null);
+        setProfilePhoto(cloudPhoto || savedPhoto || user?.photoURL || null);
         setProfilePhotoFailed(false);
       } catch {
-        setProfilePhoto(null);
+        if (active) setProfilePhoto(user?.photoURL || null);
       }
     };
     loadProfilePhoto();
-    window.addEventListener('storage', loadProfilePhoto);
-    window.addEventListener('wiseprofit-profile-photo-updated', loadProfilePhoto);
+    const refresh = () => { loadProfilePhoto(); };
+    window.addEventListener('storage', refresh);
+    window.addEventListener('wiseprofit-profile-photo-updated', refresh);
     return () => {
-      window.removeEventListener('storage', loadProfilePhoto);
-      window.removeEventListener('wiseprofit-profile-photo-updated', loadProfilePhoto);
+      active = false;
+      window.removeEventListener('storage', refresh);
+      window.removeEventListener('wiseprofit-profile-photo-updated', refresh);
     };
   }, [user?.uid, user?.photoURL]);
 

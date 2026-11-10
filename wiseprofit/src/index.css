@@ -2214,3 +2214,23 @@ body { color:#18345f; }
 #root main .shadow-\[0_20px_50px_rgba\(0\,0\,0\,0\.35\)\] { box-shadow:0 12px 32px rgba(37,99,235,.09) !important; }
 #root main button[class*="bg-emerald-500"] { color:#fff !important; }
 #root .wp-reference-topbar .wp-global-search:focus-within { border-color:#93b9ff !important; box-shadow:0 0 0 3px rgba(37,99,235,.08),0 5px 18px rgba(37,99,235,.08) !important; }
+
+@media(max-width:900px) {
+  #root .wp-reference-tools { display:flex !important; width:58px !important; right:2px !important; padding:5px !important; gap:4px !important; }
+  #root .wp-reference-tools .wp-right-tool { font-size:9px !important; padding:7px 1px !important; }
+  #root .wp-reference-tools .wp-right-tool > span:first-child { width:32px !important; height:32px !important; }
+  #root main { margin-right:62px !important; }
+  #root footer { margin-right:62px !important; }
+}
+@media(max-width:560px) {
+  #root .wp-reference-tools { top:auto !important; bottom:8px !important; right:6px !important; width:48px !important; }
+  #root .wp-reference-tools .wp-right-tool > span:last-of-type { display:none !important; }
+  #root main { margin-right:52px !important; }
+  #root footer { margin-right:52px !important; }
+}
+#root main button.bg-gradient-to-r, #root main button.bg-blue-600,
+#root main button[type="submit"], #root main button.bg-emerald-500 {
+  color:#fff !important;
+}
+#root main button.bg-gradient-to-r *, #root main button.bg-blue-600 *,
+#root main button[type="submit"] * { color:inherit !important; }

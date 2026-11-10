@@ -707,7 +707,7 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className="min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 max-w-7xl w-full mx-auto overflow-x-hidden bg-slate-950/35 px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+        <main className="min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 max-w-7xl w-[calc(100%-68px)] ml-[68px] overflow-x-hidden bg-slate-950/35 px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
           {!user ? (
             <section className="mx-auto my-8 grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(36,50,75,0.12)] sm:my-14 lg:grid-cols-[1.05fr_0.95fr]">

@@ -2408,23 +2408,59 @@ html, body {
 }
 
 
-/* Fix the actual opaque page layer behind the inventory table. Keep cards/forms as-is; let the animated canvas show through the table workspace. */
+/* Correct table layering: solid table + white backing; animated page theme remains behind the white workspace. */
 #root main {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
 }
-#root main > div > div.space-y-6:has(.wp-inventory-table) {
-  background: transparent !important;
-  background-color: transparent !important;
+
+/* The white workspace is intentionally opaque; the animated theme must not bleed through table text. */
+#root main :has(> .overflow-x-auto > .wp-inventory-table) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #dce6f3 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 14px rgba(30,64,110,.045) !important;
 }
-#root main .wp-inventory-table {
-  color: #e2e8f0 !important;
-}
+
+/* Keep every table layer and all text fully solid and readable. */
+#root main .wp-inventory-table,
+#root main .wp-inventory-table thead,
 #root main .wp-inventory-table tbody,
+#root main .wp-inventory-table tfoot {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+#root main .wp-inventory-table thead tr,
+#root main .wp-inventory-table th {
+  background: #f1f5fb !important;
+  color: #536b8b !important;
+  opacity: 1 !important;
+}
 #root main .wp-inventory-table tbody tr,
 #root main .wp-inventory-table tbody td {
-  color: #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #315071 !important;
+  opacity: 1 !important;
+}
+#root main .wp-inventory-table tbody tr:nth-child(even) {
+  background-color: #fafcff !important;
+}
+#root main .wp-inventory-table tbody tr:hover {
+  background-color: #f1f6ff !important;
 }
 #root main .wp-inventory-table td .text-slate-100,
-#root main .wp-inventory-table td .text-slate-200 { color: #e2e8f0 !important; }
+#root main .wp-inventory-table td .text-slate-200 {
+  color: #17345f !important;
+  opacity: 1 !important;
+}
+#root main .wp-inventory-table td .text-slate-400,
+#root main .wp-inventory-table td .text-slate-500 {
+  color: #71839a !important;
+  opacity: 1 !important;
+}
+#root main .wp-inventory-table th *,
+#root main .wp-inventory-table td * {
+  opacity: 1 !important;
+}

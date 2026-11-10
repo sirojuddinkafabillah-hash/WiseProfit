@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
 import { getProfilePhotoUrl } from '../services/supabaseSync';
 
-export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'faq' | 'complaints' | 'support-admin';
+export type AppPage = 'home' | 'inventory' | 'reports' | 'withdrawals' | 'import' | 'notes' | 'faq' | 'complaints' | 'support-admin';
 
 interface HeaderProps {
   activePage: AppPage;
@@ -20,7 +20,6 @@ interface HeaderProps {
   onOpenDownloadModal: () => void;
   onOpenAuthModal: () => void;
   onOpenProfilePanel: () => void;
-  onOpenNotes: () => void;
   onOpenWithdrawalModal?: () => void;
   withdrawalsCount?: number;
   isSyncingCloud?: boolean;
@@ -41,7 +40,6 @@ export const Header: React.FC<HeaderProps> = ({
   itemsCount = 0,
   onOpenAuthModal,
   onOpenProfilePanel,
-  onOpenNotes,
   withdrawalsCount = 0,
   language,
   onLanguageChange,
@@ -107,6 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
     { page: 'inventory', label: t('header.cashier', language), icon: ShoppingBag, count: itemsCount },
     { page: 'reports', label: t('header.businessReports', language), icon: TrendingUp },
     { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
+    { page: 'notes', label: language === 'id' ? 'Catatan' : 'Notes', icon: NotebookPen },
     { page: 'import', label: t('header.importExport', language), icon: UploadCloud },
     { page: 'faq', label: language === 'id' ? 'Bantuan' : 'Help', icon: CircleHelp },
   ];
@@ -273,18 +272,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="sr-only">{label}</span>
                 {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
               </button>
-              {page === 'withdrawals' && (
-                <button
-                  type="button"
-                  onClick={onOpenNotes}
-                  title={language === 'id' ? 'Catatan' : 'Notes'}
-                  aria-label={language === 'id' ? 'Buka Catatan' : 'Open Notes'}
-                  className="group relative mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-slate-700 transition hover:bg-white/80 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <NotebookPen className="h-[19px] w-[19px] text-[#31527F] group-hover:text-blue-700" />
-                  <span className="sr-only">{language === 'id' ? 'Catatan' : 'Notes'}</span>
-                </button>
-              )}
+}
             </React.Fragment>
           ))}
         </nav>

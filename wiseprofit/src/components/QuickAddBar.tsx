@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { t } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka } from '../utils/calculator';
@@ -13,6 +13,18 @@ const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePercentMonthly = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const panelRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handleOutsideInteraction = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Node && panelRef.current && !panelRef.current.contains(target)) {
+        setIsExpanded(false);
+      }
+    };
+    document.addEventListener('pointerdown', handleOutsideInteraction, true);
+    return () => document.removeEventListener('pointerdown', handleOutsideInteraction, true);
+  }, [isExpanded]);
   const todayStr = new Date().toISOString().slice(0, 10);
   const [tanggalInput, setTanggalInput] = useState(todayStr);
   const [namaBarang, setNamaBarang] = useState('');
@@ -48,7 +60,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
   };
 
   return (
-    <section className="wp-quick-add-panel mb-0 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
+    <section ref={panelRef} className="wp-quick-add-panel mb-0 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
       <button type="button" onClick={() => setIsExpanded((open) => !open)} aria-expanded={isExpanded} className="flex w-full items-center justify-between gap-3 text-left">
         <span className="flex min-w-0 items-center gap-2.5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>

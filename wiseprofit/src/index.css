@@ -2513,3 +2513,40 @@ html, body, #root {
 #root main :has(> .overflow-x-auto > .wp-inventory-table) {
   background-color: #ffffff !important;
 }
+
+
+/* Canva-style sidebar collapse: hide the entire toolbar, keep only the edge toggle. */
+#root .wp-sidebar-toggle {
+  position: fixed !important;
+  z-index: 60 !important;
+  left: 48px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  display: flex !important;
+  width: 32px !important;
+  height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #dce6f3 !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.97) !important;
+  color: #17345f !important;
+  box-shadow: 0 3px 12px rgba(20,45,80,.16) !important;
+  cursor: pointer !important;
+  transition: left .22s ease, background .18s ease, box-shadow .18s ease !important;
+}
+#root .wp-sidebar-toggle:hover { background:#eff6ff !important; box-shadow:0 5px 16px rgba(20,45,80,.2) !important; }
+html.wp-sidebar-collapsed #root .wp-sidebar-toggle { left: 0 !important; }
+html.wp-sidebar-collapsed #root main {
+  width: 100% !important;
+  margin-left: 0 !important;
+  max-width: none !important;
+}
+@media (max-width: 640px) {
+  #root .wp-sidebar-toggle { left: 40px !important; width:30px !important; height:42px !important; }
+  html.wp-sidebar-collapsed #root .wp-sidebar-toggle { left:0 !important; }
+  html.wp-sidebar-collapsed #root main { width:100% !important; margin-left:0 !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #root .wp-sidebar-toggle { transition:none !important; }
+}

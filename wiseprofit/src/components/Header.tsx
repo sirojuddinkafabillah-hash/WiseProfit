@@ -242,6 +242,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={() => navigate(page)}
               aria-current={isActive(page) ? 'page' : undefined}
+              title={label}
               className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm transition-all duration-150 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
             >
               <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />

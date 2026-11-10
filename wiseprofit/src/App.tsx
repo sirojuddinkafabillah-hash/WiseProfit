@@ -97,17 +97,7 @@ export default function App() {
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
   const [activePage, setActivePage] = useState<AppPage>('inventory');
   const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);
-  const [openNotesInProfile, setOpenNotesInProfile] = useState(false);
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isProfilePanelOpen || !openNotesInProfile) return;
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById('wp-notes-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setOpenNotesInProfile(false);
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [isProfilePanelOpen, openNotesInProfile]);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
   useEffect(() => {
@@ -651,7 +641,6 @@ export default function App() {
           onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
           onOpenAuthModal={() => setIsAuthModalOpen(true)}
           onOpenProfilePanel={() => setIsProfilePanelOpen((open) => !open)}
-          onOpenNotes={() => { if (!user) { setIsAuthModalOpen(true); return; } setOpenNotesInProfile(true); setIsProfilePanelOpen(true); }}
           onOpenWithdrawalModal={() => setActivePage('withdrawals')}
           withdrawalsCount={withdrawals.length}
           isSyncingCloud={isSavingCloud || isLoadingData}
@@ -787,6 +776,29 @@ export default function App() {
             </section>
           ) : (
             <div key={activePage} className="min-h-[65vh] w-full animate-in fade-in duration-200">
+              {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
+              {activePage === 'notes' && user && (
+                <HomePage
+                  user={user}
+                  language={language}
+                  theme={backgroundTheme}
+                  onThemeChange={handleThemeChange}
+                  accentChoice={accentChoice}
+                  onAccentChange={setAccentChoice}
+                  tableChoice={tableChoice}
+                  onTableChange={setTableChoice}
+                  textChoice={textChoice}
+                  onTextChange={setTextChoice}
+                  fontChoice={fontChoice}
+                  onFontChange={setFontChoice}
+                  wallpaper={wallpaper}
+                  onWallpaperChange={setWallpaper}
+                  onSaveName={handleSaveDisplayName}
+                  onLogout={async () => { await logout(); setActivePage('inventory'); }}
+                  mode="notes"
+                />
+              )}
+
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
                 <div className="space-y-6">
@@ -908,7 +920,7 @@ export default function App() {
             style={{ width: window.innerWidth < 640 ? 'min(88vw, 360px)' : `${Math.round(window.innerWidth / 3)}px` }}
           >
             <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
-              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Catatan' : 'Profile & Notes'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Panel samping WiseProfit' : 'WiseProfit side panel'}</p></div>
+              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Pengaturan' : 'Profile & Settings'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Panel samping WiseProfit' : 'WiseProfit side panel'}</p></div>
               <div className="flex shrink-0 items-center gap-1">
                 <span className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-400" title={language === 'id' ? 'Lebar panel sekitar sepertiga layar' : 'Panel width is about one-third of the screen'}>⅓</span>
                 <button type="button" onClick={() => setIsProfilePanelOpen(false)} title={language === 'id' ? 'Tutup panel' : 'Close panel'} className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
@@ -935,6 +947,7 @@ export default function App() {
                   try { await logout(); setIsProfilePanelOpen(false); }
                   catch (error) { console.error('Logout failed:', error); setNotification(language === 'id' ? 'Gagal keluar. Silakan coba lagi.' : 'Could not sign out. Please try again.'); }
                 }}
+                mode="profile"
               />
             </div>
           </aside>

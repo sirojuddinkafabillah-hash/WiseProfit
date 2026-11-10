@@ -16,6 +16,7 @@ import { ImportDataPage } from './components/ImportDataPage';
 import { WithdrawalPage } from './components/WithdrawalPage';
 import { WithdrawalModal } from './components/WithdrawalModal';
 import { HomePage } from './components/HomePage';
+import { NotesPage } from './components/NotesPage';
 import { SupportPage } from './components/SupportPage';
 import { SupportAdminPage } from './components/SupportAdminPage';
 import { supabase } from './lib/supabase';
@@ -777,27 +778,8 @@ export default function App() {
           ) : (
             <div key={activePage} className="min-h-[65vh] w-full animate-in fade-in duration-200">
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
-              {activePage === 'notes' && user && (
-                <HomePage
-                  user={user}
-                  language={language}
-                  theme={backgroundTheme}
-                  onThemeChange={handleThemeChange}
-                  accentChoice={accentChoice}
-                  onAccentChange={setAccentChoice}
-                  tableChoice={tableChoice}
-                  onTableChange={setTableChoice}
-                  textChoice={textChoice}
-                  onTextChange={setTextChoice}
-                  fontChoice={fontChoice}
-                  onFontChange={setFontChoice}
-                  wallpaper={wallpaper}
-                  onWallpaperChange={setWallpaper}
-                  onSaveName={handleSaveDisplayName}
-                  onLogout={async () => { await logout(); setActivePage('inventory'); }}
-                  mode="notes"
-                />
-              )}
+              {activePage === 'notes' && user && <NotesPage user={user} language={language} />}
+}
 
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (

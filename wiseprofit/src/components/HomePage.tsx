@@ -133,44 +133,52 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
       input.value = '';
       return;
     }
+
     setIsUploadingPhoto(true);
-    setPhotoMessage(t('Menyiapkan foto dan mengunggah ke cloud…', 'Preparing photo and uploading to cloud…'));
-    const imageUrl = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = async () => {
+    setPhotoMessage(t('Membaca foto…', 'Reading photo…'));
+    try {
+      // Decode the selected file directly instead of relying on Image.onload + object URLs,
+      // which could leave the UI stuck in the preparation state on some browsers/formats.
+      const bitmap = await Promise.race([
+        createImageBitmap(file),
+        new Promise<ImageBitmap>((_, reject) => window.setTimeout(() => reject(new Error('Photo decoding timed out')), 15000)),
+      ]);
       try {
+        setPhotoMessage(t('Mengoptimalkan foto…', 'Optimizing photo…'));
         const maxDimension = 640;
-        const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+        const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
         const canvas = document.createElement('canvas');
-        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+        canvas.height = Math.max(1, Math.round(bitmap.height * scale));
         const context = canvas.getContext('2d');
         if (!context) throw new Error('Canvas is unavailable');
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('Photo conversion failed')), 'image/jpeg', 0.88));
-        const cloudUrl = await uploadProfilePhoto(user.uid, blob);
+        context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+        const blob = await Promise.race([
+          new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('Photo conversion failed')), 'image/jpeg', 0.88)),
+          new Promise<Blob>((_, reject) => window.setTimeout(() => reject(new Error('Photo conversion timed out')), 15000)),
+        ]);
+        setPhotoMessage(t('Mengunggah foto ke cloud…', 'Uploading photo to cloud…'));
+        const cloudUrl = await Promise.race([
+          uploadProfilePhoto(user.uid, blob),
+          new Promise<string>((_, reject) => window.setTimeout(() => reject(new Error('Photo upload timed out')), 30000)),
+        ]);
         try { localStorage.removeItem(`wp_profile_photo_${user.uid}`); } catch { /* cloud copy is authoritative */ }
         setLocalPhoto(cloudUrl);
         window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
         setPhotoMessage(t('Foto profil berhasil disimpan dan disinkronkan.', 'Profile photo saved and synced successfully.'));
-      } catch (error) {
-        console.error('[WiseProfit] Avatar upload failed:', error);
-        setPhotoMessage(t('Foto gagal disimpan. Periksa koneksi dan pengaturan Supabase Storage, lalu coba lagi.', 'Photo could not be saved. Check your connection and Supabase Storage settings, then try again.'));
       } finally {
-        setIsUploadingPhoto(false);
-        URL.revokeObjectURL(imageUrl);
-        input.value = '';
+        bitmap.close();
       }
-    };
-    image.onerror = () => {
+    } catch (error) {
+      console.error('[WiseProfit] Avatar upload failed:', error);
+      const detail = error instanceof Error ? error.message : String(error);
+      setPhotoMessage(t(`Foto gagal diproses: ${detail}. Silakan coba JPG/PNG lain.`, `Photo could not be processed: ${detail}. Please try another JPG/PNG.`));
+    } finally {
       setIsUploadingPhoto(false);
-      setPhotoMessage(t('Foto tidak dapat dibaca. Silakan pilih gambar lain.', 'Photo could not be read. Please choose another image.'));
-      URL.revokeObjectURL(imageUrl);
       input.value = '';
-    };
-    image.src = imageUrl;
+    }
   };
 
   const removePhoto = async () => {

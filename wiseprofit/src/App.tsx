@@ -4,7 +4,6 @@ import { calculateSummary } from './utils/calculator';
 import { getInitialLanguage, formatTime } from './i18n/translations';
 import { Header, AppPage } from './components/Header';
 import { SummaryCards } from './components/SummaryCards';
-import { QuickAddBar } from './components/QuickAddBar';
 import { InventoryTable } from './components/InventoryTable';
 import { ItemModal } from './components/ItemModal';
 import { CashFlowGuideModal } from './components/CashFlowGuideModal';
@@ -817,15 +816,11 @@ export default function App() {
                     onOpenWithdrawalModal={() => setActivePage('withdrawals')}
                   />
 
-                  {/* Quick Add Bar */}
-                  <QuickAddBar
-                    onAdd={handleAddItem}
-                    globalSavePercentMonthly={globalSavePercentMonthly}
-                  />
-
                   {/* Main Table with Numeric Sold Input, Sisa Kas & Real-Time Timestamps */}
                   <InventoryTable
                     items={items}
+                    onAdd={handleAddItem}
+                    globalSavePercentMonthly={globalSavePercentMonthly}
                     modalAwal={modalAwal}
                     saldoKasSaatIni={cashSummary.saldoKasSaatIni}
                     onEditItem={(item) => {

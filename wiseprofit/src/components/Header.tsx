@@ -45,13 +45,16 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [profilePhotoFailed, setProfilePhotoFailed] = useState(false);
   const sidebarOpen = true;
   const setSidebarOpen = (_open: boolean | ((value: boolean) => boolean)) => {};
 
   useEffect(() => {
     const loadProfilePhoto = () => {
       try {
-        setProfilePhoto(user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null);
+        const savedPhoto = user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null;
+        setProfilePhoto(savedPhoto || user?.photoURL || null);
+        setProfilePhotoFailed(false);
       } catch {
         setProfilePhoto(null);
       }
@@ -197,7 +200,26 @@ export const Header: React.FC<HeaderProps> = ({
               title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="relative mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
-                {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
+                {profilePhoto && !profilePhotoFailed ? (
+                  <img
+                    src={profilePhoto}
+                    alt="Foto profil"
+                    className="block h-full w-full object-cover"
+                    onLoad={() => setProfilePhotoFailed(false)}
+                    onError={() => {
+                      if (user.photoURL && profilePhoto !== user.photoURL) {
+                        setProfilePhoto(user.photoURL);
+                        setProfilePhotoFailed(false);
+                      } else {
+                        setProfilePhotoFailed(true);
+                      }
+                    }}
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center bg-blue-100 text-sm font-bold text-blue-700">
+                    {(user.displayName || user.email || 'W').trim().charAt(0).toUpperCase() || 'W'}
+                  </span>
+                )}
               </span>
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
               <span className="sr-only">

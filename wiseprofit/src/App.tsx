@@ -98,7 +98,6 @@ export default function App() {
   // Active Navigation Page (Kasir & Inventori, Laporan & Ekuitas, Impor Data)
   const [activePage, setActivePage] = useState<AppPage>('inventory');
   const [isProfilePanelOpen, setIsProfilePanelOpen] = useState(false);
-  const [profilePanelWidth, setProfilePanelWidth] = useState(() => Math.max(320, Math.round(window.innerWidth / 3)));
   const [isPrintReportOpen, setIsPrintReportOpen] = useState(false);
 
   // Setiap pergantian menu menampilkan halaman dari bagian paling atas.
@@ -614,7 +613,7 @@ export default function App() {
       />}
 
       {/* Main Foreground Content */}
-      <div className="relative z-10 flex min-h-screen min-w-0 flex-col overflow-x-hidden transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` : 0 }}>
+      <div className="relative z-10 flex min-h-screen min-w-0 flex-col overflow-x-hidden transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.round(window.innerWidth / 3)}px` : 0 }}>
         {/* Top Header with Navigation */}
         <Header
           activePage={isProfilePanelOpen ? 'home' : activePage}
@@ -899,26 +898,16 @@ export default function App() {
         <div className="pointer-events-none fixed inset-0 z-[60]">
           {window.innerWidth < 640 && <button type="button" aria-label={language === 'id' ? 'Tutup panel profil' : 'Close profile panel'} onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
           <aside
-            className={`pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200 ${window.innerWidth < 640 ? 'w-screen' : ''}`}
-            style={{ width: window.innerWidth < 640 ? '100vw' : `${Math.min(profilePanelWidth, window.innerWidth * 0.92)}px` }}
+            className="pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200"
+            style={{ width: window.innerWidth < 640 ? 'min(88vw, 360px)' : `${Math.round(window.innerWidth / 3)}px` }}
           >
             <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
               <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Catatan' : 'Profile & Notes'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Panel samping WiseProfit' : 'WiseProfit side panel'}</p></div>
               <div className="flex shrink-0 items-center gap-1">
-                <button type="button" onClick={() => setProfilePanelWidth(Math.max(320, Math.round(window.innerWidth / 3)))} title={language === 'id' ? 'Sepertiga lebar layar' : 'One-third screen width'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">⅓</button>
-                <button type="button" onClick={() => setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, window.innerWidth - 24)))} title={language === 'id' ? 'Perlebar panel' : 'Expand panel'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">{language === 'id' ? 'Lebar' : 'Wide'}</button>
-                <button type="button" onClick={() => setProfilePanelWidth(320)} title={language === 'id' ? 'Persempit panel' : 'Shrink panel'} className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">{language === 'id' ? 'Kecil' : 'Small'}</button>
+                <span className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-400" title={language === 'id' ? 'Lebar panel sekitar sepertiga layar' : 'Panel width is about one-third of the screen'}>⅓</span>
                 <button type="button" onClick={() => setIsProfilePanelOpen(false)} title={language === 'id' ? 'Tutup panel' : 'Close panel'} className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
               </div>
             </div>
-            <div
-              role="separator"
-              aria-label={language === 'id' ? 'Ubah lebar panel profil' : 'Resize profile panel'}
-              aria-orientation="vertical"
-              onPointerDown={(event) => { if (window.innerWidth >= 640) { event.currentTarget.setPointerCapture(event.pointerId); } }}
-              onPointerMove={(event) => { if (event.buttons === 1 && window.innerWidth >= 640) setProfilePanelWidth(Math.min(window.innerWidth * 0.92, Math.max(320, event.clientX))); }}
-              className="absolute right-0 top-0 z-10 hidden h-full w-1.5 translate-x-1/2 cursor-col-resize touch-none bg-transparent hover:bg-emerald-400/70 sm:block"
-            />
             <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
               <HomePage
                 user={user}

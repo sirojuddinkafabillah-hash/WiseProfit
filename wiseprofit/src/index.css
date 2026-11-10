@@ -2339,3 +2339,43 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   #root .wp-glass-sidebar, #root .wp-app-header, #root main * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* Admin access stays pinned and clearly visible at the bottom of the left sidebar. */
+#root .wp-glass-sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+}
+#root .wp-glass-sidebar > nav {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+#root .wp-glass-sidebar > div:last-child {
+  flex: 0 0 auto !important;
+  margin-top: auto !important;
+  min-height: 62px !important;
+  padding: 10px 8px max(12px, env(safe-area-inset-bottom)) !important;
+  border-top: 1px solid #d8e5f5 !important;
+  background: rgba(232,241,253,.96) !important;
+}
+#root .wp-glass-sidebar > div:last-child button {
+  width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  border: 1px solid #c8dcf8 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #1d5fc4 !important;
+  box-shadow: 0 3px 10px rgba(37,99,235,.10) !important;
+}
+#root .wp-glass-sidebar > div:last-child button:hover {
+  background: #eaf2ff !important;
+  border-color: #8db8f5 !important;
+  color: #174da4 !important;
+}
+#root .wp-glass-sidebar > div:last-child button svg {
+  width: 20px !important;
+  height: 20px !important;
+  color: #1d5fc4 !important;
+  stroke-width: 2.2 !important;
+}

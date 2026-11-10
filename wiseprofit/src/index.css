@@ -2096,7 +2096,7 @@ html, body {
 #root .wp-glass-sidebar nav button > svg:last-child { display:none !important; }
 #root .wp-glass-sidebar > div:last-child button > span:not(.sr-only) { display:none !important; }
 #root .wp-glass-sidebar > div:last-child button > svg:last-child { display:none !important; }
-#root .wp-glass-sidebar > div:first-child button > span:not(.sr-only) { display:none !important; }
+/* Keep the profile avatar visible; only navigation labels are hidden. */
 #root .wp-glass-sidebar > div:first-child button > svg:last-child { display:none !important; }
 #root .wp-item-modal-card { background:#fff !important; color:#18345f !important; border-color:#dbeafe !important; }
 #root .wp-item-modal-card input, #root .wp-item-modal-card select { background:#f8fbff !important; color:#18345f !important; border-color:#dbeafe !important; }

@@ -51,6 +51,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
   const [nameMessage, setNameMessage] = useState('');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [localPhoto, setLocalPhoto] = useState<string | null>(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [photoMessage, setPhotoMessage] = useState('');
   const [customAccent, setCustomAccent] = useState(() => { try { return localStorage.getItem('wp_custom_accent') || '#34d399'; } catch { return '#34d399'; } });
   const [customTable, setCustomTable] = useState(() => { try { return localStorage.getItem('wp_custom_table') || '#172033'; } catch { return '#172033'; } });
   const [customText, setCustomText] = useState(() => { try { return localStorage.getItem('wp_custom_text') || '#cbd5e1'; } catch { return '#cbd5e1'; } });
@@ -120,55 +122,55 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
     const input = event.currentTarget;
     const file = input.files?.[0];
     if (!file) return;
+    setPhotoMessage('');
     if (!file.type.startsWith('image/')) {
-      setNameMessage(t('Pilih file gambar yang valid.', 'Choose a valid image file.'));
+      setPhotoMessage(t('File bukan gambar yang valid.', 'The selected file is not a valid image.'));
       input.value = '';
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      setNameMessage(t('Ukuran foto maksimal 10 MB. Pilih foto yang lebih kecil.', 'Photo size limit is 10 MB. Choose a smaller photo.'));
+      setPhotoMessage(t('Ukuran foto maksimal 10 MB. Pilih foto yang lebih kecil.', 'Photo size limit is 10 MB. Choose a smaller photo.'));
       input.value = '';
       return;
     }
-    try {
-      const imageUrl = URL.createObjectURL(file);
-      const image = new Image();
-      image.onload = async () => {
-        try {
-          const maxDimension = 640;
-          const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
-          const canvas = document.createElement('canvas');
-          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-          const context = canvas.getContext('2d');
-          if (!context) throw new Error('Canvas is unavailable');
-          context.fillStyle = '#ffffff';
-          context.fillRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
-          const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('Photo conversion failed')), 'image/jpeg', 0.88));
-          const cloudUrl = await uploadProfilePhoto(user.uid, blob);
-          try { localStorage.removeItem(`wp_profile_photo_${user.uid}`); } catch { /* cloud copy is authoritative */ }
-          setLocalPhoto(cloudUrl);
-          window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
-          setNameMessage(t('Foto profil berhasil disimpan dan disinkronkan.', 'Profile photo saved and synced successfully.'));
-        } catch (error) {
-          console.error('[WiseProfit] Avatar upload failed:', error);
-          setNameMessage(t('Foto belum tersimpan ke cloud. Pastikan migrasi Supabase sudah dijalankan, lalu coba lagi.', 'Photo could not be saved to cloud. Run the Supabase migration, then try again.'));
-        } finally {
-          URL.revokeObjectURL(imageUrl);
-          input.value = '';
-        }
-      };
-      image.onerror = () => {
+    setIsUploadingPhoto(true);
+    setPhotoMessage(t('Menyiapkan foto dan mengunggah ke cloud…', 'Preparing photo and uploading to cloud…'));
+    const imageUrl = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = async () => {
+      try {
+        const maxDimension = 640;
+        const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Canvas is unavailable');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('Photo conversion failed')), 'image/jpeg', 0.88));
+        const cloudUrl = await uploadProfilePhoto(user.uid, blob);
+        try { localStorage.removeItem(`wp_profile_photo_${user.uid}`); } catch { /* cloud copy is authoritative */ }
+        setLocalPhoto(cloudUrl);
+        window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
+        setPhotoMessage(t('Foto profil berhasil disimpan dan disinkronkan.', 'Profile photo saved and synced successfully.'));
+      } catch (error) {
+        console.error('[WiseProfit] Avatar upload failed:', error);
+        setPhotoMessage(t('Foto gagal disimpan. Periksa koneksi dan pengaturan Supabase Storage, lalu coba lagi.', 'Photo could not be saved. Check your connection and Supabase Storage settings, then try again.'));
+      } finally {
+        setIsUploadingPhoto(false);
         URL.revokeObjectURL(imageUrl);
         input.value = '';
-        setNameMessage(t('Foto tidak dapat dibaca. Silakan pilih gambar lain.', 'Photo could not be read. Please choose another image.'));
-      };
-      image.src = imageUrl;
-    } catch {
+      }
+    };
+    image.onerror = () => {
+      setIsUploadingPhoto(false);
+      setPhotoMessage(t('Foto tidak dapat dibaca. Silakan pilih gambar lain.', 'Photo could not be read. Please choose another image.'));
+      URL.revokeObjectURL(imageUrl);
       input.value = '';
-      setNameMessage(t('Foto tidak dapat diproses. Silakan coba lagi.', 'Photo could not be processed. Please try again.'));
-    }
+    };
+    image.src = imageUrl;
   };
 
   const removePhoto = async () => {
@@ -177,10 +179,10 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
       localStorage.removeItem(`wp_profile_photo_${user.uid}`);
       setLocalPhoto(null);
       window.dispatchEvent(new Event('wiseprofit-profile-photo-updated'));
-      setNameMessage(t('Foto unggahan dihapus. Foto Google akan digunakan jika tersedia.', 'Uploaded photo removed. Google photo will be used if available.'));
+      setPhotoMessage(t('Foto unggahan dihapus. Foto Google akan digunakan jika tersedia.', 'Uploaded photo removed. Google photo will be used if available.'));
     } catch (error) {
       console.error('[WiseProfit] Avatar removal failed:', error);
-      setNameMessage(t('Foto belum dapat dihapus dari cloud. Coba lagi setelah migrasi Supabase dijalankan.', 'Could not remove cloud photo. Try again after running the Supabase migration.'));
+      setPhotoMessage(t('Foto belum dapat dihapus dari cloud. Periksa pengaturan Supabase lalu coba lagi.', 'Could not remove cloud photo. Check Supabase settings and try again.'));
     }
   };
 
@@ -274,6 +276,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
             <button type="button" onClick={() => { if (photoInputRef.current) { photoInputRef.current.value = ''; photoInputRef.current.click(); } }} className="wp-profile-photo-action inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold">
               <Camera className="h-3.5 w-3.5" /> {localPhoto || user.photoURL ? t('Ubah foto', 'Change photo') : t('Tambah foto', 'Add photo')}
             </button>
+            {isUploadingPhoto && <div role="status" aria-live="polite" className="mt-1 flex items-center gap-2 text-xs font-medium text-blue-600"><span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-600" />{t('Sedang mengunggah foto…', 'Uploading photo…')}</div>}
+            {photoMessage && <p role="status" aria-live="polite" className={`max-w-xs text-center text-xs font-medium ${photoMessage.includes('berhasil') || photoMessage.includes('successfully') ? 'text-emerald-600' : photoMessage.includes('gagal') || photoMessage.includes('could not') || photoMessage.includes('bukan') ? 'text-rose-600' : 'text-slate-500'}`}>{photoMessage}</p>}
             {localPhoto && <button type="button" onClick={removePhoto} title={t('Hapus foto profil', 'Remove profile photo')} aria-label={t('Hapus foto profil', 'Remove profile photo')} className="rounded-full p-1.5 text-slate-400 hover:bg-rose-500/10 hover:text-rose-300"><Trash2 className="h-4 w-4" /></button>}
           </div>
           <div className="min-w-0 flex-1">

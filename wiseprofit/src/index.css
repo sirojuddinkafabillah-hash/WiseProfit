@@ -2183,3 +2183,34 @@ body { color:#18345f; }
   #root .wp-global-search { height:40px !important; padding:0 12px !important; }
   #root main { margin-top:64px !important; }
 }
+
+/* Remove the old dark cosmic layer from the reference dashboard; keep the profile wallpaper feature intact. */
+#root .fixed.inset-0.pointer-events-none.z-0.bg-gradient-to-br { background:transparent !important; }
+#root .fixed.inset-0.pointer-events-none.z-0.bg-gradient-to-br canvas { opacity:0 !important; }
+#root .no-print.fixed.bottom-4.right-4.z-\[60\] { display:none !important; }
+#root main .bg-slate-900, #root main .bg-slate-900\/80, #root main .bg-slate-900\/90,
+#root main .bg-slate-950, #root main .bg-slate-950\/80, #root main .bg-slate-800 {
+  background:rgba(255,255,255,.88) !important;
+  color:#18345f !important;
+  border-color:#dbeafe !important;
+  box-shadow:0 8px 24px rgba(37,99,235,.07) !important;
+}
+#root main .bg-slate-900 *, #root main .bg-slate-900\/80 *, #root main .bg-slate-950 *,
+#root main .bg-slate-950\/80 *, #root main .bg-slate-800 * { color:inherit; }
+#root main .text-emerald-300, #root main .text-emerald-400, #root main .text-teal-300 { color:#0f9f76 !important; }
+#root main .text-rose-300, #root main .text-rose-400 { color:#dc5670 !important; }
+#root main .bg-emerald-950, #root main .bg-emerald-950\/60, #root main .bg-emerald-950\/70 {
+  background:#e8fbf3 !important; border-color:#b8f0d7 !important; color:#087a56 !important;
+}
+#root main .bg-rose-950, #root main .bg-rose-950\/70 { background:#fff0f2 !important; border-color:#ffd1d8 !important; color:#be3452 !important; }
+#root main .bg-emerald-500 { background:#16a36a !important; color:#fff !important; }
+#root main .border-emerald-500\/25, #root main .border-emerald-500\/30, #root main .border-emerald-500\/40 { border-color:#d6e9ff !important; }
+#root main table { border-collapse:separate !important; border-spacing:0 !important; overflow:hidden; border-radius:14px; }
+#root main thead { background:linear-gradient(100deg,#dceaff,#cfe1ff) !important; color:#18345f !important; }
+#root main thead th { color:#18345f !important; border-color:#d3e3fb !important; }
+#root main tbody tr { background:rgba(255,255,255,.88) !important; }
+#root main tbody tr:nth-child(even) { background:rgba(244,248,255,.94) !important; }
+#root main tbody td { color:#18345f !important; border-color:#e0eafb !important; }
+#root main .shadow-\[0_20px_50px_rgba\(0\,0\,0\,0\.35\)\] { box-shadow:0 12px 32px rgba(37,99,235,.09) !important; }
+#root main button[class*="bg-emerald-500"] { color:#fff !important; }
+#root .wp-reference-topbar .wp-global-search:focus-within { border-color:#93b9ff !important; box-shadow:0 0 0 3px rgba(37,99,235,.08),0 5px 18px rgba(37,99,235,.08) !important; }

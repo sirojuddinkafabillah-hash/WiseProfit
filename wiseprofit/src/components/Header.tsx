@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Menu, X, ShoppingBag, TrendingUp,
   UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, UserRound,
-  ChevronRight, Settings, LogIn
+  LogIn
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -196,9 +196,10 @@ export const Header: React.FC<HeaderProps> = ({
               aria-haspopup="dialog"
               title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
+              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
                 {profilePhoto ? <img src={profilePhoto} alt="" className="h-full w-full object-cover" /> : user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5 text-slate-500" />}
               </span>
+              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
               <span className="sr-only">
                 <span className="block truncate text-sm font-semibold text-slate-800">{user.displayName || (language === 'id' ? 'Profil Saya' : 'My Profile')}</span>
                 <span className="mt-1 flex items-center gap-1 text-[10px] font-medium text-emerald-600">

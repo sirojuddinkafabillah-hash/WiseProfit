@@ -21,6 +21,7 @@ interface HomePageProps {
   wallpaper: string | null;
   onSaveName: (name: string) => Promise<boolean>;
   onLogout: () => Promise<void>;
+  mode?: 'profile' | 'notes';
 }
 
 type NoteFolder = { id: string; name: string };
@@ -35,7 +36,7 @@ const THEMES: { id: BackgroundTheme; name: string; description: string; preview:
   { id: 'light-crystal', name: 'Light', description: 'Bright, lightweight background', preview: 'from-slate-100 via-white to-sky-100', icon: <Sun className="h-4 w-4" /> },
 ];
 
-export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout }) => {
+export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThemeChange, accentChoice, onAccentChange, tableChoice, onTableChange, textChoice, onTextChange, fontChoice, onFontChange, wallpaper, onWallpaperChange, onSaveName, onLogout, mode = 'profile' }) => {
   const t = (id: string, en: string) => language === 'id' ? id : en;
   const [name, setName] = useState(user.displayName || '');
   const [noteFolders, setNoteFolders] = useState<NoteFolder[]>(DEFAULT_NOTE_FOLDERS);
@@ -273,6 +274,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
 
   return (
     <div className="w-full min-w-0 max-w-none space-y-3 animate-in fade-in text-sm">
+      {mode !== 'notes' && <>
       <section className="wp-profile-hero relative overflow-hidden rounded-2xl border p-4 shadow-sm">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-4">
@@ -340,6 +342,8 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
           </div>
         </div>
 
+      </>}
+      {mode !== 'profile' && <>
         <div id="wp-notes-section" className="overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/95">
           <div className="flex flex-col items-stretch gap-3 border-b border-slate-700 px-3 py-3">
             <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-400/10 p-2.5 text-amber-300"><NotebookPen className="h-5 w-5" /></div><div><h2 className="font-bold text-white">{t('Catatan', 'Notes')}</h2><p className="mt-1 text-xs text-slate-400">{t('Atur catatan ke dalam folder seperti aplikasi catatan di ponsel. Catatan disimpan lokal di perangkat ini dan tidak tersinkron ke perangkat lain.', 'Organize notes into folders like a notes app on your phone. Notes are stored locally on this device and do not sync to other devices.')}</p></div></div>
@@ -371,11 +375,14 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
         </div>
       </section>
 
+      </>}
+      {mode !== 'notes' && <>
       <section className="flex flex-col gap-3 rounded-2xl border border-rose-400/20 bg-rose-950/20 p-3">
         <div><h2 className="font-bold text-white">{t('Keluar dari WiseProfit', 'Sign out of WiseProfit')}</h2><p className="mt-1 text-sm leading-relaxed text-slate-400">{t('Anda akan keluar, dan data usaha disembunyikan sampai Anda masuk kembali.', 'You will be signed out, and business data will be hidden until you sign in again.')}</p></div>
         <button type="button" onClick={handleLogout} disabled={isLoggingOut} className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/10 px-5 py-3 text-sm font-bold text-rose-200 hover:bg-rose-500/20 disabled:opacity-60"><LogOut className="h-4 w-4" />{isLoggingOut ? t('Sedang keluar…', 'Signing out…') : t('Keluar', 'Sign out')}</button>
       </section>
       {nameMessage && <p role="status" className="rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-sm text-slate-300">{nameMessage}</p>}
+      </>}
     </div>
   );
 };

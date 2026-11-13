@@ -91,7 +91,7 @@ export default function App() {
         const {error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password})
         if(error)throw error
       } else {
-        const {data,error}=await supabase.auth.signUp({email:email.trim().toLowerCase(),password,options:{emailRedirectTo:window.location.origin}})
+        const {data,error}=await supabase.auth.signUp({email:email.trim().toLowerCase(),password,options:{emailRedirectTo:'https://wiseprofit-next.vercel.app'}})
         if(error)throw error
         if(!data.session)setAuthError('Akun dibuat. Periksa email untuk konfirmasi, lalu masuk.')
       }
@@ -101,7 +101,7 @@ export default function App() {
   const googleAuth=async()=>{
     if(!supabase)return
     setAuthError('');setAuthBusy(true)
-    const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}})
+    const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:'https://wiseprofit-next.vercel.app'}})
     if(error){setAuthError(error.message);setAuthBusy(false)}
   }
   const logout=async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error)setDataError(error.message);setItems([]);setWithdrawals([]);setActive('Dashboard')}

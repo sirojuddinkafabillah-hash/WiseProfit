@@ -20,8 +20,10 @@ export default function NotesModule({ userId }: { userId: string }) {
   const [newFolder, setNewFolder] = useState('');
   const [folderForm, setFolderForm] = useState(false);
   const [message, setMessage] = useState('');
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    setHydrated(false);
     const loadedFolders = safeParse<NoteFolder[]>(localStorage.getItem('wp_note_folders_' + userId), DEFAULT_FOLDERS);
     const loadedNotes = safeParse<Note[]>(localStorage.getItem('wp_notes_v2_' + userId), []);
     const legacy = localStorage.getItem('wp_notes_' + userId) || '';
@@ -29,9 +31,11 @@ export default function NotesModule({ userId }: { userId: string }) {
     setFolders(Array.isArray(loadedFolders) && loadedFolders.length ? loadedFolders : DEFAULT_FOLDERS);
     setNotes(Array.isArray(migrated) ? migrated : []);
     setActiveId(null); setFolderId('all'); setTitle(''); setBody('');
+    setHydrated(true);
   }, [userId]);
 
   useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem('wp_note_folders_' + userId, JSON.stringify(folders));
       localStorage.setItem('wp_notes_v2_' + userId, JSON.stringify(notes));

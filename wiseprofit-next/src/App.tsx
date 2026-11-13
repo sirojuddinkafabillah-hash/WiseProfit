@@ -1,19 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Activity, ArrowDownLeft, ArrowUpRight, Bell, Box, ChevronDown, ChevronLeft, CircleHelp, Command, CreditCard, Download, LayoutDashboard, Menu, Moon, Package, Plus, Search, Settings2, ShieldCheck, ShoppingBag, Sparkles, Sun, Wallet, ChartNoAxesCombined, NotebookPen, LogOut, LockKeyhole, Mail, Eye, EyeOff, LoaderCircle } from 'lucide-react'
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { isSupabaseConfigured, supabase } from './lib/supabase'
 import type { InventoryItem, Withdrawal } from './types/inventory'
 import { calculateSummary, formatRupiah } from './utils/calculator'
 import { fetchUserItemsOnce, fetchUserWithdrawalsOnce, getUserProfile, subscribeUserItems, subscribeUserWithdrawals } from './services/supabaseSync'
-import InventoryModule from './components/InventoryModule'
-import WithdrawalModule from './components/WithdrawalModule'
-import CashierModule from './components/CashierModule'
-import ReportsModule from './components/ReportsModule'
-import NotesModule from './components/NotesModule'
-import PurchasesModule from './components/PurchasesModule'
-import ExportImportModule from './components/ExportImportModule'
-import SupportModule from './components/SupportModule'
-import SettingsModule from './components/SettingsModule'
+
+const InventoryModule = lazy(() => import('./components/InventoryModule'))
+const WithdrawalModule = lazy(() => import('./components/WithdrawalModule'))
+const CashierModule = lazy(() => import('./components/CashierModule'))
+const ReportsModule = lazy(() => import('./components/ReportsModule'))
+const NotesModule = lazy(() => import('./components/NotesModule'))
+const PurchasesModule = lazy(() => import('./components/PurchasesModule'))
+const ExportImportModule = lazy(() => import('./components/ExportImportModule'))
+const SupportModule = lazy(() => import('./components/SupportModule'))
+const SettingsModule = lazy(() => import('./components/SettingsModule'))
+const RevenueChart = lazy(() => import('./components/RevenueChart'))
 
 const navigation = [
   { section: 'WORKSPACE', items: [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Kasir', icon: ShoppingBag }, { label: 'Barang', icon: Package }, { label: 'Pembelian', icon: Box }] },
@@ -132,11 +133,12 @@ export default function App() {
           {[{label:'Total omzet',value:money(summary.totalPemasukanJual),note:'Pendapatan dari unit terjual',icon:ArrowUpRight,tone:'blue'},{label:'Keuntungan bersih',value:money(summary.totalGainTerjual),note:'Laba terealisasi',icon:Activity,tone:'green'},{label:'Saldo kas',value:money(summary.saldoKasSaatIni),note:'Setelah pembelian dan penarikan',icon:Wallet,tone:'violet'},{label:'Total barang',value:String(summary.totalItems),note:'Barang tersimpan di inventaris',icon:Package,tone:'amber'}].map(s=>{const Icon=s.icon;return <article className="glass stat-card" key={s.label}><div className="stat-top"><span>{s.label}</span><div className={'stat-icon '+s.tone}><Icon size={17}/></div></div><strong className="stat-value">{s.value}</strong><div className="stat-note">{s.note}</div></article>})}
         </section>
         <section className="dashboard-grid">
-          <article className="glass chart-card"><div className="card-heading"><div><span className="eyebrow">PERFORMA USAHA</span><h2>Arus pendapatan</h2><p>Grafik historis akan diaktifkan setelah riwayat transaksi terperinci terintegrasi.</p></div><select value={period} onChange={e => setPeriod(e.target.value)}>{periods.map(p=><option key={p}>{p}</option>)}</select></div><div className="chart-empty"><div className="chart-placeholder"><ResponsiveContainer width="100%" height="100%"><AreaChart data={[]}><defs><linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#4c9cff" stopOpacity={0.28}/><stop offset="95%" stopColor="#4c9cff" stopOpacity={0}/></linearGradient></defs><CartesianGrid strokeDasharray="3 6" vertical={false} stroke="var(--line)"/><XAxis dataKey="name" hide/><YAxis hide/><Tooltip/><Area dataKey="value" stroke="#4c9cff" fill="url(#revenueFill)" /></AreaChart></ResponsiveContainer></div><div className="empty-overlay"><div className="empty-icon"><ChartNoAxesCombined size={22}/></div><b>Grafik historis belum tersedia</b><span>Angka ringkasan di atas sudah dihitung dari data akun, bukan data contoh.</span></div></div></article>
+          <article className="glass chart-card"><div className="card-heading"><div><span className="eyebrow">PERFORMA USAHA</span><h2>Arus pendapatan</h2><p>Grafik historis akan diaktifkan setelah riwayat transaksi terperinci terintegrasi.</p></div><select value={period} onChange={e => setPeriod(e.target.value)}>{periods.map(p=><option key={p}>{p}</option>)}</select></div><div className="chart-empty"><Suspense fallback={<div className="chart-placeholder"/>}><RevenueChart /></Suspense><div className="empty-overlay"><div className="empty-icon"><ChartNoAxesCombined size={22}/></div><b>Grafik historis belum tersedia</b><span>Angka ringkasan di atas sudah dihitung dari data akun, bukan data contoh.</span></div></div></article>
           <article className="glass quick-card"><div className="card-heading"><div><span className="eyebrow">AKSES CEPAT</span><h2>Mulai aktivitas</h2></div><Command size={17} className="muted"/></div><div className="quick-list">{[{label:'Penjualan baru',desc:'Catat transaksi pelanggan',icon:ShoppingBag,action:'Kasir'},{label:'Tambah barang',desc:'Kelola produk dan stok',icon:Package,action:'Barang'},{label:'Catat pembelian',desc:'Barang masuk dan modal',icon:CreditCard,action:'Pembelian'},{label:'Lihat laporan',desc:'Pantau laba dan arus kas',icon:ChartNoAxesCombined,action:'Laporan'}].map(q=>{const Icon=q.icon;return <button className="quick-item" key={q.label} onClick={()=>setActive(q.action)}><div className="quick-icon"><Icon size={18}/></div><div><b>{q.label}</b><span>{q.desc}</span></div><ArrowUpRight size={16}/></button>})}</div></article>
         </section>
         <section className="bottom-grid"><article className="glass bottom-card"><div className="card-heading"><div><span className="eyebrow">RINGKASAN INVENTARIS</span><h2>Barang terbaru</h2></div><button className="text-button" onClick={()=>setActive('Barang')}>Lihat barang <ArrowUpRight size={14}/></button></div>{items.slice(0,4).length?items.slice(0,4).map(item=><div className="empty-row" key={item.id}><div className="empty-icon"><Package size={19}/></div><div><b>{item.namaBarang}</b><span>{item.jumlahBarangDijualSatuan} terjual dari {item.jumlahBarangWadah} {item.satuanUnit}</span></div><strong>{money(item.hargaJualSatuan*item.jumlahBarangDijualSatuan)}</strong></div>):<div className="empty-row"><div className="empty-icon"><ArrowDownLeft size={19}/></div><div><b>Belum ada barang</b><span>Barang yang sudah tersimpan akan tampil di sini.</span></div></div>}</article><article className="glass bottom-card balance-card"><div className="card-heading"><div><span className="eyebrow">RINGKASAN KAS</span><h2>Posisi keuangan</h2></div><Wallet size={18} className="muted"/></div><div className="balance-total">{money(summary.saldoKasSaatIni)}</div><span className="balance-caption">Saldo kas tercatat</span><div className="balance-line"><span><i className="dot in"/> Pemasukan</span><b>{money(summary.totalPemasukanJual)}</b></div><div className="balance-line"><span><i className="dot out"/> Pembelian + penarikan</span><b>{money(summary.totalPengeluaranBeli+summary.totalPenarikanKas)}</b></div><div className="balance-line"><span>Nilai stok tersisa</span><b>{money(summary.totalNilaiSisaStok)}</b></div></article></section>
         </>}
+        <Suspense fallback={<div className="notice"><LoaderCircle className="spin" size={16}/> Menyiapkan modul...</div>}>
         {active === 'Kasir' && <CashierModule userId={user.id} items={items} onChanged={setItems} />}
         {active === 'Barang' && <InventoryModule userId={user.id} items={items} onChanged={setItems} />}
         {active === 'Laporan' && <ReportsModule summary={summary} items={items} withdrawals={withdrawals} />}
@@ -145,6 +147,7 @@ export default function App() {
         {active === 'Pembelian' && <PurchasesModule items={items} onAddPurchase={() => setActive('Barang')} />}
         {active === 'Pengaturan' && <SettingsModule userId={user.id} email={user.email} modalAwal={modalAwal} onModalAwalChange={setModalAwal} dark={dark} onToggleTheme={() => setDark(value => !value)} avatarUrl={avatarUrl} onAvatarChange={setAvatarUrl} />}
         {(active === 'Bantuan & Keluhan' || active === 'Admin Keluhan') && <SupportModule userId={user.id} email={user.email} isAdmin={user.isSupportAdmin} initialTab={active === 'Admin Keluhan' ? 'admin' : 'faq'} />}
+        </Suspense>
         {active === 'Ekspor & Impor' && <ExportImportModule userId={user.id} email={user.email} items={items} withdrawals={withdrawals} modalAwal={modalAwal} onRestoreData={(nextItems,nextWithdrawals,nextModal) => { setItems(nextItems); setWithdrawals(nextWithdrawals); setModalAwal(nextModal); }} />}
         <footer>WiseProfit Next <span>•</span> Data tersinkron untuk {user.email}</footer>
       </div>

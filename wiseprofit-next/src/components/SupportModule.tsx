@@ -15,8 +15,8 @@ const FAQ = [
 ];
 const statusLabel = (status: string) => ({ open: 'Terbuka', in_progress: 'Sedang ditangani', waiting_user: 'Menunggu pengguna', resolved: 'Selesai', closed: 'Ditutup' }[status] || status);
 
-export default function SupportModule({ userId, email, isAdmin }: { userId: string; email: string | null; isAdmin: boolean }) {
-  const [tab, setTab] = useState<'faq' | 'tickets' | 'admin'>('faq');
+export default function SupportModule({ userId, email, isAdmin, initialTab = 'faq' }: { userId: string; email: string | null; isAdmin: boolean; initialTab?: 'faq' | 'admin' }) {
+  const [tab, setTab] = useState<'faq' | 'tickets' | 'admin'>(initialTab);
   const [openFaq, setOpenFaq] = useState(0);
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');

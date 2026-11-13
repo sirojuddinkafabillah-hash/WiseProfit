@@ -38,14 +38,14 @@
 .module-intro{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .module-intro h2{font-size:22px;margin:7px 0}
 .module-intro p{color:var(--muted);margin:0;font-size:13px}
-.module-count,.withdraw-balance{padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);font-size:12px;color:var(--muted)}
+.module-count,.withdraw-balance{padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);font-size:12px;color:var(--muted)}
 .withdraw-balance{display:grid;gap:4px}.withdraw-balance b{font-size:17px;color:var(--text)}
 .module-form{padding:20px;border:1px solid var(--line);border-radius:18px}
 .module-form-title{display:flex;align-items:center;gap:9px;margin-bottom:16px}
 .module-form-title svg{color:var(--accent,#65aaff)}
 .form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
 .form-grid label{display:grid;gap:7px;color:var(--muted);font-size:12px}
-.form-grid input{width:100%;min-width:0;height:40px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);outline:none}
+.form-grid input{width:100%;min-width:0;height:40px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);outline:none}
 .form-grid input:focus{border-color:#5ca8ff;box-shadow:0 0 0 3px rgba(75,151,255,.12)}
 .form-span{grid-column:span 2}
 .module-form>.primary-button{margin-top:16px}
@@ -59,7 +59,7 @@
 .module-table td{padding:13px 14px;border-top:1px solid var(--line);color:var(--text);white-space:nowrap}
 .module-table td:first-child b,.module-table td:first-child small{display:block}
 .module-table td:first-child small{color:var(--muted);font-size:11px;margin-top:4px}
-.sold-input{width:66px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);padding:0 7px}
+.sold-input{width:66px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);padding:0 7px}
 .gain-positive{color:#39c995!important}.gain-negative{color:#ff8b8b!important}
 .row-delete{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
 .row-delete:hover{color:#ff8b8b;border-color:rgba(255,100,100,.4)}

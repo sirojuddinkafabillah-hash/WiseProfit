@@ -166,3 +166,26 @@
 .settings-capital-preview{display:flex;justify-content:space-between;gap:12px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);font-size:11px;color:var(--muted)}
 .settings-capital-preview b{color:var(--text)}
 @media(max-width:700px){.settings-grid{grid-template-columns:1fr}}
+
+
+/* Legacy cashier controls, adapted to the WiseProfit Next visual system. */
+.module-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 15px;border-bottom:1px solid var(--line)}
+.search-field,.filter-field{display:flex;align-items:center;gap:8px;min-width:180px;height:38px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--muted)}
+.search-field{flex:1}.search-field input,.filter-field select{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:11px}
+.filter-field select option{color:#172033;background:#fff}
+.module-actions,.row-actions,.sold-control{display:flex;align-items:center;gap:6px}
+.row-actions button,.sold-control button{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text)}
+.row-actions button:hover,.sold-control button:hover{border-color:var(--accent);color:var(--accent)}
+.row-actions button:disabled,.sold-control button:disabled{opacity:.4;cursor:not-allowed}
+.sold-control input{width:48px;height:29px;padding:0 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--text);text-align:center;font-size:11px}
+.sold-control .set-button{font-size:10px;font-weight:700}
+.module-table td small{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.4}
+.module-table tfoot td{padding:13px 10px;border-top:1px solid var(--line);background:var(--panel2);font-size:11px;color:var(--text)}
+.module-table tfoot small{font-weight:400}
+.module-form input:focus{outline:0}
+.modal-backdrop{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:18px;background:rgba(3,10,25,.72);backdrop-filter:blur(8px)}
+.set-sold-modal{width:min(100%,430px);display:grid;gap:14px;padding:18px}
+.set-sold-modal input[type=range]{width:100%;accent-color:var(--accent)}
+.set-sold-modal>p{font-size:12px;color:var(--muted)}
+.module-form .secondary-button{min-height:40px}
+@media(max-width:650px){.module-toolbar{align-items:stretch}.search-field,.filter-field{width:100%;min-width:0}.module-actions{flex-wrap:wrap}.module-actions>*{flex:1}.module-table{min-width:1050px}}

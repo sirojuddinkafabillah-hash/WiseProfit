@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Bot, CircleHelp, LoaderCircle, MessageCircle, RefreshCw, Send, ShieldCheck, Ticket, MessageSquareWarning } from 'lucide-react';
+import { Bot, CircleHelp, LoaderCircle, RefreshCw, Send, ShieldCheck, Ticket, MessageSquareWarning } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 type TicketRow = { id: string; user_id: string; user_email: string | null; category: string; subject: string; detail: string; status: string; priority: string; created_at: string };
@@ -105,7 +105,8 @@ export default function SupportModule({ userId, email, isAdmin, initialTab = 'fa
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(response.status === 503 ? 'Chat AI belum dikonfigurasi. Kamu tetap bisa membuat tiket bantuan.' : (result.error || 'Layanan AI sedang bermasalah.'));
       if (typeof result.answer !== 'string' || !result.answer.trim()) throw new Error('AI belum memberikan jawaban.');
-      setChat(current => [...current, { role: 'assistant', content: result.answer.trim() }].slice(-10));
+      const answerMessage: ChatMessage = { role: 'assistant', content: result.answer.trim() };
+      setChat(current => [...current, answerMessage].slice(-10));
     } catch (error) { setChatError(error instanceof Error ? error.message : 'Chat AI tidak tersedia.'); }
     finally { window.clearTimeout(timeout); setChatBusy(false); }
   };

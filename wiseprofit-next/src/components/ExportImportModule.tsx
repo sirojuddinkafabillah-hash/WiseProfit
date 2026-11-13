@@ -12,13 +12,14 @@ const validItem = (value: unknown): value is InventoryItem => {
     Number.isFinite(Number(item.jumlahBarangWadah)) && Number(item.jumlahBarangWadah) >= 1 &&
     Number.isFinite(Number(item.hargaBeli)) && Number(item.hargaBeli) >= 0 &&
     Number.isFinite(Number(item.hargaJualSatuan)) && Number(item.hargaJualSatuan) >= 0 &&
-    Number.isFinite(Number(item.jumlahBarangDijualSatuan)) && Number(item.jumlahBarangDijualSatuan) >= 0;
+    Number.isFinite(Number(item.jumlahBarangDijualSatuan)) && Number(item.jumlahBarangDijualSatuan) >= 0 && Number(item.jumlahBarangDijualSatuan) <= Number(item.jumlahBarangWadah);
 };
 const validWithdrawal = (value: unknown): value is Withdrawal => {
   if (!value || typeof value !== 'object') return false;
   const item = value as Partial<Withdrawal>;
   return typeof item.id === 'string' && Number.isFinite(Number(item.nominal)) && Number(item.nominal) > 0 && typeof item.tanggal === 'string';
 };
+const safeLocalArray = (key: string): unknown[] => { try { const value = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(value) ? value : []; } catch { return []; } };
 const download = (name: string, content: string, type: string) => {
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);
@@ -38,8 +39,8 @@ export default function ExportImportModule({ userId, email, items, withdrawals, 
     try {
       const payload: Backup = {
         version: 2, appName: 'WiseProfit Next', exportedAt: new Date().toISOString(), modalAwal, items, withdrawals,
-        notes: JSON.parse(localStorage.getItem('wp_notes_v2_' + userId) || '[]'),
-        noteFolders: JSON.parse(localStorage.getItem('wp_note_folders_' + userId) || '[]'),
+        notes: safeLocalArray('wp_notes_v2_' + userId),
+        noteFolders: safeLocalArray('wp_note_folders_' + userId),
       };
       download('wiseprofit-backup-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(payload, null, 2), 'application/json');
       setMessage({ kind: 'success', text: 'Cadangan JSON berhasil dibuat. Simpan file ini di tempat aman.' });
@@ -84,7 +85,7 @@ export default function ExportImportModule({ userId, email, items, withdrawals, 
       onRestoreData([...mergedItems.values()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)), [...mergedWithdrawals.values()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)), importedModal);
       setMessage({ kind: 'success', text: 'Impor berhasil: ' + cleanItems.length + ' barang dan ' + cleanWithdrawals.length + ' penarikan tersimpan. Data yang tidak ada di file tetap dipertahankan.' });
     } catch (error) {
-      setMessage({ kind: 'error', text: error instanceof Error ? error.message : 'Gagal membaca atau menyimpan cadangan.' });
+      setMessage({ kind: 'error', text: (error instanceof Error ? error.message : 'Gagal membaca atau menyimpan cadangan.') + ' Jika gangguan terjadi saat penyimpanan cloud, sebagian baris mungkin sudah tersimpan. Mengimpor ulang file yang sama aman karena data diperbarui berdasarkan ID.' });
     } finally { setBusy(false); if (fileRef.current) fileRef.current.value = ''; }
   };
 

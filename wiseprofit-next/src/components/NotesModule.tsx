@@ -20,10 +20,10 @@ export default function NotesModule({ userId }: { userId: string }) {
   const [newFolder, setNewFolder] = useState('');
   const [folderForm, setFolderForm] = useState(false);
   const [message, setMessage] = useState('');
-  const [hydrated, setHydrated] = useState(false);
+  const [loadedUserId, setLoadedUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    setHydrated(false);
+    setLoadedUserId(null);
     const loadedFolders = safeParse<NoteFolder[]>(localStorage.getItem('wp_note_folders_' + userId), DEFAULT_FOLDERS);
     const loadedNotes = safeParse<Note[]>(localStorage.getItem('wp_notes_v2_' + userId), []);
     const legacy = localStorage.getItem('wp_notes_' + userId) || '';
@@ -31,16 +31,16 @@ export default function NotesModule({ userId }: { userId: string }) {
     setFolders(Array.isArray(loadedFolders) && loadedFolders.length ? loadedFolders : DEFAULT_FOLDERS);
     setNotes(Array.isArray(migrated) ? migrated : []);
     setActiveId(null); setFolderId('all'); setTitle(''); setBody('');
-    setHydrated(true);
+    setLoadedUserId(userId);
   }, [userId]);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (loadedUserId !== userId) return;
     try {
       localStorage.setItem('wp_note_folders_' + userId, JSON.stringify(folders));
       localStorage.setItem('wp_notes_v2_' + userId, JSON.stringify(notes));
     } catch { setMessage('Penyimpanan browser penuh. Ekspor atau hapus beberapa catatan.'); }
-  }, [userId, folders, notes]);
+  }, [userId, folders, notes, loadedUserId]);
 
   const visible = useMemo(() => notes
     .filter(note => folderId === 'all' || note.folderId === folderId)

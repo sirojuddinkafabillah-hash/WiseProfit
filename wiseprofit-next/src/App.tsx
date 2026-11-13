@@ -17,7 +17,8 @@ const SettingsModule = lazy(() => import('./components/SettingsModule'))
 
 const navigation = [
   { section: 'WORKSPACE', items: [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Kasir', icon: ShoppingBag }, { label: 'Barang', icon: Package }, { label: 'Pembelian', icon: Box }] },
-  { section: 'KEUANGAN', items: [{ label: 'Laporan', icon: ChartNoAxesCombined }, { label: 'Penarikan', icon: Wallet }, { label: 'Catatan', icon: NotebookPen }] },
+  { section: 'KEUANGAN', items: [{ label: 'Laporan', icon: ChartNoAxesCombined }, { label: 'Penarikan', icon: Wallet }] },
+  { section: 'CATATAN', items: [{ label: 'Catatan', icon: NotebookPen }] },
   { section: 'LAINNYA', items: [{ label: 'Ekspor & Impor', icon: Download }, { label: 'Bantuan & Keluhan', icon: CircleHelp }] },
 ]
 const periods = ['7 hari', '30 hari', '6 bulan', '12 bulan']

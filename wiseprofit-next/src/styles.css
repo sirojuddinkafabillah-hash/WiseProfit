@@ -101,3 +101,7 @@
 .notes-body-input{width:100%;min-height:260px;resize:vertical;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);color:var(--text);font-size:13px;line-height:1.7;outline:none}
 .notes-editor-bottom{margin-top:12px}.notes-editor-bottom small{font-size:10px;color:var(--muted)}
 @media(max-width:700px){.notes-layout{grid-template-columns:1fr}.notes-folders{padding:12px}.notes-folder-button{display:inline-flex;width:auto;gap:12px;margin-right:5px}.notes-list-item small{white-space:normal}}
+
+.purchase-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.purchase-summary .report-card small{display:flex;align-items:center;gap:7px}
+@media(max-width:560px){.purchase-summary{grid-template-columns:1fr}}

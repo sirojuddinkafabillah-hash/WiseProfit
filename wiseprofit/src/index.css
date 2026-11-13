@@ -2885,3 +2885,39 @@ footer.no-print {
 @media (prefers-reduced-motion:reduce) {
   .wp-main-sidebar,.wp-main-content *, .wp-app-header * { transition-duration:.01ms !important; animation-duration:.01ms !important; }
 }
+
+
+/* Cirrel parity audit: convert legacy light utility surfaces to the reference dark glass panels. */
+#root .wp-main-content [class*="bg-white"],
+#root .wp-main-content [class*="bg-slate-50"],
+#root .wp-main-content [class*="bg-slate-100"] {
+  background-color:var(--wp-shell-panel) !important;
+}
+#root .wp-main-content [class*="bg-blue-50"],
+#root .wp-main-content [class*="bg-blue-100"] {
+  background-color:rgba(75,145,255,.12) !important;
+}
+#root .wp-main-content [class*="border-slate-200"],
+#root .wp-main-content [class*="border-slate-300"] {
+  border-color:var(--wp-shell-line) !important;
+}
+#root .wp-main-content [class*="text-slate-600"],
+#root .wp-main-content [class*="text-slate-700"],
+#root .wp-main-content [class*="text-slate-800"],
+#root .wp-main-content [class*="text-slate-900"] {
+  color:var(--wp-shell-text) !important;
+}
+#root .wp-main-content [class*="hover:bg-slate-100"]:hover,
+#root .wp-main-content [class*="hover:bg-slate-50"]:hover {
+  background-color:rgba(255,255,255,.07) !important;
+}
+#root .wp-main-content [class*="hover:bg-blue-50"]:hover {
+  background-color:rgba(75,145,255,.16) !important;
+}
+#root .wp-main-content [class*="hover:text-slate-700"]:hover,
+#root .wp-main-content [class*="hover:text-slate-800"]:hover {
+  color:#fff !important;
+}
+#root .wp-main-content [class*="bg-white/"] { background-color:var(--wp-shell-panel) !important; }
+#root .wp-main-content [class*="text-blue-600"],
+#root .wp-main-content [class*="text-blue-700"] { color:#80b4ff !important; }

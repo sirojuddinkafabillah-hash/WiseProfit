@@ -189,3 +189,53 @@
 .set-sold-modal>p{font-size:12px;color:var(--muted)}
 .module-form .secondary-button{min-height:40px}
 @media(max-width:650px){.module-toolbar{align-items:stretch}.search-field,.filter-field{width:100%;min-width:0}.module-actions{flex-wrap:wrap}.module-actions>*{flex:1}.module-table{min-width:1050px}}
+
+
+/* Cirrel-inspired visual refinement for WiseProfit Next.
+   UI-only overrides: keep the existing React modules, handlers and data flow intact. */
+.app{background:radial-gradient(ellipse at 82% 0%,rgba(42,105,190,.18),transparent 34%),radial-gradient(ellipse at 0% 82%,rgba(33,83,145,.14),transparent 36%),var(--bg)}
+.sidebar{inset:0 auto 0 0;width:250px;padding:23px 15px 18px;border-radius:0 18px 18px 0;border-top:0;border-bottom:0;border-left:0;background:var(--panel);box-shadow:8px 0 38px rgba(0,0,0,.08)}
+.sidebar.collapsed{width:76px}
+.main{margin-left:270px}
+.main.shifted{margin-left:96px}
+.topbar{height:78px;padding:0 34px;border-bottom:1px solid var(--line);background:rgba(8,18,33,.2)}
+.light .topbar{background:rgba(255,255,255,.48)}
+.content{max-width:1580px;padding:30px 34px 26px}
+.workspace-switch{margin-bottom:19px;border-radius:11px}
+.nav-group{margin-bottom:17px}
+.nav-label{padding-left:11px;margin-bottom:7px;letter-spacing:1.55px}
+.nav-item{height:40px;border-radius:10px;gap:12px;margin:2px 0}
+.nav-item.active{background:linear-gradient(100deg,rgba(54,137,255,.18),rgba(54,137,255,.055));color:var(--accent)}
+.nav-item.active i{left:-15px}
+.profile-mini{padding:13px 6px 0;margin-top:10px}
+.glass{border-radius:17px;background:var(--panel);backdrop-filter:blur(22px) saturate(145%)}
+.stat-card{padding:18px 19px;min-height:132px}
+.chart-card,.quick-card,.bottom-card{padding:20px}
+.stat-value{font-size:25px}
+.welcome-row{margin-bottom:23px}
+.welcome-row h1{font-size:28px;letter-spacing:-.8px}
+.module-intro h2{font:800 22px Manrope}
+.module-form,.module-table-wrap,.notes-folders,.notes-main{border-radius:15px}
+.module-table th{letter-spacing:.035em;font-size:10px}
+.module-table td{font-size:11px}
+.notes-layout{grid-template-columns:minmax(190px,225px) minmax(0,1fr);gap:15px}
+.notes-folders,.notes-main{background:var(--panel);backdrop-filter:blur(22px)}
+.notes-folder-button{border-radius:9px}
+.notes-folder-button.active{background:rgba(72,145,255,.16);color:var(--text);box-shadow:inset 2px 0 var(--accent)}
+.notes-list-item{border-radius:10px;transition:border-color .18s ease,background .18s ease}
+.notes-list-item:hover{border-color:rgba(91,165,255,.42);background:rgba(72,145,255,.07)}
+.primary-button{border-radius:10px;background:linear-gradient(110deg,#398fff,#2466df);box-shadow:0 7px 20px rgba(38,112,226,.22)}
+.search-trigger,.icon-button{border-radius:10px}
+@media(max-width:1100px){
+  .sidebar{width:225px}
+  .sidebar.collapsed{width:76px}
+  .main{margin-left:245px}
+  .main.shifted{margin-left:96px}
+}
+@media(max-width:720px){
+  .sidebar{inset:8px auto 8px 8px;width:74px;padding:17px 8px;border-radius:16px;border:1px solid var(--line)}
+  .sidebar.expanded{width:245px}
+  .main,.main.shifted{margin-left:90px}
+  .topbar{height:65px;padding:0 14px}
+  .content{padding:25px 14px}
+}

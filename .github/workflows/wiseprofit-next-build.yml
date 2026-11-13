@@ -1,0 +1,27 @@
+name: WiseProfit Next Build Check
+on:
+  push:
+    branches:
+      - wiseprofit-next/bootstrap
+    paths:
+      - 'wiseprofit-next/**'
+      - '.github/workflows/wiseprofit-next-build.yml'
+  pull_request:
+    paths:
+      - 'wiseprofit-next/**'
+      - '.github/workflows/wiseprofit-next-build.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wiseprofit-next
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: wiseprofit-next/package-lock.json
+      - run: npm install
+      - run: npm run build

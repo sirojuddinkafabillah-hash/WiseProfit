@@ -139,7 +139,7 @@ export default function App() {
         </>}
         <Suspense fallback={<div className="notice"><LoaderCircle className="spin" size={16}/> Menyiapkan modul...</div>}>
         {active === 'Kasir' && <CashierModule userId={user.id} items={items} onChanged={setItems} />}
-        {active === 'Barang' && <InventoryModule userId={user.id} items={items} onChanged={setItems} />}
+        {active === 'Barang' && <InventoryModule userId={user.id} items={items} onChanged={setItems} modalAwal={modalAwal} />}
         {active === 'Laporan' && <ReportsModule summary={summary} items={items} withdrawals={withdrawals} />}
         {active === 'Penarikan' && <WithdrawalModule userId={user.id} withdrawals={withdrawals} balance={summary.saldoKasSaatIni} onChanged={setWithdrawals} />}
         {active === 'Catatan' && <NotesModule userId={user.id} />}

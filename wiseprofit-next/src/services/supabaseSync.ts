@@ -12,3 +12,29 @@ export function subscribeUserWithdrawals(userId:string,callback:(items:Withdrawa
 
 export async function deleteInventoryItemFromCloud(userId:string,itemId:string){const {error}=await supabase!.from('inventory_items').delete().eq('user_id',userId).eq('id',sanitizeId(itemId));if(error)throw error;}
 export async function deleteWithdrawalFromCloud(userId:string,itemId:string){const {error}=await supabase!.from('withdrawals').delete().eq('user_id',userId).eq('id',sanitizeId(itemId));if(error)throw error;}
+
+export async function uploadProfilePhoto(userId:string,file:File):Promise<string>{
+ if(file.type!=='image/jpeg')throw new Error('Foto profil harus berformat JPG/JPEG.');
+ if(file.size>10*1024*1024)throw new Error('Ukuran foto maksimal 10 MB.');
+ const version=Date.now()+'-'+Math.random().toString(36).slice(2,9);
+ const objectPath=userId+'/avatar-'+version+'.jpg';
+ const {error:uploadError}=await supabase!.storage.from('profile-photos').upload(objectPath,file,{contentType:'image/jpeg',upsert:false,cacheControl:'0'});
+ if(uploadError)throw uploadError;
+ const {data}=supabase!.storage.from('profile-photos').getPublicUrl(objectPath);
+ const avatarUrl=data.publicUrl+'?v='+version;
+ const {error:profileError}=await supabase!.from('profiles').upsert({user_id:userId,avatar_url:avatarUrl,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+ if(profileError){await supabase!.storage.from('profile-photos').remove([objectPath]);throw profileError;}
+ return avatarUrl;
+}
+export async function removeProfilePhoto(userId:string,currentUrl?:string|null):Promise<void>{
+ if(currentUrl){
+  try{
+   const parsed=new URL(currentUrl);
+   const marker='/storage/v1/object/public/profile-photos/';
+   const index=parsed.pathname.indexOf(marker);
+   if(index>=0){const objectPath=decodeURIComponent(parsed.pathname.slice(index+marker.length));if(objectPath.startsWith(userId+'/'))await supabase!.storage.from('profile-photos').remove([objectPath]);}
+  }catch{/* A stale or external avatar URL is not a managed storage object. */}
+ }
+ const {error}=await supabase!.from('profiles').upsert({user_id:userId,avatar_url:null,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+ if(error)throw error;
+}

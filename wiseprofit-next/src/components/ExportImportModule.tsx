@@ -49,7 +49,7 @@ export default function ExportImportModule({ userId, email, items, withdrawals, 
   const exportCsv = () => {
     const rows = [['Nama barang', 'Jumlah per wadah', 'Satuan', 'Harga beli', 'Harga jual per unit', 'Jumlah terjual', 'Tanggal input'],
       ...items.map(item => [item.namaBarang, String(item.jumlahBarangWadah), item.satuanUnit, String(item.hargaBeli), String(item.hargaJualSatuan), String(item.jumlahBarangDijualSatuan), item.tanggalInput || ''])];
-    const csv = rows.map(row => row.map(cell => { const value = String(cell); const first = value[0]; const unsafe = ['=', '+', '-', '@', String.fromCharCode(9), String.fromCharCode(13)].includes(first); const safe = unsafe ? "'" + value : value; return '"' + safe.replace(/"/g, '""') + '"'; }).join(',')).join('\\r\\n');
+    const csv = rows.map(row => row.map(cell => { const value = String(cell); const first = value[0]; const unsafe = ['=', '+', '-', '@', String.fromCharCode(9), String.fromCharCode(13)].includes(first); const safe = unsafe ? "'" + value : value; return '"' + safe.replace(/"/g, '""') + '"'; }).join(',')).join('\r\n');
     download('wiseprofit-inventaris-' + new Date().toISOString().slice(0, 10) + '.csv', '\uFEFF' + csv, 'text/csv;charset=utf-8');
     setMessage({ kind: 'success', text: 'Data inventaris berhasil diekspor ke CSV.' });
   };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ShoppingBag, TrendingUp,
-  UploadCloud, CircleHelp, ShieldCheck, ArrowDownCircle, NotebookPen,
-  LogIn, ChevronLeft, ChevronRight
+  ShoppingBag, TrendingUp, UploadCloud, CircleHelp, ShieldCheck,
+  ArrowDownCircle, NotebookPen, LogIn, ChevronLeft, ChevronRight,
+  Plus, Printer, Download, Menu, X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { t } from '../i18n/translations';
@@ -27,35 +27,27 @@ interface HeaderProps {
   onLanguageChange: (language: 'id' | 'en') => void;
 }
 
-type NavigationItem = {
-  page: AppPage;
-  label: string;
-  icon: React.ElementType;
-  count?: number;
-};
+type NavItem = { page: AppPage; label: string; icon: React.ElementType; count?: number };
 
 export const Header: React.FC<HeaderProps> = ({
-  activePage,
-  onChangePage,
-  itemsCount = 0,
-  onOpenAuthModal,
-  onOpenProfilePanel,
-  withdrawalsCount = 0,
-  language,
-  onLanguageChange,
+  activePage, onChangePage, itemsCount = 0, onOpenAddModal,
+  onPrintReport, onOpenGuide, onOpenDownloadModal, onOpenAuthModal,
+  onOpenProfilePanel, onOpenWithdrawalModal, withdrawalsCount = 0,
+  isSyncingCloud = false, language, onLanguageChange,
 }) => {
   const { user } = useAuth();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [profilePhotoFailed, setProfilePhotoFailed] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(() => {
     try { return localStorage.getItem('wp_sidebar_collapsed') !== 'true'; } catch { return true; }
   });
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('wp-sidebar-collapsed', !sidebarOpen);
-    try { localStorage.setItem('wp_sidebar_collapsed', sidebarOpen ? 'false' : 'true'); } catch { /* preference is optional */ }
+    document.documentElement.classList.toggle('wp-sidebar-collapsed', !sidebarExpanded);
+    try { localStorage.setItem('wp_sidebar_collapsed', sidebarExpanded ? 'false' : 'true'); } catch { /* optional preference */ }
     return () => document.documentElement.classList.remove('wp-sidebar-collapsed');
-  }, [sidebarOpen]);
+  }, [sidebarExpanded]);
 
   useEffect(() => {
     let active = true;
@@ -63,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
       try {
         const cloudPhoto = user ? await getProfilePhotoUrl(user.uid) : null;
         if (!active) return;
-        const savedPhoto = user ? localStorage.getItem(`wp_profile_photo_${user.uid}`) : null;
+        const savedPhoto = user ? localStorage.getItem('wp_profile_photo_' + user.uid) : null;
         setProfilePhoto(cloudPhoto || savedPhoto || user?.photoURL || null);
         setProfilePhotoFailed(false);
       } catch {
@@ -72,8 +64,6 @@ export const Header: React.FC<HeaderProps> = ({
     };
     loadProfilePhoto();
     const refresh = (event?: Event) => {
-      // Use the verified URL returned by the profile upload directly.
-      // A second async read here can race and overwrite the new photo with stale data.
       const isPhotoUpdate = event?.type === 'wiseprofit-profile-photo-updated';
       const detail = (event as CustomEvent<{ url?: string | null }> | undefined)?.detail;
       if (isPhotoUpdate && detail && Object.prototype.hasOwnProperty.call(detail, 'url')) {
@@ -93,51 +83,57 @@ export const Header: React.FC<HeaderProps> = ({
   }, [user?.uid, user?.photoURL]);
 
   useEffect(() => {
-    if (!sidebarOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setSidebarOpen(false);
-    };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
-  }, [sidebarOpen]);
+    if (!mobileOpen) return;
+    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setMobileOpen(false); };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [mobileOpen]);
 
-  const navigationItems: NavigationItem[] = [
-    { page: 'inventory', label: t('header.cashier', language), icon: ShoppingBag, count: itemsCount },
-    { page: 'reports', label: t('header.businessReports', language), icon: TrendingUp },
-    { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
-    { page: 'notes', label: language === 'id' ? 'Catatan' : 'Notes', icon: NotebookPen },
-    { page: 'import', label: t('header.importExport', language), icon: UploadCloud },
-    { page: 'faq', label: language === 'id' ? 'Bantuan' : 'Help', icon: CircleHelp },
+  const groups: { label: string; items: NavItem[] }[] = [
+    { label: language === 'id' ? 'RUANG KERJA' : 'WORKSPACE', items: [
+      { page: 'inventory', label: t('header.cashier', language), icon: ShoppingBag, count: itemsCount },
+    ]},
+    { label: language === 'id' ? 'KEUANGAN' : 'FINANCE', items: [
+      { page: 'reports', label: t('header.businessReports', language), icon: TrendingUp },
+      { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
+    ]},
+    { label: language === 'id' ? 'CATATAN' : 'NOTES', items: [
+      { page: 'notes', label: language === 'id' ? 'Catatan' : 'Notes', icon: NotebookPen },
+    ]},
+    { label: language === 'id' ? 'LAINNYA' : 'MORE', items: [
+      { page: 'import', label: t('header.importExport', language), icon: UploadCloud },
+      { page: 'faq', label: language === 'id' ? 'Bantuan' : 'Help center', icon: CircleHelp },
+    ]},
   ];
 
   const navigate = (page: AppPage) => {
     onChangePage(page);
+    setMobileOpen(false);
   };
-
   const isActive = (page: AppPage) => page === 'faq'
     ? activePage === 'faq' || activePage === 'complaints'
     : activePage === page;
+  const pageTitle: Record<string, string> = {
+    inventory: t('header.cashier', language),
+    reports: t('header.businessReports', language),
+    withdrawals: t('header.withdrawals', language),
+    notes: language === 'id' ? 'Catatan' : 'Notes',
+    import: t('header.importExport', language),
+    faq: language === 'id' ? 'Pusat Bantuan' : 'Help center',
+    'support-admin': language === 'id' ? 'Admin Support' : 'Admin support',
+  };
 
   return (
     <>
-      <header className="wp-app-header no-print sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 text-slate-800 shadow-sm backdrop-blur-xl">
-        <div className="mx-auto flex min-h-[4.25rem] max-w-[1600px] items-center gap-3 px-3 sm:px-5 lg:px-7">
-
-          <button
-            type="button"
-            onClick={() => navigate('inventory')}
-            aria-label="WiseProfit - Kasir"
-            className="flex shrink-0 items-center gap-2.5 rounded-lg text-left"
-          >
-            <span className="relative flex h-12 w-12 items-center justify-center rounded-[15px] border-2 border-blue-200 bg-white shadow-[0_6px_18px_rgba(37,99,235,0.22)] ring-2 ring-blue-50 sm:h-14 sm:w-14">
-              <svg viewBox="0 0 64 64" className="h-10 w-10 sm:h-12 sm:w-12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <aside id="wp-main-sidebar" aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
+        className={'wp-main-sidebar no-print' + (sidebarExpanded ? '' : ' is-collapsed') + (mobileOpen ? ' is-mobile-open' : '')}>
+        <div className="wp-sidebar-brand">
+          <button type="button" onClick={() => navigate('inventory')} className="wp-brand-link" aria-label="WiseProfit - Kasir">
+            <span className="wp-brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <linearGradient id="wp-cube-top" x1="13" y1="8" x2="48" y2="30" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#60A5FA"/><stop offset="1" stopColor="#2563EB"/>
-                  </linearGradient>
-                  <linearGradient id="wp-cube-side" x1="33" y1="23" x2="53" y2="48" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#2563EB"/><stop offset="1" stopColor="#1D4ED8"/>
-                  </linearGradient>
+                  <linearGradient id="wp-cube-top" x1="13" y1="8" x2="48" y2="30" gradientUnits="userSpaceOnUse"><stop stopColor="#60A5FA"/><stop offset="1" stopColor="#2563EB"/></linearGradient>
+                  <linearGradient id="wp-cube-side" x1="33" y1="23" x2="53" y2="48" gradientUnits="userSpaceOnUse"><stop stopColor="#2563EB"/><stop offset="1" stopColor="#1D4ED8"/></linearGradient>
                 </defs>
                 <path d="M32 5 54 17.5 32 30 10 17.5 32 5Z" fill="url(#wp-cube-top)" stroke="#1D4ED8" strokeWidth="2"/>
                 <path d="M10 17.5 32 30v27L10 44.5v-27Z" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="2" strokeLinejoin="round"/>
@@ -147,157 +143,78 @@ export const Header: React.FC<HeaderProps> = ({
                 <path d="m27 43 5 3 5-3v7l-5 3-5-3v-7Z" fill="#BFDBFE" stroke="white" strokeWidth="1.8" strokeLinejoin="round"/>
               </svg>
             </span>
-            <span className="flex flex-col">
-              <span className="font-serif text-[18px] font-bold leading-tight tracking-tight sm:text-[19px]">
-                <span className="text-[#10264B]">Wise</span><span className="text-[#1769E8]">Profit</span>
-              </span>
-              <span className="mt-1 font-serif text-[10px] leading-none tracking-[0.01em] text-[#334766] sm:text-[11px]">
-                Business Management
-              </span>
-            </span>
+            <span className="wp-brand-copy"><strong><span>Wise</span><em>Profit</em></strong><small>BUSINESS MANAGEMENT</small></span>
           </button>
-
-          <div className="ml-auto flex min-w-0 items-center gap-3 sm:gap-4">
-            <div className="flex shrink-0 items-center rounded-full border border-slate-200 bg-slate-50 p-1 shadow-sm" role="group" aria-label={t('header.chooseLanguage', language)}>
-              <button
-                type="button"
-                onClick={() => onLanguageChange('id')}
-                aria-label="Bahasa Indonesia"
-                aria-pressed={language === 'id'}
-                title="Bahasa Indonesia"
-                className={`flex h-8 w-10 items-center justify-center rounded-full transition ${language === 'id' ? 'bg-blue-600 shadow-sm ring-1 ring-blue-700' : 'text-slate-600 hover:bg-white'}`}
-              >
-                <img
-                  src="https://flagcdn.com/w40/id.png"
-                  srcSet="https://flagcdn.com/w80/id.png 2x"
-                  alt=""
-                  aria-hidden="true"
-                  className="h-5 w-7 rounded-[3px] object-cover shadow-sm"
-                  loading="eager"
-                />
-              </button>
-              <button
-                type="button"
-                onClick={() => onLanguageChange('en')}
-                aria-label="English"
-                aria-pressed={language === 'en'}
-                title="English"
-                className={`flex h-8 w-10 items-center justify-center rounded-full transition ${language === 'en' ? 'bg-blue-600 shadow-sm ring-1 ring-blue-700' : 'text-slate-600 hover:bg-white'}`}
-              >
-                <img
-                  src="https://flagcdn.com/w40/gb.png"
-                  srcSet="https://flagcdn.com/w80/gb.png 2x"
-                  alt=""
-                  aria-hidden="true"
-                  className="h-5 w-7 rounded-[3px] object-cover shadow-sm"
-                  loading="eager"
-                />
-              </button>
-            </div>
-
-            {!user && (
-              <button type="button" onClick={onOpenAuthModal} className="flex shrink-0 items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
-                <LogIn className="h-3.5 w-3.5" />
-                {t('header.signIn', language)}
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {sidebarOpen && <aside
-        id="wp-main-sidebar"
-        aria-label={language === 'id' ? 'Navigasi utama' : 'Main navigation'}
-        className="wp-glass-sidebar no-print fixed bottom-0 left-0 top-[4.25rem] z-40 flex w-[68px] flex-col overflow-hidden border-r border-white/70 text-slate-800 shadow-[0_12px_36px_rgba(15,23,42,0.12)]" style={{ background: "rgba(239,246,255,0.92)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)" }}
-      >
-        {user && (
-          <div className="border-b border-white/60 px-2 py-3">
-            <button
-              type="button"
-              onClick={onOpenProfilePanel}
-              aria-label={language === 'id' ? 'Buka profil dan pengaturan' : 'Open profile and settings'}
-              aria-haspopup="dialog"
-              title={language === "id" ? "Profil dan pengaturan" : "Profile and settings"} className="relative mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/90 bg-white/85 p-0 shadow-sm backdrop-blur-md transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
-                {profilePhoto && !profilePhotoFailed ? (
-                  <img
-                    src={profilePhoto}
-                    alt="Foto profil"
-                    className="block h-full w-full object-cover"
-                    onLoad={() => setProfilePhotoFailed(false)}
-                    onError={() => {
-                      if (user.photoURL && profilePhoto !== user.photoURL) {
-                        setProfilePhoto(user.photoURL);
-                        setProfilePhotoFailed(false);
-                      } else {
-                        setProfilePhotoFailed(true);
-                      }
-                    }}
-                  />
-                ) : (
-                  <span className="flex h-full w-full items-center justify-center bg-blue-100 text-sm font-bold text-blue-700">
-                    {(user.displayName || user.email || 'W').trim().charAt(0).toUpperCase() || 'W'}
-                  </span>
-                )}
-              </span>
-              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
-              <span className="sr-only">
-                <span className="block truncate text-sm font-semibold text-slate-800">{user.displayName || (language === 'id' ? 'Profil Saya' : 'My Profile')}</span>
-                <span className="mt-1 flex items-center gap-1 text-[10px] font-medium text-emerald-600">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  ON · {language === 'id' ? 'Online' : 'Online'}
-                </span>
-              </span>
-              
-            </button>
-          </div>
-        )}
-        <div className="sr-only">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{language === 'id' ? 'Menu utama' : 'Main menu'}</p>
-          <p className="mt-1 text-sm font-semibold text-slate-800">{language === 'id' ? 'Kelola usaha Anda' : 'Manage your business'}</p>
+          <button type="button" className="wp-sidebar-collapse" onClick={() => setSidebarExpanded(v => !v)}
+            aria-label={sidebarExpanded ? (language === 'id' ? 'Ciutkan menu' : 'Collapse menu') : (language === 'id' ? 'Perluas menu' : 'Expand menu')}
+            title={sidebarExpanded ? (language === 'id' ? 'Ciutkan menu' : 'Collapse menu') : (language === 'id' ? 'Perluas menu' : 'Expand menu')}>
+            {sidebarExpanded ? <ChevronLeft size={17}/> : <ChevronRight size={17}/>}
+          </button>
         </div>
 
-        <nav className="flex-1 space-y-2 overflow-y-auto px-2 py-3">
-          {navigationItems.map(({ page, label, icon: Icon, count }) => (
-            <React.Fragment key={page}>
-              <button
-                type="button"
-                onClick={() => navigate(page)}
-                aria-current={isActive(page) ? 'page' : undefined}
-                title={label}
-                className={`group relative mx-auto flex h-11 w-11 items-center justify-center rounded-xl p-0 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 ${isActive(page) ? 'bg-gradient-to-r from-blue-600 to-blue-700 font-bold text-white shadow-[0_7px_18px_rgba(37,99,235,0.26)] ring-1 ring-inset ring-blue-400/40' : 'font-semibold text-[#18345F] hover:bg-white/75 hover:text-blue-800'}`}
-              >
-                <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive(page) ? 'text-white' : 'text-[#31527F] group-hover:text-blue-700'}`} />
-                <span className="sr-only">{label}</span>
-                {typeof count === 'number' && count > 0 && <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isActive(page) ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{count}</span>}
-              </button>
-}
-            </React.Fragment>
+        <nav className="wp-sidebar-nav">
+          {groups.map(group => (
+            <section className="wp-nav-group" key={group.label}>
+              <div className="wp-nav-label">{group.label}</div>
+              {group.items.map(({ page, label, icon: Icon, count }) => (
+                <button key={page} type="button" onClick={() => navigate(page)} aria-current={isActive(page) ? 'page' : undefined}
+                  title={!sidebarExpanded ? label : undefined}
+                  className={'wp-nav-item' + (isActive(page) ? ' active' : '')}>
+                  <Icon size={18} strokeWidth={1.8}/>
+                  <span className="wp-nav-text">{label}</span>
+                  {typeof count === 'number' && count > 0 && <span className="wp-nav-count">{count}</span>}
+                </button>
+              ))}
+            </section>
           ))}
         </nav>
 
-        <div className="border-t border-white/50 bg-white/20 p-3">
-          <button
-            type="button"
-            onClick={() => { user ? onChangePage('support-admin') : onOpenAuthModal(); }}
-            title={language === "id" ? "Login Admin" : "Admin Login"} aria-label={language === "id" ? "Login Admin" : "Admin Login"} className="group mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-slate-600 transition hover:bg-white/90 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <ShieldCheck className="h-[18px] w-[18px] text-slate-500" />
+        <div className="wp-sidebar-bottom">
+          {user ? (
+            <button type="button" className="wp-profile-button" onClick={onOpenProfilePanel}
+              title={language === 'id' ? 'Profil dan pengaturan' : 'Profile and settings'}>
+              <span className="wp-profile-avatar">
+                {profilePhoto && !profilePhotoFailed ? (
+                  <img src={profilePhoto} alt="" onLoad={() => setProfilePhotoFailed(false)}
+                    onError={() => { if (user.photoURL && profilePhoto !== user.photoURL) { setProfilePhoto(user.photoURL); setProfilePhotoFailed(false); } else setProfilePhotoFailed(true); }}/>
+                ) : <span>{(user.displayName || user.email || 'W').trim().charAt(0).toUpperCase() || 'W'}</span>}
+                <i>on</i>
+              </span>
+              <span className="wp-profile-copy"><strong>{user.displayName || (language === 'id' ? 'Profil Saya' : 'My profile')}</strong><small>{user.email || (language === 'id' ? 'Akun WiseProfit' : 'WiseProfit account')}</small></span>
+            </button>
+          ) : (
+            <button type="button" className="wp-profile-button" onClick={onOpenAuthModal}>
+              <span className="wp-profile-avatar"><span>W</span></span>
+              <span className="wp-profile-copy"><strong>{language === 'id' ? 'Masuk akun' : 'Sign in'}</strong><small>WiseProfit</small></span>
+            </button>
+          )}
+          <button type="button" className="wp-admin-button" onClick={() => user ? navigate('support-admin') : onOpenAuthModal()}
+            title={language === 'id' ? 'Login Admin' : 'Admin Login'}>
+            <ShieldCheck size={17}/><span>{language === 'id' ? 'Admin Login' : 'Admin Login'}</span>
           </button>
         </div>
-      </aside>}
-      <button
-        type="button"
-        className="wp-sidebar-toggle no-print"
-        onClick={() => setSidebarOpen((open) => !open)}
-        aria-label={sidebarOpen ? (language === 'id' ? 'Ciutkan toolbar' : 'Collapse toolbar') : (language === 'id' ? 'Buka toolbar' : 'Expand toolbar')}
-        aria-expanded={sidebarOpen}
-        aria-controls="wp-main-sidebar"
-        title={sidebarOpen ? (language === 'id' ? 'Ciutkan toolbar' : 'Collapse toolbar') : (language === 'id' ? 'Buka toolbar' : 'Expand toolbar')}
-      >
-        {sidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-      </button>
+      </aside>
+
+      {mobileOpen && <button type="button" className="wp-sidebar-backdrop no-print" aria-label={language === 'id' ? 'Tutup menu' : 'Close menu'} onClick={() => setMobileOpen(false)}/>}
+
+      <header className="wp-app-header no-print">
+        <div className="wp-topbar-left">
+          <button type="button" className="wp-mobile-menu" onClick={() => setMobileOpen(true)} aria-label={language === 'id' ? 'Buka menu' : 'Open menu'}><Menu size={19}/></button>
+          <div><strong>{pageTitle[activePage] || 'WiseProfit'}</strong><small>{language === 'id' ? 'Kelola usaha, pantau perkembangan, dan ambil keputusan.' : 'Manage your business, track progress, and make decisions.'}</small></div>
+        </div>
+        <div className="wp-topbar-actions">
+          <span className={'wp-sync-status' + (isSyncingCloud ? ' syncing' : '')}><i/>{isSyncingCloud ? (language === 'id' ? 'Menyinkronkan' : 'Syncing') : (language === 'id' ? 'Online' : 'Online')}</span>
+          <div className="wp-language-switch" role="group" aria-label={t('header.chooseLanguage', language)}>
+            <button type="button" onClick={() => onLanguageChange('id')} aria-pressed={language === 'id'} title="Bahasa Indonesia" className={language === 'id' ? 'active' : ''}><img src="https://flagcdn.com/w40/id.png" alt="ID"/></button>
+            <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={language === 'en'} title="English" className={language === 'en' ? 'active' : ''}><img src="https://flagcdn.com/w40/gb.png" alt="EN"/></button>
+          </div>
+          {user && <button type="button" className="wp-topbar-icon" onClick={onOpenGuide} title={language === 'id' ? 'Panduan kas' : 'Cash guide'}><CircleHelp size={17}/></button>}
+          {user && <button type="button" className="wp-topbar-icon" onClick={onOpenDownloadModal} title={language === 'id' ? 'Ekspor / impor data' : 'Export / import data'}><Download size={17}/></button>}
+          {user && activePage === 'reports' && <button type="button" className="wp-topbar-icon" onClick={onPrintReport} title={language === 'id' ? 'Cetak laporan' : 'Print report'}><Printer size={17}/></button>}
+          {user && <button type="button" className="wp-topbar-primary" onClick={activePage === 'withdrawals' ? (onOpenWithdrawalModal || (() => navigate('withdrawals'))) : onOpenAddModal}><Plus size={17}/><span>{activePage === 'withdrawals' ? (language === 'id' ? 'Tarik kas' : 'Withdraw') : (language === 'id' ? 'Tambah barang' : 'Add item')}</span></button>}
+          {!user && <button type="button" className="wp-topbar-primary" onClick={onOpenAuthModal}><LogIn size={16}/><span>{t('header.signIn', language)}</span></button>}
+        </div>
+      </header>
     </>
   );
 };

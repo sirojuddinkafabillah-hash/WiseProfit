@@ -49,3 +49,7 @@ with check (sender_role = 'user' and sender_id = auth.uid() and exists (select 1
 drop policy if exists "support admins can reply" on public.support_messages;
 create policy "support admins can reply" on public.support_messages for insert to authenticated
 with check (sender_role = 'developer' and sender_id = auth.uid() and (auth.jwt() -> 'app_metadata' ->> 'role') = 'support_admin');
+
+-- Explicit grants; row-level security above remains the authorization boundary.
+grant select, insert, update on public.support_tickets to authenticated;
+grant select, insert on public.support_messages to authenticated;

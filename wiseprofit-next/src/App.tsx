@@ -147,8 +147,8 @@ export default function App() {
         {active === 'Pembelian' && <PurchasesModule items={items} onAddPurchase={() => setActive('Barang')} />}
         {active === 'Pengaturan' && <SettingsModule userId={user.id} email={user.email} modalAwal={modalAwal} onModalAwalChange={setModalAwal} dark={dark} onToggleTheme={() => setDark(value => !value)} avatarUrl={avatarUrl} onAvatarChange={setAvatarUrl} />}
         {(active === 'Bantuan & Keluhan' || active === 'Admin Keluhan') && <SupportModule userId={user.id} email={user.email} isAdmin={user.isSupportAdmin} initialTab={active === 'Admin Keluhan' ? 'admin' : 'faq'} />}
-        </Suspense>
         {active === 'Ekspor & Impor' && <ExportImportModule userId={user.id} email={user.email} items={items} withdrawals={withdrawals} modalAwal={modalAwal} onRestoreData={(nextItems,nextWithdrawals,nextModal) => { setItems(nextItems); setWithdrawals(nextWithdrawals); setModalAwal(nextModal); }} />}
+        </Suspense>
         <footer>WiseProfit Next <span>•</span> Data tersinkron untuk {user.email}</footer>
       </div>
     </main>

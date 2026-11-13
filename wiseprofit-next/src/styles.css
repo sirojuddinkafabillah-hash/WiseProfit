@@ -31,3 +31,38 @@
 .profile-copy{min-width:0;max-width:150px;overflow:hidden}
 .profile-copy b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){.auth-card{padding:26px 22px}.auth-card h1{font-size:24px}}
+
+
+/* Functional inventory and withdrawal modules */
+.module-stack{display:grid;gap:18px;margin-top:22px}
+.module-intro{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.module-intro h2{font-size:22px;margin:7px 0}
+.module-intro p{color:var(--muted);margin:0;font-size:13px}
+.module-count,.withdraw-balance{padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);font-size:12px;color:var(--muted)}
+.withdraw-balance{display:grid;gap:4px}.withdraw-balance b{font-size:17px;color:var(--text)}
+.module-form{padding:20px;border:1px solid var(--line);border-radius:18px}
+.module-form-title{display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.module-form-title svg{color:var(--accent,#65aaff)}
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.form-grid label{display:grid;gap:7px;color:var(--muted);font-size:12px}
+.form-grid input{width:100%;min-width:0;height:40px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);outline:none}
+.form-grid input:focus{border-color:#5ca8ff;box-shadow:0 0 0 3px rgba(75,151,255,.12)}
+.form-span{grid-column:span 2}
+.module-form>.primary-button{margin-top:16px}
+.module-error{color:#ff8d8d;font-size:12px;margin:12px 0 0}
+.module-table-wrap{border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.module-table-heading{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid var(--line)}
+.module-table-heading span{font-size:12px;color:var(--muted)}
+.module-table-scroll{overflow:auto}
+.module-table{width:100%;border-collapse:collapse;min-width:760px;font-size:12px}
+.module-table th{text-align:left;padding:12px 14px;color:var(--muted);font-weight:600;background:rgba(120,150,190,.06);white-space:nowrap}
+.module-table td{padding:13px 14px;border-top:1px solid var(--line);color:var(--text);white-space:nowrap}
+.module-table td:first-child b,.module-table td:first-child small{display:block}
+.module-table td:first-child small{color:var(--muted);font-size:11px;margin-top:4px}
+.sold-input{width:66px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);padding:0 7px}
+.gain-positive{color:#39c995!important}.gain-negative{color:#ff8b8b!important}
+.row-delete{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.row-delete:hover{color:#ff8b8b;border-color:rgba(255,100,100,.4)}
+.table-empty{text-align:center!important;padding:30px!important;color:var(--muted)!important}
+@media(max-width:900px){.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.module-intro{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.form-span{grid-column:auto}.module-form{padding:15px}.module-table-heading{padding:14px}}

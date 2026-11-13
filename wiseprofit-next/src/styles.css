@@ -105,3 +105,16 @@
 .purchase-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .purchase-summary .report-card small{display:flex;align-items:center;gap:7px}
 @media(max-width:560px){.purchase-summary{grid-template-columns:1fr}}
+
+.backup-status{display:flex;align-items:center;gap:13px;padding:16px;border:1px solid var(--line);border-radius:15px}
+.backup-status>svg{color:#5aa7ff;flex:none}.backup-status div{display:grid;gap:4px}.backup-status b{font-size:13px}.backup-status span{font-size:11px;color:var(--muted)}
+.backup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.backup-card{display:flex;flex-direction:column;align-items:flex-start;gap:11px;padding:18px;border:1px solid var(--line);border-radius:16px}
+.backup-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(83,151,255,.12);color:#68aaff}
+.backup-card h3{font-size:14px;font-weight:700}.backup-card p{flex:1;font-size:11px;line-height:1.6;color:var(--muted)}
+.backup-card .primary-button{margin-top:5px}
+.backup-message{padding:13px 15px;border:1px solid var(--line);border-radius:11px;font-size:12px;line-height:1.5}
+.backup-message.success{color:#4bd6a1;border-color:rgba(75,214,161,.3);background:rgba(75,214,161,.06)}
+.backup-message.error{color:#ff9696;border-color:rgba(255,120,120,.3);background:rgba(255,120,120,.06)}
+.backup-message.info{color:var(--muted);background:var(--panel2)}
+@media(max-width:850px){.backup-grid{grid-template-columns:1fr}}

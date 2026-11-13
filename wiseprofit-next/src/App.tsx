@@ -9,6 +9,7 @@ import InventoryModule from './components/InventoryModule'
 import WithdrawalModule from './components/WithdrawalModule'
 import CashierModule from './components/CashierModule'
 import ReportsModule from './components/ReportsModule'
+import NotesModule from './components/NotesModule'
 
 const navigation = [
   { section: 'WORKSPACE', items: [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Kasir', icon: ShoppingBag }, { label: 'Barang', icon: Package }, { label: 'Pembelian', icon: Box }] },
@@ -120,7 +121,7 @@ export default function App() {
         <div className="welcome-row"><div><div className="eyebrow"><Sparkles size={14}/> BUSINESS OVERVIEW</div><h1>{active}</h1><p>Selamat datang kembali, {user.name}. Ini ringkasan data dari akunmu.</p></div><button className="primary-button" onClick={() => setActive('Kasir')}><Plus size={17}/> Catat transaksi</button></div>
         {dataLoading&&<div className="notice"><LoaderCircle className="spin" size={18}/><div><b>Menyinkronkan data usaha</b><p>Mengambil inventaris dan penarikan milik akunmu dari Supabase.</p></div></div>}
         {dataError&&<div className="notice warning"><ShieldCheck size={18}/><div><b>Data belum berhasil dimuat</b><p>{dataError}</p></div></div>}
-        {active !== 'Dashboard' && active !== 'Barang' && active !== 'Penarikan' && active !== 'Kasir' && active !== 'Laporan' && <div className="notice"><ShieldCheck size={18}/><div><b>Modul {active} dalam tahap integrasi</b><p>Kerangka navigasi sudah tersedia. Modul transaksi akan dipindahkan berikutnya dengan mempertahankan perhitungan dan data WiseProfit lama.</p></div></div>}
+        {active !== 'Dashboard' && active !== 'Barang' && active !== 'Penarikan' && active !== 'Kasir' && active !== 'Laporan' && active !== 'Catatan' && <div className="notice"><ShieldCheck size={18}/><div><b>Modul {active} dalam tahap integrasi</b><p>Kerangka navigasi sudah tersedia. Modul transaksi akan dipindahkan berikutnya dengan mempertahankan perhitungan dan data WiseProfit lama.</p></div></div>}
         {active === 'Dashboard' && <>
         <section className="stat-grid">
           {[{label:'Total omzet',value:money(summary.totalPemasukanJual),note:'Pendapatan dari unit terjual',icon:ArrowUpRight,tone:'blue'},{label:'Keuntungan bersih',value:money(summary.totalGainTerjual),note:'Laba terealisasi',icon:Activity,tone:'green'},{label:'Saldo kas',value:money(summary.saldoKasSaatIni),note:'Setelah pembelian dan penarikan',icon:Wallet,tone:'violet'},{label:'Total barang',value:String(summary.totalItems),note:'Barang tersimpan di inventaris',icon:Package,tone:'amber'}].map(s=>{const Icon=s.icon;return <article className="glass stat-card" key={s.label}><div className="stat-top"><span>{s.label}</span><div className={'stat-icon '+s.tone}><Icon size={17}/></div></div><strong className="stat-value">{s.value}</strong><div className="stat-note">{s.note}</div></article>})}
@@ -135,6 +136,7 @@ export default function App() {
         {active === 'Barang' && <InventoryModule userId={user.id} items={items} onChanged={setItems} />}
         {active === 'Laporan' && <ReportsModule summary={summary} items={items} withdrawals={withdrawals} />}
         {active === 'Penarikan' && <WithdrawalModule userId={user.id} withdrawals={withdrawals} balance={summary.saldoKasSaatIni} onChanged={setWithdrawals} />}
+        {active === 'Catatan' && <NotesModule userId={user.id} />}
         <footer>WiseProfit Next <span>•</span> Data tersinkron untuk {user.email}</footer>
       </div>
     </main>

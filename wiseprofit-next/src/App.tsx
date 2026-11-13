@@ -12,6 +12,7 @@ import ReportsModule from './components/ReportsModule'
 import NotesModule from './components/NotesModule'
 import PurchasesModule from './components/PurchasesModule'
 import ExportImportModule from './components/ExportImportModule'
+import SupportModule from './components/SupportModule'
 
 const navigation = [
   { section: 'WORKSPACE', items: [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Kasir', icon: ShoppingBag }, { label: 'Barang', icon: Package }, { label: 'Pembelian', icon: Box }] },
@@ -26,7 +27,7 @@ export default function App() {
   const [dark, setDark] = useState(true)
   const [period, setPeriod] = useState('30 hari')
   const [searchOpen, setSearchOpen] = useState(false)
-  const [user, setUser] = useState<{id:string;email:string|null;name:string} | null>(null)
+  const [user, setUser] = useState<{id:string;email:string|null;name:string;isSupportAdmin:boolean} | null>(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -47,13 +48,13 @@ export default function App() {
       if (!mounted) return
       if (error) setAuthError(error.message)
       const u = data.session?.user
-      setUser(u ? {id:u.id,email:u.email || null,name:String(u.user_metadata?.full_name || u.user_metadata?.name || u.email || 'Pengguna')} : null)
+      setUser(u ? {id:u.id,email:u.email || null,name:String(u.user_metadata?.full_name || u.user_metadata?.name || u.email || 'Pengguna'),isSupportAdmin:u.app_metadata?.role === 'support_admin'} : null)
       setAuthLoading(false)
     }).catch((e:unknown) => { if(mounted){setAuthError(e instanceof Error?e.message:'Gagal memeriksa sesi.');setAuthLoading(false)} })
     const {data:{subscription}} = supabase.auth.onAuthStateChange((_event,session) => {
       if (!mounted) return
       const u=session?.user
-      setUser(u?{id:u.id,email:u.email||null,name:String(u.user_metadata?.full_name||u.user_metadata?.name||u.email||'Pengguna')}:null)
+      setUser(u?{id:u.id,email:u.email||null,name:String(u.user_metadata?.full_name||u.user_metadata?.name||u.email||'Pengguna'),isSupportAdmin:u.app_metadata?.role==='support_admin'}:null)
       setAuthLoading(false)
     })
     return ()=>{mounted=false;subscription.unsubscribe()}
@@ -114,7 +115,7 @@ export default function App() {
       <button className="collapse-button" onClick={() => setExpanded(!expanded)} aria-label="Ciutkan sidebar"><ChevronLeft size={16} /></button>
       <div className="workspace-switch"><div className="store-avatar">W</div>{expanded && <><div><b>Usaha Saya</b><small>Workspace utama</small></div><ChevronDown size={15} /></>}</div>
       <nav>{navigation.map(group => <div className="nav-group" key={group.section}>{expanded && <p className="nav-label">{group.section}</p>}{group.items.map(item => { const Icon = item.icon; return <button key={item.label} title={!expanded ? item.label : undefined} onClick={() => setActive(item.label)} className={active === item.label ? 'nav-item active' : 'nav-item'}><Icon size={18} /><span>{item.label}</span>{active === item.label && <i />}</button>})}</div>)}</nav>
-      <div className="sidebar-bottom"><button className="nav-item" onClick={() => setActive('Pengaturan')}><Settings2 size={18}/><span>Pengaturan</span></button><div className="profile-mini"><div className="avatar">{user.name.slice(0,2).toUpperCase()}</div>{expanded && <div className="profile-copy"><b>{user.name}</b><small><i className="online-dot"/> Terhubung</small></div>}</div></div>
+      <div className="sidebar-bottom"><button className="nav-item" onClick={() => setActive('Pengaturan')}><Settings2 size={18}/><span>Pengaturan</span></button><div className="profile-mini"><div className="avatar">{user.name.slice(0,2).toUpperCase()}</div>{expanded && <div className="profile-copy"><b>{user.name}</b><small><i className="online-dot"/> Terhubung</small></div>}</div>{user.isSupportAdmin && <button className="nav-item support-admin-nav" title="Admin Keluhan" onClick={() => setActive('Admin Keluhan')}><ShieldCheck size={18}/><span>Admin Keluhan</span></button>}</div>
     </aside>
     <main className={expanded ? 'main' : 'main shifted'}>
       <header className="topbar"><div className="crumb"><button className="mobile-menu" onClick={() => setExpanded(!expanded)}><Menu size={19}/></button><span>Workspace</span><b>/</b><strong>{active}</strong></div><div className="top-actions"><button className="search-trigger" onClick={() => setSearchOpen(!searchOpen)}><Search size={16}/><span>Cari menu...</span><kbd>⌘ K</kbd></button><button className="icon-button" onClick={() => setDark(!dark)} aria-label="Ganti tema">{dark ? <Sun size={18}/> : <Moon size={18}/>}</button><button className="icon-button notification" aria-label="Notifikasi"><Bell size={18}/><i/></button><div className="avatar top-avatar">{user.name.slice(0,2).toUpperCase()}</div><button className="icon-button" onClick={()=>void logout()} title="Keluar"><LogOut size={17}/></button></div></header>
@@ -123,7 +124,7 @@ export default function App() {
         <div className="welcome-row"><div><div className="eyebrow"><Sparkles size={14}/> BUSINESS OVERVIEW</div><h1>{active}</h1><p>Selamat datang kembali, {user.name}. Ini ringkasan data dari akunmu.</p></div><button className="primary-button" onClick={() => setActive('Kasir')}><Plus size={17}/> Catat transaksi</button></div>
         {dataLoading&&<div className="notice"><LoaderCircle className="spin" size={18}/><div><b>Menyinkronkan data usaha</b><p>Mengambil inventaris dan penarikan milik akunmu dari Supabase.</p></div></div>}
         {dataError&&<div className="notice warning"><ShieldCheck size={18}/><div><b>Data belum berhasil dimuat</b><p>{dataError}</p></div></div>}
-        {active !== 'Dashboard' && active !== 'Barang' && active !== 'Penarikan' && active !== 'Kasir' && active !== 'Laporan' && active !== 'Catatan' && active !== 'Pembelian' && active !== 'Ekspor & Impor' && <div className="notice"><ShieldCheck size={18}/><div><b>Modul {active} dalam tahap integrasi</b><p>Kerangka navigasi sudah tersedia. Modul transaksi akan dipindahkan berikutnya dengan mempertahankan perhitungan dan data WiseProfit lama.</p></div></div>}
+        {active !== 'Dashboard' && active !== 'Barang' && active !== 'Penarikan' && active !== 'Kasir' && active !== 'Laporan' && active !== 'Catatan' && active !== 'Pembelian' && active !== 'Ekspor & Impor' && active !== 'Bantuan & Keluhan' && active !== 'Admin Keluhan' && <div className="notice"><ShieldCheck size={18}/><div><b>Modul {active} dalam tahap integrasi</b><p>Kerangka navigasi sudah tersedia. Modul transaksi akan dipindahkan berikutnya dengan mempertahankan perhitungan dan data WiseProfit lama.</p></div></div>}
         {active === 'Dashboard' && <>
         <section className="stat-grid">
           {[{label:'Total omzet',value:money(summary.totalPemasukanJual),note:'Pendapatan dari unit terjual',icon:ArrowUpRight,tone:'blue'},{label:'Keuntungan bersih',value:money(summary.totalGainTerjual),note:'Laba terealisasi',icon:Activity,tone:'green'},{label:'Saldo kas',value:money(summary.saldoKasSaatIni),note:'Setelah pembelian dan penarikan',icon:Wallet,tone:'violet'},{label:'Total barang',value:String(summary.totalItems),note:'Barang tersimpan di inventaris',icon:Package,tone:'amber'}].map(s=>{const Icon=s.icon;return <article className="glass stat-card" key={s.label}><div className="stat-top"><span>{s.label}</span><div className={'stat-icon '+s.tone}><Icon size={17}/></div></div><strong className="stat-value">{s.value}</strong><div className="stat-note">{s.note}</div></article>})}
@@ -140,6 +141,7 @@ export default function App() {
         {active === 'Penarikan' && <WithdrawalModule userId={user.id} withdrawals={withdrawals} balance={summary.saldoKasSaatIni} onChanged={setWithdrawals} />}
         {active === 'Catatan' && <NotesModule userId={user.id} />}
         {active === 'Pembelian' && <PurchasesModule items={items} onAddPurchase={() => setActive('Barang')} />}
+        {(active === 'Bantuan & Keluhan' || active === 'Admin Keluhan') && <SupportModule userId={user.id} email={user.email} isAdmin={user.isSupportAdmin} initialTab={active === 'Admin Keluhan' ? 'admin' : 'faq'} />}
         {active === 'Ekspor & Impor' && <ExportImportModule userId={user.id} email={user.email} items={items} withdrawals={withdrawals} modalAwal={modalAwal} onRestoreData={(nextItems,nextWithdrawals,nextModal) => { setItems(nextItems); setWithdrawals(nextWithdrawals); setModalAwal(nextModal); }} />}
         <footer>WiseProfit Next <span>•</span> Data tersinkron untuk {user.email}</footer>
       </div>

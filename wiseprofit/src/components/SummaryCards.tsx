@@ -54,9 +54,9 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
   const isRugi = summary.saldoKasSaatIni < 0;
 
   return (
-    <section className="mb-6 space-y-4">
+    <section className="cirrel-summary mb-6 space-y-4">
       {/* Top Banner: Modal Awal & Real-Time Flow Breakdown */}
-      <div className="bg-slate-900 border border-slate-800 text-white rounded-2xl p-4 sm:p-5 shadow-sm">
+      <div className="cirrel-summary-capital bg-slate-900 border border-slate-800 text-white rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           {/* Modal Awal Setting */}
           <div className="flex items-center gap-3.5">
@@ -178,9 +178,9 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       </div>
 
       {/* 4 Synchronized Luxury Dark Cards */}
-      <div className="grid min-w-0 grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4">
+      <div className="cirrel-summary-grid grid min-w-0 grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: SISA KAS SAAT INI (KASIR) */}
-        <div className="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-cash bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/15 rounded-full blur-2xl pointer-events-none" />
           
           <div>
@@ -227,7 +227,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
 
         {/* Card 2: TOTAL UNTUNG (GAIN) BERSIH */}
-        <div className="bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-emerald-500/25 border-t-2 border-t-teal-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-profit bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-emerald-500/25 border-t-2 border-t-teal-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div>
@@ -253,7 +253,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
 
         {/* Card 3: PERTUMBUHAN MODAL (ROI) */}
-        <div className="bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-cyan-500/25 border-t-2 border-t-cyan-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-growth bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-cyan-500/25 border-t-2 border-t-cyan-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
           <div>
             <div className="flex items-center justify-between text-xs font-semibold mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-slate-300">
@@ -279,7 +279,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
 
         {/* Card 4: TOTAL EKUITAS SETELAH UNTUNG */}
-        <div className="bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-amber-500/25 border-t-2 border-t-amber-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-equity bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-amber-500/25 border-t-2 border-t-amber-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div>

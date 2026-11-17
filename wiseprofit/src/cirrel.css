@@ -19,3 +19,51 @@ button,input,select,textarea{font:inherit}.cirrel-app-root{min-height:100vh;colo
 .cirrel-footer{margin-top:auto;padding:16px 28px;border-top:1px solid var(--cirrel-line);color:var(--cirrel-muted);background:transparent;font-size:10px}.cirrel-sidebar-backdrop{display:none}
 @media(max-width:1050px){.cirrel-sidebar{width:210px}.cirrel-content-shell{width:calc(100% - 210px);margin-left:210px}.cirrel-topbar{left:210px;padding:0 22px}.cirrel-main-content{padding-right:22px!important;padding-left:22px!important}}
 @media(max-width:700px){.cirrel-sidebar{width:260px;transform:translateX(-100%);transition:transform .25s ease}.cirrel-sidebar.is-open{transform:translateX(0)}.cirrel-sidebar-backdrop{position:fixed;z-index:45;display:block;inset:0;border:0;background:#0008;backdrop-filter:blur(2px)}.cirrel-content-shell{width:100%;margin-left:0}.cirrel-topbar{left:0;height:68px;gap:10px;padding:0 14px}.cirrel-mobile-menu{display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center}.cirrel-main-content{padding:92px 14px 34px!important}.cirrel-topbar-title{font-size:14px}.cirrel-topbar-title small,.cirrel-online{display:none}.cirrel-topbar-btn .cirrel-action-label{display:none}.cirrel-footer{padding:14px}}
+
+/* Cirrel skin adapters for existing WiseProfit feature components */
+.cirrel-main-content [class*="bg-slate-900"] { background-color: var(--cirrel-panel) !important; }
+.cirrel-main-content [class*="bg-slate-950"] { background-color: var(--cirrel-panel-2) !important; }
+.cirrel-main-content [class*="bg-emerald-950"] { background-color: color-mix(in srgb, var(--cirrel-accent) 9%, var(--cirrel-panel-2)) !important; }
+.cirrel-main-content [class*="border-slate-"] { border-color: var(--cirrel-line) !important; }
+.cirrel-main-content [class*="text-slate-400"],
+.cirrel-main-content [class*="text-slate-500"] { color: var(--cirrel-muted) !important; }
+.cirrel-main-content [class*="text-emerald-300"],
+.cirrel-main-content [class*="text-emerald-400"] { color: var(--cirrel-accent-2) !important; }
+.cirrel-main-content [class*="bg-emerald-500"] { background-color: var(--cirrel-accent) !important; color: #12251b !important; }
+.cirrel-main-content [class*="border-emerald-"] { border-color: color-mix(in srgb, var(--cirrel-accent-2) 55%, transparent) !important; }
+.cirrel-main-content [class*="bg-white"] { background-color: var(--cirrel-panel-2) !important; }
+.cirrel-main-content [class*="border-blue-"] { border-color: var(--cirrel-line) !important; }
+.cirrel-main-content [class*="text-[#18345F]"],
+.cirrel-main-content [class*="text-[#24324B]"],
+.cirrel-main-content [class*="text-[#385477]"],
+.cirrel-main-content [class*="text-[#42618B]"] { color: var(--cirrel-text) !important; }
+.cirrel-main-content [class*="bg-blue-50"],
+.cirrel-main-content [class*="bg-emerald-50"],
+.cirrel-main-content [class*="bg-indigo-50"] { background-color: color-mix(in srgb, var(--cirrel-accent) 10%, var(--cirrel-panel-2)) !important; }
+.cirrel-main-content [class*="text-blue-"] { color: var(--cirrel-accent-2) !important; }
+.cirrel-main-content [class*="text-emerald-700"],
+.cirrel-main-content [class*="text-indigo-700"] { color: var(--cirrel-accent-2) !important; }
+.cirrel-main-content [class*="bg-blue-600"],
+.cirrel-main-content [class*="from-blue-600"] { background: var(--cirrel-accent) !important; color: #12251b !important; }
+.cirrel-main-content .wp-quick-add-panel {
+  border-color: var(--cirrel-line) !important;
+  background: var(--cirrel-panel) !important;
+  box-shadow: var(--cirrel-shadow) !important;
+}
+.cirrel-main-content .wp-quick-add-panel form { border-color: var(--cirrel-line) !important; }
+.cirrel-main-content .wp-quick-add-panel input,
+.cirrel-main-content input:not([type="checkbox"]):not([type="radio"]),
+.cirrel-main-content select,
+.cirrel-main-content textarea {
+  border-color: var(--cirrel-line) !important;
+  color: var(--cirrel-text) !important;
+  background-color: var(--cirrel-panel-2) !important;
+}
+.cirrel-main-content .wp-quick-add-panel input::placeholder,
+.cirrel-main-content input::placeholder,
+.cirrel-main-content textarea::placeholder { color: var(--cirrel-muted) !important; }
+.cirrel-main-content table { border-color: var(--cirrel-line); }
+.cirrel-main-content th { color: var(--cirrel-muted) !important; border-color: var(--cirrel-line) !important; }
+.cirrel-main-content td { color: var(--cirrel-text); border-color: var(--cirrel-line) !important; }
+.cirrel-main-content [role="dialog"] { border-color: var(--cirrel-line) !important; background: var(--cirrel-panel-2) !important; color: var(--cirrel-text) !important; }
+.cirrel-main-content .shadow-\[0_25px_60px_rgba\(0\,0\,0\,0\.4\)\] { box-shadow: var(--cirrel-shadow) !important; }

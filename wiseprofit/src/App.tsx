@@ -772,11 +772,11 @@ export default function App() {
           ) : (
             <div key={activePage} className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
-              {activePage === 'notes' && user && <NotesPage user={user} language={language} />}
+              {activePage === 'notes' && user && <div className="cirrel-notes-page"><NotesPage user={user} language={language} /></div>}
 
               {/* PAGE 1: KASIR & INVENTORI */}
               {activePage === 'inventory' && (
-                <div className="space-y-6">
+                <div className="cirrel-inventory-page space-y-6">
                   {/* Enterprise-style workspace heading */}
                   <section className="dashboard-hero flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div className="space-y-2">
@@ -826,6 +826,7 @@ export default function App() {
 
               {/* PAGE 2: LAPORAN PENJUALAN & EKUITAS (HALAMAN MANDIRI) */}
               {activePage === 'reports' && (
+                <div className="cirrel-reports-page">
                 <ReportsEquityPage
                   language={language}
                   items={items}
@@ -836,10 +837,12 @@ export default function App() {
                   onPrintReport={handlePrint}
                   onBackToInventory={() => setActivePage('inventory')}
                 />
+                </div>
               )}
 
               {/* PAGE 3: PENARIKAN UANG / KAS (HALAMAN MANDIRI) */}
               {activePage === 'withdrawals' && (
+                <div className="cirrel-withdrawal-page">
                 <WithdrawalPage
                   withdrawals={withdrawals}
                   language={language}
@@ -850,10 +853,12 @@ export default function App() {
                   }}
                   onDelete={handleDeleteWithdrawal}
                 />
+                </div>
               )}
 
               {/* PAGE 4: IMPOR DATA (EXCEL / CSV / JSON) */}
               {activePage === 'import' && (
+                <div className="cirrel-import-page">
                 <ImportDataPage
                   language={language}
                   currentItemsCount={items.length}
@@ -862,13 +867,14 @@ export default function App() {
                   onImportSuccess={handleImportSuccess}
                   onNavigateToInventory={() => setActivePage('inventory')}
                 />
+                </div>
               )}
 
               {activePage === 'faq' && (
-                <SupportPage language={language} mode="faq" />
+                <div className="cirrel-support-page"><SupportPage language={language} mode="faq" /></div>
               )}
 
-              {activePage === 'support-admin' && <SupportAdminPage language={language} />}
+              {activePage === 'support-admin' && <div className="cirrel-admin-page"><SupportAdminPage language={language} /></div>}
             </div>
           )}
         </main>

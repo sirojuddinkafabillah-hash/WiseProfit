@@ -923,3 +923,133 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
   .cirrel-inventory-toolbar > div:last-child > div { min-width:0; width:100%; }
   .cirrel-inventory-table { min-width:1050px; }
 }
+
+
+/* Dedicated Cirrel inventory skin: high-specificity reset over legacy Tailwind/table rules */
+#cirrel-inventory { display:flex; flex-direction:column; gap:18px; color:var(--cirrel-text); font-family:"DM Sans",sans-serif; }
+#cirrel-inventory .cirrel-quick-add {
+  padding:18px 20px !important; border:1px solid var(--cirrel-line) !important;
+  border-radius:18px !important; background:var(--cirrel-panel) !important;
+  box-shadow:var(--cirrel-shadow) !important; color:var(--cirrel-text) !important;
+}
+#cirrel-inventory .cirrel-quick-add > button { color:var(--cirrel-text) !important; }
+#cirrel-inventory .cirrel-quick-add > button > span:first-child > span:first-child {
+  color:var(--cirrel-accent) !important; background:color-mix(in srgb,var(--cirrel-accent) 13%,var(--cirrel-panel-2)) !important;
+}
+#cirrel-inventory .cirrel-quick-add button > span > span.block:first-child { color:var(--cirrel-text) !important; }
+#cirrel-inventory .cirrel-quick-add button > span.inline-flex {
+  border:1px solid color-mix(in srgb,var(--cirrel-accent) 35%,transparent) !important;
+  border-radius:10px !important; color:#10241b !important;
+  background:var(--cirrel-accent) !important; box-shadow:none !important;
+}
+#cirrel-inventory .cirrel-quick-add form {
+  border-color:var(--cirrel-line) !important;
+}
+#cirrel-inventory .cirrel-quick-add form p,
+#cirrel-inventory .cirrel-quick-add form label { color:var(--cirrel-muted) !important; }
+#cirrel-inventory .cirrel-quick-add form input {
+  color:var(--cirrel-text) !important; background:var(--cirrel-panel-2) !important;
+  border:1px solid var(--cirrel-line) !important; border-radius:10px !important;
+  box-shadow:none !important;
+}
+#cirrel-inventory .cirrel-quick-add form button[type="submit"] {
+  color:#10241b !important; background:var(--cirrel-accent) !important;
+  border:1px solid var(--cirrel-accent) !important; box-shadow:none !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar {
+  border:1px solid var(--cirrel-line) !important; border-radius:16px !important;
+  background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+}
+#cirrel-inventory .cirrel-inventory-heading { color:var(--cirrel-text) !important; }
+#cirrel-inventory .cirrel-inventory-toolbar button {
+  border:1px solid var(--cirrel-line) !important; border-radius:9px !important;
+  color:var(--cirrel-muted) !important; background:var(--cirrel-panel-2) !important;
+  box-shadow:none !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar button[class*="emerald-500/20"] {
+  color:#173b2b !important; border-color:var(--cirrel-accent) !important;
+  background:var(--cirrel-accent) !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar input {
+  color:var(--cirrel-text) !important; background:var(--cirrel-panel-2) !important;
+  border:1px solid var(--cirrel-line) !important; border-radius:10px !important;
+  box-shadow:none !important;
+}
+#cirrel-inventory .cirrel-inventory-table-wrap {
+  border:1px solid var(--cirrel-line) !important; border-radius:18px !important;
+  background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table {
+  display:table !important; width:100% !important; min-width:1120px !important;
+  border:0 !important; border-collapse:separate !important; border-spacing:0 !important;
+  border-radius:0 !important; background:transparent !important; color:var(--cirrel-text) !important;
+  font:500 12px "DM Sans",sans-serif !important; box-shadow:none !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead { display:table-header-group !important; }
+#cirrel-inventory table.cirrel-inventory-table thead tr { background:var(--cirrel-panel-2) !important; }
+#cirrel-inventory table.cirrel-inventory-table thead th {
+  padding:15px 13px !important; border:0 !important;
+  border-bottom:1px solid var(--cirrel-line) !important; border-radius:0 !important;
+  color:var(--cirrel-muted) !important; background:var(--cirrel-panel-2) !important;
+  font:700 9px "DM Sans",sans-serif !important; letter-spacing:.1em !important;
+  text-transform:uppercase !important; white-space:nowrap !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(5) {
+  color:var(--cirrel-accent-2) !important;
+  background:color-mix(in srgb,var(--cirrel-accent) 9%,var(--cirrel-panel-2)) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(7) { color:var(--cirrel-accent-2) !important; }
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(8) { color:var(--cirrel-orange) !important; }
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(9) { color:var(--cirrel-accent) !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody tr { background:transparent !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody tr:hover { background:color-mix(in srgb,var(--cirrel-accent) 5%,var(--cirrel-panel)) !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody td {
+  padding:14px 13px !important; border:0 !important;
+  border-bottom:1px solid var(--cirrel-line) !important; border-radius:0 !important;
+  color:var(--cirrel-text) !important; background:transparent !important;
+  font:500 12px "DM Sans",sans-serif !important; vertical-align:middle !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody tr:hover td {
+  background:color-mix(in srgb,var(--cirrel-accent) 4%,transparent) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td:nth-child(5) {
+  background:color-mix(in srgb,var(--cirrel-accent) 5%,transparent) !important;
+  border-left:1px solid var(--cirrel-line) !important; border-right:1px solid var(--cirrel-line) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td:nth-child(9) { color:var(--cirrel-accent) !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody td div,
+#cirrel-inventory table.cirrel-inventory-table tbody td span { font-family:"DM Sans",sans-serif !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-100,
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-200,
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-300,
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-white { color:var(--cirrel-text) !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-400,
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-500 { color:var(--cirrel-muted) !important; }
+#cirrel-inventory table.cirrel-inventory-table button {
+  border:1px solid var(--cirrel-line) !important; border-radius:8px !important;
+  color:var(--cirrel-text) !important; background:var(--cirrel-panel-2) !important;
+  box-shadow:none !important;
+}
+#cirrel-inventory table.cirrel-inventory-table button:hover { border-color:var(--cirrel-accent-2) !important; }
+#cirrel-inventory table.cirrel-inventory-table input {
+  border:1px solid var(--cirrel-line) !important; border-radius:7px !important;
+  color:var(--cirrel-text) !important; background:var(--cirrel-panel-2) !important;
+  box-shadow:none !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tfoot td {
+  padding:14px 13px !important; color:var(--cirrel-text) !important;
+  background:var(--cirrel-panel-2) !important; border-top:1px solid var(--cirrel-line) !important;
+}
+#cirrel-inventory [class*="fixed"] > div {
+  border:1px solid var(--cirrel-line) !important; border-radius:18px !important;
+  color:var(--cirrel-text) !important; background:var(--cirrel-panel) !important;
+  box-shadow:var(--cirrel-shadow) !important;
+}
+#cirrel-inventory [class*="fixed"] .text-white,
+#cirrel-inventory [class*="fixed"] .text-slate-100,
+#cirrel-inventory [class*="fixed"] .text-slate-200 { color:var(--cirrel-text) !important; }
+@media(max-width:700px) {
+  #cirrel-inventory .cirrel-inventory-toolbar { align-items:stretch !important; }
+  #cirrel-inventory .cirrel-inventory-toolbar > div { width:100% !important; }
+  #cirrel-inventory table.cirrel-inventory-table { min-width:1080px !important; }
+}

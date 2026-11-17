@@ -874,6 +874,10 @@ export default function App() {
                 <div className="cirrel-support-page"><SupportPage language={language} mode="faq" /></div>
               )}
 
+              {activePage === 'complaints' && (
+                <div className="cirrel-support-page"><SupportPage language={language} mode="complaints" /></div>
+              )}
+
               {activePage === 'support-admin' && <div className="cirrel-admin-page"><SupportAdminPage language={language} /></div>}
             </div>
           )}

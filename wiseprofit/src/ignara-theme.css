@@ -1,0 +1,231 @@
+/* WiseProfit theme layer — Ignara palette only.
+   Cirrel layout and WiseProfit business components remain unchanged. */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font: "Urbanist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-2xs: 11px; --fs-xs: 12px; --fs-sm: 12.5px; --fs-md: 13.5px;
+  --fs-base: 14px; --fs-lg: 15px; --fs-xl: 17px; --fs-2xl: 20px;
+  --fs-3xl: 22px; --fs-4xl: 26px; --fs-display: 34px;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 26px;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --max: 1560px; --gap: 18px; --pad: 28px; --side-w: 248px; --rail-w: 84px;
+
+  --bg: #e7e6e4; --side: #f2f1ef; --card: #f7f6f4;
+  --card-2: #efeeeb; --card-3: #e3e1de; --panel: #faf9f7;
+  --well: #1414180d; --ink: #1d1e21; --ink-2: #3a3b40; --muted: #65666c;
+  --line: #14141814; --line-2: #14141826; --top-light: #ffffffb3;
+  --shadow-sm: 0 1px 2px #1e18140f;
+  --shadow: 0 1px 2px #1e18140d, 0 16px 34px -22px #1e181452;
+  --shadow-lg: 0 2px 6px #1e181414, 0 30px 60px -24px #1e181466;
+  --accent: #ee5230; --accent-from: #ff7b3a; --accent-to: #de3424;
+  --accent-ink: #1f0a04; --accent-hi: #f4633c; --accent-soft: #ee523024;
+  --accent-text: #b5361b; --accent-glow: #e43c2473;
+  --grad: linear-gradient(140deg, var(--accent-from), var(--accent) 50%, var(--accent-to));
+  --on-grad: #fff; --thumb: #1d1e21; --on-thumb: #f7f6f4;
+  --sig: #ee5230; --sig-text: #b5361b; --sig-soft: #ee523024;
+  --data: #9a9ca2; --data-2: #c9cacd; --chart-in: #1d1e21;
+  --chart-out: #ee5230; --out: #ee5230; --in-text: #1d7446;
+  --good: #1d7446; --warn: #8a5807; --bad: #b3222f; --info: #2a5c99;
+  --good-soft: #1e825021; --warn-soft: #d7961e2e;
+  --bad-soft: #cd283c1c; --info-soft: #2a5c991f;
+  --c1: #ee5230; --c2: #e9952e; --c3: #5d6168;
+  --c4: #4f8fd1; --c5: #c39a66; --c6: #2f9c80;
+  --h0: #e2e1de; --h1: #f6b49a; --h2: #cfd2d8; --h3: #f2c98c;
+  --h4: #dcc7b8; --h5: #f19f86; --h6: #dad5cd;
+  --tile-ink: #1d1e21; --tile-muted: #55565c;
+  --mono-ink: #1d1e21; --paper: #fbfaf8; --paper-ink: #1d1e21;
+
+  /* Existing Cirrel selectors are mapped to the Ignara design tokens. */
+  --cirrel-bg: var(--bg);
+  --cirrel-panel: var(--card);
+  --cirrel-panel-2: var(--panel);
+  --cirrel-line: var(--line);
+  --cirrel-text: var(--ink);
+  --cirrel-muted: var(--muted);
+  --cirrel-accent: var(--accent);
+  --cirrel-accent-2: var(--accent-text);
+  --cirrel-orange: var(--c2);
+  --cirrel-red: var(--bad);
+  --cirrel-shadow: var(--shadow);
+  color-scheme: light;
+}
+
+[data-theme=dark] {
+  --bg: #26282c; --side: #1f2124; --card: #2f3135;
+  --card-2: #36383d; --card-3: #3f4147; --panel: #323439;
+  --well: #ffffff0a; --ink: #f3f1ed; --ink-2: #d4d2ce; --muted: #a4a4a9;
+  --line: #ffffff0f; --line-2: #ffffff1f; --top-light: #ffffff0d;
+  --shadow-sm: 0 1px 2px #0000004d;
+  --shadow: 0 1px 1px #00000040, 0 22px 40px -22px #000000bf;
+  --shadow-lg: 0 2px 6px #0006, 0 34px 70px -24px #000000e6;
+  --accent: #f0552f; --accent-from: #ff7c3c; --accent-to: #e2372a;
+  --accent-ink: #1f0a04; --accent-hi: #f66a40; --accent-soft: #f0552f2b;
+  --accent-text: #ff8c62; --accent-glow: #f046286b;
+  --grad: linear-gradient(140deg, var(--accent-from), var(--accent) 50%, var(--accent-to));
+  --on-grad: #fff; --thumb: #f3f1ed; --on-thumb: #26282c;
+  --sig: #f0552f; --sig-text: #ff8c62; --sig-soft: #f0552f2b;
+  --data: #707379; --data-2: #55585e; --chart-in: #f3f1ed;
+  --chart-out: #f0552f; --out: #f0552f; --in-text: #74d6a0;
+  --good: #74d6a0; --warn: #f4c46e; --bad: #ff8a92; --info: #94bcf2;
+  --good-soft: #74d6a021; --warn-soft: #f4c46e24;
+  --bad-soft: #ff8a9221; --info-soft: #94bcf221;
+  --c1: #f0552f; --c2: #f0a040; --c3: #a6a9b0;
+  --c4: #6fa6e3; --c5: #d8b48a; --c6: #4fbf9f;
+  --cirrel-bg: var(--bg); --cirrel-panel: var(--card);
+  --cirrel-panel-2: var(--panel); --cirrel-line: var(--line);
+  --cirrel-text: var(--ink); --cirrel-muted: var(--muted);
+  --cirrel-accent: var(--accent); --cirrel-accent-2: var(--accent-text);
+  --cirrel-orange: var(--c2); --cirrel-red: var(--bad); --cirrel-shadow: var(--shadow);
+  color-scheme: dark;
+}
+
+html, body {
+  background: var(--bg) !important;
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-base);
+}
+body {
+  background-image: none !important;
+  font-variant-numeric: tabular-nums;
+}
+button, input, select, textarea { font-family: var(--font); }
+.cirrel-app-root {
+  color: var(--ink) !important;
+  background-color: var(--bg) !important;
+  font-family: var(--font) !important;
+}
+.cirrel-sidebar {
+  background: var(--side) !important;
+  border-color: var(--line-2) !important;
+  backdrop-filter: none;
+}
+.cirrel-brand { font-family: var(--font) !important; color: var(--ink); }
+.cirrel-brand-mark {
+  color: var(--on-grad) !important;
+  background: var(--grad) !important;
+  box-shadow: var(--shadow-sm);
+}
+.cirrel-brand-copy small { color: var(--muted) !important; }
+.cirrel-nav-label { color: var(--muted) !important; }
+.cirrel-nav-item { color: var(--ink-2) !important; }
+.cirrel-nav-item:hover,
+.cirrel-nav-item.active {
+  color: var(--ink) !important;
+  background: var(--accent-soft) !important;
+}
+.cirrel-nav-item.active { box-shadow: inset 3px 0 var(--accent) !important; }
+.cirrel-nav-count {
+  color: var(--accent-text) !important;
+  background: var(--accent-soft) !important;
+}
+.cirrel-profile, .cirrel-admin { color: var(--ink) !important; border-color: var(--line-2) !important; }
+.cirrel-profile-copy small { color: var(--muted) !important; }
+.cirrel-avatar i { border-color: var(--side) !important; }
+.cirrel-admin:hover { border-color: var(--accent) !important; }
+.cirrel-topbar {
+  background: color-mix(in srgb, var(--bg) 92%, transparent) !important;
+  border-color: var(--line-2) !important;
+}
+.cirrel-topbar-title { color: var(--ink) !important; font-family: var(--font) !important; }
+.cirrel-topbar-title small, .cirrel-online { color: var(--muted) !important; }
+.cirrel-online i { background: var(--good) !important; box-shadow: 0 0 8px color-mix(in srgb, var(--good) 55%, transparent) !important; }
+.cirrel-topbar-btn {
+  color: var(--ink-2) !important;
+  background: var(--card) !important;
+  border-color: var(--line-2) !important;
+}
+.cirrel-topbar-btn:hover { color: var(--ink) !important; border-color: var(--accent) !important; }
+.cirrel-topbar-btn.primary {
+  color: var(--accent-ink) !important;
+  background: var(--grad) !important;
+  border-color: transparent !important;
+}
+.cirrel-language button { background: var(--card) !important; border-color: var(--line-2) !important; }
+.cirrel-language button.active { border-color: var(--accent) !important; box-shadow: 0 0 0 2px var(--accent-soft) !important; }
+.cirrel-main-content {
+  color: var(--ink) !important;
+  background: transparent !important;
+}
+.cirrel-main-content h1, .cirrel-main-content h2,
+.cirrel-main-content h3, .cirrel-main-content h4 {
+  color: var(--ink);
+  font-family: var(--font) !important;
+}
+.cirrel-main-content .rounded-2xl,
+.cirrel-main-content .rounded-3xl { border-radius: var(--r-lg) !important; }
+.cirrel-footer { color: var(--muted) !important; border-color: var(--line-2) !important; }
+.cirrel-sidebar-backdrop { background: #0008 !important; }
+
+/* Semantic status colors stay distinct from the orange brand accent. */
+.cirrel-main-content [class*="text-emerald-"] { color: var(--good) !important; }
+.cirrel-main-content [class*="bg-emerald-"] { background-color: var(--good-soft) !important; }
+.cirrel-main-content [class*="border-emerald-"] { border-color: color-mix(in srgb, var(--good) 45%, var(--line)) !important; }
+.cirrel-main-content [class*="text-amber-"] { color: var(--warn) !important; }
+.cirrel-main-content [class*="bg-amber-"] { background-color: var(--warn-soft) !important; }
+.cirrel-main-content [class*="text-rose-"], .cirrel-main-content [class*="text-red-"] { color: var(--bad) !important; }
+.cirrel-main-content [class*="bg-rose-"], .cirrel-main-content [class*="bg-red-"] { background-color: var(--bad-soft) !important; }
+.cirrel-main-content [class*="text-sky-"], .cirrel-main-content [class*="text-blue-"] { color: var(--info) !important; }
+.cirrel-main-content [class*="bg-sky-"], .cirrel-main-content [class*="bg-blue-"] { background-color: var(--info-soft) !important; }
+
+/* Consistent fields and surfaces across all WiseProfit feature pages. */
+.cirrel-main-content input:not([type=checkbox]):not([type=radio]),
+.cirrel-main-content select,
+.cirrel-main-content textarea {
+  color: var(--ink) !important;
+  background: var(--panel) !important;
+  border-color: var(--line-2) !important;
+}
+.cirrel-main-content input::placeholder,
+.cirrel-main-content textarea::placeholder { color: var(--muted) !important; }
+.cirrel-main-content table { color: var(--ink); border-color: var(--line) !important; }
+.cirrel-main-content th { color: var(--muted) !important; border-color: var(--line) !important; }
+.cirrel-main-content td { color: var(--ink-2); border-color: var(--line) !important; }
+.cirrel-main-content [role=dialog] {
+  color: var(--ink) !important; background: var(--panel) !important;
+  border-color: var(--line-2) !important; box-shadow: var(--shadow-lg) !important;
+}
+.cirrel-main-content .shadow,
+.cirrel-main-content .shadow-lg,
+.cirrel-main-content .shadow-xl { box-shadow: var(--shadow) !important; }
+
+/* Inventory-specific components consume the same theme tokens as other pages. */
+#cirrel-inventory { color: var(--ink) !important; font-family: var(--font) !important; }
+#cirrel-inventory .cirrel-quick-add,
+#cirrel-inventory .cirrel-inventory-toolbar,
+#cirrel-inventory .cirrel-inventory-table-wrap {
+  background: var(--card) !important; border-color: var(--line-2) !important;
+  box-shadow: var(--shadow) !important;
+}
+#cirrel-inventory .cirrel-quick-add form input,
+#cirrel-inventory .cirrel-inventory-toolbar input,
+#cirrel-inventory table.cirrel-inventory-table input,
+#cirrel-inventory table.cirrel-inventory-table button {
+  color: var(--ink) !important; background: var(--panel) !important;
+  border-color: var(--line-2) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead tr,
+#cirrel-inventory table.cirrel-inventory-table thead th,
+#cirrel-inventory table.cirrel-inventory-table tfoot td {
+  background: var(--card-2) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td { color: var(--ink-2) !important; }
+#cirrel-inventory table.cirrel-inventory-table tbody tr:hover,
+#cirrel-inventory table.cirrel-inventory-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--accent) 6%, var(--card)) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td:nth-child(9) { color: var(--accent-text) !important; }
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(5) {
+  color: var(--accent-text) !important;
+  background: color-mix(in srgb, var(--accent) 8%, var(--card-2)) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(7),
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(9) { color: var(--accent-text) !important; }
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(8) { color: var(--c2) !important; }
+
+/* Mobile containment; does not alter Cirrel's existing breakpoints or layout. */
+@media (max-width: 700px) {
+  .cirrel-sidebar { background: var(--side) !important; }
+  .cirrel-topbar { background: color-mix(in srgb, var(--bg) 94%, transparent) !important; }
+}

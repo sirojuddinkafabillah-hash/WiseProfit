@@ -120,7 +120,8 @@ export const Header: React.FC<HeaderProps> = ({
     withdrawals: t('header.withdrawals', language),
     notes: language === 'id' ? 'Catatan' : 'Notes',
     import: t('header.importExport', language),
-    faq: language === 'id' ? 'Pusat Bantuan' : 'Help center',
+    faq: language === 'id' ? 'FAQ & Panduan' : 'FAQ & Help',
+    complaints: language === 'id' ? 'Keluhan & Saran' : 'Feedback & Suggestions',
     'support-admin': language === 'id' ? 'Admin Support' : 'Admin support',
   };
 

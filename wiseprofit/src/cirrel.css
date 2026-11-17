@@ -198,3 +198,87 @@ html, body, #root, .cirrel-app-root {
   }
   .cirrel-main-content table.wp-inventory-table { min-width: 900px !important; }
 }
+
+
+/* Native Cirrel table treatment for the live WiseProfit inventory data */
+.cirrel-main-content .table-wrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto !important;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cirrel-accent-2) var(--cirrel-panel-2);
+}
+.cirrel-main-content table.wp-inventory-table.table {
+  width: 100% !important;
+  min-width: 1040px !important;
+  table-layout: auto !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  background: transparent !important;
+  color: var(--cirrel-text) !important;
+  font-family: "DM Sans", sans-serif !important;
+  font-size: 11px !important;
+}
+.cirrel-main-content table.wp-inventory-table.table thead tr {
+  background: transparent !important;
+  color: var(--cirrel-muted) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table th {
+  padding: 10px 9px !important;
+  border-bottom: 1px solid var(--cirrel-line) !important;
+  color: var(--cirrel-muted) !important;
+  background: transparent !important;
+  font-family: "DM Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: .02em !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td {
+  padding: 13px 9px !important;
+  border-bottom: 1px solid var(--cirrel-line) !important;
+  color: var(--cirrel-text);
+  background: transparent !important;
+  font-family: "DM Sans", sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  vertical-align: middle !important;
+}
+.cirrel-main-content table.wp-inventory-table.table tbody tr {
+  background: transparent !important;
+  transition: background .18s ease;
+}
+.cirrel-main-content table.wp-inventory-table.table tbody tr:hover {
+  background: color-mix(in srgb, var(--cirrel-accent) 6%, transparent) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td .font-mono {
+  font-family: "DM Sans", sans-serif !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td .text-slate-400,
+.cirrel-main-content table.wp-inventory-table.table td .text-slate-500 {
+  color: var(--cirrel-muted) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td .text-slate-100,
+.cirrel-main-content table.wp-inventory-table.table td .text-slate-200 {
+  color: var(--cirrel-text) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td .bg-slate-900,
+.cirrel-main-content table.wp-inventory-table.table td .bg-slate-950,
+.cirrel-main-content table.wp-inventory-table.table td .bg-slate-800 {
+  background: var(--cirrel-panel-2) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table td .border-slate-700,
+.cirrel-main-content table.wp-inventory-table.table td .border-slate-700\/80 {
+  border-color: var(--cirrel-line) !important;
+}
+.cirrel-main-content table.wp-inventory-table.table tfoot td {
+  border-top: 1px solid var(--cirrel-line) !important;
+  border-bottom: 0 !important;
+  font-weight: 700 !important;
+}
+@media (max-width: 700px) {
+  .cirrel-main-content table.wp-inventory-table.table { min-width: 1040px !important; }
+}

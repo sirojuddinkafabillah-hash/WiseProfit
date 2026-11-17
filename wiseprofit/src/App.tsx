@@ -891,17 +891,17 @@ export default function App() {
         <div className="pointer-events-none fixed inset-0 z-[60]">
           {window.innerWidth < 640 && <button type="button" aria-label={language === 'id' ? 'Tutup panel profil' : 'Close profile panel'} onClick={() => setIsProfilePanelOpen(false)} className="pointer-events-auto absolute inset-0 bg-black/35 backdrop-blur-[1px]"/>}
           <aside
-            className="pointer-events-auto absolute left-0 top-0 flex h-full max-w-full flex-col border-r border-slate-700 bg-slate-950/98 shadow-2xl transition-[width] duration-200"
+            className="pointer-events-auto cirrel-profile-drawer absolute left-0 top-0 flex h-full max-w-full flex-col transition-[width] duration-200"
             style={{ width: window.innerWidth < 640 ? 'min(88vw, 360px)' : `${Math.round(window.innerWidth / 3)}px` }}
           >
-            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800 bg-slate-950 px-3 py-3">
-              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Pengaturan' : 'Profile & Settings'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Panel samping WiseProfit' : 'WiseProfit side panel'}</p></div>
+            <div className="cirrel-profile-drawer-head flex shrink-0 items-center justify-between gap-2 px-4 py-4">
+              <div className="min-w-0"><p className="truncate text-sm font-bold text-white">{language === 'id' ? 'Profil & Pengaturan' : 'Profile & Settings'}</p><p className="text-[11px] text-slate-400">{language === 'id' ? 'Pengaturan akun dan workspace' : 'Account and workspace settings'}</p></div>
               <div className="flex shrink-0 items-center gap-1">
                 <span className="rounded-lg border border-slate-700 px-2 py-1.5 text-[11px] font-semibold text-slate-400" title={language === 'id' ? 'Lebar panel sekitar sepertiga layar' : 'Panel width is about one-third of the screen'}>⅓</span>
                 <button type="button" onClick={() => setIsProfilePanelOpen(false)} title={language === 'id' ? 'Tutup panel' : 'Close panel'} className="rounded-lg p-2 text-slate-300 hover:bg-slate-800">✕</button>
               </div>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+            <div className="cirrel-profile-drawer-body min-h-0 flex-1 overflow-y-auto px-4 py-5">
               <HomePage
                 user={user}
                 language={language}

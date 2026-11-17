@@ -818,3 +818,108 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
 .cirrel-admin-page section button:hover { background:color-mix(in srgb,var(--cirrel-accent) 7%,var(--cirrel-panel)) !important; }
 .cirrel-admin-page textarea,.cirrel-admin-page select { border:1px solid var(--cirrel-line) !important; border-radius:10px !important; background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important; }
 @media(max-width:700px) { .cirrel-admin-page { padding:14px !important; } .cirrel-admin-page > div:first-child { padding:15px; } }
+
+
+/* Cirrel refinement pass — inventory, reports and data exchange */
+.cirrel-inventory-card {
+  display:flex; flex-direction:column; gap:16px; padding:0 !important;
+  border:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.cirrel-inventory-quickadd { margin:0; }
+.cirrel-inventory-toolbar {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+  padding:16px 18px; border:1px solid var(--cirrel-line); border-radius:16px;
+  background:var(--cirrel-panel); box-shadow:var(--cirrel-shadow);
+}
+.cirrel-inventory-heading {
+  color:var(--cirrel-text) !important; font:800 15px Manrope,sans-serif !important;
+  letter-spacing:-.025em;
+}
+.cirrel-inventory-toolbar button {
+  border-radius:9px !important; font-family:"DM Sans",sans-serif !important;
+}
+.cirrel-inventory-toolbar input {
+  min-height:38px; border:1px solid var(--cirrel-line) !important; border-radius:10px !important;
+  background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important;
+  font:500 12px "DM Sans",sans-serif !important;
+}
+.cirrel-inventory-table-wrap {
+  width:100%; overflow:auto; border:1px solid var(--cirrel-line); border-radius:17px;
+  background:var(--cirrel-panel); box-shadow:var(--cirrel-shadow);
+  scrollbar-width:thin; scrollbar-color:var(--cirrel-line) transparent;
+}
+.cirrel-inventory-table {
+  width:100%; min-width:1120px; border-collapse:separate !important; border-spacing:0;
+  color:var(--cirrel-text); font-family:"DM Sans",sans-serif !important;
+}
+.cirrel-inventory-table thead { position:sticky; top:0; z-index:2; }
+.cirrel-inventory-table thead th {
+  padding:14px 12px !important; background:var(--cirrel-panel-2) !important;
+  color:var(--cirrel-muted) !important; border-bottom:1px solid var(--cirrel-line) !important;
+  font:750 9px "DM Sans",sans-serif !important; letter-spacing:.085em; text-transform:uppercase;
+  white-space:nowrap;
+}
+.cirrel-inventory-table thead th:nth-child(5) {
+  background:color-mix(in srgb,var(--cirrel-accent-2) 9%,var(--cirrel-panel-2)) !important;
+  color:var(--cirrel-accent-2) !important; border-left:1px solid var(--cirrel-line) !important;
+  border-right:1px solid var(--cirrel-line) !important;
+}
+.cirrel-inventory-table thead th:nth-child(9) {
+  background:color-mix(in srgb,var(--cirrel-accent) 9%,var(--cirrel-panel-2)) !important;
+  color:var(--cirrel-accent) !important;
+}
+.cirrel-inventory-table tbody td {
+  padding:13px 12px !important; background:transparent !important;
+  color:var(--cirrel-text); border-bottom:1px solid var(--cirrel-line) !important;
+  font:500 12px "DM Sans",sans-serif !important; vertical-align:middle;
+}
+.cirrel-inventory-table tbody tr { transition:background .15s ease; }
+.cirrel-inventory-table tbody tr:hover td {
+  background:color-mix(in srgb,var(--cirrel-accent) 4%,var(--cirrel-panel)) !important;
+}
+.cirrel-inventory-table tbody tr:last-child td { border-bottom:0 !important; }
+.cirrel-inventory-table tbody td:nth-child(5) {
+  background:color-mix(in srgb,var(--cirrel-accent-2) 4%,transparent) !important;
+  border-left:1px solid var(--cirrel-line) !important; border-right:1px solid var(--cirrel-line) !important;
+}
+.cirrel-inventory-table tbody td:nth-child(9) {
+  background:color-mix(in srgb,var(--cirrel-accent) 5%,transparent) !important;
+}
+.cirrel-inventory-table tfoot td {
+  padding:14px 12px !important; background:var(--cirrel-panel-2) !important;
+  color:var(--cirrel-text) !important; border-top:1px solid var(--cirrel-line) !important;
+  font:750 11px "DM Sans",sans-serif !important;
+}
+.cirrel-inventory-table button { border-radius:8px !important; }
+.cirrel-inventory-table input {
+  border:1px solid var(--cirrel-line) !important; border-radius:7px !important;
+  background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important;
+}
+.cirrel-inventory-card > [class*="fixed"] > div {
+  border:1px solid var(--cirrel-line) !important; border-radius:18px !important;
+  background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+}
+.cirrel-reports-page > .grid > div,
+.cirrel-reports-page > div[class*="bg-slate-"],
+.cirrel-import-page > .grid > div {
+  border:1px solid var(--cirrel-line) !important; border-radius:18px !important;
+  background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+}
+.cirrel-reports-page .overflow-x-auto,
+.cirrel-import-page .overflow-x-auto {
+  border:1px solid var(--cirrel-line) !important; border-radius:14px !important;
+  background:var(--cirrel-panel-2) !important;
+}
+.cirrel-import-page .grid > div { min-width:0; }
+.cirrel-import-page [class*="bg-[#1f4e78]"] {
+  background:color-mix(in srgb,var(--cirrel-accent-2) 15%,var(--cirrel-panel-2)) !important;
+  color:var(--cirrel-text) !important; border-color:var(--cirrel-line) !important;
+}
+.cirrel-import-page button { font-family:"DM Sans",sans-serif !important; }
+@media(max-width:700px) {
+  .cirrel-inventory-toolbar { align-items:stretch; padding:13px; }
+  .cirrel-inventory-toolbar > div { width:100%; }
+  .cirrel-inventory-toolbar > div:last-child { flex-wrap:wrap; }
+  .cirrel-inventory-toolbar > div:last-child > div { min-width:0; width:100%; }
+  .cirrel-inventory-table { min-width:1050px; }
+}

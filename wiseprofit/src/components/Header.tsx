@@ -92,18 +92,18 @@ export const Header: React.FC<HeaderProps> = ({
   }, [mobileOpen]);
 
   const groups: { label: string; items: NavItem[] }[] = [
-    { label: language === 'id' ? 'SHOP' : 'SHOP', items: [
+    { label: language === 'id' ? 'OPERASIONAL' : 'OPERATIONS', items: [
       { page: 'inventory', label: language === 'id' ? 'Kasir & Barang' : 'Cashier & Inventory', icon: ShoppingBag, count: itemsCount },
     ]},
-    { label: language === 'id' ? 'MONEY' : 'MONEY', items: [
+    { label: language === 'id' ? 'KEUANGAN' : 'FINANCE', items: [
       { page: 'reports', label: t('header.businessReports', language), icon: TrendingUp },
       { page: 'withdrawals', label: t('header.withdrawals', language), icon: ArrowDownCircle, count: withdrawalsCount },
     ]},
-    { label: language === 'id' ? 'WORKSPACE' : 'WORKSPACE', items: [
+    { label: language === 'id' ? 'RUANG KERJA' : 'WORKSPACE', items: [
       { page: 'notes', label: language === 'id' ? 'Catatan' : 'Notes', icon: NotebookPen },
       { page: 'import', label: t('header.importExport', language), icon: FileSpreadsheet },
     ]},
-    { label: language === 'id' ? 'TALK' : 'TALK', items: [
+    { label: language === 'id' ? 'BANTUAN' : 'SUPPORT', items: [
       { page: 'faq', label: language === 'id' ? 'Pusat Bantuan' : 'Help center', icon: CircleHelp },
     ]},
   ];
@@ -131,7 +131,7 @@ export const Header: React.FC<HeaderProps> = ({
         className={'cirrel-sidebar no-print' + (mobileOpen ? ' is-open' : '')}>
         <div className="cirrel-brand">
           <span className="cirrel-brand-mark" aria-hidden="true">✳</span>
-          <span className="cirrel-brand-copy">Cirrel<small>WISEPROFIT WORKSPACE</small></span>
+          <span className="cirrel-brand-copy">WiseProfit<small>BUSINESS WORKSPACE</small></span>
         </div>
 
         <nav className="cirrel-nav">

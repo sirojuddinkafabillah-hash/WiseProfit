@@ -674,3 +674,33 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
  .cirrel-view [class*="grid-cols-"] { grid-template-columns:minmax(0,1fr) !important; }
  .cirrel-view table { min-width:720px; }
 }
+
+/* Summary dashboard: explicit Cirrel card hierarchy */
+.cirrel-summary { display:flex; flex-direction:column; gap:18px !important; }
+.cirrel-summary-capital {
+ background:linear-gradient(120deg,var(--cirrel-panel),color-mix(in srgb,var(--cirrel-accent) 8%,var(--cirrel-panel))) !important;
+ border:1px solid var(--cirrel-line) !important; border-radius:20px !important;
+ padding:22px !important; box-shadow:var(--cirrel-shadow) !important;
+}
+.cirrel-summary-capital > div:first-child { gap:22px; }
+.cirrel-summary-capital .text-2xl,.cirrel-summary-capital .text-3xl { font-family:Manrope,sans-serif !important; letter-spacing:-.04em; }
+.cirrel-summary-grid { gap:14px !important; }
+.cirrel-stat-card {
+ min-height:176px; padding:21px !important; border:1px solid var(--cirrel-line) !important;
+ border-top:3px solid var(--cirrel-accent-2) !important; border-radius:19px !important;
+ background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+ transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.cirrel-stat-card:hover { transform:translateY(-2px); border-color:color-mix(in srgb,var(--cirrel-accent-2) 45%,var(--cirrel-line)) !important; }
+.cirrel-stat-card .text-2xl,.cirrel-stat-card .text-3xl { font-family:Manrope,sans-serif !important; font-weight:800 !important; letter-spacing:-.045em; }
+.cirrel-stat-cash { border-top-color:var(--cirrel-accent) !important; }
+.cirrel-stat-profit { border-top-color:var(--cirrel-accent-2) !important; }
+.cirrel-stat-growth { border-top-color:#79a9b5 !important; }
+.cirrel-stat-equity { border-top-color:var(--cirrel-orange) !important; }
+.cirrel-stat-card .border-t { border-color:var(--cirrel-line) !important; }
+.cirrel-stat-card button { border-radius:9px !important; }
+@media(max-width:700px) {
+ .cirrel-summary-capital { padding:16px !important; }
+ .cirrel-summary-grid { grid-template-columns:1fr !important; }
+ .cirrel-stat-card { min-height:148px; padding:17px !important; }
+}

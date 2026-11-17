@@ -20,7 +20,7 @@ import { NotesPage } from './components/NotesPage';
 import { SupportPage } from './components/SupportPage';
 import { SupportAdminPage } from './components/SupportAdminPage';
 import { supabase } from './lib/supabase';
-import { CosmicInteractiveBackground, BackgroundTheme } from './components/CosmicInteractiveBackground';
+import { BackgroundTheme } from './components/CosmicInteractiveBackground';
 import { useAuth } from './context/AuthContext';
 import { 
   Cloud, 
@@ -605,15 +605,9 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-200 font-sans" style={wallpaper ? { backgroundImage: `linear-gradient(rgba(2, 6, 23, 0.78), rgba(2, 6, 23, 0.88)), url("${wallpaper}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' } : undefined}>
-      {/* Dynamic Cursor-Interactive Background */}
-      {!wallpaper && <CosmicInteractiveBackground
-        currentTheme={backgroundTheme}
-        onThemeChange={handleThemeChange}
-      />}
-
-      {/* Main Foreground Content */}
-      <div className="relative z-10 flex min-h-screen min-w-0 flex-col overflow-x-hidden transition-[padding] duration-300" style={{ paddingLeft: isProfilePanelOpen && window.innerWidth >= 640 ? `${Math.round(window.innerWidth / 3)}px` : 0 }}>
+    <div className="cirrel-app-root relative min-h-screen flex flex-col text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-200 font-sans" style={wallpaper ? { backgroundImage: `linear-gradient(rgba(2, 6, 23, 0.78), rgba(2, 6, 23, 0.88)), url("${wallpaper}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' } : undefined}>
+      {/* Cirrel visual shell: business logic remains in WiseProfit components */}
+      <div className="cirrel-content-shell relative z-10 flex min-h-screen min-w-0 flex-col overflow-x-hidden">
         {/* Top Header with Navigation */}
         <Header
           activePage={isProfilePanelOpen ? 'home' : activePage}
@@ -706,7 +700,7 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className="wp-main-content min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 overflow-x-hidden bg-slate-950/35 px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+        <main className="cirrel-main-content min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 overflow-x-hidden px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
           {!user ? (
             <section className="mx-auto my-8 grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(36,50,75,0.12)] sm:my-14 lg:grid-cols-[1.05fr_0.95fr]">
@@ -880,7 +874,7 @@ export default function App() {
         </main>
 
         {/* Footer */}
-        <footer className="no-print mt-auto min-w-0 max-w-full overflow-hidden border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-xl py-5 text-center text-xs text-slate-400">
+        <footer className="cirrel-footer no-print mt-auto min-w-0 max-w-full overflow-hidden text-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5 font-mono text-[11px]">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />

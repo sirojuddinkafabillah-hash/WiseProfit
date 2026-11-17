@@ -770,7 +770,7 @@ export default function App() {
               </div>
             </section>
           ) : (
-            <div key={activePage} className="min-h-[65vh] w-full animate-in fade-in duration-200">
+            <div key={activePage} className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
               {activePage === 'notes' && user && <NotesPage user={user} language={language} />}
 

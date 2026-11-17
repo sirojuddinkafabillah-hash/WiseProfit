@@ -801,3 +801,20 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
 }
 .cirrel-profile-page label { color:var(--cirrel-muted); }
 @media(max-width:700px) { .cirrel-quick-add,.cirrel-profile-hero { padding:14px !important; } }
+
+/* Notes and developer support workspace */
+.cirrel-notes-page { color:var(--cirrel-text); }
+.cirrel-notes-page [class*=rounded-xl],.cirrel-notes-page [class*=rounded-2xl] { border-color:var(--cirrel-line) !important; }
+.cirrel-notes-page input,.cirrel-notes-page textarea,.cirrel-notes-page select {
+ border-color:var(--cirrel-line) !important; border-radius:10px !important; background:var(--cirrel-panel-2) !important;
+ color:var(--cirrel-text) !important; box-shadow:none !important;
+}
+.cirrel-notes-page button { transition:background .16s ease,border-color .16s ease,color .16s ease; }
+.cirrel-admin-page { max-width:1240px !important; color:var(--cirrel-text); }
+.cirrel-admin-page > div:first-child { padding:19px 21px; border:1px solid var(--cirrel-line); border-radius:18px; background:var(--cirrel-panel); box-shadow:var(--cirrel-shadow); }
+.cirrel-admin-page h1,.cirrel-admin-page h2 { color:var(--cirrel-text) !important; font-family:Manrope,sans-serif; letter-spacing:-.025em; }
+.cirrel-admin-page section { border:1px solid var(--cirrel-line) !important; border-radius:17px !important; background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow); color:var(--cirrel-text); }
+.cirrel-admin-page section button { border-color:var(--cirrel-line) !important; color:var(--cirrel-text); }
+.cirrel-admin-page section button:hover { background:color-mix(in srgb,var(--cirrel-accent) 7%,var(--cirrel-panel)) !important; }
+.cirrel-admin-page textarea,.cirrel-admin-page select { border:1px solid var(--cirrel-line) !important; border-radius:10px !important; background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important; }
+@media(max-width:700px) { .cirrel-admin-page { padding:14px !important; } .cirrel-admin-page > div:first-child { padding:15px; } }

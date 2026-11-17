@@ -67,3 +67,134 @@ button,input,select,textarea{font:inherit}.cirrel-app-root{min-height:100vh;colo
 .cirrel-main-content td { color: var(--cirrel-text); border-color: var(--cirrel-line) !important; }
 .cirrel-main-content [role="dialog"] { border-color: var(--cirrel-line) !important; background: var(--cirrel-panel-2) !important; color: var(--cirrel-text) !important; }
 .cirrel-main-content .shadow-\[0_25px_60px_rgba\(0\,0\,0\,0\.4\)\] { box-shadow: var(--cirrel-shadow) !important; }
+
+
+/* Layout repair — keep the Cirrel workspace inside the viewport and make
+   the WiseProfit inventory table readable without widening the whole page. */
+html, body, #root, .cirrel-app-root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: border-box; }
+.cirrel-content-shell {
+  width: calc(100% - 248px);
+  max-width: calc(100% - 248px);
+  min-width: 0;
+  overflow-x: clip;
+}
+.cirrel-main-content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+.cirrel-main-content > div,
+.cirrel-main-content > div > div,
+.cirrel-main-content section,
+.cirrel-main-content .space-y-6 {
+  min-width: 0;
+  max-width: 100%;
+}
+.cirrel-main-content .overflow-x-auto {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131,201,168,.45) rgba(8,13,22,.35);
+}
+.cirrel-main-content .overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+.cirrel-main-content .overflow-x-auto::-webkit-scrollbar-track {
+  background: rgba(8,13,22,.35);
+  border-radius: 99px;
+}
+.cirrel-main-content .overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(131,201,168,.5);
+  border-radius: 99px;
+}
+.cirrel-main-content table.wp-inventory-table {
+  display: table !important;
+  width: 100% !important;
+  min-width: 880px !important;
+  max-width: none;
+  table-layout: fixed;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: visible !important;
+}
+.cirrel-main-content table.wp-inventory-table th,
+.cirrel-main-content table.wp-inventory-table td {
+  padding: 10px 7px !important;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+.cirrel-main-content table.wp-inventory-table th {
+  white-space: nowrap;
+  font-size: 9px !important;
+  letter-spacing: .015em;
+}
+.cirrel-main-content table.wp-inventory-table th:nth-child(1),
+.cirrel-main-content table.wp-inventory-table td:nth-child(1) { width: 5%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(2),
+.cirrel-main-content table.wp-inventory-table td:nth-child(2) { width: 16%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(3),
+.cirrel-main-content table.wp-inventory-table td:nth-child(3) { width: 8%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(4),
+.cirrel-main-content table.wp-inventory-table td:nth-child(4) { width: 10%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(5),
+.cirrel-main-content table.wp-inventory-table td:nth-child(5) { width: 14%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(6),
+.cirrel-main-content table.wp-inventory-table td:nth-child(6) { width: 9%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(7),
+.cirrel-main-content table.wp-inventory-table td:nth-child(7) { width: 10%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(8),
+.cirrel-main-content table.wp-inventory-table td:nth-child(8) { width: 10%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(9),
+.cirrel-main-content table.wp-inventory-table td:nth-child(9) { width: 12%; }
+.cirrel-main-content table.wp-inventory-table th:nth-child(10),
+.cirrel-main-content table.wp-inventory-table td:nth-child(10) { width: 6%; }
+.cirrel-main-content table.wp-inventory-table td:nth-child(2) > div:first-child {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.cirrel-main-content table.wp-inventory-table td:nth-child(5) > div {
+  max-width: 100%;
+}
+.cirrel-main-content table.wp-inventory-table td:nth-child(5) input[type="number"] {
+  width: 38px !important;
+  min-width: 0;
+}
+.cirrel-main-content table.wp-inventory-table tfoot td {
+  font-size: 10px;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+.cirrel-footer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+@media (max-width: 1050px) {
+  .cirrel-content-shell {
+    width: calc(100% - 210px);
+    max-width: calc(100% - 210px);
+  }
+  .cirrel-main-content table.wp-inventory-table { min-width: 900px !important; }
+}
+@media (max-width: 700px) {
+  .cirrel-content-shell {
+    width: 100%;
+    max-width: 100%;
+  }
+  .cirrel-main-content table.wp-inventory-table { min-width: 900px !important; }
+}

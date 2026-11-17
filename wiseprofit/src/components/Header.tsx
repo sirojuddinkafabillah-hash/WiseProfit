@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   ShoppingBag, TrendingUp, UploadCloud, CircleHelp, ShieldCheck,
-  ArrowDownCircle, NotebookPen, LogIn, Plus, Printer, Download, Menu,
+  ArrowDownCircle, NotebookPen, LogIn, Plus, Printer, Download, Menu, MessageSquareWarning,
   Wallet, Package, FileSpreadsheet, X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -104,7 +104,8 @@ export const Header: React.FC<HeaderProps> = ({
       { page: 'import', label: t('header.importExport', language), icon: FileSpreadsheet },
     ]},
     { label: language === 'id' ? 'BANTUAN' : 'SUPPORT', items: [
-      { page: 'faq', label: language === 'id' ? 'Pusat Bantuan' : 'Help center', icon: CircleHelp },
+      { page: 'faq', label: language === 'id' ? 'FAQ' : 'FAQ', icon: CircleHelp },
+      { page: 'complaints', label: language === 'id' ? 'Keluhan & Saran' : 'Feedback', icon: MessageSquareWarning },
     ]},
   ];
 
@@ -112,9 +113,7 @@ export const Header: React.FC<HeaderProps> = ({
     onChangePage(page);
     setMobileOpen(false);
   };
-  const isActive = (page: AppPage) => page === 'faq'
-    ? activePage === 'faq' || activePage === 'complaints'
-    : activePage === page;
+  const isActive = (page: AppPage) => activePage === page;
   const pageTitle: Record<string, string> = {
     inventory: language === 'id' ? 'Kasir & Barang' : 'Cashier & Inventory',
     reports: t('header.businessReports', language),

@@ -296,3 +296,69 @@ button, input, select, textarea { font-family: var(--font); }
 .cirrel-main-content [class*="bg-blue-"] { background-color: var(--info-soft) !important; }
 .cirrel-main-content [class*="text-amber-"] { color: var(--accent-text) !important; }
 .cirrel-main-content [class*="bg-amber-"] { background-color: var(--accent-soft) !important; }
+
+
+/* Compact inventory table: retain all 10 fields and controls, reduce unused space. */
+#cirrel-inventory .cirrel-inventory-table-wrap {
+  overflow-x: auto !important;
+}
+#cirrel-inventory table.cirrel-inventory-table {
+  width: 100% !important;
+  min-width: 980px !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th {
+  padding: 10px 7px !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td,
+#cirrel-inventory table.cirrel-inventory-table tfoot td {
+  padding: 9px 7px !important;
+  line-height: 1.3 !important;
+  vertical-align: middle !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td > div + div {
+  margin-top: 2px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(1),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(1) { width: 4.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(2),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(2) { width: 20%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(3),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(3) { width: 8.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(4),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(4) { width: 10.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(5),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(5) { width: 12%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(6),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(6) { width: 9.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(7),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(7) { width: 9%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(8),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(8) { width: 9.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(9),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(9) { width: 11.5%; }
+#cirrel-inventory table.cirrel-inventory-table th:nth-child(10),
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(10) { width: 5%; }
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(2) {
+  overflow-wrap: anywhere;
+}
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(2) > div:first-child {
+  font-size: 12px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(5) input[type="number"] {
+  width: 36px !important;
+  padding-inline: 2px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table td:nth-child(5) button {
+  width: 20px !important;
+  height: 20px !important;
+}
+@media (max-width: 700px) {
+  #cirrel-inventory table.cirrel-inventory-table {
+    min-width: 980px !important;
+  }
+}

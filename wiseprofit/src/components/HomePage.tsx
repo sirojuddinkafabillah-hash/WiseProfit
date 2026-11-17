@@ -177,7 +177,7 @@ export const HomePage: React.FC<HomePageProps> = ({ user, language, theme, onThe
   const initials = (name.trim() || displayName).slice(0, 1).toUpperCase();
 
   return (
-    <div className="w-full min-w-0 max-w-none space-y-3 animate-in fade-in text-sm">
+    <div className="cirrel-profile-page w-full min-w-0 max-w-none space-y-3 animate-in fade-in text-sm">
       <section className="wp-profile-hero relative overflow-hidden rounded-2xl border p-4 shadow-sm">
         <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="relative flex flex-col gap-4">

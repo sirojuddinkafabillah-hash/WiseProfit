@@ -202,8 +202,8 @@ export const ReportsEquityPage: React.FC<ReportsEquityPageProps> = ({
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
-      <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+    <div className="cirrel-reports-page space-y-6 animate-in fade-in duration-200">
+      <div className="cirrel-page-hero bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">

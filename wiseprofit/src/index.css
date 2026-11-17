@@ -1668,7 +1668,7 @@ html, body {
 }
 #root .wp-auth-card > .wp-auth-body .text-blue-700,
 #root .wp-auth-card > .wp-auth-body .text-blue-800,
-#root .wp-auth-card > .wp-auth-body .hover\\:text-blue-900:hover {
+#root .wp-auth-card > .wp-auth-body .hover\:text-blue-900:hover {
   color: #ffffff !important;
 }
 #root .wp-auth-card > .wp-auth-body .bg-blue-50 {

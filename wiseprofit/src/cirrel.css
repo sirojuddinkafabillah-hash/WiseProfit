@@ -740,3 +740,47 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
  .cirrel-withdrawal-form { padding:15px !important; }
  .cirrel-withdrawal-page .cirrel-page-hero { padding:17px !important; }
 }
+
+/* Cross-page Cirrel finish: reports, data exchange, help center */
+.cirrel-reports-page,.cirrel-import-page { display:flex; flex-direction:column; gap:18px !important; color:var(--cirrel-text); }
+.cirrel-reports-page .cirrel-page-hero,.cirrel-import-page .cirrel-page-hero {
+ padding:22px !important; border:1px solid var(--cirrel-line) !important; border-radius:20px !important;
+ background:linear-gradient(118deg,var(--cirrel-panel),color-mix(in srgb,var(--cirrel-accent) 6%,var(--cirrel-panel))) !important;
+ box-shadow:var(--cirrel-shadow) !important; backdrop-filter:blur(18px);
+}
+.cirrel-reports-page h1,.cirrel-import-page h1 { font-family:Manrope,sans-serif !important; font-weight:800 !important; letter-spacing:-.04em; }
+.cirrel-reports-page [class*=rounded-2xl],.cirrel-reports-page [class*=rounded-3xl],
+.cirrel-import-page [class*=rounded-2xl],.cirrel-import-page [class*=rounded-3xl] {
+ border-color:var(--cirrel-line) !important; box-shadow:var(--cirrel-shadow);
+}
+.cirrel-reports-page table,.cirrel-import-page table { width:100%; border-collapse:separate !important; border-spacing:0; }
+.cirrel-reports-page thead th,.cirrel-import-page thead th {
+ padding:12px 13px !important; color:var(--cirrel-muted) !important; background:var(--cirrel-panel-2) !important;
+ border-bottom:1px solid var(--cirrel-line) !important; font-size:10px !important; font-weight:700 !important;
+ letter-spacing:.09em; text-transform:uppercase;
+}
+.cirrel-reports-page tbody td,.cirrel-import-page tbody td {
+ padding:12px 13px !important; color:var(--cirrel-text) !important; border-bottom:1px solid var(--cirrel-line) !important;
+ font-size:12px;
+}
+.cirrel-reports-page tbody tr:hover,.cirrel-import-page tbody tr:hover { background:color-mix(in srgb,var(--cirrel-accent) 5%,transparent); }
+.cirrel-import-page button,.cirrel-reports-page button { border-radius:10px; }
+.cirrel-import-page input:not([type=file]),.cirrel-import-page select,.cirrel-import-page textarea,
+.cirrel-reports-page input,.cirrel-reports-page select {
+ border-color:var(--cirrel-line) !important; border-radius:10px !important; background:var(--cirrel-panel-2) !important;
+ color:var(--cirrel-text) !important; box-shadow:none !important;
+}
+.cirrel-support-page { max-width:1100px !important; padding:22px 0 !important; color:var(--cirrel-text); }
+.cirrel-support-heading h1 { color:var(--cirrel-text) !important; font:800 25px Manrope,sans-serif !important; letter-spacing:-.04em; }
+.cirrel-support-heading p { color:var(--cirrel-muted) !important; }
+.cirrel-support-heading > div > div:first-child { border-radius:13px !important; background:color-mix(in srgb,var(--cirrel-accent-2) 14%,var(--cirrel-panel)) !important; color:var(--cirrel-accent-2) !important; }
+.cirrel-support-tabs { padding:5px !important; gap:5px !important; border:1px solid var(--cirrel-line) !important; border-radius:13px !important; background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important; }
+.cirrel-support-tabs button { border-radius:9px !important; padding:10px 15px !important; }
+.cirrel-support-page [class*=rounded-xl],.cirrel-support-page [class*=rounded-2xl] { border-color:var(--cirrel-line) !important; }
+.cirrel-support-page input,.cirrel-support-page textarea,.cirrel-support-page select { background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important; border-color:var(--cirrel-line) !important; border-radius:10px !important; }
+@media(max-width:700px) {
+ .cirrel-reports-page .cirrel-page-hero,.cirrel-import-page .cirrel-page-hero { padding:16px !important; }
+ .cirrel-support-page { padding:14px 0 !important; }
+ .cirrel-support-tabs { overflow-x:auto; flex-wrap:nowrap !important; }
+ .cirrel-support-tabs button { white-space:nowrap; }
+}

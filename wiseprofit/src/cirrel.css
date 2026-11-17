@@ -704,3 +704,39 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
  .cirrel-summary-grid { grid-template-columns:1fr !important; }
  .cirrel-stat-card { min-height:148px; padding:17px !important; }
 }
+
+/* Withdrawal workspace — Cirrel form and balance presentation */
+.cirrel-withdrawal-page { display:flex; flex-direction:column; gap:18px !important; }
+.cirrel-withdrawal-page .cirrel-page-hero {
+ padding:23px !important; border:1px solid var(--cirrel-line) !important; border-radius:20px !important;
+ background:linear-gradient(118deg,var(--cirrel-panel),color-mix(in srgb,var(--cirrel-accent) 7%,var(--cirrel-panel))) !important;
+ box-shadow:var(--cirrel-shadow) !important;
+}
+.cirrel-withdrawal-page .cirrel-page-hero h1 { font-size:clamp(22px,3vw,30px) !important; letter-spacing:-.045em; }
+.cirrel-withdrawal-page .cirrel-page-hero p { color:var(--cirrel-muted) !important; max-width:620px; line-height:1.65; }
+.cirrel-withdrawal-layout { gap:16px !important; align-items:start; }
+.cirrel-withdrawal-form {
+ padding:22px !important; border:1px solid var(--cirrel-line) !important; border-radius:20px !important;
+ background:var(--cirrel-panel) !important; box-shadow:var(--cirrel-shadow) !important;
+}
+.cirrel-withdrawal-form > div:first-child {
+ border:1px solid color-mix(in srgb,var(--cirrel-accent-2) 25%,var(--cirrel-line)) !important;
+ border-radius:15px !important; background:color-mix(in srgb,var(--cirrel-accent-2) 8%,var(--cirrel-panel-2)) !important;
+}
+.cirrel-withdrawal-balance-icon { border-radius:13px !important; background:color-mix(in srgb,var(--cirrel-accent-2) 14%,var(--cirrel-panel)) !important; color:var(--cirrel-accent-2) !important; }
+.cirrel-withdrawal-form label { color:var(--cirrel-text) !important; font-size:12px !important; font-weight:650 !important; }
+.cirrel-withdrawal-form input:not([type=checkbox]),.cirrel-withdrawal-form textarea {
+ min-height:43px !important; padding:11px 13px !important; border:1px solid var(--cirrel-line) !important;
+ border-radius:11px !important; background:var(--cirrel-panel-2) !important; color:var(--cirrel-text) !important;
+ font:500 13px "DM Sans",sans-serif !important; box-shadow:none !important;
+}
+.cirrel-withdrawal-form input:focus,.cirrel-withdrawal-form textarea:focus {
+ border-color:var(--cirrel-accent-2) !important; box-shadow:0 0 0 3px color-mix(in srgb,var(--cirrel-accent-2) 15%,transparent) !important;
+}
+.cirrel-withdrawal-form textarea { min-height:92px !important; }
+.cirrel-withdrawal-form [type=checkbox] { accent-color:var(--cirrel-accent-2); }
+.cirrel-withdrawal-form button[type=submit],.cirrel-withdrawal-form button[type=button] { min-height:39px; border-radius:10px !important; }
+@media(max-width:700px) {
+ .cirrel-withdrawal-form { padding:15px !important; }
+ .cirrel-withdrawal-page .cirrel-page-hero { padding:17px !important; }
+}

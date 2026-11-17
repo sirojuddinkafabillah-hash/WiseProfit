@@ -146,7 +146,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   };
 
   return (
-    <div className="cirrel-inventory-card">
+    <div id="cirrel-inventory" className="cirrel-inventory-card">
       <div className="cirrel-inventory-quickadd">
         <QuickAddBar onAdd={onAdd} globalSavePercentMonthly={globalSavePercentMonthly} />
       </div>
@@ -232,7 +232,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
 
       {/* Main Luxury Dark Table */}
       <div className="cirrel-inventory-table-wrap">
-        <table className="table wp-inventory-table cirrel-inventory-table">
+        <table className="wp-inventory-table cirrel-inventory-table">
           <thead>
             <tr>
               <th 

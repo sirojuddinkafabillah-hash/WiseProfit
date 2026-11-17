@@ -239,3 +239,60 @@ button, input, select, textarea { font-family: var(--font); }
 .cirrel-main-content .cirrel-stat-profit .text-3xl {
   color: var(--good) !important;
 }
+
+
+/* Harmonized palette pass: orange brand + neutral surfaces, green profit, red loss. */
+:root {
+  --warn: var(--accent-text);
+  --info: var(--muted);
+  --warn-soft: var(--accent-soft);
+  --info-soft: color-mix(in srgb, var(--muted) 10%, transparent);
+  --c1: var(--accent);
+  --c2: #777b82;
+  --c3: #92969d;
+  --c4: #aeb2b8;
+  --c5: #c4c7cb;
+  --c6: #666a71;
+}
+[data-theme=dark] {
+  --warn: var(--accent-text);
+  --info: var(--muted);
+  --warn-soft: var(--accent-soft);
+  --info-soft: color-mix(in srgb, var(--muted) 13%, transparent);
+  --c1: var(--accent);
+  --c2: #a6a9b0;
+  --c3: #858991;
+  --c4: #c0c3c9;
+  --c5: #70747c;
+  --c6: #969aa2;
+}
+
+/* Keep table structure visually calm: no rainbow column headers or tinted columns. */
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(5),
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(7),
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(8),
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(9),
+.cirrel-inventory-table thead th:nth-child(5),
+.cirrel-inventory-table thead th:nth-child(9) {
+  color: var(--muted) !important;
+  background: var(--card-2) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td:nth-child(5),
+#cirrel-inventory table.cirrel-inventory-table tbody td:nth-child(9),
+.cirrel-inventory-table tbody td:nth-child(5),
+.cirrel-inventory-table tbody td:nth-child(9) {
+  background: transparent !important;
+  border-left-color: var(--line) !important;
+  border-right-color: var(--line) !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th:nth-child(8) {
+  color: var(--muted) !important;
+}
+
+/* Profit and loss remain meaningful; informational labels use quiet neutral text. */
+.cirrel-main-content [class*="text-sky-"],
+.cirrel-main-content [class*="text-blue-"] { color: var(--muted) !important; }
+.cirrel-main-content [class*="bg-sky-"],
+.cirrel-main-content [class*="bg-blue-"] { background-color: var(--info-soft) !important; }
+.cirrel-main-content [class*="text-amber-"] { color: var(--accent-text) !important; }
+.cirrel-main-content [class*="bg-amber-"] { background-color: var(--accent-soft) !important; }

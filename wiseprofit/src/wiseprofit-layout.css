@@ -1,0 +1,105 @@
+/*
+ * WiseProfit layout contract
+ * Structural rules only: spacing, containment and overflow.
+ * Color, typography and component skins live in the shared theme layer.
+ */
+.cirrel-view,
+.cirrel-view > *,
+.cirrel-view section,
+.cirrel-view form,
+.cirrel-view article,
+.cirrel-view [role="region"] {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cirrel-view {
+  display: flex;
+  width: 100%;
+  max-width: 1480px;
+  flex-direction: column;
+  gap: 22px;
+  margin-inline: auto;
+}
+
+.cirrel-view .overflow-x-auto,
+.cirrel-view .overflow-auto {
+  max-width: 100%;
+  min-width: 0;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.cirrel-view table {
+  max-width: none;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cirrel-view input,
+.cirrel-view select,
+.cirrel-view textarea {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cirrel-view button {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cirrel-inventory-page,
+.cirrel-reports-page,
+.cirrel-withdrawal-page,
+.cirrel-import-page,
+.cirrel-notes-page,
+.cirrel-support-page,
+.cirrel-admin-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.cirrel-reports-page > *,
+.cirrel-withdrawal-page > *,
+.cirrel-import-page > *,
+.cirrel-support-page > *,
+.cirrel-admin-page > *,
+.cirrel-notes-page > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cirrel-reports-page .overflow-x-auto,
+.cirrel-withdrawal-page .overflow-x-auto,
+.cirrel-import-page .overflow-x-auto {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 700px) {
+  .cirrel-view {
+    gap: 16px;
+  }
+
+  .cirrel-view .overflow-x-auto {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .cirrel-view table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .cirrel-view h1,
+  .cirrel-view h2,
+  .cirrel-view h3 {
+    overflow-wrap: anywhere;
+  }
+
+  .cirrel-view button {
+    white-space: normal;
+  }
+}

@@ -231,8 +231,8 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       </div>
 
       {/* Main Luxury Dark Table */}
-      <div className="overflow-x-auto">
-        <table className="wp-inventory-table w-full text-left text-xs border-collapse">
+      <div className="table-wrap overflow-x-auto">
+        <table className="table wp-inventory-table w-full text-left text-xs border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-950/90 text-slate-400 font-mono text-[10px] tracking-wider select-none uppercase">
               <th 

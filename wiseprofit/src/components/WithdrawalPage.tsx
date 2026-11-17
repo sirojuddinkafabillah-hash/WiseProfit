@@ -94,8 +94,8 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-5 bg-slate-900/80 border border-slate-700/60 rounded-2xl">
+    <div className="cirrel-withdrawal-page space-y-6 animate-in fade-in">
+      <div className="cirrel-page-hero flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-5 bg-slate-900/80 border border-slate-700/60 rounded-2xl">
         <div>
           <div className="flex items-center gap-2 text-emerald-300 text-xs font-mono font-bold tracking-widest uppercase">
             <ArrowDownToLine className="w-4 h-4" /> {isId ? 'TRANSAKSI KAS KELUAR' : 'CASH OUTFLOW TRANSACTION'}
@@ -106,10 +106,10 @@ export const WithdrawalPage: React.FC<WithdrawalPageProps> = ({
 
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 p-5 sm:p-6 bg-slate-900/85 border border-slate-700/60 rounded-2xl space-y-5">
+      <div className="cirrel-withdrawal-layout grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="cirrel-withdrawal-form lg:col-span-2 p-5 sm:p-6 bg-slate-900/85 border border-slate-700/60 rounded-2xl space-y-5">
           <div className="flex items-center gap-3 p-4 bg-emerald-950/50 border border-emerald-500/25 rounded-xl">
-            <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-300">
+            <div className="cirrel-withdrawal-balance-icon w-11 h-11 flex items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-300">
               <Wallet className="w-5 h-5" />
             </div>
             <div className="min-w-0">

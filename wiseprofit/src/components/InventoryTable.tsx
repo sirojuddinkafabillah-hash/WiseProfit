@@ -146,16 +146,16 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   };
 
   return (
-    <div className="bg-slate-900/85 backdrop-blur-2xl border border-slate-700/60 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] overflow-hidden transition-all">
-      <div className="border-b border-slate-800/80 bg-white/95 p-3 sm:p-4">
+    <div className="cirrel-inventory-card">
+      <div className="cirrel-inventory-quickadd">
         <QuickAddBar onAdd={onAdd} globalSavePercentMonthly={globalSavePercentMonthly} />
       </div>
       {/* Table Toolbar & Filters */}
-      <div className="p-4 sm:p-5 border-b border-slate-800/90 bg-slate-950/60 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      <div className="cirrel-inventory-toolbar">
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
+            <h2 className="cirrel-inventory-heading">
               {t('table.title')}
             </h2>
           </div>
@@ -231,10 +231,10 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       </div>
 
       {/* Main Luxury Dark Table */}
-      <div className="table-wrap overflow-x-auto">
-        <table className="table wp-inventory-table w-full text-left text-xs border-collapse">
+      <div className="cirrel-inventory-table-wrap">
+        <table className="table wp-inventory-table cirrel-inventory-table">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/90 text-slate-400 font-mono text-[10px] tracking-wider select-none uppercase">
+            <tr>
               <th 
                 className="py-3.5 px-3 text-center w-14 text-slate-400 font-mono text-[10px] tracking-wider select-none uppercase cursor-pointer hover:text-emerald-300 transition-colors"
                 onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}
@@ -264,7 +264,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               <th className="py-3.5 px-3 text-center min-w-[70px] text-slate-500">{t('table.actions')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-mono text-slate-200">
+          <tbody>
             {filteredItems.length === 0 ? (
               <tr>
                 <td colSpan={10} className="py-20 px-4 text-center">
@@ -291,7 +291,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                 const soldPercent = Math.min(100, Math.round((item.jumlahBarangDijualSatuan / Math.max(1, item.jumlahBarangWadah)) * 100));
 
                 return (
-                  <tr key={item.id} className="hover:bg-slate-800/35 transition-colors group">
+                  <tr key={item.id}>
                     {/* NO */}
                     <td className="py-4 px-3 text-center align-middle font-mono font-bold text-slate-400 text-xs">
                       {index + 1}
@@ -487,7 +487,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
           {/* Table Summary Footer Row (Clear & Harmonious) */}
           {filteredItems.length > 0 && (
             <tfoot>
-              <tr className="border-t-2 border-slate-700 bg-slate-950 text-slate-200 font-mono text-xs">
+              <tr>
                 <td colSpan={3} className="py-4 px-4 text-left font-bold uppercase tracking-wider text-slate-300">
                   {t('table.totalSummary')} ({filteredItems.length} {t('table.items')}):
                 </td>

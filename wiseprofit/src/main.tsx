@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import './index.css';
 import './cirrel.css';
 import './wiseprofit-layout.css';
+import './ignara-theme.css';
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>

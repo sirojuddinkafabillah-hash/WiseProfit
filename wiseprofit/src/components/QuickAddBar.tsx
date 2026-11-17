@@ -60,7 +60,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, globalSavePerce
   };
 
   return (
-    <section ref={panelRef} className="wp-quick-add-panel mb-0 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
+    <section ref={panelRef} className="cirrel-quick-add wp-quick-add-panel mb-0 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
       <button type="button" onClick={() => setIsExpanded((open) => !open)} aria-expanded={isExpanded} className="flex w-full items-center justify-between gap-3 text-left">
         <span className="flex min-w-0 items-center gap-2.5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>

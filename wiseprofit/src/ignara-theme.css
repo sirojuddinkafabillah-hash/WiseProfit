@@ -839,3 +839,57 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] .cirrel-main-content button:not([class*="bg-orange-"]) {
   border-color: #ffffff35 !important;
 }
+
+
+/* User-selected Forest Green: unify every green/emerald accent without touching orange, gold or cyan. */
+:root {
+  --cirrel-summary-profit: #36C98A;
+  --cirrel-summary-profit-soft: #36C98A24;
+  --profit: #36C98A;
+  --success: #36C98A;
+}
+[data-theme=dark] {
+  --cirrel-summary-profit: #36C98A;
+  --cirrel-summary-profit-soft: #36C98A24;
+  --profit: #36C98A;
+  --success: #36C98A;
+}
+.cirrel-main-content .cirrel-stat-profit {
+  border-top-color: #36C98A !important;
+}
+.cirrel-main-content .cirrel-stat-profit,
+.cirrel-main-content .cirrel-stat-profit .text-emerald-300,
+.cirrel-main-content .cirrel-stat-profit .text-emerald-400,
+.cirrel-main-content .cirrel-stat-profit .text-green-300,
+.cirrel-main-content .cirrel-stat-profit .text-green-400,
+.cirrel-main-content .cirrel-stat-profit .text-green-500,
+.cirrel-main-content .cirrel-stat-profit > div:first-child,
+.cirrel-main-content .cirrel-stat-profit > div:first-child svg,
+.cirrel-main-content .cirrel-stat-profit .text-2xl,
+.cirrel-main-content .cirrel-stat-profit .text-3xl {
+  color: #36C98A !important;
+}
+/* Other green/emerald semantic text, icons, borders and soft fills use the same selected green. */
+.cirrel-main-content .text-emerald-300,
+.cirrel-main-content .text-emerald-400,
+.cirrel-main-content .text-emerald-500,
+.cirrel-main-content .text-green-300,
+.cirrel-main-content .text-green-400,
+.cirrel-main-content .text-green-500,
+.cirrel-main-content .text-green-600 {
+  color: #36C98A !important;
+}
+.cirrel-main-content .border-emerald-300,
+.cirrel-main-content .border-emerald-400,
+.cirrel-main-content .border-emerald-500,
+.cirrel-main-content .border-green-300,
+.cirrel-main-content .border-green-400,
+.cirrel-main-content .border-green-500 {
+  border-color: #36C98A !important;
+}
+.cirrel-main-content .bg-emerald-400,
+.cirrel-main-content .bg-emerald-500,
+.cirrel-main-content .bg-green-400,
+.cirrel-main-content .bg-green-500 {
+  background-color: #36C98A !important;
+}

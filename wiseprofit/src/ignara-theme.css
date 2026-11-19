@@ -382,3 +382,62 @@ button, input, select, textarea { font-family: var(--font); }
 #cirrel-inventory table.cirrel-inventory-table tbody tr:last-child td {
   border-bottom: 0 !important;
 }
+
+/* Dashboard summary palette refinement: brighter, controlled orange and calm semantic accents. */
+:root {
+  --cirrel-orange: #d95732;
+  --cirrel-summary-cash: #ff8757;
+  --cirrel-summary-profit: #62d49a;
+  --cirrel-summary-growth: #55c9d8;
+  --cirrel-summary-equity: #f2bd62;
+}
+[data-theme=dark] {
+  --cirrel-orange: #ff985f;
+  --cirrel-summary-cash: #ff9568;
+  --cirrel-summary-profit: #70dca8;
+  --cirrel-summary-growth: #64d3df;
+  --cirrel-summary-equity: #f5c675;
+}
+
+/* Keep the dark surfaces neutral; use color only for meaningful figures and accents. */
+.cirrel-main-content .cirrel-stat-card {
+  border-top: 2px solid var(--line-2) !important;
+  box-shadow: 0 1px 2px #00000012, 0 10px 24px -20px #00000080 !important;
+}
+.cirrel-main-content .cirrel-stat-cash {
+  border-top-color: var(--cirrel-summary-cash) !important;
+}
+.cirrel-main-content .cirrel-stat-cash > div:first-child,
+.cirrel-main-content .cirrel-stat-cash > div:first-child svg {
+  color: var(--cirrel-summary-cash) !important;
+}
+.cirrel-main-content .cirrel-stat-profit {
+  border-top-color: var(--cirrel-summary-profit) !important;
+}
+.cirrel-main-content .cirrel-stat-profit .text-2xl,
+.cirrel-main-content .cirrel-stat-profit .text-3xl,
+.cirrel-main-content .cirrel-stat-profit > div:first-child,
+.cirrel-main-content .cirrel-stat-profit > div:first-child svg {
+  color: var(--cirrel-summary-profit) !important;
+}
+.cirrel-main-content .cirrel-stat-growth {
+  border-top-color: var(--cirrel-summary-growth) !important;
+}
+.cirrel-main-content .cirrel-stat-growth .text-2xl,
+.cirrel-main-content .cirrel-stat-growth .text-3xl,
+.cirrel-main-content .cirrel-stat-growth > div:first-child,
+.cirrel-main-content .cirrel-stat-growth > div:first-child svg {
+  color: var(--cirrel-summary-growth) !important;
+}
+.cirrel-main-content .cirrel-stat-equity {
+  border-top-color: var(--cirrel-summary-equity) !important;
+}
+.cirrel-main-content .cirrel-stat-equity .text-2xl,
+.cirrel-main-content .cirrel-stat-equity .text-3xl,
+.cirrel-main-content .cirrel-stat-equity > div:first-child,
+.cirrel-main-content .cirrel-stat-equity > div:first-child svg {
+  color: var(--cirrel-summary-equity) !important;
+}
+.cirrel-main-content .cirrel-stat-card .border-t {
+  border-color: var(--line-2) !important;
+}

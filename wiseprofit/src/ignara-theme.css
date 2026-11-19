@@ -359,3 +359,27 @@ button, input, select, textarea { font-family: var(--font); }
 }
 
 }
+
+
+/* Denser inventory table card: compact surface and cell spacing only.
+   Typography, font sizes, colors, data and controls remain unchanged. */
+#cirrel-inventory .cirrel-inventory-table-wrap {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+#cirrel-inventory table.cirrel-inventory-table thead th {
+  padding: 8px 6px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td {
+  padding: 7px 6px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tfoot td {
+  padding: 8px 6px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td > div + div {
+  margin-top: 1px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody tr:last-child td {
+  border-bottom: 0 !important;
+}

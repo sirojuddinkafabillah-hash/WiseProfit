@@ -1053,3 +1053,23 @@ html, body, #root, button, input, select, textarea { font-family:"DM Sans",sans-
   #cirrel-inventory .cirrel-inventory-toolbar > div { width:100% !important; }
   #cirrel-inventory table.cirrel-inventory-table { min-width:1080px !important; }
 }
+
+/* Compact dashboard summary cards: reduce unused vertical space without changing typography. */
+.cirrel-summary-grid { gap:12px !important; }
+.cirrel-stat-card {
+  min-height:148px !important;
+  padding:14px !important;
+  justify-content:flex-start !important;
+  gap:10px !important;
+}
+.cirrel-stat-card > div:nth-child(2) { flex:0 0 auto !important; }
+.cirrel-stat-card > div:last-child {
+  margin-top:0 !important;
+  padding-top:8px !important;
+}
+.cirrel-stat-card .mb-2\.5 { margin-bottom:7px !important; }
+.cirrel-stat-card .mt-4 { margin-top:9px !important; }
+.cirrel-stat-cash > div:last-child:not(:has(button)) { display:none !important; }
+@media (max-width:700px) {
+  .cirrel-stat-card { min-height:136px !important; padding:13px !important; }
+}

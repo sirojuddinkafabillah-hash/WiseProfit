@@ -456,14 +456,17 @@ button, input, select, textarea { font-family: var(--font); }
   --sig-text: #b94320;
   --sig-soft: #f064351a;
   --cirrel-orange: #f06435;
-  --cirrel-summary-cash: #c94d25;
-  --cirrel-summary-cash-soft: #f0643520;
-  --cirrel-summary-profit: #16804e;
-  --cirrel-summary-profit-soft: #16804e1c;
-  --cirrel-summary-growth: #087b89;
-  --cirrel-summary-growth-soft: #087b891a;
-  --cirrel-summary-equity: #946000;
-  --cirrel-summary-equity-soft: #9460001a;
+  /* Summary cards use dark navy surfaces in both appearance modes,
+     so all four accent figures use bright, high-contrast tones. */
+  /* Same bright accents: summary cards retain their navy surface in dark mode. */
+  --cirrel-summary-cash: #ff9a70;
+  --cirrel-summary-cash-soft: #ff9a7020;
+  --cirrel-summary-profit: #70dca8;
+  --cirrel-summary-profit-soft: #70dca81c;
+  --cirrel-summary-growth: #65d2df;
+  --cirrel-summary-growth-soft: #65d2df1c;
+  --cirrel-summary-equity: #f3c875;
+  --cirrel-summary-equity-soft: #f3c8751c;
 }
 [data-theme=dark] {
   --accent: #ff8052;

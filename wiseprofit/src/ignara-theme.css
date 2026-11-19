@@ -701,3 +701,141 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] .cirrel-main-content .text-amber-300 {
   color: #ffb08c !important;
 }
+
+
+/* High-clarity dark dashboard pass — tuned against the live Preview screenshot.
+   Stronger luminance and saturation, clearer supporting text, crisp card edges. */
+[data-theme=dark] {
+  --bg: #202226;
+  --side: #191b1f;
+  --card: #30343a;
+  --card-2: #3a3f46;
+  --card-3: #454b53;
+  --panel: #343940;
+  --ink: #ffffff;
+  --ink-2: #f0f2f5;
+  --muted: #d0d5dc;
+  --line: #ffffff24;
+  --line-2: #ffffff42;
+  --accent: #ff7043;
+  --accent-from: #ff813f;
+  --accent-to: #f04432;
+  --accent-hi: #ff9a70;
+  --accent-text: #ffb08f;
+  --accent-soft: #ff70433b;
+  --accent-glow: #ff704399;
+  --sig: #ff7043;
+  --sig-text: #ffc0a6;
+  --sig-soft: #ff70433b;
+  --cirrel-orange: #ff9a70;
+  --cirrel-summary-cash: #ff9a70;
+  --cirrel-summary-profit: #78f0b4;
+  --cirrel-summary-growth: #73e9f5;
+  --cirrel-summary-equity: #ffd477;
+}
+/* Stronger neutral contrast for small labels, metadata and table controls. */
+[data-theme=dark] .cirrel-main-content p,
+[data-theme=dark] .cirrel-main-content label,
+[data-theme=dark] .cirrel-main-content small,
+[data-theme=dark] .cirrel-main-content .text-slate-400,
+[data-theme=dark] .cirrel-main-content .text-slate-500,
+[data-theme=dark] .cirrel-main-content .text-gray-400,
+[data-theme=dark] .cirrel-main-content .text-gray-500,
+[data-theme=dark] .cirrel-main-content .text-muted-foreground {
+  color: #d5dae1 !important;
+}
+[data-theme=dark] .cirrel-main-content .text-slate-300,
+[data-theme=dark] .cirrel-main-content .text-gray-300,
+[data-theme=dark] .cirrel-main-content .text-zinc-300 {
+  color: #f0f2f5 !important;
+}
+/* Summary cards: lift the surface and make all four semantic accents unmistakable. */
+[data-theme=dark] .cirrel-main-content .cirrel-stat-card {
+  background: #30343a !important;
+  border: 1px solid #ffffff2b !important;
+  box-shadow: 0 0 0 1px #ffffff08, 0 10px 24px -15px #000000cc !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash {
+  background: linear-gradient(120deg, #ff813f 0%, #ff633c 52%, #f04432 100%) !important;
+  border: 1px solid #ffad8c !important;
+  box-shadow: 0 8px 28px -12px #ff5a36a8 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash > div:first-child svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-2xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-3xl {
+  color: #ffffff !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit {
+  border-top: 3px solid #78f0b4 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit > div:first-child svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit .text-2xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit .text-3xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit .text-emerald-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit .text-emerald-400 {
+  color: #78f0b4 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth {
+  border-top: 3px solid #73e9f5 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth > div:first-child svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth .text-2xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth .text-3xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth .text-cyan-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth .text-cyan-400 {
+  color: #73e9f5 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity {
+  border-top: 3px solid #ffd477 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity > div:first-child svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity .text-2xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity .text-3xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity .text-amber-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity .text-amber-400 {
+  color: #ffd477 !important;
+}
+/* Sharper capital-flow banner: white base text, distinct purchase/sales, bright cash pill. */
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital {
+  background: #30343a !important;
+  border: 1px solid #ffffff30 !important;
+  color: #f4f6f8 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital [class*="text-"],
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital span,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital p {
+  color: #e3e7ec !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-rose-400,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-red-400 {
+  color: #ff858d !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-orange-400,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-orange-300,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-emerald-400,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-emerald-300 {
+  color: #ffad83 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital [class*="rounded-full"] {
+  border-color: #ff9a70 !important;
+  background: #ff70432e !important;
+  color: #ffc09e !important;
+}
+/* Orange controls and selected period chips must read clearly at a glance. */
+[data-theme=dark] .cirrel-main-content button[class*="bg-orange-"],
+[data-theme=dark] .cirrel-main-content button[class*="bg-\\[var(--accent)\\]"],
+[data-theme=dark] .cirrel-main-content button.cirrel-primary,
+[data-theme=dark] .cirrel-nav-item.active {
+  background: linear-gradient(115deg, #ff813f 0%, #ff633c 55%, #f04432 100%) !important;
+  border-color: #ff9a70 !important;
+  color: #24110c !important;
+}
+[data-theme=dark] .cirrel-main-content input,
+[data-theme=dark] .cirrel-main-content select,
+[data-theme=dark] .cirrel-main-content button:not([class*="bg-orange-"]) {
+  border-color: #ffffff35 !important;
+}

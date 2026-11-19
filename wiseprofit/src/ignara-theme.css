@@ -609,3 +609,95 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-emerald-400 {
   color: #fff !important;
 }
+
+
+/* Screenshot-led readability pass: brighten secondary copy, labels and card boundaries.
+   Keep the charcoal/coral Ignara look and preserve semantic profit/loss colors. */
+[data-theme=dark] {
+  --bg: #25272b;
+  --side: #1d1f23;
+  --card: #303338;
+  --card-2: #383b41;
+  --card-3: #42464d;
+  --panel: #32363c;
+  --ink: #ffffff;
+  --ink-2: #e2e5e9;
+  --muted: #c0c5cc;
+  --line: #ffffff18;
+  --line-2: #ffffff30;
+  --accent: #ff6844;
+  --accent-from: #ff7946;
+  --accent-to: #f04432;
+  --accent-hi: #ff8a63;
+  --accent-text: #ff9b7d;
+  --accent-soft: #ff68442e;
+  --accent-glow: #ff68447a;
+  --sig: #ff6844;
+  --sig-text: #ffad91;
+  --sig-soft: #ff68442e;
+  --cirrel-orange: #ff8a63;
+}
+/* Improve the contrast of small labels and supporting information on dark surfaces. */
+[data-theme=dark] .cirrel-main-content,
+[data-theme=dark] .cirrel-main-content p,
+[data-theme=dark] .cirrel-main-content label,
+[data-theme=dark] .cirrel-main-content small,
+[data-theme=dark] .cirrel-main-content .text-slate-400,
+[data-theme=dark] .cirrel-main-content .text-slate-500,
+[data-theme=dark] .cirrel-main-content .text-gray-400,
+[data-theme=dark] .cirrel-main-content .text-gray-500 {
+  color: #c3c8d0 !important;
+}
+[data-theme=dark] .cirrel-main-content .text-slate-300,
+[data-theme=dark] .cirrel-main-content .text-gray-300 {
+  color: #e1e5ea !important;
+}
+/* The capital-flow banner needs clearer labels and stronger separators. */
+[data-theme=dark] .cirrel-summary-capital,
+[data-theme=dark] .cirrel-main-content .cirrel-summary-capital {
+  background: #30343a !important;
+  border-color: #ffffff24 !important;
+}
+[data-theme=dark] .cirrel-summary-capital [class*="text-"],
+[data-theme=dark] .cirrel-summary-capital span,
+[data-theme=dark] .cirrel-summary-capital p {
+  color: #d9dee5 !important;
+}
+[data-theme=dark] .cirrel-summary-capital .text-rose-400,
+[data-theme=dark] .cirrel-summary-capital .text-red-400 {
+  color: #ff858b !important;
+}
+[data-theme=dark] .cirrel-summary-capital .text-orange-400,
+[data-theme=dark] .cirrel-summary-capital .text-orange-300,
+[data-theme=dark] .cirrel-summary-capital .text-emerald-400,
+[data-theme=dark] .cirrel-summary-capital .text-emerald-300 {
+  color: #ff9b7d !important;
+}
+/* Give all four summary cards a visible but restrained edge. */
+[data-theme=dark] .cirrel-main-content .cirrel-stat-card {
+  background-color: #303338 !important;
+  border-color: #ffffff24 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash {
+  background: linear-gradient(125deg, #ff7946 0%, #ff5e3b 58%, #ed3f32 100%) !important;
+  border: 1px solid #ff9a78 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-profit {
+  border-top: 2px solid #70e2aa !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-growth {
+  border-top: 2px solid #68dce8 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-equity {
+  border-top: 2px solid #ffd27b !important;
+}
+/* Keep the action/info controls visible without adding another accent family. */
+[data-theme=dark] .cirrel-main-content button[title],
+[data-theme=dark] .cirrel-main-content button[aria-label] {
+  border-color: #ffffff2b;
+}
+[data-theme=dark] .cirrel-main-content .text-orange-300,
+[data-theme=dark] .cirrel-main-content .text-orange-400,
+[data-theme=dark] .cirrel-main-content .text-amber-300 {
+  color: #ffb08c !important;
+}

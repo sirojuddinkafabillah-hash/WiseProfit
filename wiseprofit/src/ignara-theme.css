@@ -533,3 +533,79 @@ button, input, select, textarea { font-family: var(--font); }
 .cirrel-main-content .cirrel-summary-capital .border-emerald-500\/30 {
   border-color: color-mix(in srgb, var(--cirrel-summary-cash) 40%, transparent) !important;
 }
+
+
+/* Match the supplied Ignara dashboard reference: charcoal surfaces and vivid coral-orange. */
+:root {
+  --accent: #f45a35;
+  --accent-from: #ff7138;
+  --accent-to: #ed382b;
+  --accent-hi: #ff7046;
+  --accent-ink: #21110d;
+  --accent-text: #bd4327;
+  --accent-soft: #f45a3524;
+  --accent-glow: #ff633f66;
+  --sig: #f45a35;
+  --sig-text: #bd4327;
+  --sig-soft: #f45a3524;
+  --grad: linear-gradient(115deg, #ff7138 0%, #ff5b35 55%, #ed382b 100%);
+  --cirrel-orange: #ff633f;
+}
+[data-theme=dark] {
+  --bg: #26282c;
+  --side: #1f2124;
+  --card: #2f3135;
+  --card-2: #36383d;
+  --card-3: #3f4147;
+  --panel: #323439;
+  --ink: #f3f1ed;
+  --ink-2: #d4d2ce;
+  --muted: #a4a4a9;
+  --line: #ffffff0f;
+  --line-2: #ffffff1f;
+  --accent: #ff5c3d;
+  --accent-from: #ff7138;
+  --accent-to: #ed382b;
+  --accent-hi: #ff7955;
+  --accent-ink: #21110d;
+  --accent-text: #ff9a7e;
+  --accent-soft: #ff5c3d2b;
+  --accent-glow: #ff633f73;
+  --sig: #ff5c3d;
+  --sig-text: #ff9a7e;
+  --sig-soft: #ff5c3d2b;
+  --grad: linear-gradient(115deg, #ff7138 0%, #ff5c3d 55%, #ed382b 100%);
+  --cirrel-orange: #ff7955;
+}
+/* Solid active navigation and primary actions, as in the reference dashboard. */
+[data-theme=dark] .cirrel-nav-item.active {
+  color: #21110d !important;
+  background: var(--grad) !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+}
+[data-theme=dark] .cirrel-nav-item.active svg,
+[data-theme=dark] .cirrel-nav-item.active span {
+  color: #21110d !important;
+}
+[data-theme=dark] .cirrel-topbar-btn.primary,
+[data-theme=dark] .cirrel-main-content button[class*="bg-orange-"],
+[data-theme=dark] .cirrel-main-content button[class*="bg-\[var(--accent)\]"] {
+  color: #21110d !important;
+  background: var(--grad) !important;
+  border-color: transparent !important;
+}
+/* The cash highlight is the single vivid summary tile; other tiles stay charcoal. */
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash {
+  color: #fff !important;
+  background: var(--grad) !important;
+  border: 1px solid #ff805055 !important;
+  box-shadow: 0 12px 28px -16px #ff5c3d80 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash * {
+  color: inherit;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-emerald-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-emerald-400 {
+  color: #fff !important;
+}

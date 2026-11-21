@@ -855,3 +855,61 @@ button, input, select, textarea { font-family: var(--font); }
 .cirrel-main-content .cirrel-stat-profit svg {
   color: #00C99A !important;
 }
+
+/* Dashboard summary cards — compact layout, stronger semantic contrast, no fabricated metrics. */
+.cirrel-summary-grid { align-items: stretch; }
+.cirrel-summary-grid > .cirrel-stat-card {
+  min-height: 148px !important; padding: 14px 15px !important;
+  border-radius: 17px !important; gap: 0 !important;
+  box-shadow: 0 8px 22px -16px #000 !important;
+}
+.cirrel-summary-grid .cirrel-stat-card > div:first-child { min-width: 0; }
+.cirrel-summary-grid .cirrel-stat-card .text-2xl,
+.cirrel-summary-grid .cirrel-stat-card .text-3xl {
+  font-size: clamp(1.35rem, 1.7vw, 1.75rem) !important;
+  line-height: 1.12 !important; letter-spacing: -.035em !important; white-space: nowrap;
+}
+.cirrel-summary-grid .cirrel-stat-card .mt-4 { margin-top: 11px !important; }
+.cirrel-summary-grid .cirrel-stat-card .pt-3 { padding-top: 9px !important; }
+.cirrel-summary-grid .cirrel-stat-cash {
+  background: linear-gradient(120deg,#ff783f 0%,#ff5d3c 58%,#ef4034 100%) !important;
+  border: 1px solid #ff9a78 !important; box-shadow: 0 9px 25px -13px #ff5d3c88 !important;
+}
+.cirrel-summary-grid .cirrel-stat-cash .text-orange-200,
+.cirrel-summary-grid .cirrel-stat-cash svg { color: #fff1e9 !important; }
+.cirrel-summary-grid .cirrel-stat-profit {
+  background: linear-gradient(145deg,#263b39 0%,#292f33 72%) !important;
+  border: 1px solid #00c99a55 !important; border-top: 2px solid #00c99a !important;
+}
+.cirrel-summary-grid .cirrel-stat-profit,
+.cirrel-summary-grid .cirrel-stat-profit [class*="text-"],
+.cirrel-summary-grid .cirrel-stat-profit svg { color: #00c99a !important; }
+.cirrel-summary-grid .cirrel-stat-profit .text-slate-400 { color: #c1d0cc !important; }
+.cirrel-summary-grid .cirrel-stat-growth {
+  background: linear-gradient(145deg,#26383e 0%,#292f33 72%) !important;
+  border: 1px solid #43d9ed55 !important; border-top: 2px solid #43d9ed !important;
+}
+.cirrel-summary-grid .cirrel-stat-growth .text-cyan-300,
+.cirrel-summary-grid .cirrel-stat-growth .text-cyan-400,
+.cirrel-summary-grid .cirrel-stat-growth > div:first-child,
+.cirrel-summary-grid .cirrel-stat-growth > div:first-child svg { color: #55e4f4 !important; }
+.cirrel-summary-grid .cirrel-stat-equity {
+  background: linear-gradient(145deg,#3b3528 0%,#2d3033 72%) !important;
+  border: 1px solid #f2c66b55 !important; border-top: 2px solid #f2c66b !important;
+}
+.cirrel-summary-grid .cirrel-stat-equity .text-amber-300,
+.cirrel-summary-grid .cirrel-stat-equity .text-amber-400,
+.cirrel-summary-grid .cirrel-stat-equity > div:first-child,
+.cirrel-summary-grid .cirrel-stat-equity > div:first-child svg { color: #ffd477 !important; }
+.cirrel-summary-grid .cirrel-stat-card .border-t { border-color: #ffffff24 !important; }
+.cirrel-summary-grid .cirrel-stat-card .text-slate-400 { color: #d0d5dc !important; }
+.cirrel-summary-grid .cirrel-stat-card button[aria-label="Lihat keterangan"] {
+  width: 25px !important; height: 25px !important;
+  background: #ffffff12 !important; color: #f4f7fa !important;
+  border-color: #ffffff38 !important; box-shadow: none !important;
+}
+@media (max-width: 640px) {
+  .cirrel-summary-grid > .cirrel-stat-card { min-height: 142px !important; padding: 13px !important; }
+  .cirrel-summary-grid .cirrel-stat-card .text-2xl,
+  .cirrel-summary-grid .cirrel-stat-card .text-3xl { font-size: clamp(1.2rem, 5vw, 1.55rem) !important; }
+}

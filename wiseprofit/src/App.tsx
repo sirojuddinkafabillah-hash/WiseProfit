@@ -755,7 +755,8 @@ export default function App() {
                 Mode pratinjau — perubahan, transaksi, laporan pribadi, dan sinkronisasi cloud tersedia setelah masuk.
               </p>
             </div>
-          ) : ( className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
+          ) : (
+            <div key={activePage} className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
               {activePage === 'notes' && user && <div className="cirrel-notes-page"><NotesPage user={user} language={language} /></div>}
 

@@ -178,15 +178,15 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       </div>
 
       {/* 4 Synchronized Luxury Dark Cards */}
-      <div className="cirrel-summary-grid grid min-w-0 grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4">
+      <div className="cirrel-summary-grid grid min-w-0 grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-2.5 sm:gap-3">
         {/* Card 1: SISA KAS SAAT INI (KASIR) */}
-        <div className="cirrel-stat-card cirrel-stat-cash bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-cash bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/15 rounded-full blur-2xl pointer-events-none" />
           
           <div>
             <div className="flex items-center justify-between text-xs font-semibold text-slate-300 mb-2.5">
-              <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-emerald-300">
-                <Wallet className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-orange-200">
+                <Wallet className="w-4 h-4 text-orange-200" />
                 <span>{t('summary.availableMoney')}</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -212,8 +212,15 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] font-sans text-emerald-400 font-medium flex items-center justify-between">
-            
+          <div className="mt-3 pt-2.5 border-t border-white/15 grid grid-cols-2 gap-2 text-[10px] font-sans">
+            <div className="min-w-0">
+              <span className="block text-slate-300/80">{t('summary.salesIncome')}</span>
+              <span className="font-bold text-orange-100 tabular-nums">{formatRupiah(summary.totalPemasukanJual)}</span>
+            </div>
+            <div className="min-w-0 text-right">
+              <span className="block text-slate-300/80">{t('summary.stockPurchases')}</span>
+              <span className="font-bold text-rose-300 tabular-nums">-{formatRupiah(summary.totalPengeluaranBeli)}</span>
+            </div>
             {summary.totalPenarikanKas > 0 && onOpenWithdrawalModal && (
               <button
                 type="button"
@@ -227,7 +234,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
 
         {/* Card 2: TOTAL UNTUNG (GAIN) BERSIH */}
-        <div className="cirrel-stat-card cirrel-stat-profit bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-emerald-500/25 border-t-2 border-t-teal-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-profit bg-slate-900/80 backdrop-blur-xl text-white rounded-2xl p-4 border border-emerald-500/25 border-t-2 border-t-teal-400 shadow-[0_12px_28px_rgba(0,0,0,0.24)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div>
@@ -246,14 +253,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-sans">
+          <div className="mt-3 pt-2.5 border-t border-slate-700/80 flex items-center justify-between text-[11px] text-slate-300 font-sans">
             <span className="text-slate-400">{t('summary.averageProfit')}</span>
             <span className="font-bold text-emerald-400">{formatAngka(summary.rataRataMargin, 1)}%</span>
           </div>
         </div>
 
         {/* Card 3: PERTUMBUHAN MODAL (ROI) */}
-        <div className="cirrel-stat-card cirrel-stat-growth bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-cyan-500/25 border-t-2 border-t-cyan-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-growth bg-slate-900/80 backdrop-blur-xl text-white rounded-2xl p-4 border border-cyan-500/25 border-t-2 border-t-cyan-400 shadow-[0_12px_28px_rgba(0,0,0,0.24)] flex flex-col justify-between relative overflow-hidden group">
           <div>
             <div className="flex items-center justify-between text-xs font-semibold mb-2.5">
               <div className="flex items-center gap-1.5  font-sans tracking-wider text-[11px] text-slate-300">
@@ -279,7 +286,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
 
         {/* Card 4: TOTAL EKUITAS SETELAH UNTUNG */}
-        <div className="cirrel-stat-card cirrel-stat-equity bg-slate-900/80 backdrop-blur-xl text-white rounded-3xl p-5 border border-amber-500/25 border-t-2 border-t-amber-400 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="cirrel-stat-card cirrel-stat-equity bg-slate-900/80 backdrop-blur-xl text-white rounded-2xl p-4 border border-amber-500/25 border-t-2 border-t-amber-400 shadow-[0_12px_28px_rgba(0,0,0,0.24)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div>
@@ -298,7 +305,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-[11px] font-sans">
+          <div className="mt-3 pt-2.5 border-t border-slate-700/80 grid grid-cols-2 gap-2 text-[10px] font-sans">
             <div>
               <span className="text-slate-500 block text-[10px]">{t('summary.startingCapitalShort')}:</span>
               <span className="font-semibold text-slate-300">{formatRupiah(modalAwal)}</span>

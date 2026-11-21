@@ -705,7 +705,15 @@ export default function App() {
                   <RefreshCw className="w-3 h-3" />
                   <span>Cek Ulang</span>
                 </button>
-                  {!user ? (
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Container */}
+        <main className="cirrel-main-content min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 overflow-x-hidden px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+          {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
+          {!user ? (
             <div className="cirrel-view cirrel-view-inventory min-h-[65vh] w-full animate-in fade-in duration-200">
               <section className="mb-5 flex flex-col gap-3 rounded-2xl border border-blue-400/20 bg-slate-900/80 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -728,20 +736,14 @@ export default function App() {
                 </div>
                 <p className="text-sm text-slate-400">Angka dan barang di bawah ini dibuat sebagai ilustrasi, bukan data pengguna.</p>
               </section>
-              <SummaryCards
-                summary={publicPreviewSummary}
-                modalAwal={50000}
+              <SummaryCards summary={publicPreviewSummary} modalAwal={50000}
                 onUpdateModalAwal={() => setIsAuthModalOpen(true)}
                 onOpenGuide={() => setIsGuideModalOpen(true)}
-                currentRealTime={currentRealTime}
-                bulanFilter="all"
-                onOpenWithdrawalModal={() => setIsAuthModalOpen(true)}
-              />
-              <InventoryTable
-                items={publicPreviewItems}
+                currentRealTime={currentRealTime} bulanFilter="all"
+                onOpenWithdrawalModal={() => setIsAuthModalOpen(true)} />
+              <InventoryTable items={publicPreviewItems}
                 onAdd={() => setIsAuthModalOpen(true)}
-                globalSavePercentMonthly={50}
-                modalAwal={50000}
+                globalSavePercentMonthly={50} modalAwal={50000}
                 saldoKasSaatIni={publicPreviewSummary.saldoKasSaatIni}
                 onEditItem={() => setIsAuthModalOpen(true)}
                 onDeleteItem={() => setIsAuthModalOpen(true)}
@@ -749,8 +751,7 @@ export default function App() {
                 onSetSoldQty={() => setIsAuthModalOpen(true)}
                 onClearAll={() => setIsAuthModalOpen(true)}
                 selectedMonth="all"
-                onSelectMonth={() => setIsAuthModalOpen(true)}
-              />
+                onSelectMonth={() => setIsAuthModalOpen(true)} />
               <p className="mt-4 rounded-xl border border-slate-700/70 bg-slate-900/60 px-4 py-3 text-center text-xs text-slate-400">
                 Mode pratinjau — perubahan, transaksi, laporan pribadi, dan sinkronisasi cloud tersedia setelah masuk.
               </p>

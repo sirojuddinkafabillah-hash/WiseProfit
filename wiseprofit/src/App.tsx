@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { InventoryItem, Withdrawal } from './types/inventory';
 import { calculateSummary } from './utils/calculator';
+import { INITIAL_SAMPLE_ITEMS } from './utils/sampleData';
 import { getInitialLanguage, formatTime } from './i18n/translations';
 import { Header, AppPage } from './components/Header';
 import { SummaryCards } from './components/SummaryCards';
@@ -49,7 +50,7 @@ import {
 } from './services/supabaseSync';
 
 export default function App() {
-  const { user, loading: isAuthLoading, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
+  const { user, isOnline, tokenServiceStatus, checkConnection, logout } = useAuth();
   const [language, setLanguage] = useState<'id' | 'en'>(getInitialLanguage);
 
   useEffect(() => {
@@ -86,11 +87,17 @@ export default function App() {
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Tampilkan formulir masuk setelah status sesi selesai diperiksa.
+  // Login tidak dipaksa terbuka saat pengunjung pertama kali datang.
+  // Pengunjung tanpa sesi melihat pratinjau publik dengan data contoh; akun tetap privat.
   useEffect(() => {
-    if (!isAuthLoading && !user) setIsAuthModalOpen(true);
     if (user) setIsAuthModalOpen(false);
-  }, [isAuthLoading, user]);
+  }, [user]);
+
+  const publicPreviewItems = INITIAL_SAMPLE_ITEMS;
+  const publicPreviewSummary = useMemo(
+    () => calculateSummary(publicPreviewItems, 50000, []),
+    []
+  );
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
@@ -618,6 +625,10 @@ export default function App() {
               if (!user) { setIsAuthModalOpen(true); return; }
               setIsProfilePanelOpen((open) => !open);
             } else {
+              if (!user) {
+                setIsAuthModalOpen(true);
+                return;
+              }
               setActivePage(page);
               setIsProfilePanelOpen(false);
             }
@@ -694,74 +705,57 @@ export default function App() {
                   <RefreshCw className="w-3 h-3" />
                   <span>Cek Ulang</span>
                 </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Main Container */}
-        <main className="cirrel-main-content min-h-[calc(100vh-4.25rem)] min-w-0 flex-1 overflow-x-hidden px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
-          {/* REQUIREMENT: Sembunyikan data ketika log out & Setiap orang hanya bisa melihat data diri sendiri */}
-          {!user ? (
-            <section className="mx-auto my-8 grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(36,50,75,0.12)] sm:my-14 lg:grid-cols-[1.05fr_0.95fr]">
-              <div className="relative flex flex-col justify-between overflow-hidden bg-[#24324B] p-7 text-white sm:p-10 lg:p-12">
-                <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#4268C9]/40 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[#4268C9]/30 blur-3xl" />
-                <div className="relative">
-                  <div className="mb-10 inline-flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#24324B] shadow-lg">
-                      <ShieldCheck className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold tracking-tight text-white">WiseProfit</p>
-                      <p className="text-xs text-white/65">Kelola usaha dengan lebih jelas</p>
-                    </div>
-                  </div>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90">
+                  {!user ? (
+            <div className="cirrel-view cirrel-view-inventory min-h-[65vh] w-full animate-in fade-in duration-200">
+              <section className="mb-5 flex flex-col gap-3 rounded-2xl border border-blue-400/20 bg-slate-900/80 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="mb-1 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-blue-300">
                     <span className="h-2 w-2 rounded-full bg-blue-300" />
-                    Ruang usaha digital Anda
-                  </span>
-                  <h2 className="mt-5 max-w-md text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-                    All your business notes, organized.
-                  </h2>
-                  <p className="mt-4 max-w-md text-sm leading-7 text-white/75">
-                    Track inventory, sales, profit, and cash flow in one place connected to your account.
-                  </p>
-                </div>
-                <div className="relative mt-10 space-y-4">
-                  {[
-                    'Business records connected to your account',
-                    'Ringkasan penjualan dan arus kas',
-                    'Access data after signing in to the correct account'
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3 text-sm text-white/85">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-200" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#4268C9]">Welcome</span>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#24324B] sm:text-4xl">
-                  Sign in to WiseProfit
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
-                  Continue managing your business. Sign in with your registered email and password, or create a new account if you don't have one.
-                </p>
-                <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#4268C9]" />
-                    <div>
-                      <p className="text-sm font-semibold text-[#24324B]">Kelola usaha dengan lebih mudah</p>
-                      <p className="mt-1 text-xs leading-5 text-slate-500">Manage inventory, sales, and finances in one dashboard.</p>
-                    </div>
+                    Pratinjau publik WiseProfit
                   </div>
+                  <h2 className="text-xl font-bold text-white sm:text-2xl">Lihat cara kerja dashboard usaha</h2>
+                  <p className="mt-1 text-sm text-slate-300">Ini hanya data contoh. Masuk untuk membuka dan mengelola data usaha milik Anda.</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4268C9] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/15 transition hover:bg-[#3457A5] focus:outline-none focus:ring-4 focus:ring-blue-100"
+                <button type="button" onClick={() => setIsAuthModalOpen(true)} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-900/20 transition hover:bg-blue-500">
+                  <LogIn className="h-4 w-4" />
+                  Masuk / Buat Akun
+                </button>
+              </section>
+              <section className="dashboard-hero mb-5 flex flex-col gap-2">
+                <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  Contoh workspace usaha
+                </div>
+                <p className="text-sm text-slate-400">Angka dan barang di bawah ini dibuat sebagai ilustrasi, bukan data pengguna.</p>
+              </section>
+              <SummaryCards
+                summary={publicPreviewSummary}
+                modalAwal={50000}
+                onUpdateModalAwal={() => setIsAuthModalOpen(true)}
+                onOpenGuide={() => setIsGuideModalOpen(true)}
+                currentRealTime={currentRealTime}
+                bulanFilter="all"
+                onOpenWithdrawalModal={() => setIsAuthModalOpen(true)}
+              />
+              <InventoryTable
+                items={publicPreviewItems}
+                onAdd={() => setIsAuthModalOpen(true)}
+                globalSavePercentMonthly={50}
+                modalAwal={50000}
+                saldoKasSaatIni={publicPreviewSummary.saldoKasSaatIni}
+                onEditItem={() => setIsAuthModalOpen(true)}
+                onDeleteItem={() => setIsAuthModalOpen(true)}
+                onUpdateSoldQty={() => setIsAuthModalOpen(true)}
+                onSetSoldQty={() => setIsAuthModalOpen(true)}
+                onClearAll={() => setIsAuthModalOpen(true)}
+                selectedMonth="all"
+                onSelectMonth={() => setIsAuthModalOpen(true)}
+              />
+              <p className="mt-4 rounded-xl border border-slate-700/70 bg-slate-900/60 px-4 py-3 text-center text-xs text-slate-400">
+                Mode pratinjau — perubahan, transaksi, laporan pribadi, dan sinkronisasi cloud tersedia setelah masuk.
+              </p>
+            </div>
+          ) : (5] focus:outline-none focus:ring-4 focus:ring-blue-100"
                 >
                   <LogIn className="h-5 w-5" />
                   Sign in or create an account

@@ -755,16 +755,7 @@ export default function App() {
                 Mode pratinjau — perubahan, transaksi, laporan pribadi, dan sinkronisasi cloud tersedia setelah masuk.
               </p>
             </div>
-          ) : (5] focus:outline-none focus:ring-4 focus:ring-blue-100"
-                >
-                  <LogIn className="h-5 w-5" />
-                  Sign in or create an account
-                </button>
-                <p className="mt-4 text-center text-xs text-slate-400">Putih · Navy · Biru</p>
-              </div>
-            </section>
-          ) : (
-            <div key={activePage} className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
+          ) : ( className={`cirrel-view cirrel-view-${activePage} min-h-[65vh] w-full animate-in fade-in duration-200`}>
               {/* PAGE CATATAN: HALAMAN MANDIRI DARI TOOLBAR */}
               {activePage === 'notes' && user && <div className="cirrel-notes-page"><NotesPage user={user} language={language} /></div>}
 

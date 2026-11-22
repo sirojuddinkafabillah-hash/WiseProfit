@@ -294,7 +294,7 @@ export default function App() {
     setIsSavingCloud(true);
     try {
       await saveInventoryItemToCloud(user.uid, item);
-      setNotification(`Item "${item.namaBarang}" saved successfully.`);
+      setNotification(item.jenisPencatatan === 'pembelian_ulang' ? `Pembelian ulang "${item.namaBarang}" berhasil dicatat sebagai batch baru.` : `Item "${item.namaBarang}" saved successfully.`);
     } catch (err) {
       console.error('Failed to save item:', err);
     } finally {
@@ -927,6 +927,7 @@ export default function App() {
 
                 {/* Modals */}
         <ItemModal
+          existingItems={items}
           isOpen={isItemModalOpen}
           onClose={() => {
             setIsItemModalOpen(false);

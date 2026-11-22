@@ -13,6 +13,11 @@ export interface InventoryItem {
   tanggalInput?: string; // Tanggal input transaksi (e.g. 2026-10-11)
   waktuInput?: string; // Jam input real-time (e.g. 14:26:07)
   catatan?: string;
+  // Metadata pembelian per kemasan; opsional agar data lama tetap kompatibel.
+  isiPerKemasan?: number;
+  jumlahKemasanDibeli?: number;
+  hargaBeliPerKemasan?: number;
+  jenisPencatatan?: 'baru' | 'pembelian_ulang';
   createdAt: number;
   updatedAt: number;
 }

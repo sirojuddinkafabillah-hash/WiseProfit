@@ -14,8 +14,9 @@ const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems = [], globalSavePercentMonthly = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [mode, setMode] = useState<'new' | 'old'>('new');
+  const [mode, setMode] = useState<'new' | 'old'>('old');
   const panelRef = useRef<HTMLElement>(null);
+  const productSearchRef = useRef<HTMLInputElement>(null);
   const [showProductList, setShowProductList] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<InventoryItem | null>(null);
@@ -31,6 +32,13 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
     document.addEventListener('pointerdown', handleOutsideInteraction, true);
     return () => document.removeEventListener('pointerdown', handleOutsideInteraction, true);
   }, [isExpanded]);
+
+  useEffect(() => {
+    if (isExpanded && mode === 'old') {
+      const frame = requestAnimationFrame(() => productSearchRef.current?.focus());
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [isExpanded, mode]);
 
   const todayStr = new Date().toISOString().slice(0, 10);
   const [tanggalInput, setTanggalInput] = useState(todayStr);
@@ -92,7 +100,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
   const resetForm = () => {
     setNamaBarang(''); setProductSearch(''); setSelectedProduct(null);
     setIsiPerKemasan(''); setJumlahKemasan(1); setHargaBeliPerKemasan('');
-    setHargaJual(''); setCatatan(''); setMode('new'); setShowProductList(false);
+    setHargaJual(''); setCatatan(''); setMode('old'); setShowProductList(false);
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +124,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
 
   return (
     <section ref={panelRef} className="cirrel-quick-add wp-quick-add-panel mb-0 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-[0_12px_32px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:p-5">
-      <button type="button" onClick={() => setIsExpanded((open) => !open)} aria-expanded={isExpanded} className="flex w-full items-center justify-between gap-3 text-left">
+      <button type="button" onClick={() => { if (isExpanded) { setIsExpanded(false); setShowProductList(false); } else { resetForm(); setMode('old'); setIsExpanded(true); } }} aria-expanded={isExpanded} className="flex w-full items-center justify-between gap-3 text-left">
         <span className="flex min-w-0 items-center gap-2.5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Package className="h-5 w-5" /></span>
           <span className="min-w-0"><span className="block text-sm font-bold text-[#18345F]">{t('quick.title')}</span><span className="block text-xs text-slate-500">{isExpanded ? 'Formulir input barang' : 'Buka formulir untuk menambahkan barang'}</span></span>
@@ -138,7 +146,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
             <div className="sm:col-span-2 relative">
               <label className={labelClass}>{t('quick.itemName')}</label>
               {mode === 'old' ? <>
-                <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-500"/><input type="text" required value={productSearch} onFocus={() => setShowProductList(Boolean(productSearch.trim()))} onChange={e=>{const value=e.target.value;setProductSearch(value);setSelectedProduct(null);setNamaBarang('');setShowProductList(Boolean(value.trim()));}} placeholder="Ketik nama barang, misalnya: s..." className={inputClass+" pl-9 pr-9"} /><ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"/></div>
+                <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-500"/><input ref={productSearchRef} type="text" required value={productSearch} onFocus={() => setShowProductList(Boolean(productSearch.trim()))} onChange={e=>{const value=e.target.value;setProductSearch(value);setSelectedProduct(null);setNamaBarang('');setShowProductList(Boolean(value.trim()));}} placeholder="Ketik nama barang, misalnya: s..." className={inputClass+" pl-9 pr-9"} /><ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"/></div>
                 {showProductList && productSearch.trim() && filteredProducts.length>0 && <div className="absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-blue-100 bg-white shadow-xl">
                   {filteredProducts.map(item=><button key={item.id} type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>selectProduct(item)} className="flex w-full items-center justify-between gap-3 border-b border-slate-100 px-3 py-2.5 text-left last:border-0 hover:bg-blue-50"><span className="min-w-0"><span className="block truncate text-sm font-semibold text-[#18345F]">{item.namaBarang}</span><span className="block text-xs text-slate-500">{item.isiPerKemasan ?? item.jumlahBarangWadah} {item.satuanUnit}/kemasan</span></span><Check className="h-4 w-4 shrink-0 text-emerald-600"/></button>)}
                 </div>}

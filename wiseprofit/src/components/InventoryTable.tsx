@@ -148,7 +148,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   return (
     <div id="cirrel-inventory" className="cirrel-inventory-card">
       <div className="cirrel-inventory-quickadd">
-        <QuickAddBar onAdd={onAdd} globalSavePercentMonthly={globalSavePercentMonthly} />
+        <QuickAddBar onAdd={onAdd} existingItems={items} globalSavePercentMonthly={globalSavePercentMonthly} />
       </div>
       {/* Table Toolbar & Filters */}
       <div className="cirrel-inventory-toolbar">

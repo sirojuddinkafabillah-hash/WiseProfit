@@ -144,7 +144,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
                 </div>}
                 {showProductList && productSearch.trim() && filteredProducts.length===0 && <p className="mt-1 text-xs text-slate-500">Nama barang belum ditemukan. Periksa ejaan atau pilih Barang Baru.</p>}
                 {selectedProduct && <p className="mt-1 flex items-center gap-1 text-xs text-emerald-700"><Check className="h-3 w-3"/>Data barang dipilih. Isi kemasan dan harga jual terisi otomatis.</p>}
-              </> : <input> : <input type="text" required value={namaBarang} onChange={e=>setNamaBarang(e.target.value)} placeholder={t('quick.itemPlaceholder')} className={inputClass} />}
+              </> : <input type="text" required value={namaBarang} onChange={e=>setNamaBarang(e.target.value)} placeholder={t('quick.itemPlaceholder')} className={inputClass} />}
               {duplicateName && <p className="mt-1 text-xs text-amber-700">Nama ini sudah ada. Pilih Barang Lama untuk menambah stoknya.</p>}
             </div>
             <div><label className={labelClass}>Satuan kemasan</label><input type="text" value={satuanWadah} onChange={e=>setSatuanWadah(e.target.value)} placeholder="Dus / Karton / Pak" className={inputClass} /></div>

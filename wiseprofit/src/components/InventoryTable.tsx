@@ -323,7 +323,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         {item.jumlahBarangWadah} <span className="text-slate-400 text-[11px]">{item.satuanUnit || 'pcs'}</span>
                       </div>
                       <div className="text-[10px] text-slate-400 mt-0.5">
-                        {t('table.perOne')} {item.satuanWadah || t('table.containerFallback')}
+                        {t('table.perOne')} {item.jumlahKemasanDibeli ?? 1} {item.satuanWadah || t('table.containerFallback')}
                       </div>
                     </td>
 

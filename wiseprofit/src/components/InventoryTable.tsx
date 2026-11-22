@@ -148,7 +148,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   return (
     <div id="cirrel-inventory" className="cirrel-inventory-card">
       <div className="cirrel-inventory-quickadd">
-        <QuickAddBar onAdd={onAdd} existingItems={items} globalSavePercentMonthly={globalSavePercentMonthly} />
+        <QuickAddBar onAdd={onAdd} globalSavePercentMonthly={globalSavePercentMonthly} />
       </div>
       {/* Table Toolbar & Filters */}
       <div className="cirrel-inventory-toolbar">
@@ -323,7 +323,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         {item.jumlahBarangWadah} <span className="text-slate-400 text-[11px]">{item.satuanUnit || 'pcs'}</span>
                       </div>
                       <div className="text-[10px] text-slate-400 mt-0.5">
-                        {t('table.perOne')} {item.jumlahKemasanDibeli ?? 1} {item.satuanWadah || t('table.containerFallback')}
+                        {t('table.perOne')} {item.satuanWadah || t('table.containerFallback')}
                       </div>
                     </td>
 

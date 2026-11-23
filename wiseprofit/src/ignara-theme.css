@@ -1097,3 +1097,66 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody td {
   font-size: 13px !important;
 }
+
+
+/* Fix suggestion labels: explicit component classes prevent theme utility overrides
+   from making product names invisible on the white dropdown surface. */
+[data-theme=dark] .wp-quick-add-panel .wp-product-suggestions {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #d8dde5 !important;
+  color: #26313d !important;
+  isolation: isolate;
+}
+[data-theme=dark] .wp-quick-add-panel .wp-product-suggestion {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 54px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #26313d !important;
+  border-bottom: 1px solid #e8ebf0 !important;
+  text-align: left !important;
+  opacity: 1 !important;
+}
+[data-theme=dark] .wp-quick-add-panel .wp-product-suggestion:hover,
+[data-theme=dark] .wp-quick-add-panel .wp-product-suggestion:focus-visible {
+  background: #f3f5f8 !important;
+  background-color: #f3f5f8 !important;
+  color: #1f2937 !important;
+}
+[data-theme=dark] .wp-quick-add-panel .wp-product-option-copy {
+  display: flex !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  color: #26313d !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+[data-theme=dark] .wp-quick-add-panel .wp-product-option-name {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  color: #26313d !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+[data-theme=dark] .wp-quick-add-panel .wp-product-option-meta {
+  display: block !important;
+  color: #687587 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

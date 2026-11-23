@@ -976,280 +976,64 @@ button, input, select, textarea { font-family: var(--font); }
 }
 
 
-/* WiseProfit 2026 dark clarity palette — cool navy, soft surfaces, white-first typography.
-   Visual-only layer: keeps existing page structure, interactions and business logic intact. */
-[data-theme=dark] {
-  --bg: #0b1220 !important;
-  --side: #0d1728 !important;
-  --card: #142238 !important;
-  --card-2: #192a42 !important;
-  --card-3: #223650 !important;
-  --panel: #101d30 !important;
-  --well: #ffffff0b !important;
-  --ink: #f8fbff !important;
-  --ink-2: #e5edf7 !important;
-  --muted: #b5c4d8 !important;
-  --line: #d8e7ff20 !important;
-  --line-2: #d8e7ff35 !important;
-  --accent: #6da8ff !important;
-  --accent-from: #477fe0 !important;
-  --accent-to: #315fba !important;
-  --accent-hi: #91bdff !important;
-  --accent-ink: #ffffff !important;
-  --accent-text: #b9d5ff !important;
-  --accent-soft: #6da8ff25 !important;
-  --accent-glow: #4c8ff04a !important;
-  --sig: #6da8ff !important;
-  --sig-text: #c6ddff !important;
-  --sig-soft: #6da8ff25 !important;
-  --good: #69d6a4 !important;
-  --good-soft: #69d6a41c !important;
-  --warn: #f2c879 !important;
-  --warn-soft: #f2c8791c !important;
-  --bad: #ff8995 !important;
-  --bad-soft: #ff89951c !important;
-  --info: #9bc5ff !important;
-  --info-soft: #6da8ff1c !important;
-  --c1: #6da8ff !important;
-  --c2: #9bc5ff !important;
-  --c3: #a8b8cc !important;
-  --c4: #7d9fd1 !important;
-  --c5: #b3c3d8 !important;
-  --c6: #69cbb2 !important;
-  --cirrel-bg: var(--bg) !important;
-  --cirrel-panel: var(--card) !important;
-  --cirrel-panel-2: var(--panel) !important;
-  --cirrel-line: var(--line) !important;
-  --cirrel-text: var(--ink) !important;
-  --cirrel-muted: var(--muted) !important;
-  --cirrel-accent: var(--accent) !important;
-  --cirrel-accent-2: var(--accent-text) !important;
-  --cirrel-orange: var(--accent-text) !important;
-  --cirrel-red: var(--bad) !important;
-  --cirrel-shadow: 0 18px 48px #02081780 !important;
-  --cirrel-summary-cash: #9bc5ff !important;
-  --cirrel-summary-profit: #69d6a4 !important;
-  --cirrel-summary-growth: #78c8e8 !important;
-  --cirrel-summary-equity: #b8a8f5 !important;
-  --grad: linear-gradient(125deg, #477fe0 0%, #3973cf 55%, #315fba 100%) !important;
-  color-scheme: dark !important;
-}
-[data-theme=dark] body {
-  background:
-    radial-gradient(ellipse at 82% 0%, #244c8240, transparent 38%),
-    radial-gradient(ellipse at 0% 76%, #1c47702b, transparent 34%),
-    linear-gradient(145deg, #0b1220, #0d1728 58%, #0a1423) !important;
-  color: #f8fbff !important;
-}
-[data-theme=dark] .cirrel-app-root { color: #f8fbff !important; background-color: transparent !important; }
-[data-theme=dark] .cirrel-sidebar,
-[data-theme=dark] .cirrel-topbar {
-  background: #0d1728eF !important;
-  border-color: #d8e7ff20 !important;
-  backdrop-filter: blur(18px) !important;
-}
-[data-theme=dark] .cirrel-brand,
-[data-theme=dark] .cirrel-topbar-title,
-[data-theme=dark] .cirrel-profile,
-[data-theme=dark] .cirrel-admin { color: #f8fbff !important; }
-[data-theme=dark] .cirrel-nav-item { color: #c4d0e0 !important; }
-[data-theme=dark] .cirrel-nav-item:hover,
-[data-theme=dark] .cirrel-nav-item.active {
-  color: #ffffff !important;
-  background: linear-gradient(110deg, #477fe044, #315fba25) !important;
-  box-shadow: inset 3px 0 #80b5ff !important;
-}
-[data-theme=dark] .cirrel-nav-item.active svg,
-[data-theme=dark] .cirrel-nav-item.active span { color: #ffffff !important; }
-[data-theme=dark] .cirrel-topbar-btn.primary,
-[data-theme=dark] .cirrel-main-content button.cirrel-primary,
-[data-theme=dark] .cirrel-main-content button[class*="bg-orange-"],
-[data-theme=dark] .cirrel-main-content button[class*="bg-blue-600"] {
-  color: #ffffff !important;
-  background: linear-gradient(125deg, #477fe0, #315fba) !important;
-  border-color: #80b5ff66 !important;
-  box-shadow: 0 7px 22px #315fba35 !important;
-}
+/* WiseProfit readability refinement — preserve the original orange/charcoal palette.
+   Only improve contrast, legibility and component definition; do not recolor the UI. */
+[data-theme=dark] .cirrel-app-root,
 [data-theme=dark] .cirrel-main-content {
-  color: #f8fbff !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 [data-theme=dark] .cirrel-main-content h1,
 [data-theme=dark] .cirrel-main-content h2,
 [data-theme=dark] .cirrel-main-content h3,
 [data-theme=dark] .cirrel-main-content h4,
-[data-theme=dark] .cirrel-main-content strong,
 [data-theme=dark] .cirrel-main-content label,
 [data-theme=dark] .cirrel-main-content th,
-[data-theme=dark] .cirrel-main-content td,
-[data-theme=dark] .cirrel-main-content .text-white,
-[data-theme=dark] .cirrel-main-content .text-slate-100,
-[data-theme=dark] .cirrel-main-content .text-slate-200,
-[data-theme=dark] .cirrel-main-content [class*="text-[#18345F]"],
-[data-theme=dark] .cirrel-main-content [class*="text-[#24324B]"],
-[data-theme=dark] .cirrel-main-content [class*="text-[#385477]"],
-[data-theme=dark] .cirrel-main-content [class*="text-[#42618B]"] {
-  color: #f8fbff !important;
+[data-theme=dark] .cirrel-main-content strong {
+  color: var(--ink) !important;
+  font-weight: 650;
 }
 [data-theme=dark] .cirrel-main-content p,
 [data-theme=dark] .cirrel-main-content small,
-[data-theme=dark] .cirrel-main-content .text-slate-300,
 [data-theme=dark] .cirrel-main-content .text-slate-400,
 [data-theme=dark] .cirrel-main-content .text-slate-500,
-[data-theme=dark] .cirrel-main-content .text-gray-300,
 [data-theme=dark] .cirrel-main-content .text-gray-400,
 [data-theme=dark] .cirrel-main-content .text-gray-500 {
-  color: #c2d0e2 !important;
-}
-[data-theme=dark] .cirrel-main-content [class*="bg-slate-900"],
-[data-theme=dark] .cirrel-main-content [class*="bg-slate-950"],
-[data-theme=dark] .cirrel-main-content [class*="bg-white"],
-[data-theme=dark] .cirrel-main-content [class*="bg-blue-50"],
-[data-theme=dark] .cirrel-main-content [class*="bg-indigo-50"] {
-  background-color: #142238d9 !important;
-}
-[data-theme=dark] .cirrel-main-content [class*="border-slate-"],
-[data-theme=dark] .cirrel-main-content [class*="border-blue-"],
-[data-theme=dark] .cirrel-main-content [class*="border-white"] {
-  border-color: #d8e7ff26 !important;
+  color: var(--muted) !important;
 }
 [data-theme=dark] .cirrel-main-content input:not([type=checkbox]):not([type=radio]),
 [data-theme=dark] .cirrel-main-content select,
 [data-theme=dark] .cirrel-main-content textarea {
-  color: #ffffff !important;
-  background: #0e1a2c !important;
-  border-color: #d8e7ff3a !important;
-  box-shadow: inset 0 1px 0 #ffffff08 !important;
+  border-color: var(--line-2) !important;
 }
-[data-theme=dark] .cirrel-main-content input::placeholder,
-[data-theme=dark] .cirrel-main-content textarea::placeholder { color: #91a4bd !important; opacity: 1 !important; }
 [data-theme=dark] .cirrel-main-content input:focus,
 [data-theme=dark] .cirrel-main-content select:focus,
 [data-theme=dark] .cirrel-main-content textarea:focus {
-  border-color: #80b5ff !important;
-  box-shadow: 0 0 0 3px #477fe033 !important;
-}
-[data-theme=dark] .wp-quick-add-panel {
-  color: #f8fbff !important;
-  background: linear-gradient(145deg, #172840f2, #101d30f2) !important;
-  border-color: #d8e7ff2b !important;
-  box-shadow: 0 18px 42px #02081755 !important;
-}
-[data-theme=dark] .wp-quick-add-panel .grid.grid-cols-2 {
-  background: #0c192b !important;
-  border: 1px solid #d8e7ff1c !important;
-}
-[data-theme=dark] .wp-quick-add-panel .grid.grid-cols-2 button {
-  color: #c4d0e0 !important;
-  background: transparent !important;
-  border: 1px solid transparent !important;
-}
-[data-theme=dark] .wp-quick-add-panel .grid.grid-cols-2 button[class*="bg-white"] {
-  color: #ffffff !important;
-  background: linear-gradient(125deg, #477fe0, #315fba) !important;
-  border-color: #80b5ff66 !important;
-  box-shadow: 0 5px 16px #315fba35 !important;
-}
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] {
-  background: linear-gradient(150deg, #172943fa, #0d192bfa) !important;
-  border: 1px solid #8fbaff45 !important;
-  box-shadow: 0 18px 42px #020817b3 !important;
-  backdrop-filter: blur(18px) !important;
-}
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button {
-  color: #ffffff !important;
-  background: transparent !important;
-  border-bottom-color: #d8e7ff1c !important;
-}
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button span,
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button .block { color: #ffffff !important; }
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button .text-xs { color: #b9c9de !important; }
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button:hover {
-  background: #477fe033 !important;
-}
-[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] button svg { color: #9bc5ff !important; }
-[data-theme=dark] .wp-quick-add-panel form { border-color: #d8e7ff24 !important; }
-[data-theme=dark] .wp-quick-add-panel label,
-[data-theme=dark] .wp-quick-add-panel .text-\[\#42618B\],
-[data-theme=dark] .wp-quick-add-panel .text-\[\#385477\] { color: #f1f6ff !important; }
-
-/* Inventory table: readable headings, quiet alternating rows, restrained blue focus. */
-[data-theme=dark] #cirrel-inventory .cirrel-inventory-table-wrap {
-  background: linear-gradient(145deg, #142238, #101d30) !important;
-  border-color: #d8e7ff2b !important;
-}
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table thead tr,
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table thead th,
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tfoot td {
-  color: #eaf2ff !important;
-  background: #1a2b43 !important;
-  border-color: #d8e7ff24 !important;
+  border-color: var(--accent-hi) !important;
+  box-shadow: 0 0 0 2px var(--accent-soft) !important;
 }
 [data-theme=dark] #cirrel-inventory table.cirrel-inventory-table thead th {
-  font-size: 10px !important;
-  letter-spacing: .075em !important;
-}
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody tr:nth-child(even) td {
-  background: #ffffff04 !important;
-}
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody tr:hover td {
-  background: #477fe01a !important;
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+  border-bottom-color: var(--line-2) !important;
 }
 [data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody td {
-  color: #e8f0fb !important;
-  border-color: #d8e7ff18 !important;
-  font-size: 12.5px !important;
+  color: var(--ink-2) !important;
+  border-bottom-color: var(--line) !important;
 }
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-400,
-[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody td .text-slate-500 {
-  color: #b5c4d8 !important;
+[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody tr:hover td {
+  background: var(--accent-soft) !important;
 }
-[data-theme=dark] #cirrel-inventory .cirrel-inventory-toolbar,
-[data-theme=dark] #cirrel-inventory .cirrel-inventory-quickadd {
-  background: transparent !important;
+[data-theme=dark] .wp-quick-add-panel input,
+[data-theme=dark] .wp-quick-add-panel select,
+[data-theme=dark] .wp-quick-add-panel textarea {
+  border-color: var(--line-2) !important;
 }
-[data-theme=dark] .cirrel-main-content .cirrel-stat-card {
-  color: #f8fbff !important;
-  background: linear-gradient(145deg, #192b43, #111f33) !important;
-  border: 1px solid #d8e7ff26 !important;
-  box-shadow: 0 12px 28px #02081744 !important;
+[data-theme=dark] .wp-quick-add-panel [class*="max-h-60"] {
+  border-color: var(--line-2) !important;
+  box-shadow: 0 12px 28px var(--shadow) !important;
 }
-[data-theme=dark] .cirrel-main-content .cirrel-stat-cash {
-  background: linear-gradient(135deg, #315fba, #24477f) !important;
-  border-color: #80b5ff75 !important;
-  box-shadow: 0 10px 28px #315fba35 !important;
-}
-[data-theme=dark] .cirrel-main-content .cirrel-stat-cash *,
-[data-theme=dark] .cirrel-main-content .cirrel-stat-profit *,
-[data-theme=dark] .cirrel-main-content .cirrel-stat-growth *,
-[data-theme=dark] .cirrel-main-content .cirrel-stat-equity * { color: #f8fbff !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-stat-profit { border-top: 2px solid #69d6a4 !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-stat-growth { border-top: 2px solid #78c8e8 !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-stat-equity { border-top: 2px solid #b8a8f5 !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital {
-  color: #f8fbff !important;
-  background: linear-gradient(145deg, #172840, #101d30) !important;
-  border-color: #d8e7ff2b !important;
-}
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital [class*="text-"],
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital p,
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital span { color: #e8f0fb !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-rose-400,
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-red-400 { color: #ff9aa4 !important; }
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-emerald-400,
-[data-theme=dark] .cirrel-main-content .cirrel-summary-capital .text-emerald-300 { color: #79e0b1 !important; }
-[data-theme=dark] .cirrel-main-content [role=dialog] {
-  color: #f8fbff !important;
-  background: linear-gradient(145deg, #172840, #101d30) !important;
-  border-color: #d8e7ff30 !important;
-}
-[data-theme=dark] .cirrel-main-content table { color: #f8fbff !important; }
-[data-theme=dark] .cirrel-main-content th { color: #eaf2ff !important; }
-[data-theme=dark] .cirrel-main-content td { color: #e0eaf7 !important; }
-[data-theme=dark] .cirrel-main-content button:not(.cirrel-nav-item) {
-  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
-}
-[data-theme=dark] .cirrel-main-content button:focus-visible,
-[data-theme=dark] .cirrel-main-content a:focus-visible {
-  outline: 2px solid #9bc5ff !important;
-  outline-offset: 3px !important;
+[data-theme=dark] .cirrel-nav-item,
+[data-theme=dark] .cirrel-topbar-btn {
+  font-weight: 600;
 }

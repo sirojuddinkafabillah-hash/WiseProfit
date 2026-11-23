@@ -1037,3 +1037,63 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] .cirrel-topbar-btn {
   font-weight: 600;
 }
+
+
+/* QuickAdd old-item suggestions: quiet white list, not the coral primary-action color.
+   Scoped to the suggestion popover only; all other orange accents remain unchanged. */
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] {
+  background: #f8f9fb !important;
+  background-color: #f8f9fb !important;
+  border: 1px solid #d8dde5 !important;
+  border-radius: 13px !important;
+  box-shadow: 0 14px 32px rgba(0,0,0,.28) !important;
+  overflow-x: hidden !important;
+}
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] > button,
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button {
+  color: #26313d !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e8ebf0 !important;
+  min-height: 52px !important;
+  padding: 10px 13px !important;
+  transition: background-color .15s ease, color .15s ease !important;
+}
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button:hover,
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button:focus-visible {
+  color: #1f2937 !important;
+  background: #f0f3f7 !important;
+  background-color: #f0f3f7 !important;
+  outline: none !important;
+}
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button span,
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button .block {
+  color: #273444 !important;
+}
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button .text-xs {
+  color: #687587 !important;
+}
+[data-theme=dark] .cirrel-main-content .wp-quick-add-panel [class*="max-h-60"] button svg {
+  color: #0caa83 !important;
+}
+
+/* Sharpen form and inventory typography without changing the established palette. */
+[data-theme=dark] .cirrel-main-content label,
+[data-theme=dark] .cirrel-main-content th {
+  font-weight: 650 !important;
+  letter-spacing: .005em;
+}
+[data-theme=dark] .cirrel-main-content input:not([type=checkbox]):not([type=radio]),
+[data-theme=dark] .cirrel-main-content select,
+[data-theme=dark] .cirrel-main-content textarea {
+  border-width: 1px !important;
+  border-color: #ffffff45 !important;
+}
+[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table thead th {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .025em !important;
+}
+[data-theme=dark] #cirrel-inventory table.cirrel-inventory-table tbody td {
+  font-size: 13px !important;
+}

@@ -1217,3 +1217,68 @@ button, input, select, textarea { font-family: var(--font); }
 [data-theme=dark] .cirrel-main-content .cirrel-stat-cash .border-t {
   border-color: #6f302333 !important;
 }
+
+
+/* Sidebar active item: match the compact two-line label shown in the reference. */
+[data-theme="dark"] #wp-main-sidebar .cirrel-nav-item.active,
+[data-theme="light"] #wp-main-sidebar .cirrel-nav-item.active {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  color: #171717 !important;
+  background: #ff5638 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  min-height: 60px !important;
+  padding: 9px 12px !important;
+}
+#wp-main-sidebar .cirrel-nav-item.active > svg {
+  color: #171717 !important;
+  flex: 0 0 18px !important;
+}
+#wp-main-sidebar .cirrel-nav-item.active .cirrel-nav-text {
+  color: #171717 !important;
+  font-size: 13px !important;
+  font-weight: 550 !important;
+  line-height: 1.28 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  max-width: 92px !important;
+  flex: 1 1 92px !important;
+}
+#wp-main-sidebar .cirrel-nav-item.active .cirrel-nav-count {
+  color: #171717 !important;
+  background: rgba(0,0,0,.07) !important;
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+}
+
+/* Inventory table: use content-sized columns on desktop instead of stretching
+   every column across the entire panel and leaving unused gaps. */
+@media (min-width: 701px) {
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    width: fit-content !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: max-content !important;
+    min-width: 900px !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table thead th {
+    min-width: 0 !important;
+    white-space: nowrap !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(2) { min-width: 175px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(3) { min-width: 82px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(4) { min-width: 100px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(5) { min-width: 142px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(6) { min-width: 95px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(7) { min-width: 108px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(8) { min-width: 112px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(9) { min-width: 128px !important; }
+  #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(10) { min-width: 64px !important; }
+}

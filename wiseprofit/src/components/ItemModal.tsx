@@ -13,7 +13,7 @@ interface ItemModalProps {
 }
 
 const COMMON_CONTAINERS = ['Dus', 'Karton', 'Slop', 'Bal', 'Peti', 'Pak', 'Karung', 'Krat', 'Boks', 'Botol'];
-const COMMON_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram'];
+const COMMON_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram', 'Cup', 'Batang'];
 const inputClass = 'w-full px-3 py-2.5 text-sm bg-white border border-blue-100 rounded-xl focus:outline-none focus:border-emerald-500 text-[#18345F] placeholder:text-slate-400';
 const labelClass = 'block text-xs font-semibold text-[#385477] mb-1.5';
 

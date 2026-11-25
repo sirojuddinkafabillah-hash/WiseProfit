@@ -12,7 +12,7 @@ interface QuickAddBarProps {
 const inputClass = "w-full rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-[#18345F] outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
 const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
 const QUICK_CONTAINERS = ['Dus', 'Karton', 'Slop', 'Bal', 'Peti', 'Pak', 'Karung', 'Krat', 'Boks', 'Botol'];
-const QUICK_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram'];
+const QUICK_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram', 'Cup', 'Batang'];
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems = [], globalSavePercentMonthly = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(false);

@@ -1282,3 +1282,70 @@ button, input, select, textarea { font-family: var(--font); }
   #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(9) { min-width: 128px !important; }
   #cirrel-inventory table.cirrel-inventory-table thead th:nth-child(10) { min-width: 64px !important; }
 }
+
+
+/* Cash card refinement: match the active Cashier sidebar orange, sharpen dark text,
+   and remove the excess vertical space inside the available-cash tile only. */
+[data-theme="dark"] .cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash {
+  background: linear-gradient(115deg, #ff813f 0%, #ff633c 55%, #f04432 100%) !important;
+  border: 1px solid #ff9a70 !important;
+  color: #21100b !important;
+  min-height: 124px !important;
+  height: 124px !important;
+  align-self: start !important;
+  justify-content: flex-start !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 8px 20px -12px rgba(240,68,50,.72), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash > div:first-of-type {
+  min-width: 0;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-orange-200,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-white,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-2xl,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-3xl,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash > div > div:first-child,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash > div > div:first-child span,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash > div > div:first-child svg {
+  color: #21100b !important;
+  -webkit-text-fill-color: #21100b !important;
+  text-shadow: none !important;
+  font-weight: 750 !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-slate-300,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .text-slate-400 {
+  color: #49251a !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .mt-3 {
+  margin-top: 7px !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash .pt-2\.5 {
+  padding-top: 6px !important;
+  border-color: rgba(75, 28, 15, .28) !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash button:not([aria-label="Lihat keterangan"]) {
+  background: #8f241d !important;
+  color: #ffffff !important;
+  border: 1px solid #6e1915 !important;
+  box-shadow: 0 2px 5px rgba(70,15,10,.24) !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash button:not([aria-label="Lihat keterangan"]) span,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash button:not([aria-label="Lihat keterangan"]) svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash button[aria-label="Lihat keterangan"] {
+  color: #21100b !important;
+  border-color: rgba(50,20,12,.35) !important;
+  background: rgba(255,255,255,.18) !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash button[aria-label="Lihat keterangan"] svg {
+  color: #21100b !important;
+}
+@media (max-width: 640px) {
+  .cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash {
+    min-height: 120px !important;
+    height: 120px !important;
+  }
+}

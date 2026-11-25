@@ -1525,3 +1525,68 @@ button, input, select, textarea { font-family: var(--font); }
     max-width: none !important;
   }
 }
+
+
+/* Final inventory spacing correction.
+   cirrel.css gives the quick-add wrapper 18px horizontal padding and the inner
+   card another 18-20px. Remove the outer inset and compact only the closed bar.
+   Keep toolbar and table on the same full-width content rails. */
+#cirrel-inventory > .cirrel-inventory-quickadd {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-sizing: border-box !important;
+}
+#cirrel-inventory .cirrel-quick-add {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 10px 16px !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+}
+#cirrel-inventory .cirrel-quick-add > button {
+  min-height: 34px !important;
+  gap: 12px !important;
+}
+#cirrel-inventory .cirrel-quick-add > button > span:first-child > span:first-child {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 10px !important;
+}
+#cirrel-inventory > .cirrel-inventory-toolbar,
+#cirrel-inventory > .cirrel-inventory-table-wrap {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+#cirrel-inventory > .cirrel-inventory-table-wrap {
+  overflow-x: auto !important;
+}
+#cirrel-inventory table.cirrel-inventory-table {
+  width: 100% !important;
+  min-width: 1120px !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 700px) {
+  #cirrel-inventory .cirrel-quick-add {
+    padding: 10px 12px !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: max-content !important;
+    min-width: 1120px !important;
+  }
+}

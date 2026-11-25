@@ -146,12 +146,12 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   };
 
   return (
-    <div id="cirrel-inventory" className="cirrel-inventory-card">
-      <div className="cirrel-inventory-quickadd">
+    <div id="cirrel-inventory" className="cirrel-inventory-card w-full min-w-0">
+      <div className="cirrel-inventory-quickadd w-full min-w-0 self-stretch">
         <QuickAddBar onAdd={onAdd} existingItems={items} globalSavePercentMonthly={globalSavePercentMonthly} />
       </div>
       {/* Table Toolbar & Filters */}
-      <div className="cirrel-inventory-toolbar">
+      <div className="cirrel-inventory-toolbar w-full min-w-0 self-stretch">
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
@@ -231,7 +231,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       </div>
 
       {/* Main Luxury Dark Table */}
-      <div className="cirrel-inventory-table-wrap">
+      <div className="cirrel-inventory-table-wrap w-full min-w-0 self-stretch">
         <table className="wp-inventory-table cirrel-inventory-table">
           <thead>
             <tr>

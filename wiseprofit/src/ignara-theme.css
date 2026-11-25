@@ -1258,15 +1258,15 @@ button, input, select, textarea { font-family: var(--font); }
    every column across the entire panel and leaving unused gaps. */
 @media (min-width: 701px) {
   #cirrel-inventory .cirrel-inventory-table-wrap {
-    width: fit-content !important;
+    width: 100% !important;
     max-width: 100% !important;
     overflow-x: auto !important;
   }
   #cirrel-inventory table.cirrel-inventory-table {
-    width: max-content !important;
-    min-width: 900px !important;
-    max-width: 100% !important;
-    table-layout: auto !important;
+    width: 100% !important;
+    min-width: 1120px !important;
+    max-width: none !important;
+    table-layout: fixed !important;
   }
   #cirrel-inventory table.cirrel-inventory-table thead th {
     min-width: 0 !important;
@@ -1291,11 +1291,11 @@ button, input, select, textarea { font-family: var(--font); }
   background: linear-gradient(115deg, #ff813f 0%, #ff633c 55%, #f04432 100%) !important;
   border: 1px solid #ff9a70 !important;
   color: #21100b !important;
-  min-height: 124px !important;
-  height: 124px !important;
-  align-self: start !important;
-  justify-content: flex-start !important;
-  padding: 12px 14px !important;
+  min-height: 148px !important;
+  height: 148px !important;
+  align-self: stretch !important;
+  justify-content: space-between !important;
+  padding: 14px 15px !important;
   box-shadow: 0 8px 20px -12px rgba(240,68,50,.72), inset 0 1px 0 rgba(255,255,255,.24) !important;
 }
 .cirrel-main-content .cirrel-summary-grid .cirrel-stat-cash > div:first-of-type {
@@ -1437,112 +1437,48 @@ button, input, select, textarea { font-family: var(--font); }
 }
 
 
-/* Minimal fix requested: expand only the inventory table and prevent search text clipping.
-   Existing colors, cards, navigation, controls, and feature behavior remain unchanged. */
-#cirrel-inventory .cirrel-inventory-table-wrap {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-@media (min-width: 701px) {
-  #cirrel-inventory table.cirrel-inventory-table {
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: none !important;
-    table-layout: auto !important;
-  }
-  #cirrel-inventory .cirrel-inventory-toolbar > div:last-child > div:first-child {
-    flex: 0 0 280px !important;
-    width: 280px !important;
-    min-width: 260px !important;
-  }
-}
-@media (max-width: 700px) {
-  #cirrel-inventory .cirrel-inventory-table-wrap {
-    overflow-x: auto !important;
-  }
-  #cirrel-inventory table.cirrel-inventory-table {
-    width: max-content !important;
-    min-width: 960px !important;
-  }
-}
 
 
-/* Alignment-only correction requested by the user.
-   Equalize summary card dimensions and align quick-add, toolbar, and table edges. */
+/* WiseProfit alignment source-of-truth.
+   Keep the four financial cards equal and align the three inventory surfaces
+   to the same content width. These rules intentionally replace the older
+   append-only overrides that conflicted with the original cash-card and table rules. */
 @media (min-width: 701px) {
   .cirrel-main-content .cirrel-summary-grid {
     align-items: stretch !important;
   }
-  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card {
-    height: 148px !important;
-    min-height: 148px !important;
-    max-height: 148px !important;
-    align-self: stretch !important;
-    box-sizing: border-box !important;
-  }
-  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash {
-    height: 148px !important;
-    min-height: 148px !important;
-    max-height: 148px !important;
-    align-self: stretch !important;
-  }
-  #cirrel-inventory .cirrel-inventory-quickadd,
-  #cirrel-inventory .cirrel-quick-add,
-  #cirrel-inventory .cirrel-inventory-toolbar,
-  #cirrel-inventory .cirrel-inventory-table-wrap {
-    display: block;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  #cirrel-inventory .cirrel-quick-add,
-  #cirrel-inventory .cirrel-inventory-toolbar,
-  #cirrel-inventory .cirrel-inventory-table-wrap {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-}
-@media (max-width: 700px) {
   .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card,
-  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash {
-    height: auto !important;
-    min-height: 118px !important;
-    max-height: none !important;
-  }
-  #cirrel-inventory .cirrel-inventory-quickadd,
-  #cirrel-inventory .cirrel-quick-add,
-  #cirrel-inventory .cirrel-inventory-toolbar,
-  #cirrel-inventory .cirrel-inventory-table-wrap {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-}
-
-
-/* Corrected alignment patch — selectors match the actual rendered component classes.
-   The cash tile had a legacy 124px height/align-self:start rule, while the other
-   tiles use 148px. The inventory table also had a later fit-content rule overriding
-   the earlier width:100% declaration. */
-@media (min-width: 701px) {
-  .cirrel-summary-grid {
-    align-items: stretch !important;
-  }
-  .cirrel-summary-grid > .cirrel-stat-card,
-  .cirrel-summary-grid > .cirrel-stat-card.cirrel-stat-cash {
-    height: 148px !important;
+  [data-theme="dark"] .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card {
     min-height: 148px !important;
+    height: 148px !important;
     max-height: 148px !important;
     align-self: stretch !important;
     box-sizing: border-box !important;
   }
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash,
+  [data-theme="dark"] .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash {
+    min-height: 148px !important;
+    height: 148px !important;
+    max-height: 148px !important;
+    align-self: stretch !important;
+  }
 
+  #cirrel-inventory.cirrel-inventory-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
   #cirrel-inventory > .cirrel-inventory-quickadd,
   #cirrel-inventory > .cirrel-inventory-toolbar,
   #cirrel-inventory > .cirrel-inventory-table-wrap,
-  #cirrel-inventory .cirrel-inventory-quickadd > .cirrel-quick-add {
+  #cirrel-inventory .cirrel-quick-add {
     display: block !important;
+    flex: 0 0 auto !important;
+    align-self: stretch !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
@@ -1551,29 +1487,32 @@ button, input, select, textarea { font-family: var(--font); }
     box-sizing: border-box !important;
   }
   #cirrel-inventory .cirrel-inventory-table-wrap {
-    width: 100% !important;
-    max-width: 100% !important;
     overflow-x: auto !important;
+    overscroll-behavior-x: contain !important;
   }
   #cirrel-inventory table.cirrel-inventory-table {
+    display: table !important;
     width: 100% !important;
     min-width: 1120px !important;
     max-width: none !important;
     table-layout: fixed !important;
+    box-sizing: border-box !important;
   }
 }
 @media (max-width: 700px) {
-  .cirrel-summary-grid > .cirrel-stat-card,
-  .cirrel-summary-grid > .cirrel-stat-card.cirrel-stat-cash {
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card,
+  [data-theme="dark"] .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card {
     height: auto !important;
-    min-height: 118px !important;
+    min-height: 120px !important;
     max-height: none !important;
   }
+  #cirrel-inventory.cirrel-inventory-card,
   #cirrel-inventory > .cirrel-inventory-quickadd,
   #cirrel-inventory > .cirrel-inventory-toolbar,
   #cirrel-inventory > .cirrel-inventory-table-wrap,
-  #cirrel-inventory .cirrel-inventory-quickadd > .cirrel-quick-add {
+  #cirrel-inventory .cirrel-quick-add {
     width: 100% !important;
+    min-width: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -1583,5 +1522,6 @@ button, input, select, textarea { font-family: var(--font); }
   #cirrel-inventory table.cirrel-inventory-table {
     width: max-content !important;
     min-width: 1120px !important;
+    max-width: none !important;
   }
 }

@@ -193,8 +193,6 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               );
             })}
           </div>
-        </div>
-
         {/* Search & Reset Utility */}
         <div className="cirrel-inventory-toolbar-actions flex items-center gap-2 flex-nowrap flex-1 min-w-[320px] max-w-[560px]">
           <div className="relative flex-1 min-w-0">
@@ -227,6 +225,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
               <span>{t('table.clearAll')}</span>
             </button>
           )}
+        </div>
         </div>
       </div>
 

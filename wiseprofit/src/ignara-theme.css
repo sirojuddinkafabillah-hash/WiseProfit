@@ -1592,43 +1592,54 @@ button, input, select, textarea { font-family: var(--font); }
 }
 
 
-/* Inventory toolbar: keep title, period filters, search and clear action on one row. */
+/* Inventory toolbar: every control stays in one horizontal row. */
 #cirrel-inventory .cirrel-inventory-toolbar {
   width: 100% !important;
   min-width: 0 !important;
+  overflow: visible !important;
 }
 #cirrel-inventory .cirrel-inventory-toolbar-row {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   flex-wrap: nowrap !important;
-  gap: 12px !important;
+  gap: 10px !important;
   width: 100% !important;
   min-width: 0 !important;
 }
 #cirrel-inventory .cirrel-inventory-toolbar-filters {
   display: flex !important;
-  flex: 0 1 auto !important;
+  flex: 0 0 auto !important;
   flex-wrap: nowrap !important;
   white-space: nowrap !important;
-  min-width: 0 !important;
+  min-width: max-content !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-row > span {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  margin-right: 2px !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-row > div:not(.cirrel-inventory-toolbar-filters):not(.cirrel-inventory-toolbar-actions) {
+  flex: 0 0 auto !important;
 }
 #cirrel-inventory .cirrel-inventory-toolbar-actions {
   display: flex !important;
-  flex: 1 1 360px !important;
+  flex: 1 1 320px !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
-  min-width: 300px !important;
-  max-width: 560px !important;
+  gap: 8px !important;
+  min-width: 220px !important;
+  max-width: none !important;
   margin-left: auto !important;
 }
 #cirrel-inventory .cirrel-inventory-toolbar-actions > div:first-child {
-  flex: 1 1 auto !important;
-  min-width: 120px !important;
+  flex: 1 1 180px !important;
+  min-width: 140px !important;
   width: auto !important;
 }
 #cirrel-inventory .cirrel-inventory-toolbar-actions input {
+  display: block !important;
   width: 100% !important;
   min-width: 0 !important;
 }
@@ -1636,11 +1647,16 @@ button, input, select, textarea { font-family: var(--font); }
   flex: 0 0 auto !important;
   white-space: nowrap !important;
 }
-@media (max-width: 1050px) {
+@media (max-width: 1120px) {
   #cirrel-inventory .cirrel-inventory-toolbar {
     overflow-x: auto !important;
+    scrollbar-width: thin;
   }
   #cirrel-inventory .cirrel-inventory-toolbar-row {
-    min-width: 940px !important;
+    width: max-content !important;
+    min-width: 1080px !important;
+  }
+  #cirrel-inventory .cirrel-inventory-toolbar-actions {
+    min-width: 300px !important;
   }
 }

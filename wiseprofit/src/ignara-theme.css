@@ -1661,13 +1661,10 @@ button, input, select, textarea { font-family: var(--font); }
   }
 }
 
-/* Inventory table detail polish: readable secondary figures and reliable controls. */
+
+/* Inventory table detail polish: readable figures and accessible controls. */
 #cirrel-inventory table.cirrel-inventory-table tbody td {
   font-variant-numeric: tabular-nums;
-}
-#cirrel-inventory table.cirrel-inventory-table tbody td .text-\\[10px\\] {
-  font-size: 11px !important;
-  line-height: 1.35 !important;
 }
 #cirrel-inventory table.cirrel-inventory-table tbody td input[type="number"] {
   min-height: 30px !important;
@@ -1683,7 +1680,4 @@ button, input, select, textarea { font-family: var(--font); }
   opacity: .35 !important;
   cursor: not-allowed !important;
   filter: grayscale(.25);
-}
-#cirrel-inventory table.cirrel-inventory-table tbody td .h-1\\.5 {
-  min-height: 6px !important;
 }

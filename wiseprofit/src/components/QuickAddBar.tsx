@@ -22,6 +22,8 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
   const [showProductList, setShowProductList] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<InventoryItem | null>(null);
+  const [previousPackCount, setPreviousPackCount] = useState(0);
+  const [previousAvailableQty, setPreviousAvailableQty] = useState(0);
   useEffect(() => {
     if (!isExpanded) return;
     const handleOutsideInteraction = (event: PointerEvent) => {
@@ -73,6 +75,8 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
     const packSize = Math.max(1, Number(item.isiPerKemasan) || (Number(item.jumlahBarangWadah) / packCount) || 1);
     const packPrice = Number(item.hargaBeliPerKemasan) || (Number(item.hargaBeli) / packCount) || 0;
     setSelectedProduct(item);
+    setPreviousPackCount(packCount);
+    setPreviousAvailableQty(Math.max(0, Number(item.jumlahBarangWadah) - Number(item.jumlahBarangDijualSatuan || 0)));
     setNamaBarang(item.namaBarang);
     setProductSearch(item.namaBarang);
     setSatuanWadah(item.satuanWadah || 'Dus');
@@ -88,6 +92,8 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
   const packQty = Math.max(0, Number(jumlahKemasan) || 0);
   const packSize = Math.max(0, Number(isiPerKemasan) || 0);
   const totalQty = packQty * packSize;
+  const totalPackCountAfterPurchase = (mode === 'old' && selectedProduct ? previousPackCount : 0) + packQty;
+  const totalAvailableQtyAfterPurchase = (mode === 'old' && selectedProduct ? previousAvailableQty : 0) + totalQty;
   const packPrice = Math.max(0, Number(hargaBeliPerKemasan) || 0);
   const totalBuy = packQty * packPrice;
   const sell = Math.max(0, Number(hargaJual) || 0);
@@ -101,6 +107,7 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
 
   const resetForm = () => {
     setNamaBarang(''); setProductSearch(''); setSelectedProduct(null);
+    setPreviousPackCount(0); setPreviousAvailableQty(0);
     setIsiPerKemasan(''); setJumlahKemasan(1); setHargaBeliPerKemasan('');
     setHargaJual(''); setCatatan(''); setMode('old'); setShowProductList(false);
   };
@@ -165,12 +172,15 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
             <div><label className={labelClass}>Jumlah kemasan dibeli</label><input type="number" min="1" required value={jumlahKemasan} onChange={e=>setJumlahKemasan(e.target.value===''?'':Number(e.target.value))} placeholder="Contoh: 2" className={inputClass} /></div>
             <div><label className={labelClass}>Satuan barang</label><select value={QUICK_UNITS.includes(satuanUnit) ? QUICK_UNITS.find(option=>option.toLocaleLowerCase()===satuanUnit.toLocaleLowerCase()) || 'Lainnya' : 'Lainnya'} onChange={e=>setSatuanUnit(e.target.value === 'Lainnya' ? '' : e.target.value)} className={inputClass}><option value="" disabled>Pilih satuan barang</option>{QUICK_UNITS.map(option=><option key={option} value={option}>{option}</option>)}<option value="Lainnya">Lainnya</option></select>{!QUICK_UNITS.some(option=>option.toLocaleLowerCase()===satuanUnit.toLocaleLowerCase()) && <input type="text" value={satuanUnit} onChange={e=>setSatuanUnit(e.target.value)} placeholder="Tulis satuan barang..." className={inputClass+" mt-2"} />}</div>
           </div>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-3">
-            <div className="min-w-0">
-              <span className="block text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Total isi masuk otomatis</span>
-              <span className="text-xs text-emerald-800">{formatAngka(packSize,0)} {satuanUnit || 'pcs'} × {formatAngka(packQty,0)} {satuanWadah || 'kemasan'}</span>
+          <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="min-w-0">
+                <span className="block text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Stok tersedia setelah pembelian</span>
+                <span className="text-xs text-emerald-800">{mode === 'old' && selectedProduct ? `${previousPackCount} kemasan lama + ${formatAngka(packQty,0)} kemasan tambahan = ${formatAngka(totalPackCountAfterPurchase,0)} kemasan` : `${formatAngka(packQty,0)} kemasan × ${formatAngka(packSize,0)} ${satuanUnit || 'pcs'}`}</span>
+              </div>
+              <strong className="text-base font-extrabold tabular-nums text-emerald-800">{formatAngka(totalAvailableQtyAfterPurchase,0)} {satuanUnit || 'pcs'}</strong>
             </div>
-            <strong className="text-base font-extrabold tabular-nums text-emerald-800">{formatAngka(totalQty,0)} {satuanUnit || 'pcs'}</strong>
+            <p className="mt-1 text-[11px] text-emerald-700">Barang masuk dari pembelian ini: {formatAngka(totalQty,0)} {satuanUnit || 'pcs'}{mode === 'old' && selectedProduct ? ` · Stok lama yang masih tersedia: ${formatAngka(previousAvailableQty,0)} ${satuanUnit || 'pcs'}` : ''}. Riwayat pembelian lama tetap tersimpan.</p>
           </div>
         </div>
         <div>

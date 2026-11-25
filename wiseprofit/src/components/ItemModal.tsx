@@ -24,6 +24,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
   const [namaBarang, setNamaBarang] = useState('');
   const [searchName, setSearchName] = useState('');
   const [selectedExisting, setSelectedExisting] = useState<InventoryItem | null>(null);
+  const [previousPackCount, setPreviousPackCount] = useState(0);
+  const [previousAvailableQty, setPreviousAvailableQty] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [satuanWadah, setSatuanWadah] = useState('Dus');
   const [isiPerKemasan, setIsiPerKemasan] = useState<number>(24);
@@ -60,6 +62,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
       setNamaBarang(editingItem.namaBarang);
       setSearchName(editingItem.namaBarang);
       setSelectedExisting(null);
+      setPreviousPackCount(0);
+      setPreviousAvailableQty(0);
       setSatuanWadah(editingItem.satuanWadah);
       setIsiPerKemasan(editingItem.jumlahBarangWadah);
       setJumlahKemasan(1);
@@ -76,6 +80,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
       setNamaBarang('');
       setSearchName('');
       setSelectedExisting(null);
+      setPreviousPackCount(0);
+      setPreviousAvailableQty(0);
       setSatuanWadah('Dus');
       setIsiPerKemasan(24);
       setJumlahKemasan(1);
@@ -94,6 +100,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
   const isEditing = !!editingItem;
   const totalIsi = isEditing ? Math.max(1, Number(isiPerKemasan) || 1) : Math.max(1, Number(isiPerKemasan) || 1) * Math.max(1, Number(jumlahKemasan) || 1);
   const totalModal = isEditing ? Math.max(0, Number(hargaBeliPerKemasan) || 0) : Math.max(0, Number(hargaBeliPerKemasan) || 0) * Math.max(1, Number(jumlahKemasan) || 1);
+  const totalPackCountAfterPurchase = (mode === 'old' && selectedExisting && !isEditing ? previousPackCount : 0) + Math.max(1, Number(jumlahKemasan) || 1);
+  const totalAvailableQtyAfterPurchase = (mode === 'old' && selectedExisting && !isEditing ? previousAvailableQty : 0) + totalIsi;
   const previewItem: InventoryItem = {
     id: 'preview',
     namaBarang: namaBarang || 'Nama barang',
@@ -112,10 +120,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
 
   const selectExisting = (item: InventoryItem) => {
     setSelectedExisting(item);
+    const packSize = Math.max(1, Number(item.isiPerKemasan) || (Number(item.jumlahBarangWadah) / Math.max(1, Number(item.jumlahKemasanDibeli) || 1)) || 1);
+    setPreviousPackCount(Math.max(1, Number(item.jumlahKemasanDibeli) || Math.ceil(Number(item.jumlahBarangWadah) / packSize) || 1));
+    setPreviousAvailableQty(Math.max(0, Number(item.jumlahBarangWadah) - Number(item.jumlahBarangDijualSatuan || 0)));
     setNamaBarang(item.namaBarang);
     setSearchName(item.namaBarang);
     setSatuanWadah(item.satuanWadah || 'Dus');
-    setIsiPerKemasan(Math.max(1, Number(item.isiPerKemasan) || (Number(item.jumlahBarangWadah) / Math.max(1, Number(item.jumlahKemasanDibeli) || 1)) || 1));
+    setIsiPerKemasan(packSize);
     setSatuanUnit(item.satuanUnit || 'Pcs');
     setHargaBeliPerKemasan(Math.max(0, Number(item.hargaBeliPerKemasan ?? item.hargaBeli) || 0));
     setHargaJualSatuan(Number(item.hargaJualSatuan) || 0);
@@ -171,10 +182,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           {!isEditing && (
             <div className="grid grid-cols-2 gap-2 p-1 bg-blue-50 rounded-xl">
-              <button type="button" onClick={() => { setMode('new'); setSelectedExisting(null); setNamaBarang(''); setSearchName(''); setJumlahKemasan(1); }} className={`flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${mode === 'new' ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' : 'text-slate-500 hover:text-[#18345F]'}`}>
+              <button type="button" onClick={() => { setMode('new'); setSelectedExisting(null); setPreviousPackCount(0); setPreviousAvailableQty(0); setNamaBarang(''); setSearchName(''); setJumlahKemasan(1); }} className={`flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${mode === 'new' ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' : 'text-slate-500 hover:text-[#18345F]'}`}>
                 <PackagePlus className="w-4 h-4" /> Barang Baru
               </button>
-              <button type="button" onClick={() => { setMode('old'); setSelectedExisting(null); setNamaBarang(''); setSearchName(''); setJumlahKemasan(1); }} className={`flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${mode === 'old' ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' : 'text-slate-500 hover:text-[#18345F]'}`}>
+              <button type="button" onClick={() => { setMode('old'); setSelectedExisting(null); setPreviousPackCount(0); setPreviousAvailableQty(0); setNamaBarang(''); setSearchName(''); setJumlahKemasan(1); }} className={`flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${mode === 'old' ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' : 'text-slate-500 hover:text-[#18345F]'}`}>
                 <Package className="w-4 h-4" /> Barang Lama
               </button>
             </div>
@@ -281,7 +292,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
               <div className="bg-white border border-blue-100 p-3 rounded-lg"><span className="text-slate-500 block text-[11px]">Modal per {satuanUnit}</span><strong className="text-[#18345F]">{formatRupiah(previewCalc.hppSatuan)}</strong></div>
               <div className="bg-white border border-blue-100 p-3 rounded-lg"><span className="text-slate-500 block text-[11px]">Potensi untung per {satuanUnit}</span><strong className="text-emerald-700">+{formatRupiah(previewCalc.gainSatuan)}</strong></div>
             </div>
-            {!isEditing && <p className="text-xs text-slate-600"><strong className="text-emerald-700">Total isi otomatis:</strong> {isiPerKemasan} {satuanUnit} × {jumlahKemasan} kemasan = <strong className="text-emerald-700">{totalIsi} {satuanUnit}</strong>. Total modal: {formatRupiah(hargaBeliPerKemasan)} × {jumlahKemasan} = {formatRupiah(totalModal)}.</p>}
+            {!isEditing && <div className="space-y-1 text-xs text-slate-600"><p><strong className="text-emerald-700">Barang masuk dari pembelian ini:</strong> {isiPerKemasan} {satuanUnit} × {jumlahKemasan} kemasan = <strong className="text-emerald-700">{totalIsi} {satuanUnit}</strong>. Total modal pembelian: {formatRupiah(hargaBeliPerKemasan)} × {jumlahKemasan} = {formatRupiah(totalModal)}.</p>{mode === 'old' && selectedExisting && <p><strong className="text-emerald-700">Akumulasi setelah pembelian:</strong> {previousPackCount} kemasan lama + {jumlahKemasan} kemasan tambahan = <strong>{totalPackCountAfterPurchase} kemasan</strong>; stok tersedia {previousAvailableQty} + {totalIsi} = <strong>{totalAvailableQtyAfterPurchase} {satuanUnit}</strong>. Pembelian lama tetap tersimpan sebagai riwayat terpisah.</p>}</div>}
           </div>
 
           <div className="pt-3 border-t border-blue-100 flex justify-end gap-2.5">

@@ -13,7 +13,7 @@ interface ItemModalProps {
 }
 
 const COMMON_CONTAINERS = ['Dus', 'Karton', 'Slop', 'Bal', 'Peti', 'Pak', 'Karung', 'Krat', 'Boks', 'Botol'];
-const COMMON_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack'];
+const COMMON_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram'];
 const inputClass = 'w-full px-3 py-2.5 text-sm bg-white border border-blue-100 rounded-xl focus:outline-none focus:border-emerald-500 text-[#18345F] placeholder:text-slate-400';
 const labelClass = 'block text-xs font-semibold text-[#385477] mb-1.5';
 
@@ -218,16 +218,20 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
               <label className={labelClass}>{isEditing ? t('modal.containerQuantity') : 'Isi per kemasan'}</label>
               <div className="flex gap-2">
                 <input type="number" min="1" required value={isiPerKemasan || ''} onChange={(e) => setIsiPerKemasan(Math.max(1, Number(e.target.value) || 1))} className={inputClass} />
-                <select value={satuanWadah} onChange={(e) => setSatuanWadah(e.target.value)} className="px-2.5 py-2 text-xs bg-blue-50 border border-blue-100 rounded-xl text-[#18345F]">
+                <select value={COMMON_CONTAINERS.includes(satuanWadah) ? satuanWadah : 'Lainnya'} onChange={(e) => setSatuanWadah(e.target.value === 'Lainnya' ? '' : e.target.value)} className="px-2.5 py-2 text-xs bg-blue-50 border border-blue-100 rounded-xl text-[#18345F]">
                   {COMMON_CONTAINERS.map((c) => <option key={c} value={c}>{c}</option>)}
+                  <option value="Lainnya">Lainnya</option>
                 </select>
               </div>
+              {!COMMON_CONTAINERS.includes(satuanWadah) && <input type="text" value={satuanWadah} onChange={(e) => setSatuanWadah(e.target.value)} placeholder="Tulis satuan kemasan..." className={inputClass + " mt-2"} />}
             </div>
             <div>
               <label className={labelClass}>{t('modal.retailUnit')}</label>
-              <select value={satuanUnit} onChange={(e) => setSatuanUnit(e.target.value)} className={inputClass}>
+              <select value={COMMON_UNITS.includes(satuanUnit) ? satuanUnit : 'Lainnya'} onChange={(e) => setSatuanUnit(e.target.value === 'Lainnya' ? '' : e.target.value)} className={inputClass}>
                 {COMMON_UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
+                <option value="Lainnya">Lainnya</option>
               </select>
+              {!COMMON_UNITS.includes(satuanUnit) && <input type="text" value={satuanUnit} onChange={(e) => setSatuanUnit(e.target.value)} placeholder="Tulis satuan barang..." className={inputClass + " mt-2"} />}
             </div>
           </div>
 

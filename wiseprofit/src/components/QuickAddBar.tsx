@@ -11,6 +11,8 @@ interface QuickAddBarProps {
 }
 const inputClass = "w-full rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-[#18345F] outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
 const labelClass = "mb-1.5 block text-xs font-semibold text-[#385477]";
+const QUICK_CONTAINERS = ['Dus', 'Karton', 'Slop', 'Bal', 'Peti', 'Pak', 'Karung', 'Krat', 'Boks', 'Botol'];
+const QUICK_UNITS = ['Pcs', 'Bungkus', 'Botol', 'Sachet', 'Kg', 'Kaleng', 'Butir', 'Pack', 'Liter', 'Gram'];
 
 export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems = [], globalSavePercentMonthly = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -158,10 +160,10 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
               </> : <input type="text" required value={namaBarang} onChange={e=>setNamaBarang(e.target.value)} placeholder={t('quick.itemPlaceholder')} className={inputClass} />}
               {duplicateName && <p className="mt-1 text-xs text-amber-700">Nama ini sudah ada. Pilih Barang Lama untuk menambah stoknya.</p>}
             </div>
-            <div><label className={labelClass}>Satuan kemasan</label><input type="text" value={satuanWadah} onChange={e=>setSatuanWadah(e.target.value)} placeholder="Dus / Karton / Pak" className={inputClass} /></div>
+            <div><label className={labelClass}>Satuan kemasan</label><select value={QUICK_CONTAINERS.includes(satuanWadah) ? satuanWadah : 'Lainnya'} onChange={e=>setSatuanWadah(e.target.value === 'Lainnya' ? '' : e.target.value)} className={inputClass}><option value="" disabled>Pilih kemasan</option>{QUICK_CONTAINERS.map(option=><option key={option} value={option}>{option}</option>)}<option value="Lainnya">Lainnya</option></select>{!QUICK_CONTAINERS.includes(satuanWadah) && <input type="text" value={satuanWadah} onChange={e=>setSatuanWadah(e.target.value)} placeholder="Tulis satuan kemasan..." className={inputClass+" mt-2"} />}</div>
             <div><label className={labelClass}>Isi per kemasan</label><input type="number" min="1" required value={isiPerKemasan} onChange={e=>setIsiPerKemasan(e.target.value===''?'':Number(e.target.value))} placeholder="Contoh: 24" className={inputClass} /></div>
             <div><label className={labelClass}>Jumlah kemasan dibeli</label><input type="number" min="1" required value={jumlahKemasan} onChange={e=>setJumlahKemasan(e.target.value===''?'':Number(e.target.value))} placeholder="Contoh: 2" className={inputClass} /></div>
-            <div><label className={labelClass}>Satuan barang</label><input type="text" value={satuanUnit} onChange={e=>setSatuanUnit(e.target.value)} placeholder="Pcs / Botol / Kg" className={inputClass} /></div>
+            <div><label className={labelClass}>Satuan barang</label><select value={QUICK_UNITS.includes(satuanUnit) ? QUICK_UNITS.find(option=>option.toLocaleLowerCase()===satuanUnit.toLocaleLowerCase()) || 'Lainnya' : 'Lainnya'} onChange={e=>setSatuanUnit(e.target.value === 'Lainnya' ? '' : e.target.value)} className={inputClass}><option value="" disabled>Pilih satuan barang</option>{QUICK_UNITS.map(option=><option key={option} value={option}>{option}</option>)}<option value="Lainnya">Lainnya</option></select>{!QUICK_UNITS.some(option=>option.toLocaleLowerCase()===satuanUnit.toLocaleLowerCase()) && <input type="text" value={satuanUnit} onChange={e=>setSatuanUnit(e.target.value)} placeholder="Tulis satuan barang..." className={inputClass+" mt-2"} />}</div>
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-3">
             <div className="min-w-0">

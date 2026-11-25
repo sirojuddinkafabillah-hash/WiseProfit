@@ -1160,3 +1160,60 @@ button, input, select, textarea { font-family: var(--font); }
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+
+/* Available-cash card: dark readable typography + deep-red withdrawal action.
+   Keep the existing warm coral/orange card surface; sharpen only its contrast. */
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash {
+  color: #24130f !important;
+  border: 1px solid #ffb092 !important;
+  box-shadow: 0 0 0 1px #7d2a1a22, 0 12px 28px -12px #a52f1f88 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash > div:first-child > div:first-child,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash > div:first-child > div:first-child svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-2xl,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-3xl {
+  color: #24130f !important;
+  text-shadow: none !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-slate-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-slate-300\/80,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-slate-400 {
+  color: #57352c !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-orange-100,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-orange-200 {
+  color: #392018 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-rose-300,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .text-rose-400 {
+  color: #7f1d1d !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[title="Catat penarikan kas/uang kasir"] {
+  color: #fff7f5 !important;
+  background: #7f1d1d !important;
+  border: 1px solid #651515 !important;
+  box-shadow: 0 2px 6px #54131338 !important;
+  font-weight: 750 !important;
+  letter-spacing: .01em;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[title="Catat penarikan kas/uang kasir"] svg,
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[title="Catat penarikan kas/uang kasir"] span {
+  color: #fff7f5 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[title="Catat penarikan kas/uang kasir"]:hover {
+  background: #651515 !important;
+  border-color: #4c1010 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[aria-label="Lihat keterangan"] {
+  color: #4a241b !important;
+  border-color: #8f4938 !important;
+  background: #ffffff42 !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash button[aria-label="Lihat keterangan"] svg {
+  color: #4a241b !important;
+}
+[data-theme=dark] .cirrel-main-content .cirrel-stat-cash .border-t {
+  border-color: #6f302333 !important;
+}

@@ -1660,3 +1660,30 @@ button, input, select, textarea { font-family: var(--font); }
     min-width: 300px !important;
   }
 }
+
+/* Inventory table detail polish: readable secondary figures and reliable controls. */
+#cirrel-inventory table.cirrel-inventory-table tbody td {
+  font-variant-numeric: tabular-nums;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td .text-\\[10px\\] {
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td input[type="number"] {
+  min-height: 30px !important;
+  font-size: 13px !important;
+  font-variant-numeric: tabular-nums;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td button:focus-visible,
+#cirrel-inventory table.cirrel-inventory-table tbody td input:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td button:disabled {
+  opacity: .35 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(.25);
+}
+#cirrel-inventory table.cirrel-inventory-table tbody td .h-1\\.5 {
+  min-height: 6px !important;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { t, getInitialLanguage } from '../i18n/translations';
-import { InventoryItem } from '../types/inventory';
+import { InventoryItem, Withdrawal } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka, formatTanggalSederhana } from '../utils/calculator';
 import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2, Settings } from 'lucide-react';
 import { QuickAddBar } from './QuickAddBar';
@@ -11,6 +11,7 @@ interface InventoryTableProps {
   globalSavePercentMonthly: number;
   modalAwal: number;
   saldoKasSaatIni: number;
+  withdrawals?: Withdrawal[];
   onEditItem: (item: InventoryItem) => void;
   onDeleteItem: (id: string) => void;
   onUpdateSoldQty: (id: string, delta: number) => void;
@@ -26,6 +27,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
   globalSavePercentMonthly,
   modalAwal,
   saldoKasSaatIni,
+  withdrawals = [],
   onEditItem,
   onDeleteItem,
   onUpdateSoldQty,
@@ -50,29 +52,59 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
     return Array.from(monthSet).sort().reverse();
   }, [items]);
 
-  // Saldo tiap baris dihitung dari modal awal, mengikuti urutan transaksi yang sebenarnya:
-  // tanggal transaksi lebih dahulu, lalu nomor urut impor bila tersedia.
+  // Saldo per baris mengikuti urutan waktu pembelian, penjualan, dan penarikan.
   const runningCashMap = useMemo(() => {
-    const map = new Map<string, number>();
-    const sorted = [...items].sort((a, b) => {
-      const dateA = (a.tanggalInput || new Date(a.createdAt).toISOString().slice(0, 10)).slice(0, 10);
-      const dateB = (b.tanggalInput || new Date(b.createdAt).toISOString().slice(0, 10)).slice(0, 10);
-      if (dateA !== dateB) return dateA.localeCompare(dateB);
-      if (typeof a.noUrut === 'number' && typeof b.noUrut === 'number' && a.noUrut !== b.noUrut) {
-        return a.noUrut - b.noUrut;
-      }
-      return (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0);
+    type CashEvent =
+      | { kind: 'item'; item: InventoryItem; at: number; createdAt: number }
+      | { kind: 'withdrawal'; withdrawal: Withdrawal; at: number; createdAt: number };
+    const localDate = (value: number) => {
+      const d = new Date(value);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    const localTime = (value: number) => {
+      const d = new Date(value);
+      return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+    };
+    const toEventTime = (date: string, time: string, fallback: number) => {
+      const parts = (time || '00:00:00').replace(/\./g, ':').split(':');
+      const safeTime = `${parts[0] || '00'}:${parts[1] || '00'}:${parts[2] || '00'}`;
+      const parsed = new Date(`${date}T${safeTime}`).getTime();
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+    const events: CashEvent[] = [
+      ...items.map((item): CashEvent => {
+        const createdAt = Number(item.createdAt) || 0;
+        const date = (item.tanggalInput || localDate(createdAt)).slice(0, 10);
+        return { kind: 'item', item, at: toEventTime(date, item.waktuInput || localTime(createdAt), createdAt), createdAt };
+      }),
+      ...withdrawals.map((withdrawal): CashEvent => {
+        const createdAt = Number(withdrawal.createdAt) || 0;
+        const date = withdrawal.tanggal || localDate(createdAt);
+        return { kind: 'withdrawal', withdrawal, at: toEventTime(date, localTime(createdAt), createdAt), createdAt };
+      }),
+    ].sort((a, b) => {
+      if (a.at !== b.at) return a.at - b.at;
+      if (a.createdAt !== b.createdAt) return a.createdAt - b.createdAt;
+      if (a.kind !== b.kind) return a.kind === 'withdrawal' ? -1 : 1;
+      if (a.kind === 'item' && b.kind === 'item') return (a.item.noUrut ?? 0) - (b.item.noUrut ?? 0);
+      return 0;
     });
-    let cash = modalAwal;
-    for (const it of sorted) {
-      const hargaBeli = Number(it.hargaBeli) || 0;
-      const hargaJual = Number(it.hargaJualSatuan) || 0;
-      const terjual = Number(it.jumlahBarangDijualSatuan) || 0;
-      cash = cash - hargaBeli + (hargaJual * terjual);
-      map.set(it.id, cash);
+    const map = new Map<string, number>();
+    let cash = Number.isFinite(Number(modalAwal)) ? Number(modalAwal) : 0;
+    for (const event of events) {
+      if (event.kind === 'withdrawal') {
+        cash -= Math.max(0, Number(event.withdrawal.nominal) || 0);
+        continue;
+      }
+      const item = event.item;
+      const calc = calculateItem(item);
+      const rawBuy = Number(item.hargaBeli);
+      const safeBuy = Number.isFinite(rawBuy) ? Math.max(0, rawBuy) : 0;
+      cash = cash - safeBuy + calc.totalPendapatanTerjual;
+      map.set(item.id, cash);
     }
     return map;
-  }, [items, modalAwal]);
+  }, [items, modalAwal, withdrawals]);
 
   const filteredItems = useMemo(() => {
     const list = items.filter((item) => {
@@ -286,8 +318,10 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                 const tanggalTampil = formatTanggalSederhana(item.tanggalInput || item.createdAt);
                 const jamTampil = item.waktuInput ? item.waktuInput.slice(0, 5) : new Date(item.createdAt).toLocaleTimeString(getInitialLanguage() === 'en' ? 'en-US' : 'id-ID', { hour: '2-digit', minute: '2-digit' });
                 const rowSisaKas = runningCashMap.get(item.id) ?? modalAwal;
-                const sisaUnit = item.jumlahBarangWadah - item.jumlahBarangDijualSatuan;
-                const soldPercent = Math.min(100, Math.round((item.jumlahBarangDijualSatuan / Math.max(1, item.jumlahBarangWadah)) * 100));
+                const jumlahUnitAman = Number.isFinite(Number(item.jumlahBarangWadah)) && Number(item.jumlahBarangWadah) > 0 ? Number(item.jumlahBarangWadah) : 1;
+                const jumlahTerjualAman = Math.min(jumlahUnitAman, Math.max(0, Number(item.jumlahBarangDijualSatuan) || 0));
+                const sisaUnit = calc.sisaStokSatuan;
+                const soldPercent = Math.min(100, Math.max(0, Math.round((jumlahTerjualAman / jumlahUnitAman) * 100)));
 
                 return (
                   <tr key={item.id}>
@@ -321,7 +355,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                       <div className="font-semibold text-slate-200 text-xs">
                         {item.jumlahBarangWadah} <span className="text-slate-400 text-[11px]">{item.satuanUnit || 'pcs'}</span>
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">
+                      <div className="text-[11px] text-slate-400 mt-0.5">
                         {t('table.perOne')} {item.satuanWadah || t('table.containerFallback')}
                       </div>
                     </td>
@@ -337,12 +371,12 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                     {/* PENJUALAN / TERJUAL (STEPPER & PROGRESS BAR) */}
                     <td className="py-4 px-3 text-center align-middle bg-slate-950/40 border-l border-r border-slate-800/80">
                       <div className="flex flex-col items-center gap-1.5 max-w-[150px] mx-auto">
-                        <div className="inline-flex items-center gap-1 bg-slate-900 border border-slate-700/80 p-0.5 rounded-xl shadow-xs">
+                        <div className="inline-flex items-center gap-1.5 bg-slate-900 border border-slate-700/80 p-1 rounded-xl shadow-xs">
                           <button
                             onClick={() => onUpdateSoldQty(item.id, -1)}
                             disabled={item.jumlahBarangDijualSatuan <= 0}
                             title={t('table.decreaseSold')}
-                            className="w-5 h-5 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                            aria-label={`Kurangi penjualan ${item.namaBarang}`} className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
@@ -351,12 +385,16 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                             type="number"
                             min="0"
                             max={item.jumlahBarangWadah}
-                            value={item.jumlahBarangDijualSatuan}
+                            value={jumlahTerjualAman}
+                            step="any"
+                            inputMode="decimal"
+                            aria-label={`Jumlah ${item.namaBarang} terjual`}
                             onChange={(e) => {
-                              const val = Math.min(item.jumlahBarangWadah, Math.max(0, Number(e.target.value) || 0));
+                              const parsed = Number(e.target.value);
+                              const val = Number.isFinite(parsed) ? Math.min(jumlahUnitAman, Math.max(0, parsed)) : 0;
                               onSetSoldQty(item.id, val);
                             }}
-                            className="w-12 text-center font-mono font-bold text-xs bg-slate-950 text-white border border-slate-700/70 rounded-md py-0.5 focus:outline-none focus:border-emerald-500"
+                            className="w-14 text-center font-mono font-bold text-sm bg-slate-950 text-white border border-slate-700/70 rounded-md py-1 focus:outline-none focus:border-emerald-500"
                             title={t('table.typeSold')}
                           />
 
@@ -364,7 +402,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                             onClick={() => onUpdateSoldQty(item.id, 1)}
                             disabled={item.jumlahBarangDijualSatuan >= item.jumlahBarangWadah}
                             title={t('table.increaseSold')}
-                            className="w-5 h-5 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                            aria-label={`Tambah penjualan ${item.namaBarang}`} className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                           >
                             <Plus className="w-3 h-3" />
                           </button>
@@ -373,7 +411,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                             onClick={() => handleOpenQuickSoldModal(item)}
                             title={t('table.setSold')}
                             aria-label={t('table.setSold')}
-                            className="ml-0.5 w-5 h-5 inline-flex items-center justify-center text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-full cursor-pointer transition-colors"
+                            className="ml-0.5 w-7 h-7 inline-flex items-center justify-center text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg cursor-pointer transition-colors"
                           >
                             <Settings className="w-3 h-3" aria-hidden="true" />
                           </button>
@@ -387,7 +425,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                               style={{ width: `${soldPercent}%` }}
                             />
                           </div>
-                          <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                          <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
                             <span>{soldPercent}% {t('table.soldPercent')}</span>
                             <span>{t('table.remaining')} <strong className="text-slate-200">{sisaUnit}</strong></span>
                           </div>
@@ -412,8 +450,8 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                           <div className="text-emerald-400 font-bold text-xs drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">
                             +{formatRupiah(calc.totalGainTerjual)}
                           </div>
-                          <div className="text-[10px] text-emerald-500 font-medium mt-0.5">
-                            +{formatRupiah(calc.gainSatuan)}/unit ({formatAngka(calc.marginPersen, 0)}%)
+                          <div className="text-[11px] text-emerald-500 font-medium mt-0.5">
+                            +{formatRupiah(calc.gainSatuan)}/unit (margin {formatAngka(calc.marginPersen, 0)}%)
                           </div>
                         </div>
                       ) : calc.totalGainTerjual < 0 ? (
@@ -421,14 +459,14 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                           <div className="text-rose-400 font-bold text-xs">
                             {formatRupiah(calc.totalGainTerjual)}
                           </div>
-                          <div className="text-[10px] text-rose-400 mt-0.5">
+                          <div className="text-[11px] text-rose-400 mt-0.5">
                             {formatRupiah(calc.gainSatuan)}/unit ({formatAngka(calc.marginPersen, 0)}%)
                           </div>
                         </div>
                       ) : (
                         <div>
                           <div className="text-slate-300 text-xs">Rp 0</div>
-                          <div className="text-[10px] text-slate-500 mt-0.5">
+                          <div className="text-[11px] text-slate-500 mt-0.5">
                             {Number(item.jumlahBarangDijualSatuan) > 0 ? t('table.breakEven') : t('table.notSoldYet')}
                           </div>
                         </div>
@@ -441,12 +479,12 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
                         {formatRupiah(calc.totalSetelahUntungTerjual)}
                       </div>
                       <div className="text-[10px] text-cyan-300/80 mt-0.5">
-                        {t('table.stockRemaining')} {formatRupiah(calc.nilaiSisaStok)}
+                        Nilai stok: {formatRupiah(calc.nilaiSisaStok)}
                       </div>
                     </td>
 
                     {/* {t('table.remainingCash')} (STATUS GLOW PILL) */}
-                    <td className="py-4 px-4 text-right align-middle font-mono tabular-nums bg-emerald-950/20 border-l border-r border-emerald-500/15">
+                    <td className="py-4 px-4 text-right align-middle font-mono tabular-nums bg-emerald-950/20 border-l border-r border-emerald-500/15" title="Saldo kas kumulatif setelah transaksi barang ini, termasuk penarikan yang terjadi sebelumnya.">
                       <div className="inline-block">
                         <span className={`inline-flex items-center px-3 py-1 rounded-xl text-xs font-extrabold shadow-sm ${
                           rowSisaKas < 0 

@@ -1,11 +1,17 @@
 import { InventoryItem, ItemCalculations, GlobalSummary, Withdrawal } from '../types/inventory';
 
 export function calculateItem(item: InventoryItem): ItemCalculations {
-  const jumlahWadah = Math.max(1, Number(item.jumlahBarangWadah) || 1);
-  const hargaBeli = Math.max(0, Number(item.hargaBeli) || 0);
-  const hargaJualSatuan = Math.max(0, Number(item.hargaJualSatuan) || 0);
-  const jumlahJualSatuan = Math.max(0, Number(item.jumlahBarangDijualSatuan) || 0);
-  const persenSimpanBulanan = Math.min(100, Math.max(0, Number(item.persentaseLabaDisimpanBulanan) ?? 50));
+  const rawJumlahWadah = Number(item.jumlahBarangWadah);
+  const jumlahWadah = Number.isFinite(rawJumlahWadah) && rawJumlahWadah > 0 ? rawJumlahWadah : 1;
+  const rawHargaBeli = Number(item.hargaBeli);
+  const hargaBeli = Number.isFinite(rawHargaBeli) ? Math.max(0, rawHargaBeli) : 0;
+  const rawHargaJual = Number(item.hargaJualSatuan);
+  const hargaJualSatuan = Number.isFinite(rawHargaJual) ? Math.max(0, rawHargaJual) : 0;
+  const rawJumlahJual = Number(item.jumlahBarangDijualSatuan);
+  // Data impor/lama tidak boleh membuat penjualan melebihi stok yang tersedia.
+  const jumlahJualSatuan = Number.isFinite(rawJumlahJual) ? Math.min(jumlahWadah, Math.max(0, rawJumlahJual)) : 0;
+  const rawPersenSimpan = item.persentaseLabaDisimpanBulanan == null ? 50 : Number(item.persentaseLabaDisimpanBulanan);
+  const persenSimpanBulanan = Number.isFinite(rawPersenSimpan) ? Math.min(100, Math.max(0, rawPersenSimpan)) : 50;
 
   // 1. HPP Satuan (Harga Beli per 1 satuan/pcs)
   const hppSatuan = hargaBeli / jumlahWadah;

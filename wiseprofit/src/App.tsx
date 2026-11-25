@@ -405,10 +405,11 @@ export default function App() {
     const item = items.find((i) => i.id === id);
     if (!item) return;
 
-    const newQty = Math.min(
-      item.jumlahBarangWadah,
-      Math.max(0, item.jumlahBarangDijualSatuan + delta)
-    );
+    const maxQty = Number.isFinite(Number(item.jumlahBarangWadah)) ? Math.max(0, Number(item.jumlahBarangWadah)) : 0;
+    const currentQty = Number.isFinite(Number(item.jumlahBarangDijualSatuan))
+      ? Math.min(maxQty, Math.max(0, Number(item.jumlahBarangDijualSatuan)))
+      : 0;
+    const newQty = Math.min(maxQty, Math.max(0, currentQty + (Number(delta) || 0)));
     const updated = { ...item, jumlahBarangDijualSatuan: newQty, updatedAt: Date.now() };
 
     // Optimistic local update
@@ -426,7 +427,9 @@ export default function App() {
     const item = items.find((i) => i.id === id);
     if (!item) return;
 
-    const clamped = Math.min(item.jumlahBarangWadah, Math.max(0, qty));
+    const maxQty = Number.isFinite(Number(item.jumlahBarangWadah)) ? Math.max(0, Number(item.jumlahBarangWadah)) : 0;
+    const safeQty = Number.isFinite(Number(qty)) ? Number(qty) : 0;
+    const clamped = Math.min(maxQty, Math.max(0, safeQty));
     const updated = { ...item, jumlahBarangDijualSatuan: clamped, updatedAt: Date.now() };
 
     // Optimistic local update
@@ -797,6 +800,7 @@ export default function App() {
                     globalSavePercentMonthly={globalSavePercentMonthly}
                     modalAwal={modalAwal}
                     saldoKasSaatIni={cashSummary.saldoKasSaatIni}
+                    withdrawals={withdrawals}
                     onEditItem={(item) => {
                       setEditingItem(item);
                       setIsItemModalOpen(true);

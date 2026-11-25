@@ -1519,3 +1519,69 @@ button, input, select, textarea { font-family: var(--font); }
     box-sizing: border-box !important;
   }
 }
+
+
+/* Corrected alignment patch — selectors match the actual rendered component classes.
+   The cash tile had a legacy 124px height/align-self:start rule, while the other
+   tiles use 148px. The inventory table also had a later fit-content rule overriding
+   the earlier width:100% declaration. */
+@media (min-width: 701px) {
+  .cirrel-summary-grid {
+    align-items: stretch !important;
+  }
+  .cirrel-summary-grid > .cirrel-stat-card,
+  .cirrel-summary-grid > .cirrel-stat-card.cirrel-stat-cash {
+    height: 148px !important;
+    min-height: 148px !important;
+    max-height: 148px !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  #cirrel-inventory > .cirrel-inventory-quickadd,
+  #cirrel-inventory > .cirrel-inventory-toolbar,
+  #cirrel-inventory > .cirrel-inventory-table-wrap,
+  #cirrel-inventory .cirrel-inventory-quickadd > .cirrel-quick-add {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: 100% !important;
+    min-width: 1120px !important;
+    max-width: none !important;
+    table-layout: fixed !important;
+  }
+}
+@media (max-width: 700px) {
+  .cirrel-summary-grid > .cirrel-stat-card,
+  .cirrel-summary-grid > .cirrel-stat-card.cirrel-stat-cash {
+    height: auto !important;
+    min-height: 118px !important;
+    max-height: none !important;
+  }
+  #cirrel-inventory > .cirrel-inventory-quickadd,
+  #cirrel-inventory > .cirrel-inventory-toolbar,
+  #cirrel-inventory > .cirrel-inventory-table-wrap,
+  #cirrel-inventory .cirrel-inventory-quickadd > .cirrel-quick-add {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    overflow-x: auto !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: max-content !important;
+    min-width: 1120px !important;
+  }
+}

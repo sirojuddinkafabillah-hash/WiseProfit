@@ -1349,3 +1349,89 @@ button, input, select, textarea { font-family: var(--font); }
     height: 120px !important;
   }
 }
+
+
+/* WiseProfit UI polish — v2: presentation-only refinement. */
+:root {
+  --wp-ui-border: color-mix(in srgb, var(--ink) 13%, transparent);
+  --wp-ui-border-strong: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.cirrel-app-root { font-feature-settings: "ss01" on, "cv11" on; letter-spacing: .002em; }
+.cirrel-main-content { min-width: 0; line-height: 1.48; }
+.cirrel-main-content h1,.cirrel-main-content h2,.cirrel-main-content h3 { letter-spacing: -.025em; }
+.cirrel-main-content .cirrel-summary-capital,
+.cirrel-main-content .cirrel-stat-card,
+.cirrel-main-content .cirrel-page-hero,
+.cirrel-main-content .cirrel-withdrawal-form,
+.cirrel-main-content .cirrel-inventory-table-wrap { border-radius: 17px !important; }
+.cirrel-main-content .cirrel-summary-capital {
+  border-color: var(--line-2) !important;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 #ffffff0a !important;
+}
+.cirrel-main-content .cirrel-summary-grid { align-items: stretch !important; gap: 12px !important; }
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-card {
+  min-width: 0; min-height: 138px; padding: 15px 16px !important;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 #ffffff0b !important;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-card:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow), inset 0 1px 0 #ffffff0b !important;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-card .text-2xl,
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-card .text-3xl {
+  font-size: clamp(1.35rem, 1.8vw, 1.8rem) !important;
+  line-height: 1.18 !important; letter-spacing: -.035em !important; overflow-wrap: anywhere;
+}
+.cirrel-main-content .cirrel-summary-grid .cirrel-stat-card .text-xs { line-height: 1.4 !important; }
+.cirrel-main-content button:not(:disabled) {
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+.cirrel-main-content button:focus-visible,.cirrel-sidebar button:focus-visible {
+  outline: 2px solid var(--accent-hi) !important; outline-offset: 2px !important;
+}
+.cirrel-main-content input:not([type=checkbox]):not([type=radio]),
+.cirrel-main-content select,.cirrel-main-content textarea {
+  min-height: 40px; border-radius: 10px !important; font-size: 13px !important;
+}
+.cirrel-main-content textarea { min-height: 88px; }
+.cirrel-main-content .cirrel-inventory-table-wrap {
+  max-width: 100% !important; overflow: auto !important; overscroll-behavior-x: contain;
+  border: 1px solid var(--line-2) !important; box-shadow: var(--shadow-sm) !important;
+  scrollbar-width: thin; scrollbar-color: #777b83 transparent;
+}
+.cirrel-main-content table.cirrel-inventory-table { border-collapse: separate !important; border-spacing: 0 !important; }
+.cirrel-main-content table.cirrel-inventory-table thead { position: sticky; top: 0; z-index: 5; }
+.cirrel-main-content table.cirrel-inventory-table thead th {
+  padding: 12px 10px !important; line-height: 1.3 !important;
+  background: var(--card-3) !important; box-shadow: inset 0 -1px 0 var(--line-2);
+}
+.cirrel-main-content table.cirrel-inventory-table tbody td {
+  padding: 11px 10px !important; line-height: 1.42 !important; vertical-align: middle !important;
+}
+.cirrel-main-content table.cirrel-inventory-table tbody tr:nth-child(even) td {
+  background-color: color-mix(in srgb, var(--card) 78%, var(--bg)) !important;
+}
+.cirrel-main-content table.cirrel-inventory-table tbody tr:hover td { background-color: var(--accent-soft) !important; }
+.cirrel-main-content table.cirrel-inventory-table tbody td button { min-width: 30px; min-height: 30px; }
+.cirrel-main-content .cirrel-page-hero,.cirrel-main-content .cirrel-withdrawal-form {
+  border-color: var(--line-2) !important; box-shadow: var(--shadow-sm) !important;
+}
+.cirrel-sidebar .cirrel-nav-item {
+  min-height: 44px; border-radius: 11px !important;
+  transition: background-color .16s ease, color .16s ease, transform .16s ease;
+}
+.cirrel-sidebar .cirrel-nav-item:not(.active):hover { transform: translateX(2px); }
+.cirrel-sidebar .cirrel-nav-item.active { min-height: 48px !important; }
+@media (min-width: 1200px) {
+  .cirrel-main-content .cirrel-summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 900px) {
+  .cirrel-main-content .cirrel-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .cirrel-main-content .cirrel-summary-capital { padding: 15px !important; }
+}
+@media (max-width: 560px) {
+  .cirrel-main-content .cirrel-summary-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .cirrel-main-content .cirrel-summary-grid .cirrel-stat-card { min-height: 118px; }
+  .cirrel-main-content table.cirrel-inventory-table { min-width: 960px !important; }
+  .cirrel-main-content .cirrel-page-hero { padding: 16px !important; }
+}

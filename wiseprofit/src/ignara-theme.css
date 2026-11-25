@@ -1466,3 +1466,56 @@ button, input, select, textarea { font-family: var(--font); }
     min-width: 960px !important;
   }
 }
+
+
+/* Alignment-only correction requested by the user.
+   Equalize summary card dimensions and align quick-add, toolbar, and table edges. */
+@media (min-width: 701px) {
+  .cirrel-main-content .cirrel-summary-grid {
+    align-items: stretch !important;
+  }
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card {
+    height: 148px !important;
+    min-height: 148px !important;
+    max-height: 148px !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash {
+    height: 148px !important;
+    min-height: 148px !important;
+    max-height: 148px !important;
+    align-self: stretch !important;
+  }
+  #cirrel-inventory .cirrel-inventory-quickadd,
+  #cirrel-inventory .cirrel-quick-add,
+  #cirrel-inventory .cirrel-inventory-toolbar,
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  #cirrel-inventory .cirrel-quick-add,
+  #cirrel-inventory .cirrel-inventory-toolbar,
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+@media (max-width: 700px) {
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-card,
+  .cirrel-main-content .cirrel-summary-grid > .cirrel-stat-cash {
+    height: auto !important;
+    min-height: 118px !important;
+    max-height: none !important;
+  }
+  #cirrel-inventory .cirrel-inventory-quickadd,
+  #cirrel-inventory .cirrel-quick-add,
+  #cirrel-inventory .cirrel-inventory-toolbar,
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}

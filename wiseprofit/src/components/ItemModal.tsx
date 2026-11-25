@@ -115,7 +115,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
     setNamaBarang(item.namaBarang);
     setSearchName(item.namaBarang);
     setSatuanWadah(item.satuanWadah || 'Dus');
-    setIsiPerKemasan(Math.max(1, Number(item.isiPerKemasan ?? item.jumlahBarangWadah) || 1));
+    setIsiPerKemasan(Math.max(1, Number(item.isiPerKemasan) || (Number(item.jumlahBarangWadah) / Math.max(1, Number(item.jumlahKemasanDibeli) || 1)) || 1));
     setSatuanUnit(item.satuanUnit || 'Pcs');
     setHargaBeliPerKemasan(Math.max(0, Number(item.hargaBeliPerKemasan ?? item.hargaBeli) || 0));
     setHargaJualSatuan(Number(item.hargaJualSatuan) || 0);
@@ -277,7 +277,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSave, e
               <div className="bg-white border border-blue-100 p-3 rounded-lg"><span className="text-slate-500 block text-[11px]">Modal per {satuanUnit}</span><strong className="text-[#18345F]">{formatRupiah(previewCalc.hppSatuan)}</strong></div>
               <div className="bg-white border border-blue-100 p-3 rounded-lg"><span className="text-slate-500 block text-[11px]">Potensi untung per {satuanUnit}</span><strong className="text-emerald-700">+{formatRupiah(previewCalc.gainSatuan)}</strong></div>
             </div>
-            {!isEditing && <p className="text-xs text-slate-600">{isiPerKemasan} {satuanUnit} × {jumlahKemasan} kemasan = {totalIsi} {satuanUnit}. {formatRupiah(hargaBeliPerKemasan)} × {jumlahKemasan} = {formatRupiah(totalModal)}.</p>}
+            {!isEditing && <p className="text-xs text-slate-600"><strong className="text-emerald-700">Total isi otomatis:</strong> {isiPerKemasan} {satuanUnit} × {jumlahKemasan} kemasan = <strong className="text-emerald-700">{totalIsi} {satuanUnit}</strong>. Total modal: {formatRupiah(hargaBeliPerKemasan)} × {jumlahKemasan} = {formatRupiah(totalModal)}.</p>}
           </div>
 
           <div className="pt-3 border-t border-blue-100 flex justify-end gap-2.5">

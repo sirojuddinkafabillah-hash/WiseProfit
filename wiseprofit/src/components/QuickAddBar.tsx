@@ -163,6 +163,13 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({ onAdd, existingItems =
             <div><label className={labelClass}>Jumlah kemasan dibeli</label><input type="number" min="1" required value={jumlahKemasan} onChange={e=>setJumlahKemasan(e.target.value===''?'':Number(e.target.value))} placeholder="Contoh: 2" className={inputClass} /></div>
             <div><label className={labelClass}>Satuan barang</label><input type="text" value={satuanUnit} onChange={e=>setSatuanUnit(e.target.value)} placeholder="Pcs / Botol / Kg" className={inputClass} /></div>
           </div>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-3">
+            <div className="min-w-0">
+              <span className="block text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Total isi masuk otomatis</span>
+              <span className="text-xs text-emerald-800">{formatAngka(packSize,0)} {satuanUnit || 'pcs'} × {formatAngka(packQty,0)} {satuanWadah || 'kemasan'}</span>
+            </div>
+            <strong className="text-base font-extrabold tabular-nums text-emerald-800">{formatAngka(totalQty,0)} {satuanUnit || 'pcs'}</strong>
+          </div>
         </div>
         <div>
           <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#42618B]">Informasi harga</p>

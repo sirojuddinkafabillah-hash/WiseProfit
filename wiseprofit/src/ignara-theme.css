@@ -1590,3 +1590,57 @@ button, input, select, textarea { font-family: var(--font); }
     min-width: 1120px !important;
   }
 }
+
+
+/* Inventory toolbar: keep title, period filters, search and clear action on one row. */
+#cirrel-inventory .cirrel-inventory-toolbar {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-filters {
+  display: flex !important;
+  flex: 0 1 auto !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-actions {
+  display: flex !important;
+  flex: 1 1 360px !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  min-width: 300px !important;
+  max-width: 560px !important;
+  margin-left: auto !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-actions > div:first-child {
+  flex: 1 1 auto !important;
+  min-width: 120px !important;
+  width: auto !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-actions input {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#cirrel-inventory .cirrel-inventory-toolbar-actions > button {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+@media (max-width: 1050px) {
+  #cirrel-inventory .cirrel-inventory-toolbar {
+    overflow-x: auto !important;
+  }
+  #cirrel-inventory .cirrel-inventory-toolbar-row {
+    min-width: 940px !important;
+  }
+}

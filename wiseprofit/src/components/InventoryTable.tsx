@@ -152,9 +152,9 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
       </div>
       {/* Table Toolbar & Filters */}
       <div className="cirrel-inventory-toolbar w-full min-w-0 self-stretch">
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+        <div className="cirrel-inventory-toolbar-row flex items-center justify-between gap-3 flex-nowrap w-full min-w-0">
+          <div className="cirrel-inventory-toolbar-filters flex items-center gap-2 flex-nowrap min-w-0">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] shrink-0" />
             <h2 className="cirrel-inventory-heading">
               {t('table.title')}
             </h2>
@@ -164,7 +164,7 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
           </span>
 
           {/* Month Filter Buttons */}
-          <div className="flex items-center gap-1.5 sm:ml-2 flex-wrap">
+          <div className="flex items-center gap-1.5 sm:ml-2 flex-nowrap shrink-0">
             <button
               onClick={() => onSelectMonth('all')}
               className={`px-3 py-1.5 text-xs rounded-xl font-mono transition-all cursor-pointer ${
@@ -196,8 +196,8 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
         </div>
 
         {/* Search & Reset Utility */}
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 sm:w-64">
+        <div className="cirrel-inventory-toolbar-actions flex items-center gap-2 flex-nowrap flex-1 min-w-[320px] max-w-[560px]">
+          <div className="relative flex-1 min-w-0">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"

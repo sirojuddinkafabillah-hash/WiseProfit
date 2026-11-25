@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { t, getInitialLanguage } from '../i18n/translations';
 import { InventoryItem } from '../types/inventory';
 import { calculateItem, formatRupiah, formatAngka, formatTanggalSederhana } from '../utils/calculator';
-import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Plus, Minus, Trash2, Edit2, Search, Calendar, Package, ArrowUpDown, Filter, Sparkles, TrendingUp, CheckCircle2, SlidersHorizontal } from 'lucide-react';
 import { QuickAddBar } from './QuickAddBar';
 
 interface InventoryTableProps {
@@ -372,10 +372,11 @@ export const InventoryTable: React.FC<InventoryTableProps> = ({
 
                           <button
                             onClick={() => handleOpenQuickSoldModal(item)}
-                            className="ml-0.5 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded cursor-pointer transition-colors"
                             title={t('table.setSold')}
+                            aria-label={t('table.setSold')}
+                            className="ml-0.5 w-5 h-5 inline-flex items-center justify-center text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-full cursor-pointer transition-colors"
                           >
-                            Set
+                            <SlidersHorizontal className="w-3 h-3" aria-hidden="true" />
                           </button>
                         </div>
 

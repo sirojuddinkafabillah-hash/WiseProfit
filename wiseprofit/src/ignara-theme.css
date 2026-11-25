@@ -1435,3 +1435,34 @@ button, input, select, textarea { font-family: var(--font); }
   .cirrel-main-content table.cirrel-inventory-table { min-width: 960px !important; }
   .cirrel-main-content .cirrel-page-hero { padding: 16px !important; }
 }
+
+
+/* Minimal fix requested: expand only the inventory table and prevent search text clipping.
+   Existing colors, cards, navigation, controls, and feature behavior remain unchanged. */
+#cirrel-inventory .cirrel-inventory-table-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 701px) {
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    table-layout: auto !important;
+  }
+  #cirrel-inventory .cirrel-inventory-toolbar > div:last-child > div:first-child {
+    flex: 0 0 280px !important;
+    width: 280px !important;
+    min-width: 260px !important;
+  }
+}
+@media (max-width: 700px) {
+  #cirrel-inventory .cirrel-inventory-table-wrap {
+    overflow-x: auto !important;
+  }
+  #cirrel-inventory table.cirrel-inventory-table {
+    width: max-content !important;
+    min-width: 960px !important;
+  }
+}
